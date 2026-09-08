@@ -96,8 +96,8 @@ erDiagram
         string source
     }
     COURSE_MEMBERSHIP {
-        string student_id PK_FK
-        string course_id PK_FK
+        string student_id PK "also FK"
+        string course_id PK "also FK"
         string section
         string semester
         int looking_for_group
@@ -123,8 +123,8 @@ erDiagram
         float c_patience
     }
     PERSONALITY_PROFILE {
-        string student_id PK_FK
-        string course_id PK_FK
+        string student_id PK "also FK"
+        string course_id PK "also FK"
         int seriousness
         int structure
         int accountability
@@ -143,8 +143,8 @@ erDiagram
         string preferred_role
     }
     AVAILABILITY {
-        string student_id PK_FK
-        string course_id PK_FK
+        string student_id PK "also FK"
+        string course_id PK "also FK"
         string preferred_study_period
         int preferred_session_duration
         int preferred_sessions_per_week
@@ -160,20 +160,20 @@ erDiagram
         string end_time
     }
     ACADEMIC_PROFILE {
-        string student_id PK_FK
-        string course_id PK_FK
+        string student_id PK "also FK"
+        string course_id PK "also FK"
         int course_confidence
         string target_grade
     }
     ACADEMIC_PROFILE_TOPIC {
-        string student_id PK_FK
-        string course_id PK_FK
-        int topic_id PK_FK
+        string student_id PK "also FK"
+        string course_id PK "also FK"
+        int topic_id PK "also FK"
         string relation PK
     }
     PAIRWISE_COMPATIBILITY {
-        string student_a PK_FK
-        string student_b PK_FK
+        string student_a PK "also FK"
+        string student_b PK "also FK"
         string course_id FK
         float compatibility_score
         float similarity_score
@@ -194,8 +194,8 @@ erDiagram
         float worst_pairwise
     }
     GROUP_MEMBERSHIP {
-        string group_id PK_FK
-        string student_id PK_FK
+        string group_id PK "also FK"
+        string student_id PK "also FK"
         string joined_at
         string group_role
     }
@@ -236,5 +236,5 @@ erDiagram
     }
 ```
 
-**Notation**: `||` = exactly one, `o{` = zero or many. `PK_FK` marks a
+**Notation**: `||` = exactly one, `o{` = zero or many. `PK "also FK"` marks a
 composite key column that is also a foreign key.
