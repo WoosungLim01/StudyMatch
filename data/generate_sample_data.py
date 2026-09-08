@@ -14,12 +14,15 @@ are explicitly temporary and meant to be replaced by learned weights
 once real outcome feedback (group_feedback) accumulates.
 
 Matching scope (current decision): compatibility is personality-similarity
-ONLY. Availability/schedule data and academic strong/weak-topic data are
-still generated and stored (nothing here is deleted), but neither factors
-into compatibility_score or group_score anymore — see similarity_component()
-and pair_compatibility() below. There's also no "reward differences"
-complementarity term: a good pair is simply a similar one, across the full
-14-trait personality vector.
+ONLY. Availability/schedule data is still generated and stored (nothing here
+is deleted), but doesn't factor into compatibility_score or group_score — see
+similarity_component() and pair_compatibility() in matching_lib.py. There's
+also no "reward differences" complementarity term: a good pair is simply a
+similar one, across the full 14-trait personality vector.
+
+Academic profiles now carry only course_confidence/target_grade —
+per-topic strong/weak/can_help/needs_help tracking (and the shared `topic`
+table it needed) was removed; see README.md.
 
 Run:  python generate_sample_data.py
 Output: ./sample/*.json
@@ -37,9 +40,7 @@ from statistics import mean
 import numpy as np
 from sklearn.cluster import KMeans
 
-from matching_lib import (
-    TRAITS, weekly_overlap_minutes, pair_compatibility, preferred_role_for,
-)
+from matching_lib import TRAITS, pair_compatibility, preferred_role_for
 
 random.seed(42)
 np.random.seed(42)
@@ -187,18 +188,10 @@ def sample_availability(student_id, course_id, n_blocks, popular_slots):
     }
 
 
-def sample_academic(student_id, course_id, topic_pool):
-    pool = topic_pool[:]
-    random.shuffle(pool)
-    strong = pool[:2]
-    weak = pool[2:4]
+def sample_academic(student_id, course_id):
     return {
         "student_id": student_id,
         "course_id": course_id,
-        "strong_topics": strong,
-        "weak_topics": weak,
-        "can_help_with": strong,
-        "needs_help_with": weak,
         "course_confidence": random.randint(2, 5),
         "target_grade": random.choice(GRADES),
     }
@@ -227,7 +220,7 @@ def make_student(course, n_blocks_range, looking_for_group=True):
     })
     personality_rows.append({"student_id": sid, "course_id": course["course_id"], **sample_personality(subpop)})
     availability_rows.append(sample_availability(sid, course["course_id"], random.randint(*n_blocks_range), course["popular_slots"]))
-    academic_rows.append(sample_academic(sid, course["course_id"], course["topic_pool"]))
+    academic_rows.append(sample_academic(sid, course["course_id"]))
     return sid
 
 
@@ -312,7 +305,6 @@ for row, lab in zip(personality_rows, labels):
 
 personality_by_id = {r["student_id"]: r for r in personality_rows}
 availability_by_id = {r["student_id"]: r for r in availability_rows}
-academic_by_id = {r["student_id"]: r for r in academic_rows}
 
 # ---------------------------------------------------------------------------
 # 5. Pairwise compatibility matrix (within-course only — Stage 1 filter)
@@ -330,7 +322,6 @@ for course_students in (cmpsc_students, math_students):
             score, overlap, breakdown = pair_compatibility(
                 personality_by_id[a], personality_by_id[b],
                 availability_by_id[a], availability_by_id[b],
-                academic_by_id[a], academic_by_id[b],
             )
             pairwise.append({
                 "student_a": a, "student_b": b,

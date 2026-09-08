@@ -10,21 +10,23 @@ https://claude.ai/code/artifact/ea7b2a43-c040-44fe-9049-af37e590cddc
 ## Design decisions
 
 - **Matching scope**: compatibility is personality similarity only.
-  `availability` / `availability_block` and `academic_profile` are fully
-  populated, real input data — just excluded from `compatibility_score` and
-  `group_score`. The `study_style_score` / `academic_score` columns on
-  `pairwise_compatibility` are computed and stored the same way: zero weight.
+  `availability` / `availability_block` is fully populated, real input data —
+  just excluded from `compatibility_score` and `group_score`. The
+  `study_style_score` column on `pairwise_compatibility` is computed and
+  stored the same way: zero weight.
 - **No complementarity**: the old formula rewarded personality *differences*
   on 4 traits. Dropped — a good pair is simply a similar one across all 14
   traits now. `group_score` lost its diversity/"balance" term the same way.
+- **No academic topic tracking**: `topic` and `academic_profile_topic` were
+  removed entirely (not just excluded from scoring, unlike availability).
+  `academic_profile` now only carries `course_confidence`/`target_grade`.
 - **Wide columns, not EAV**: personality traits and archetype centroids stay
   as wide columns — each is genuinely single-valued per row, so splitting
   them into a generic key/value table would be the EAV anti-pattern, not
   better normalization.
-- **Junction tables where there were real lists**: `availability_block` and
-  `academic_profile_topic` exist because their source fields were lists
-  (multiple time blocks, multiple topics) — genuine 1NF repeating groups,
-  correctly split out.
+- **Junction table where there's a real list**: `availability_block` exists
+  because its source field was a list (multiple time blocks per student) —
+  a genuine 1NF repeating group, correctly split out.
 - **De-duplication**: `student` no longer repeats `course` / `course_section`
   — `course_membership` already owns that relationship (and now also owns
   `looking_for_group`, which is really per-course, not per-student).
@@ -43,7 +45,6 @@ https://claude.ai/code/artifact/ea7b2a43-c040-44fe-9049-af37e590cddc
 ```mermaid
 erDiagram
     UNIVERSITY ||--o{ COURSE : offers
-    COURSE ||--o{ TOPIC : "defines pool"
     STUDENT ||--o{ COURSE_MEMBERSHIP : "enrolls via"
     COURSE ||--o{ COURSE_MEMBERSHIP : "enrolled via"
     STUDENT ||--o{ PERSONALITY_PROFILE : completes
@@ -54,8 +55,6 @@ erDiagram
     AVAILABILITY ||--o{ AVAILABILITY_BLOCK : contains
     STUDENT ||--o{ ACADEMIC_PROFILE : has
     COURSE ||--o{ ACADEMIC_PROFILE : scopes
-    ACADEMIC_PROFILE ||--o{ ACADEMIC_PROFILE_TOPIC : tags
-    TOPIC ||--o{ ACADEMIC_PROFILE_TOPIC : "tagged as"
     STUDENT ||--o{ PAIRWISE_COMPATIBILITY : "scored as A"
     STUDENT ||--o{ PAIRWISE_COMPATIBILITY : "scored as B"
     COURSE ||--o{ PAIRWISE_COMPATIBILITY : scopes
@@ -81,11 +80,6 @@ erDiagram
         string course_title
         string section
         string semester
-    }
-    TOPIC {
-        int topic_id PK
-        string course_id FK
-        string name
     }
     STUDENT {
         string student_id PK
@@ -165,12 +159,6 @@ erDiagram
         int course_confidence
         string target_grade
     }
-    ACADEMIC_PROFILE_TOPIC {
-        string student_id PK "also FK"
-        string course_id PK "also FK"
-        int topic_id PK "also FK"
-        string relation PK
-    }
     PAIRWISE_COMPATIBILITY {
         string student_a PK "also FK"
         string student_b PK "also FK"
@@ -180,7 +168,6 @@ erDiagram
         int schedule_compatible
         int weekly_overlap_minutes
         float study_style_score
-        float academic_score
     }
     STUDY_GROUP {
         string group_id PK

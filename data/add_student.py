@@ -49,11 +49,7 @@ example):
       "preferred_sessions_per_week": 2, "preferred_location": "Library",
       "online_vs_in_person_preference": "in_person"
     },
-    "academic": {                            // optional
-      "course_confidence": 4, "target_grade": "A-",
-      "strong_topics": ["Recursion"], "weak_topics": ["NP-Completeness"],
-      "can_help_with": ["Recursion"], "needs_help_with": ["NP-Completeness"]
-    }
+    "academic": { "course_confidence": 4, "target_grade": "A-" }  // optional
   }
 ]
 """
@@ -86,14 +82,6 @@ def next_match_id(cur):
     row = cur.execute("SELECT match_id FROM match_data ORDER BY match_id DESC LIMIT 1").fetchone()
     n = int(row[0].split("_")[1]) + 1 if row else 1
     return f"match_{n:04d}"
-
-
-def topic_id(cur, course_id, name):
-    row = cur.execute("SELECT topic_id FROM topic WHERE course_id=? AND name=?", (course_id, name)).fetchone()
-    if row:
-        return row[0]
-    cur.execute("INSERT INTO topic (course_id, name) VALUES (?,?)", (course_id, name))
-    return cur.lastrowid
 
 
 def add_one(con, s):
@@ -159,25 +147,10 @@ def add_one(con, s):
 
     # ── academic profile (optional) ──────────────────────────────────────
     ac = s.get("academic") or {}
-    academic = {
-        "course_confidence": ac.get("course_confidence"),
-        "target_grade": ac.get("target_grade"),
-        "strong_topics": ac.get("strong_topics", []),
-        "weak_topics": ac.get("weak_topics", []),
-        "can_help_with": ac.get("can_help_with", ac.get("strong_topics", [])),
-        "needs_help_with": ac.get("needs_help_with", ac.get("weak_topics", [])),
-    }
     cur.execute(
         "INSERT INTO academic_profile VALUES (?,?,?,?)",
-        (sid, s["course_id"], academic["course_confidence"], academic["target_grade"]),
+        (sid, s["course_id"], ac.get("course_confidence"), ac.get("target_grade")),
     )
-    for relation, key in (("strong", "strong_topics"), ("weak", "weak_topics"),
-                           ("can_help", "can_help_with"), ("needs_help", "needs_help_with")):
-        for name in academic[key]:
-            cur.execute(
-                "INSERT OR IGNORE INTO academic_profile_topic VALUES (?,?,?,?)",
-                (sid, s["course_id"], topic_id(cur, s["course_id"], name), relation),
-            )
 
     # ── pairwise_compatibility against every existing student in this course ──
     coursemates = cur.execute(
@@ -209,28 +182,12 @@ def add_one(con, s):
                 ).fetchall()
             ],
         }
-        other_ac_row = cur.execute(
-            "SELECT course_confidence, target_grade FROM academic_profile WHERE student_id=? AND course_id=?",
-            (other_id, s["course_id"]),
-        ).fetchone()
-        other_topics = {"can_help_with": [], "needs_help_with": []}
-        for rel_key, col in (("can_help", "can_help_with"), ("needs_help", "needs_help_with")):
-            other_topics[col] = [
-                name for (name,) in cur.execute(
-                    """SELECT t.name FROM academic_profile_topic apt JOIN topic t ON t.topic_id = apt.topic_id
-                       WHERE apt.student_id=? AND apt.course_id=? AND apt.relation=?""",
-                    (other_id, s["course_id"], rel_key),
-                ).fetchall()
-            ]
-
-        score, overlap, breakdown = pair_compatibility(
-            traits, other_traits, availability, other_av, academic, other_topics,
-        )
+        score, overlap, breakdown = pair_compatibility(traits, other_traits, availability, other_av)
         a, b = sorted((sid, other_id))
         cur.execute(
-            "INSERT INTO pairwise_compatibility VALUES (?,?,?,?,?,?,?,?,?)",
+            "INSERT INTO pairwise_compatibility VALUES (?,?,?,?,?,?,?,?)",
             (a, b, s["course_id"], score, breakdown["similarity"], int(overlap > 0), overlap,
-             breakdown["study_style"], breakdown["academic"]),
+             breakdown["study_style"]),
         )
         new_scores[other_id] = score
 

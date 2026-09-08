@@ -2,12 +2,8 @@
 StudyMatch — builds the actual sample database (SQLite) from sample/*.json.
 
 Loads schema.sql into a fresh studymatch.db, then inserts every row from
-sample/*.json, normalizing three list-valued fields into proper child tables
-along the way:
-  - availability.blocks              -> availability_block
-  - academic_profile's strong/weak/
-    can_help/needs_help topic lists  -> topic + academic_profile_topic
-  - course.topic_pool                -> topic (the full per-course pool)
+sample/*.json, normalizing one list-valued field into a proper child table
+along the way: availability.blocks -> availability_block.
 
 Everything else is a straight column-for-column load. See schema.sql for the
 full normalized schema and ER-relevant design notes.
@@ -81,7 +77,7 @@ def build(force=False):
     chat = load("course_chat_messages")
     feedback = load("group_feedback")
 
-    # ── university / course / topic ─────────────────────────────────────
+    # ── university / course ────────────────────────────────────────────
     cur.execute(
         "INSERT INTO university VALUES (?,?,?)",
         (university["university_id"], university["name"], university["location"]),
@@ -91,20 +87,6 @@ def build(force=False):
             "INSERT INTO course VALUES (?,?,?,?,?,?)",
             (c["course_id"], c["university_id"], c["course_code"], c["course_title"], c["section"], c["semester"]),
         )
-
-    topic_id_by_name = {}  # (course_id, name) -> topic_id
-    for c in courses:
-        for name in c.get("topic_pool", []):
-            cur.execute("INSERT OR IGNORE INTO topic (course_id, name) VALUES (?,?)", (c["course_id"], name))
-    for row in cur.execute("SELECT topic_id, course_id, name FROM topic"):
-        topic_id_by_name[(row[1], row[2])] = row[0]
-
-    def topic_id(course_id, name):
-        key = (course_id, name)
-        if key not in topic_id_by_name:
-            cur.execute("INSERT INTO topic (course_id, name) VALUES (?,?)", (course_id, name))
-            topic_id_by_name[key] = cur.lastrowid
-        return topic_id_by_name[key]
 
     # ── student (drop the redundant course/course_section - that's course_membership's job) ──
     looking_for_group_by_id = {}
@@ -164,32 +146,24 @@ def build(force=False):
                 (av["student_id"], av["course_id"], b["day"], b["start_time"], b["end_time"]),
             )
 
-    # ── academic_profile / academic_profile_topic ───────────────────────
-    student_course_to_course = {(m["student_id"], m["course_id"]) for m in course_membership}
+    # ── academic_profile ──────────────────────────────────────────────────
     for ac in academic:
         cur.execute(
             "INSERT INTO academic_profile VALUES (?,?,?,?)",
             (ac["student_id"], ac["course_id"], ac["course_confidence"], ac["target_grade"]),
         )
-        for relation, key in (("strong", "strong_topics"), ("weak", "weak_topics"),
-                               ("can_help", "can_help_with"), ("needs_help", "needs_help_with")):
-            for name in ac[key]:
-                cur.execute(
-                    "INSERT OR IGNORE INTO academic_profile_topic VALUES (?,?,?,?)",
-                    (ac["student_id"], ac["course_id"], topic_id(ac["course_id"], name), relation),
-                )
 
     # ── pairwise_compatibility ───────────────────────────────────────────
     course_by_student = {m["student_id"]: m["course_id"] for m in course_membership}
     for pw in pairwise:
         b = pw["breakdown"]
         cur.execute(
-            "INSERT INTO pairwise_compatibility VALUES (?,?,?,?,?,?,?,?,?)",
+            "INSERT INTO pairwise_compatibility VALUES (?,?,?,?,?,?,?,?)",
             (
                 pw["student_a"], pw["student_b"], course_by_student[pw["student_a"]],
                 pw["compatibility_score"], b["similarity"],
                 int(pw["schedule_compatible"]), pw["weekly_overlap_minutes"],
-                b["study_style"], b["academic"],
+                b["study_style"],
             ),
         )
 

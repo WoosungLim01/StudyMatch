@@ -2,815 +2,223 @@
   {
     "student_id": "stu_0001",
     "course_id": "psu-cmpsc465-001-fa26",
-    "strong_topics": [
-      "NP-Completeness",
-      "Dynamic Programming"
-    ],
-    "weak_topics": [
-      "Network Flow",
-      "Graph Algorithms"
-    ],
-    "can_help_with": [
-      "NP-Completeness",
-      "Dynamic Programming"
-    ],
-    "needs_help_with": [
-      "Network Flow",
-      "Graph Algorithms"
-    ],
-    "course_confidence": 4,
-    "target_grade": "B+"
+    "course_confidence": 5,
+    "target_grade": "A-"
   },
   {
     "student_id": "stu_0002",
     "course_id": "psu-cmpsc465-001-fa26",
-    "strong_topics": [
-      "NP-Completeness",
-      "Recursion"
-    ],
-    "weak_topics": [
-      "Divide and Conquer",
-      "Network Flow"
-    ],
-    "can_help_with": [
-      "NP-Completeness",
-      "Recursion"
-    ],
-    "needs_help_with": [
-      "Divide and Conquer",
-      "Network Flow"
-    ],
-    "course_confidence": 4,
+    "course_confidence": 2,
     "target_grade": "B"
   },
   {
     "student_id": "stu_0003",
     "course_id": "psu-cmpsc465-001-fa26",
-    "strong_topics": [
-      "Graph Algorithms",
-      "Greedy Algorithms"
-    ],
-    "weak_topics": [
-      "NP-Completeness",
-      "Network Flow"
-    ],
-    "can_help_with": [
-      "Graph Algorithms",
-      "Greedy Algorithms"
-    ],
-    "needs_help_with": [
-      "NP-Completeness",
-      "Network Flow"
-    ],
-    "course_confidence": 5,
-    "target_grade": "B"
+    "course_confidence": 3,
+    "target_grade": "B+"
   },
   {
     "student_id": "stu_0004",
     "course_id": "psu-cmpsc465-001-fa26",
-    "strong_topics": [
-      "Network Flow",
-      "Dynamic Programming"
-    ],
-    "weak_topics": [
-      "Greedy Algorithms",
-      "Proofs & Correctness"
-    ],
-    "can_help_with": [
-      "Network Flow",
-      "Dynamic Programming"
-    ],
-    "needs_help_with": [
-      "Greedy Algorithms",
-      "Proofs & Correctness"
-    ],
-    "course_confidence": 2,
-    "target_grade": "B+"
-  },
-  {
-    "student_id": "stu_0005",
-    "course_id": "psu-cmpsc465-001-fa26",
-    "strong_topics": [
-      "Divide and Conquer",
-      "NP-Completeness"
-    ],
-    "weak_topics": [
-      "Greedy Algorithms",
-      "Sorting & Searching"
-    ],
-    "can_help_with": [
-      "Divide and Conquer",
-      "NP-Completeness"
-    ],
-    "needs_help_with": [
-      "Greedy Algorithms",
-      "Sorting & Searching"
-    ],
-    "course_confidence": 2,
-    "target_grade": "B"
-  },
-  {
-    "student_id": "stu_0006",
-    "course_id": "psu-cmpsc465-001-fa26",
-    "strong_topics": [
-      "Big-O Analysis",
-      "Network Flow"
-    ],
-    "weak_topics": [
-      "Divide and Conquer",
-      "NP-Completeness"
-    ],
-    "can_help_with": [
-      "Big-O Analysis",
-      "Network Flow"
-    ],
-    "needs_help_with": [
-      "Divide and Conquer",
-      "NP-Completeness"
-    ],
-    "course_confidence": 3,
-    "target_grade": "A"
-  },
-  {
-    "student_id": "stu_0007",
-    "course_id": "psu-cmpsc465-001-fa26",
-    "strong_topics": [
-      "Network Flow",
-      "Divide and Conquer"
-    ],
-    "weak_topics": [
-      "Proofs & Correctness",
-      "Graph Algorithms"
-    ],
-    "can_help_with": [
-      "Network Flow",
-      "Divide and Conquer"
-    ],
-    "needs_help_with": [
-      "Proofs & Correctness",
-      "Graph Algorithms"
-    ],
-    "course_confidence": 2,
-    "target_grade": "B"
-  },
-  {
-    "student_id": "stu_0008",
-    "course_id": "psu-cmpsc465-001-fa26",
-    "strong_topics": [
-      "Proofs & Correctness",
-      "Divide and Conquer"
-    ],
-    "weak_topics": [
-      "NP-Completeness",
-      "Dynamic Programming"
-    ],
-    "can_help_with": [
-      "Proofs & Correctness",
-      "Divide and Conquer"
-    ],
-    "needs_help_with": [
-      "NP-Completeness",
-      "Dynamic Programming"
-    ],
-    "course_confidence": 5,
-    "target_grade": "B+"
-  },
-  {
-    "student_id": "stu_0009",
-    "course_id": "psu-cmpsc465-001-fa26",
-    "strong_topics": [
-      "NP-Completeness",
-      "Network Flow"
-    ],
-    "weak_topics": [
-      "Proofs & Correctness",
-      "Graph Algorithms"
-    ],
-    "can_help_with": [
-      "NP-Completeness",
-      "Network Flow"
-    ],
-    "needs_help_with": [
-      "Proofs & Correctness",
-      "Graph Algorithms"
-    ],
-    "course_confidence": 5,
-    "target_grade": "B+"
-  },
-  {
-    "student_id": "stu_0010",
-    "course_id": "psu-cmpsc465-001-fa26",
-    "strong_topics": [
-      "Greedy Algorithms",
-      "NP-Completeness"
-    ],
-    "weak_topics": [
-      "Network Flow",
-      "Big-O Analysis"
-    ],
-    "can_help_with": [
-      "Greedy Algorithms",
-      "NP-Completeness"
-    ],
-    "needs_help_with": [
-      "Network Flow",
-      "Big-O Analysis"
-    ],
-    "course_confidence": 5,
-    "target_grade": "B+"
-  },
-  {
-    "student_id": "stu_0011",
-    "course_id": "psu-cmpsc465-001-fa26",
-    "strong_topics": [
-      "Sorting & Searching",
-      "Greedy Algorithms"
-    ],
-    "weak_topics": [
-      "Divide and Conquer",
-      "Recursion"
-    ],
-    "can_help_with": [
-      "Sorting & Searching",
-      "Greedy Algorithms"
-    ],
-    "needs_help_with": [
-      "Divide and Conquer",
-      "Recursion"
-    ],
-    "course_confidence": 5,
-    "target_grade": "A"
-  },
-  {
-    "student_id": "stu_0012",
-    "course_id": "psu-cmpsc465-001-fa26",
-    "strong_topics": [
-      "Recursion",
-      "NP-Completeness"
-    ],
-    "weak_topics": [
-      "Divide and Conquer",
-      "Graph Algorithms"
-    ],
-    "can_help_with": [
-      "Recursion",
-      "NP-Completeness"
-    ],
-    "needs_help_with": [
-      "Divide and Conquer",
-      "Graph Algorithms"
-    ],
     "course_confidence": 5,
     "target_grade": "A-"
   },
   {
-    "student_id": "stu_0013",
+    "student_id": "stu_0005",
     "course_id": "psu-cmpsc465-001-fa26",
-    "strong_topics": [
-      "Recursion",
-      "Greedy Algorithms"
-    ],
-    "weak_topics": [
-      "Divide and Conquer",
-      "Dynamic Programming"
-    ],
-    "can_help_with": [
-      "Recursion",
-      "Greedy Algorithms"
-    ],
-    "needs_help_with": [
-      "Divide and Conquer",
-      "Dynamic Programming"
-    ],
     "course_confidence": 2,
     "target_grade": "A"
   },
   {
+    "student_id": "stu_0006",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "course_confidence": 2,
+    "target_grade": "B+"
+  },
+  {
+    "student_id": "stu_0007",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "course_confidence": 5,
+    "target_grade": "A-"
+  },
+  {
+    "student_id": "stu_0008",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "course_confidence": 2,
+    "target_grade": "A-"
+  },
+  {
+    "student_id": "stu_0009",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "course_confidence": 5,
+    "target_grade": "A-"
+  },
+  {
+    "student_id": "stu_0010",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "course_confidence": 4,
+    "target_grade": "B"
+  },
+  {
+    "student_id": "stu_0011",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "course_confidence": 3,
+    "target_grade": "B"
+  },
+  {
+    "student_id": "stu_0012",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "course_confidence": 3,
+    "target_grade": "B+"
+  },
+  {
+    "student_id": "stu_0013",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "course_confidence": 3,
+    "target_grade": "B+"
+  },
+  {
     "student_id": "stu_0014",
     "course_id": "psu-cmpsc465-001-fa26",
-    "strong_topics": [
-      "Graph Algorithms",
-      "Dynamic Programming"
-    ],
-    "weak_topics": [
-      "Recursion",
-      "Big-O Analysis"
-    ],
-    "can_help_with": [
-      "Graph Algorithms",
-      "Dynamic Programming"
-    ],
-    "needs_help_with": [
-      "Recursion",
-      "Big-O Analysis"
-    ],
-    "course_confidence": 3,
+    "course_confidence": 2,
     "target_grade": "A-"
   },
   {
     "student_id": "stu_0015",
     "course_id": "psu-cmpsc465-001-fa26",
-    "strong_topics": [
-      "Sorting & Searching",
-      "Greedy Algorithms"
-    ],
-    "weak_topics": [
-      "Graph Algorithms",
-      "Network Flow"
-    ],
-    "can_help_with": [
-      "Sorting & Searching",
-      "Greedy Algorithms"
-    ],
-    "needs_help_with": [
-      "Graph Algorithms",
-      "Network Flow"
-    ],
-    "course_confidence": 4,
+    "course_confidence": 3,
     "target_grade": "A-"
   },
   {
     "student_id": "stu_0016",
     "course_id": "psu-cmpsc465-001-fa26",
-    "strong_topics": [
-      "Network Flow",
-      "Greedy Algorithms"
-    ],
-    "weak_topics": [
-      "NP-Completeness",
-      "Big-O Analysis"
-    ],
-    "can_help_with": [
-      "Network Flow",
-      "Greedy Algorithms"
-    ],
-    "needs_help_with": [
-      "NP-Completeness",
-      "Big-O Analysis"
-    ],
-    "course_confidence": 5,
-    "target_grade": "B+"
+    "course_confidence": 3,
+    "target_grade": "B"
   },
   {
     "student_id": "stu_0017",
     "course_id": "psu-cmpsc465-001-fa26",
-    "strong_topics": [
-      "Sorting & Searching",
-      "Network Flow"
-    ],
-    "weak_topics": [
-      "Divide and Conquer",
-      "Graph Algorithms"
-    ],
-    "can_help_with": [
-      "Sorting & Searching",
-      "Network Flow"
-    ],
-    "needs_help_with": [
-      "Divide and Conquer",
-      "Graph Algorithms"
-    ],
-    "course_confidence": 4,
+    "course_confidence": 2,
     "target_grade": "B"
   },
   {
     "student_id": "stu_0018",
     "course_id": "psu-cmpsc465-001-fa26",
-    "strong_topics": [
-      "Network Flow",
-      "Proofs & Correctness"
-    ],
-    "weak_topics": [
-      "Dynamic Programming",
-      "NP-Completeness"
-    ],
-    "can_help_with": [
-      "Network Flow",
-      "Proofs & Correctness"
-    ],
-    "needs_help_with": [
-      "Dynamic Programming",
-      "NP-Completeness"
-    ],
-    "course_confidence": 3,
-    "target_grade": "B"
+    "course_confidence": 4,
+    "target_grade": "A-"
   },
   {
     "student_id": "stu_0019",
     "course_id": "psu-cmpsc465-001-fa26",
-    "strong_topics": [
-      "NP-Completeness",
-      "Big-O Analysis"
-    ],
-    "weak_topics": [
-      "Greedy Algorithms",
-      "Divide and Conquer"
-    ],
-    "can_help_with": [
-      "NP-Completeness",
-      "Big-O Analysis"
-    ],
-    "needs_help_with": [
-      "Greedy Algorithms",
-      "Divide and Conquer"
-    ],
     "course_confidence": 3,
     "target_grade": "A"
   },
   {
     "student_id": "stu_0020",
     "course_id": "psu-cmpsc465-001-fa26",
-    "strong_topics": [
-      "Proofs & Correctness",
-      "Greedy Algorithms"
-    ],
-    "weak_topics": [
-      "Divide and Conquer",
-      "Recursion"
-    ],
-    "can_help_with": [
-      "Proofs & Correctness",
-      "Greedy Algorithms"
-    ],
-    "needs_help_with": [
-      "Divide and Conquer",
-      "Recursion"
-    ],
     "course_confidence": 2,
     "target_grade": "A"
   },
   {
     "student_id": "stu_0021",
     "course_id": "psu-cmpsc465-001-fa26",
-    "strong_topics": [
-      "Greedy Algorithms",
-      "Sorting & Searching"
-    ],
-    "weak_topics": [
-      "Recursion",
-      "Proofs & Correctness"
-    ],
-    "can_help_with": [
-      "Greedy Algorithms",
-      "Sorting & Searching"
-    ],
-    "needs_help_with": [
-      "Recursion",
-      "Proofs & Correctness"
-    ],
     "course_confidence": 5,
-    "target_grade": "B"
+    "target_grade": "A-"
   },
   {
     "student_id": "stu_0022",
     "course_id": "psu-cmpsc465-001-fa26",
-    "strong_topics": [
-      "Dynamic Programming",
-      "Proofs & Correctness"
-    ],
-    "weak_topics": [
-      "Graph Algorithms",
-      "Divide and Conquer"
-    ],
-    "can_help_with": [
-      "Dynamic Programming",
-      "Proofs & Correctness"
-    ],
-    "needs_help_with": [
-      "Graph Algorithms",
-      "Divide and Conquer"
-    ],
-    "course_confidence": 4,
-    "target_grade": "A-"
-  },
-  {
-    "student_id": "stu_0023",
-    "course_id": "psu-cmpsc465-001-fa26",
-    "strong_topics": [
-      "Dynamic Programming",
-      "Network Flow"
-    ],
-    "weak_topics": [
-      "Graph Algorithms",
-      "Proofs & Correctness"
-    ],
-    "can_help_with": [
-      "Dynamic Programming",
-      "Network Flow"
-    ],
-    "needs_help_with": [
-      "Graph Algorithms",
-      "Proofs & Correctness"
-    ],
-    "course_confidence": 4,
-    "target_grade": "A-"
-  },
-  {
-    "student_id": "stu_0024",
-    "course_id": "psu-cmpsc465-001-fa26",
-    "strong_topics": [
-      "Sorting & Searching",
-      "Proofs & Correctness"
-    ],
-    "weak_topics": [
-      "NP-Completeness",
-      "Network Flow"
-    ],
-    "can_help_with": [
-      "Sorting & Searching",
-      "Proofs & Correctness"
-    ],
-    "needs_help_with": [
-      "NP-Completeness",
-      "Network Flow"
-    ],
-    "course_confidence": 3,
-    "target_grade": "A-"
-  },
-  {
-    "student_id": "stu_0025",
-    "course_id": "psu-cmpsc465-001-fa26",
-    "strong_topics": [
-      "Sorting & Searching",
-      "Proofs & Correctness"
-    ],
-    "weak_topics": [
-      "Network Flow",
-      "Graph Algorithms"
-    ],
-    "can_help_with": [
-      "Sorting & Searching",
-      "Proofs & Correctness"
-    ],
-    "needs_help_with": [
-      "Network Flow",
-      "Graph Algorithms"
-    ],
     "course_confidence": 5,
     "target_grade": "B"
   },
   {
+    "student_id": "stu_0023",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "course_confidence": 5,
+    "target_grade": "B"
+  },
+  {
+    "student_id": "stu_0024",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "course_confidence": 3,
+    "target_grade": "B"
+  },
+  {
+    "student_id": "stu_0025",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "course_confidence": 3,
+    "target_grade": "A-"
+  },
+  {
     "student_id": "stu_0026",
     "course_id": "psu-cmpsc465-001-fa26",
-    "strong_topics": [
-      "Big-O Analysis",
-      "Sorting & Searching"
-    ],
-    "weak_topics": [
-      "Dynamic Programming",
-      "NP-Completeness"
-    ],
-    "can_help_with": [
-      "Big-O Analysis",
-      "Sorting & Searching"
-    ],
-    "needs_help_with": [
-      "Dynamic Programming",
-      "NP-Completeness"
-    ],
-    "course_confidence": 5,
+    "course_confidence": 3,
     "target_grade": "A"
   },
   {
     "student_id": "stu_0027",
     "course_id": "psu-cmpsc465-001-fa26",
-    "strong_topics": [
-      "Divide and Conquer",
-      "Graph Algorithms"
-    ],
-    "weak_topics": [
-      "Sorting & Searching",
-      "NP-Completeness"
-    ],
-    "can_help_with": [
-      "Divide and Conquer",
-      "Graph Algorithms"
-    ],
-    "needs_help_with": [
-      "Sorting & Searching",
-      "NP-Completeness"
-    ],
-    "course_confidence": 3,
-    "target_grade": "B+"
+    "course_confidence": 5,
+    "target_grade": "B"
   },
   {
     "student_id": "stu_0028",
     "course_id": "psu-cmpsc465-001-fa26",
-    "strong_topics": [
-      "Sorting & Searching",
-      "NP-Completeness"
-    ],
-    "weak_topics": [
-      "Greedy Algorithms",
-      "Big-O Analysis"
-    ],
-    "can_help_with": [
-      "Sorting & Searching",
-      "NP-Completeness"
-    ],
-    "needs_help_with": [
-      "Greedy Algorithms",
-      "Big-O Analysis"
-    ],
-    "course_confidence": 5,
+    "course_confidence": 4,
     "target_grade": "A"
   },
   {
     "student_id": "stu_0029",
     "course_id": "psu-math230-002-fa26",
-    "strong_topics": [
-      "Parametric Surfaces",
-      "Line Integrals"
-    ],
-    "weak_topics": [
-      "Multivariable Limits",
-      "Lagrange Multipliers"
-    ],
-    "can_help_with": [
-      "Parametric Surfaces",
-      "Line Integrals"
-    ],
-    "needs_help_with": [
-      "Multivariable Limits",
-      "Lagrange Multipliers"
-    ],
-    "course_confidence": 5,
-    "target_grade": "B+"
+    "course_confidence": 4,
+    "target_grade": "B"
   },
   {
     "student_id": "stu_0030",
     "course_id": "psu-math230-002-fa26",
-    "strong_topics": [
-      "Parametric Surfaces",
-      "Green's Theorem"
-    ],
-    "weak_topics": [
-      "Partial Derivatives",
-      "Vector Fields"
-    ],
-    "can_help_with": [
-      "Parametric Surfaces",
-      "Green's Theorem"
-    ],
-    "needs_help_with": [
-      "Partial Derivatives",
-      "Vector Fields"
-    ],
-    "course_confidence": 5,
+    "course_confidence": 4,
     "target_grade": "A"
   },
   {
     "student_id": "stu_0031",
     "course_id": "psu-math230-002-fa26",
-    "strong_topics": [
-      "Multivariable Limits",
-      "Lagrange Multipliers"
-    ],
-    "weak_topics": [
-      "Green's Theorem",
-      "Triple Integrals"
-    ],
-    "can_help_with": [
-      "Multivariable Limits",
-      "Lagrange Multipliers"
-    ],
-    "needs_help_with": [
-      "Green's Theorem",
-      "Triple Integrals"
-    ],
     "course_confidence": 2,
-    "target_grade": "A"
+    "target_grade": "B+"
   },
   {
     "student_id": "stu_0032",
     "course_id": "psu-math230-002-fa26",
-    "strong_topics": [
-      "Parametric Surfaces",
-      "Multivariable Limits"
-    ],
-    "weak_topics": [
-      "Lagrange Multipliers",
-      "Green's Theorem"
-    ],
-    "can_help_with": [
-      "Parametric Surfaces",
-      "Multivariable Limits"
-    ],
-    "needs_help_with": [
-      "Lagrange Multipliers",
-      "Green's Theorem"
-    ],
-    "course_confidence": 3,
-    "target_grade": "B"
+    "course_confidence": 5,
+    "target_grade": "A-"
   },
   {
     "student_id": "stu_0033",
     "course_id": "psu-math230-002-fa26",
-    "strong_topics": [
-      "Line Integrals",
-      "Green's Theorem"
-    ],
-    "weak_topics": [
-      "Partial Derivatives",
-      "Triple Integrals"
-    ],
-    "can_help_with": [
-      "Line Integrals",
-      "Green's Theorem"
-    ],
-    "needs_help_with": [
-      "Partial Derivatives",
-      "Triple Integrals"
-    ],
-    "course_confidence": 2,
+    "course_confidence": 5,
     "target_grade": "B"
   },
   {
     "student_id": "stu_0034",
     "course_id": "psu-math230-002-fa26",
-    "strong_topics": [
-      "Vector Fields",
-      "Lagrange Multipliers"
-    ],
-    "weak_topics": [
-      "Multivariable Limits",
-      "Green's Theorem"
-    ],
-    "can_help_with": [
-      "Vector Fields",
-      "Lagrange Multipliers"
-    ],
-    "needs_help_with": [
-      "Multivariable Limits",
-      "Green's Theorem"
-    ],
     "course_confidence": 4,
     "target_grade": "B+"
   },
   {
     "student_id": "stu_0035",
     "course_id": "psu-math230-002-fa26",
-    "strong_topics": [
-      "Partial Derivatives",
-      "Triple Integrals"
-    ],
-    "weak_topics": [
-      "Parametric Surfaces",
-      "Multivariable Limits"
-    ],
-    "can_help_with": [
-      "Partial Derivatives",
-      "Triple Integrals"
-    ],
-    "needs_help_with": [
-      "Parametric Surfaces",
-      "Multivariable Limits"
-    ],
-    "course_confidence": 5,
-    "target_grade": "A"
+    "course_confidence": 2,
+    "target_grade": "A-"
   },
   {
     "student_id": "stu_0036",
     "course_id": "psu-math230-002-fa26",
-    "strong_topics": [
-      "Green's Theorem",
-      "Multivariable Limits"
-    ],
-    "weak_topics": [
-      "Double Integrals",
-      "Triple Integrals"
-    ],
-    "can_help_with": [
-      "Green's Theorem",
-      "Multivariable Limits"
-    ],
-    "needs_help_with": [
-      "Double Integrals",
-      "Triple Integrals"
-    ],
     "course_confidence": 5,
-    "target_grade": "B"
+    "target_grade": "A"
   },
   {
     "student_id": "stu_0037",
     "course_id": "psu-math230-002-fa26",
-    "strong_topics": [
-      "Parametric Surfaces",
-      "Line Integrals"
-    ],
-    "weak_topics": [
-      "Lagrange Multipliers",
-      "Vector Fields"
-    ],
-    "can_help_with": [
-      "Parametric Surfaces",
-      "Line Integrals"
-    ],
-    "needs_help_with": [
-      "Lagrange Multipliers",
-      "Vector Fields"
-    ],
-    "course_confidence": 2,
+    "course_confidence": 4,
     "target_grade": "A-"
   }
 ]

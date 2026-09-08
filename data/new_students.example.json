@@ -24,9 +24,7 @@
     },
     "academic": {
       "course_confidence": 4,
-      "target_grade": "A-",
-      "strong_topics": ["Recursion"],
-      "weak_topics": ["NP-Completeness"]
+      "target_grade": "A-"
     }
   }
 ]

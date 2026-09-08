@@ -10,9 +10,10 @@ the incremental path silently drifting from the original one.
 
 Matching scope (current decision, same as generate_sample_data.py's docstring):
 compatibility is personality-similarity ONLY, across all 14 traits. Time
-(availability) and academic (topic-help) signals are still computed here —
-study_style_component / academic_component — but carry zero weight in
-pair_compatibility(); they're informational data, not scoring inputs.
+(availability) is still computed here — study_style_component — but carries
+zero weight in pair_compatibility(); it's informational data, not a scoring
+input. Academic topic-help tracking was removed entirely (no topic data left
+to compute it from) — see README.md.
 """
 
 from statistics import mean
@@ -68,30 +69,21 @@ def study_style_component(av_a, av_b, overlap_minutes):
     return mean([overlap_score, dur_sim, loc_match, onl_match])
 
 
-def academic_component(ac_a, ac_b):
-    """Informational only — NOT part of compatibility_score. See module docstring."""
-    a_helps_b = len(set(ac_a["can_help_with"]) & set(ac_b["needs_help_with"]))
-    b_helps_a = len(set(ac_b["can_help_with"]) & set(ac_a["needs_help_with"]))
-    return min((a_helps_b + b_helps_a) / 2, 1.0)
-
-
-def pair_compatibility(pa, pb, av_a, av_b, ac_a, ac_b):
+def pair_compatibility(pa, pb, av_a, av_b):
     """
     compatibility_score = personality similarity only.
 
-    study_style and academic are still computed and reported in `breakdown`
-    (valid input data, kept for future use / transparency) but carry zero
-    weight in the score.
+    study_style is still computed and reported in `breakdown` (valid input
+    data, kept for future use / transparency) but carries zero weight in the
+    score.
     """
     overlap = weekly_overlap_minutes([av_a, av_b])
     sim = similarity_component(pa, pb)
     style = study_style_component(av_a, av_b, overlap)
-    acad = academic_component(ac_a, ac_b)
     score = sim
     return round(score * 100, 1), overlap, {
         "similarity": round(sim * 100, 1),
         "study_style": round(style * 100, 1),   # informational only, not scored
-        "academic": round(acad * 100, 1),        # informational only, not scored
     }
 
 

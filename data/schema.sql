@@ -3,17 +3,19 @@
 -- Normalizes the flat sample/*.json files into a proper relational schema:
 --   - student no longer duplicates course/section (that's course_membership's job)
 --   - availability.blocks (a list) becomes its own availability_block table
---   - academic_profile's strong/weak/can_help/needs_help topic lists become
---     rows in academic_profile_topic against a shared topic table per course
 --   - archetype centroids and personality traits stay as wide columns
 --     (they're genuinely single-valued per row, not a repeating group -
 --     splitting those into a generic key/value table would be the EAV
 --     anti-pattern, not better normalization)
 --
 -- Matching scope note: availability / availability_block and the
--- study_style_score / academic_score columns on pairwise_compatibility are
--- valid, fully-populated input data - they are simply not used to compute
+-- study_style_score column on pairwise_compatibility are valid, fully-
+-- populated input data - they are simply not used to compute
 -- compatibility_score or group_score right now (personality similarity only).
+--
+-- Topic tracking (a `topic` lookup table + academic strong/weak/can_help/
+-- needs_help tagging) was deliberately removed - academic_profile now only
+-- carries course_confidence/target_grade. See README.md.
 
 PRAGMA foreign_keys = ON;
 
@@ -30,13 +32,6 @@ CREATE TABLE course (
     course_title   TEXT NOT NULL,
     section        TEXT NOT NULL,
     semester       TEXT NOT NULL
-);
-
-CREATE TABLE topic (
-    topic_id    INTEGER PRIMARY KEY AUTOINCREMENT,
-    course_id   TEXT NOT NULL REFERENCES course(course_id),
-    name        TEXT NOT NULL,
-    UNIQUE (course_id, name)
 );
 
 CREATE TABLE student (
@@ -125,15 +120,6 @@ CREATE TABLE academic_profile (
     PRIMARY KEY (student_id, course_id)
 );
 
-CREATE TABLE academic_profile_topic (
-    student_id   TEXT NOT NULL,
-    course_id    TEXT NOT NULL,
-    topic_id     INTEGER NOT NULL REFERENCES topic(topic_id),
-    relation     TEXT NOT NULL CHECK (relation IN ('strong', 'weak', 'can_help', 'needs_help')),
-    PRIMARY KEY (student_id, course_id, topic_id, relation),
-    FOREIGN KEY (student_id, course_id) REFERENCES academic_profile(student_id, course_id)
-);
-
 CREATE TABLE pairwise_compatibility (
     student_a                 TEXT NOT NULL REFERENCES student(student_id),
     student_b                 TEXT NOT NULL REFERENCES student(student_id),
@@ -143,7 +129,6 @@ CREATE TABLE pairwise_compatibility (
     schedule_compatible        INTEGER NOT NULL,   -- valid data, not used in compatibility_score
     weekly_overlap_minutes      INTEGER NOT NULL,   -- valid data, not used in compatibility_score
     study_style_score           REAL NOT NULL,       -- informational only, not used in compatibility_score
-    academic_score               REAL NOT NULL,       -- informational only, not used in compatibility_score
     PRIMARY KEY (student_a, student_b)
 );
 

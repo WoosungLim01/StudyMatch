@@ -13,14 +13,15 @@ accumulates (spec §16–17).
 
 **Matching scope**: compatibility is **personality similarity only** — see
 ["How the pipeline was run"](#how-the-pipeline-was-run-mirrors-20) step 5.
-Availability/schedule and academic strong/weak-topic data are still generated
-and stored in full (nothing is deleted), they just don't factor into
-`compatibility_score` or `group_score` right now.
+Availability/schedule data is still generated and stored in full (nothing is
+deleted), it just doesn't factor into `compatibility_score` or `group_score`
+right now. Academic per-topic strengths/weaknesses tracking was removed
+entirely (not just excluded from scoring) — see "Known simplifications" below.
 
 ## The actual database
 
 `schema.sql` + `build_database.py` turn `sample/*.json` into a real, normalized
-SQLite database at `studymatch.db` (17 tables, ~1,200 rows, zero FK violations).
+SQLite database at `studymatch.db` (15 tables, ~900 rows, zero FK violations).
 Rebuild it anytime with:
 
 ```
@@ -124,8 +125,8 @@ them:
 | `personality_profiles.json` | 37 | §5, §18 Personality Profile (14 Likert traits + `archetype` + `preferred_role`) |
 | `archetypes.json` | 5 | §7 — **discovered by KMeans**, not hand-labeled (see below) |
 | `availability.json` | 37 | §4, §18 Availability |
-| `academic_profiles.json` | 37 | §6 (strong/weak topics, can/needs help, confidence, target grade) |
-| `pairwise_compatibility.json` | 414 | §9–11 — every within-course pair; `compatibility_score` is personality similarity only, `breakdown.study_style`/`breakdown.academic` are informational (not scored) |
+| `academic_profiles.json` | 37 | §6 — course confidence + target grade only (per-topic strong/weak/can-help/needs-help tracking was removed, see below) |
+| `pairwise_compatibility.json` | 414 | §9–11 — every within-course pair; `compatibility_score` is personality similarity only, `breakdown.study_style` is informational (not scored) |
 | `groups.json` | 6 | §12, §18 Groups (`group_score` == `avg_pairwise`; no diversity/balance term) |
 | `group_membership.json` | 28 | §18 Group Membership (includes a suggested `group_role`) |
 | `match_data.json` | 37 | §18 Match Data — both the accepted matches that formed each group and open recruiting recommendations for students still `looking_for_group` |
@@ -133,9 +134,8 @@ them:
 | `group_feedback.json` | 28 | §16, §18 Group Feedback — outcome data correlated (with noise) to `group_score`, so a future model can recover whether the heuristic actually predicts satisfaction |
 
 `studymatch.db` (built from the above, see ["The actual database"](#the-actual-database))
-adds `topic` and two junction tables — `availability_block` (128 rows) and
-`academic_profile_topic` (296 rows) — normalizing the list-valued fields that stay
-embedded in the JSON (`availability.blocks`, and `academic_profiles`' 4 topic lists).
+adds one junction table, `availability_block` (~140 rows), normalizing the one
+remaining list-valued field embedded in the JSON (`availability.blocks`).
 
 ## How the pipeline was run (mirrors §20)
 
@@ -160,11 +160,12 @@ embedded in the JSON (`availability.blocks`, and `academic_profiles`' 4 topic li
 5. **Pairwise compatibility** (§9–11) — for every in-course pair:
    `compatibility_score = similarity`, scaled to 0–100, mean closeness across
    **all 14 personality traits** — no differences-rewarding term. `study_style`
-   (schedule overlap, session length, location, online/in-person) and `academic`
-   (help-topic overlap) are still computed and stored in `breakdown`, but carry
-   zero weight — informational only. `schedule_compatible` / `weekly_overlap_minutes`
-   are likewise still computed and stored per pair, but no longer exclude a pair
-   from group formation (time isn't part of matching right now).
+   (schedule overlap, session length, location, online/in-person) is still
+   computed and stored in `breakdown`, but carries zero weight — informational
+   only. `schedule_compatible` / `weekly_overlap_minutes` are likewise still
+   computed and stored per pair, but no longer exclude a pair from group
+   formation (time isn't part of matching right now). There's no academic
+   component anymore — see "Known simplifications."
 6. **Group formation** (§13) — greedy: seed each new group from the best remaining
    compatible pair, grow to 5 by adding whichever remaining student maximizes the
    group's average pairwise score, then run a bounded local-search pass that swaps
@@ -186,11 +187,21 @@ embedded in the JSON (`availability.blocks`, and `academic_profiles`' 4 topic li
 ## Known simplifications (flag before reusing past prototyping)
 
 - Compatibility is personality-similarity-only by current decision, not because
-  schedule/academic signal is believed useless — `study_style`/`academic` are kept
-  computed and stored specifically so they're easy to re-weight back in later.
+  schedule signal is believed useless — `study_style` is kept computed and
+  stored specifically so it's easy to re-weight back in later.
+- Academic per-topic tracking (strong/weak topics, who can help who) was
+  removed entirely — no `topic` table, no topic fields on `academic_profiles.json`.
+  `academic_profile` now only carries `course_confidence`/`target_grade`. This
+  was a deliberate simplification, not a data-quality issue: the old
+  `can_help_with`/`needs_help_with` values were generated as exact duplicates
+  of `strong_topics`/`weak_topics` (not sampled independently), so the signal
+  wasn't adding anything a future rebuild couldn't reintroduce properly.
 - Only 2 courses / 37 students — enough to exercise every stage of the pipeline, not
   a load-test.
 - Gender is collected but genuinely unused in every scoring function, per §3.
-- `academic_profile_topic`'s `strong`/`can_help` rows are currently identical to each
-  other (same for `weak`/`needs_help`) — the generator draws `can_help_with` directly
-  from `strong_topics` rather than sampling them independently.
+- Because generation draws from one seeded, sequential random stream, removing
+  the topic-sampling calls shifted every random draw after them — this
+  snapshot's exact group compositions/scores differ from earlier ones checked
+  into prior commits, even though the seed (42) hasn't changed. Reproducibility
+  is still intact going forward: rerunning now reliably reproduces *this*
+  snapshot.
