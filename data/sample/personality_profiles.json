@@ -17,7 +17,7 @@
     "study_pace": 4,
     "patience": 1,
     "archetype": "Study Captain",
-    "archetype_id": "arch_0",
+    "archetype_id": "arch_1",
     "preferred_role": "Organizer"
   },
   {
@@ -38,7 +38,7 @@
     "study_pace": 3,
     "patience": 3,
     "archetype": "Study Captain",
-    "archetype_id": "arch_0",
+    "archetype_id": "arch_1",
     "preferred_role": "Organizer"
   },
   {
@@ -59,7 +59,7 @@
     "study_pace": 4,
     "patience": 3,
     "archetype": "Study Captain",
-    "archetype_id": "arch_0",
+    "archetype_id": "arch_1",
     "preferred_role": "Organizer"
   },
   {
@@ -80,8 +80,8 @@
     "study_pace": 5,
     "patience": 4,
     "archetype": "Deadline Sprinter",
-    "archetype_id": "arch_2",
-    "preferred_role": "Flexible/No Preference"
+    "archetype_id": "arch_4",
+    "preferred_role": "Explainer"
   },
   {
     "student_id": "stu_0005",
@@ -101,7 +101,7 @@
     "study_pace": 3,
     "patience": 4,
     "archetype": "Collaborative Guide",
-    "archetype_id": "arch_1",
+    "archetype_id": "arch_3",
     "preferred_role": "Problem Solver"
   },
   {
@@ -122,7 +122,7 @@
     "study_pace": 5,
     "patience": 2,
     "archetype": "Study Captain",
-    "archetype_id": "arch_0",
+    "archetype_id": "arch_1",
     "preferred_role": "Organizer"
   },
   {
@@ -143,7 +143,7 @@
     "study_pace": 3,
     "patience": 4,
     "archetype": "Focused Architect",
-    "archetype_id": "arch_4",
+    "archetype_id": "arch_0",
     "preferred_role": "Organizer"
   },
   {
@@ -164,7 +164,7 @@
     "study_pace": 3,
     "patience": 2,
     "archetype": "Study Captain",
-    "archetype_id": "arch_0",
+    "archetype_id": "arch_1",
     "preferred_role": "Organizer"
   },
   {
@@ -185,7 +185,7 @@
     "study_pace": 3,
     "patience": 5,
     "archetype": "Collaborative Guide",
-    "archetype_id": "arch_1",
+    "archetype_id": "arch_3",
     "preferred_role": "Explainer"
   },
   {
@@ -206,8 +206,8 @@
     "study_pace": 5,
     "patience": 2,
     "archetype": "Study Captain",
-    "archetype_id": "arch_0",
-    "preferred_role": "Organizer"
+    "archetype_id": "arch_1",
+    "preferred_role": "Flexible/No Preference"
   },
   {
     "student_id": "stu_0011",
@@ -227,8 +227,8 @@
     "study_pace": 4,
     "patience": 3,
     "archetype": "Deadline Sprinter",
-    "archetype_id": "arch_2",
-    "preferred_role": "Flexible/No Preference"
+    "archetype_id": "arch_4",
+    "preferred_role": "Explainer"
   },
   {
     "student_id": "stu_0012",
@@ -248,7 +248,7 @@
     "study_pace": 4,
     "patience": 5,
     "archetype": "Collaborative Guide",
-    "archetype_id": "arch_1",
+    "archetype_id": "arch_3",
     "preferred_role": "Explainer"
   },
   {
@@ -269,7 +269,7 @@
     "study_pace": 3,
     "patience": 3,
     "archetype": "Focused Architect",
-    "archetype_id": "arch_4",
+    "archetype_id": "arch_0",
     "preferred_role": "Problem Solver"
   },
   {
@@ -290,7 +290,7 @@
     "study_pace": 4,
     "patience": 3,
     "archetype": "Study Captain",
-    "archetype_id": "arch_0",
+    "archetype_id": "arch_1",
     "preferred_role": "Organizer"
   },
   {
@@ -311,8 +311,8 @@
     "study_pace": 4,
     "patience": 5,
     "archetype": "Study Captain",
-    "archetype_id": "arch_0",
-    "preferred_role": "Flexible/No Preference"
+    "archetype_id": "arch_1",
+    "preferred_role": "Organizer"
   },
   {
     "student_id": "stu_0016",
@@ -332,8 +332,8 @@
     "study_pace": 3,
     "patience": 3,
     "archetype": "Collaborative Guide",
-    "archetype_id": "arch_1",
-    "preferred_role": "Explainer"
+    "archetype_id": "arch_3",
+    "preferred_role": "Flexible/No Preference"
   },
   {
     "student_id": "stu_0017",
@@ -353,7 +353,7 @@
     "study_pace": 1,
     "patience": 4,
     "archetype": "Focused Architect",
-    "archetype_id": "arch_4",
+    "archetype_id": "arch_0",
     "preferred_role": "Explainer"
   },
   {
@@ -374,7 +374,7 @@
     "study_pace": 3,
     "patience": 3,
     "archetype": "Study Captain",
-    "archetype_id": "arch_0",
+    "archetype_id": "arch_1",
     "preferred_role": "Organizer"
   },
   {
@@ -395,7 +395,7 @@
     "study_pace": 3,
     "patience": 2,
     "archetype": "Independent Strategist",
-    "archetype_id": "arch_3",
+    "archetype_id": "arch_2",
     "preferred_role": "Listener"
   },
   {
@@ -416,7 +416,7 @@
     "study_pace": 5,
     "patience": 3,
     "archetype": "Deadline Sprinter",
-    "archetype_id": "arch_2",
+    "archetype_id": "arch_4",
     "preferred_role": "Explainer"
   },
   {
@@ -437,7 +437,7 @@
     "study_pace": 3,
     "patience": 5,
     "archetype": "Collaborative Guide",
-    "archetype_id": "arch_1",
+    "archetype_id": "arch_3",
     "preferred_role": "Motivator"
   },
   {
@@ -458,8 +458,8 @@
     "study_pace": 5,
     "patience": 2,
     "archetype": "Study Captain",
-    "archetype_id": "arch_0",
-    "preferred_role": "Organizer"
+    "archetype_id": "arch_1",
+    "preferred_role": "Flexible/No Preference"
   },
   {
     "student_id": "stu_0023",
@@ -479,8 +479,8 @@
     "study_pace": 4,
     "patience": 3,
     "archetype": "Independent Strategist",
-    "archetype_id": "arch_3",
-    "preferred_role": "Listener"
+    "archetype_id": "arch_2",
+    "preferred_role": "Flexible/No Preference"
   },
   {
     "student_id": "stu_0024",
@@ -500,7 +500,7 @@
     "study_pace": 5,
     "patience": 2,
     "archetype": "Study Captain",
-    "archetype_id": "arch_0",
+    "archetype_id": "arch_1",
     "preferred_role": "Organizer"
   },
   {
@@ -521,7 +521,7 @@
     "study_pace": 3,
     "patience": 3,
     "archetype": "Independent Strategist",
-    "archetype_id": "arch_3",
+    "archetype_id": "arch_2",
     "preferred_role": "Listener"
   },
   {
@@ -542,7 +542,7 @@
     "study_pace": 4,
     "patience": 3,
     "archetype": "Deadline Sprinter",
-    "archetype_id": "arch_2",
+    "archetype_id": "arch_4",
     "preferred_role": "Problem Solver"
   },
   {
@@ -563,12 +563,12 @@
     "study_pace": 5,
     "patience": 3,
     "archetype": "Deadline Sprinter",
-    "archetype_id": "arch_2",
-    "preferred_role": "Explainer"
+    "archetype_id": "arch_4",
+    "preferred_role": "Flexible/No Preference"
   },
   {
     "student_id": "stu_0028",
-    "course_id": "psu-cmpsc465-001-fa26",
+    "course_id": "psu-math230-002-fa26",
     "seriousness": 5,
     "structure": 3,
     "accountability": 3,
@@ -584,27 +584,27 @@
     "study_pace": 3,
     "patience": 3,
     "archetype": "Study Captain",
-    "archetype_id": "arch_0",
+    "archetype_id": "arch_1",
     "preferred_role": "Organizer"
   },
   {
     "student_id": "stu_0029",
     "course_id": "psu-math230-002-fa26",
-    "seriousness": 4,
-    "structure": 5,
-    "accountability": 5,
-    "social_preference": 2,
-    "communication_frequency": 1,
-    "competitiveness": 4,
-    "preparation": 4,
-    "leadership": 4,
-    "talkativeness": 1,
+    "seriousness": 2,
+    "structure": 3,
+    "accountability": 3,
+    "social_preference": 3,
+    "communication_frequency": 2,
+    "competitiveness": 3,
+    "preparation": 1,
+    "leadership": 3,
+    "talkativeness": 2,
     "assertiveness": 2,
     "helpfulness": 3,
     "collaboration": 3,
-    "study_pace": 2,
-    "patience": 4,
-    "archetype": "Focused Architect",
+    "study_pace": 4,
+    "patience": 3,
+    "archetype": "Deadline Sprinter",
     "archetype_id": "arch_4",
     "preferred_role": "Listener"
   },
@@ -626,71 +626,71 @@
     "study_pace": 5,
     "patience": 3,
     "archetype": "Study Captain",
-    "archetype_id": "arch_0",
+    "archetype_id": "arch_1",
     "preferred_role": "Organizer"
   },
   {
     "student_id": "stu_0031",
     "course_id": "psu-math230-002-fa26",
-    "seriousness": 5,
-    "structure": 4,
-    "accountability": 3,
-    "social_preference": 5,
-    "communication_frequency": 5,
+    "seriousness": 4,
+    "structure": 3,
+    "accountability": 2,
+    "social_preference": 4,
+    "communication_frequency": 3,
     "competitiveness": 3,
-    "preparation": 2,
-    "leadership": 4,
-    "talkativeness": 5,
-    "assertiveness": 2,
-    "helpfulness": 4,
-    "collaboration": 3,
-    "study_pace": 3,
-    "patience": 5,
-    "archetype": "Collaborative Guide",
-    "archetype_id": "arch_1",
+    "preparation": 1,
+    "leadership": 2,
+    "talkativeness": 4,
+    "assertiveness": 1,
+    "helpfulness": 2,
+    "collaboration": 2,
+    "study_pace": 4,
+    "patience": 3,
+    "archetype": "Deadline Sprinter",
+    "archetype_id": "arch_4",
     "preferred_role": "Motivator"
   },
   {
     "student_id": "stu_0032",
     "course_id": "psu-math230-002-fa26",
-    "seriousness": 4,
-    "structure": 2,
-    "accountability": 3,
-    "social_preference": 1,
-    "communication_frequency": 1,
-    "competitiveness": 2,
-    "preparation": 3,
-    "leadership": 1,
-    "talkativeness": 1,
-    "assertiveness": 2,
+    "seriousness": 5,
+    "structure": 4,
+    "accountability": 5,
+    "social_preference": 2,
+    "communication_frequency": 2,
+    "competitiveness": 4,
+    "preparation": 4,
+    "leadership": 4,
+    "talkativeness": 2,
+    "assertiveness": 4,
     "helpfulness": 2,
-    "collaboration": 2,
+    "collaboration": 4,
     "study_pace": 4,
     "patience": 2,
-    "archetype": "Independent Strategist",
-    "archetype_id": "arch_3",
-    "preferred_role": "Listener"
+    "archetype": "Study Captain",
+    "archetype_id": "arch_1",
+    "preferred_role": "Organizer"
   },
   {
     "student_id": "stu_0033",
     "course_id": "psu-math230-002-fa26",
-    "seriousness": 3,
+    "seriousness": 2,
     "structure": 1,
     "accountability": 2,
-    "social_preference": 2,
-    "communication_frequency": 1,
-    "competitiveness": 3,
-    "preparation": 2,
+    "social_preference": 4,
+    "communication_frequency": 2,
+    "competitiveness": 2,
+    "preparation": 1,
     "leadership": 1,
-    "talkativeness": 1,
-    "assertiveness": 1,
-    "helpfulness": 2,
-    "collaboration": 1,
+    "talkativeness": 3,
+    "assertiveness": 2,
+    "helpfulness": 3,
+    "collaboration": 2,
     "study_pace": 5,
     "patience": 3,
-    "archetype": "Independent Strategist",
-    "archetype_id": "arch_3",
-    "preferred_role": "Listener"
+    "archetype": "Deadline Sprinter",
+    "archetype_id": "arch_4",
+    "preferred_role": "Explainer"
   },
   {
     "student_id": "stu_0034",
@@ -710,70 +710,7 @@
     "study_pace": 4,
     "patience": 4,
     "archetype": "Collaborative Guide",
-    "archetype_id": "arch_1",
+    "archetype_id": "arch_3",
     "preferred_role": "Problem Solver"
-  },
-  {
-    "student_id": "stu_0035",
-    "course_id": "psu-math230-002-fa26",
-    "seriousness": 4,
-    "structure": 2,
-    "accountability": 4,
-    "social_preference": 2,
-    "communication_frequency": 1,
-    "competitiveness": 2,
-    "preparation": 1,
-    "leadership": 2,
-    "talkativeness": 1,
-    "assertiveness": 1,
-    "helpfulness": 2,
-    "collaboration": 1,
-    "study_pace": 5,
-    "patience": 4,
-    "archetype": "Independent Strategist",
-    "archetype_id": "arch_3",
-    "preferred_role": "Listener"
-  },
-  {
-    "student_id": "stu_0036",
-    "course_id": "psu-math230-002-fa26",
-    "seriousness": 3,
-    "structure": 3,
-    "accountability": 2,
-    "social_preference": 1,
-    "communication_frequency": 2,
-    "competitiveness": 3,
-    "preparation": 2,
-    "leadership": 1,
-    "talkativeness": 1,
-    "assertiveness": 1,
-    "helpfulness": 3,
-    "collaboration": 3,
-    "study_pace": 3,
-    "patience": 3,
-    "archetype": "Independent Strategist",
-    "archetype_id": "arch_3",
-    "preferred_role": "Listener"
-  },
-  {
-    "student_id": "stu_0037",
-    "course_id": "psu-math230-002-fa26",
-    "seriousness": 4,
-    "structure": 4,
-    "accountability": 4,
-    "social_preference": 2,
-    "communication_frequency": 4,
-    "competitiveness": 4,
-    "preparation": 4,
-    "leadership": 4,
-    "talkativeness": 3,
-    "assertiveness": 4,
-    "helpfulness": 3,
-    "collaboration": 4,
-    "study_pace": 4,
-    "patience": 2,
-    "archetype": "Study Captain",
-    "archetype_id": "arch_0",
-    "preferred_role": "Organizer"
   }
 ]

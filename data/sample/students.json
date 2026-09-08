@@ -275,14 +275,44 @@
     "year": "Junior",
     "gender": "Man",
     "major": "Computer Science",
-    "course": "CMPSC 465",
-    "course_section": "001",
+    "course": "MATH 230",
+    "course_section": "002",
     "looking_for_group": true
   },
   {
     "student_id": "stu_0029",
-    "name": "Ken Lee",
-    "year": "Sophomore",
+    "name": "Chloe Wright",
+    "year": "Freshman",
+    "gender": "Man",
+    "major": "Computer Science",
+    "course": "MATH 230",
+    "course_section": "002",
+    "looking_for_group": true
+  },
+  {
+    "student_id": "stu_0030",
+    "name": "Hannah Morris",
+    "year": "Senior",
+    "gender": "Non-binary",
+    "major": "Math",
+    "course": "MATH 230",
+    "course_section": "002",
+    "looking_for_group": true
+  },
+  {
+    "student_id": "stu_0031",
+    "name": "Leo Evans",
+    "year": "Junior",
+    "gender": "Woman",
+    "major": "Data Science",
+    "course": "MATH 230",
+    "course_section": "002",
+    "looking_for_group": true
+  },
+  {
+    "student_id": "stu_0032",
+    "name": "Alex Stewart",
+    "year": "Senior",
     "gender": "Prefer not to say",
     "major": "Math",
     "course": "MATH 230",
@@ -290,40 +320,10 @@
     "looking_for_group": true
   },
   {
-    "student_id": "stu_0030",
-    "name": "Victor Green",
-    "year": "Senior",
-    "gender": "Non-binary",
-    "major": "Computer Engineering",
-    "course": "MATH 230",
-    "course_section": "002",
-    "looking_for_group": true
-  },
-  {
-    "student_id": "stu_0031",
-    "name": "Wei Lopez",
-    "year": "Junior",
-    "gender": "Man",
-    "major": "Computer Engineering",
-    "course": "MATH 230",
-    "course_section": "002",
-    "looking_for_group": true
-  },
-  {
-    "student_id": "stu_0032",
-    "name": "Ben Phillips",
-    "year": "Junior",
-    "gender": "Man",
-    "major": "Computer Science",
-    "course": "MATH 230",
-    "course_section": "002",
-    "looking_for_group": true
-  },
-  {
     "student_id": "stu_0033",
-    "name": "Ken Nelson",
+    "name": "Grace Brown",
     "year": "Senior",
-    "gender": "Non-binary",
+    "gender": "Man",
     "major": "Information Sciences & Technology",
     "course": "MATH 230",
     "course_section": "002",
@@ -331,40 +331,10 @@
   },
   {
     "student_id": "stu_0034",
-    "name": "Ravi Patel",
-    "year": "Junior",
-    "gender": "Non-binary",
-    "major": "Statistics",
-    "course": "MATH 230",
-    "course_section": "002",
-    "looking_for_group": true
-  },
-  {
-    "student_id": "stu_0035",
-    "name": "Sam Brown",
-    "year": "Junior",
-    "gender": "Prefer not to say",
-    "major": "Computer Engineering",
-    "course": "MATH 230",
-    "course_section": "002",
-    "looking_for_group": true
-  },
-  {
-    "student_id": "stu_0036",
-    "name": "Ben Evans",
-    "year": "Junior",
-    "gender": "Man",
-    "major": "Information Sciences & Technology",
-    "course": "MATH 230",
-    "course_section": "002",
-    "looking_for_group": true
-  },
-  {
-    "student_id": "stu_0037",
-    "name": "Aisha Garcia",
-    "year": "Junior",
-    "gender": "Non-binary",
-    "major": "Computer Science",
+    "name": "Jordan Wilson",
+    "year": "Sophomore",
+    "gender": "Woman",
+    "major": "Data Science",
     "course": "MATH 230",
     "course_section": "002",
     "looking_for_group": true

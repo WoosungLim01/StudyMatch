@@ -1,0 +1,6 @@
+# For webapp.py (the intake survey + admin backend). Everything else in
+# data/ is stdlib (json, sqlite3) + numpy/scikit-learn (already needed by
+# generate_sample_data.py; see the repo root's backend/requirements.txt for
+# those versions).
+fastapi==0.115.0
+uvicorn[standard]==0.30.6

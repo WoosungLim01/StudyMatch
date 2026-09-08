@@ -84,7 +84,17 @@ def next_match_id(cur):
     return f"match_{n:04d}"
 
 
-def add_one(con, s):
+def add_one(con, s, recommend=True):
+    """
+    recommend=True (CLI default): after inserting, rank existing
+    under-capacity groups and record up to 3 match_data recommendations
+    (never actually joins a group).
+
+    recommend=False: skip that step entirely - used by webapp.py, which
+    calls group_placement.run_placement() right after this instead, to
+    actually PLACE the student into a group per the remainder policy rather
+    than just recommend one.
+    """
     cur = con.cursor()
 
     if not cur.execute("SELECT 1 FROM course WHERE course_id=?", (s["course_id"],)).fetchone():
@@ -124,14 +134,17 @@ def add_one(con, s):
     )
 
     # ── availability (optional; defaults keep pair_compatibility computable) ──
+    # `or default` (not `.get(key, default)`) on purpose: a caller may pass the
+    # key explicitly set to None (e.g. FastAPI's model_dump() without
+    # exclude_none) rather than omitting it - either way it should fall back.
     av = s.get("availability") or {}
     availability = {
-        "blocks": av.get("blocks", []),
-        "preferred_study_period": av.get("preferred_study_period", "Evening"),
-        "preferred_session_duration": av.get("preferred_session_duration", 90),
-        "preferred_sessions_per_week": av.get("preferred_sessions_per_week", 2),
-        "preferred_location": av.get("preferred_location", "Library"),
-        "online_vs_in_person_preference": av.get("online_vs_in_person_preference", "hybrid"),
+        "blocks": av.get("blocks") or [],
+        "preferred_study_period": av.get("preferred_study_period") or "Evening",
+        "preferred_session_duration": av.get("preferred_session_duration") or 90,
+        "preferred_sessions_per_week": av.get("preferred_sessions_per_week") or 2,
+        "preferred_location": av.get("preferred_location") or "Library",
+        "online_vs_in_person_preference": av.get("online_vs_in_person_preference") or "hybrid",
     }
     cur.execute(
         "INSERT INTO availability VALUES (?,?,?,?,?,?,?)",
@@ -192,7 +205,7 @@ def add_one(con, s):
         new_scores[other_id] = score
 
     # ── recruiting recommendations into existing under-capacity groups ──────
-    if s.get("looking_for_group", True):
+    if recommend and s.get("looking_for_group", True):
         candidates = cur.execute(
             "SELECT group_id, max_members FROM study_group WHERE course_id=?", (s["course_id"],)
         ).fetchall()

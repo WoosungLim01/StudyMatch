@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StudyMatch Entry Survey</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F3F4F0; --surface:#FFFFFF; --surface-2:#EAEDE7; --border:#DBDFD6;
+    --text:#1B211D; --text-dim:#5C665E; --text-faint:#8B948B;
+    --accent:#2F6F5E; --accent-soft:#DEEBE6; --accent-ink:#0E362B;
+    --amber:#B97418; --amber-soft:#F3E3CB;
+    --good:#357A54; --good-soft:#E1EFE5;
+    --warn:#A5701E; --warn-soft:#F2E5CE;
+    --bad:#A83C3C; --bad-soft:#F3E0DD;
+    --shadow: 0 1px 2px rgba(20,24,20,.06), 0 6px 20px -12px rgba(20,24,20,.18);
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#14181A; --surface:#1B2123; --surface-2:#20272A; --border:#2B3234;
+      --text:#E8EBE6; --text-dim:#A2ABA1; --text-faint:#707A72;
+      --accent:#61C0A4; --accent-soft:#1E3833; --accent-ink:#CFF3E5;
+      --amber:#EFB559; --amber-soft:#3A2E1A;
+      --good:#5AB37E; --good-soft:#1D3527;
+      --warn:#E0A247; --warn-soft:#3A2F17;
+      --bad:#E27B7B; --bad-soft:#3A2222;
+      color-scheme: dark;
+    }
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--text);font-family:"IBM Plex Sans",system-ui,sans-serif;font-size:14px;line-height:1.5;}
+  .mono{font-family:"IBM Plex Mono",ui-monospace,monospace;}
+  header{border-bottom:1px solid var(--border);padding:16px 24px;}
+  header h1{margin:0;font-size:16px;letter-spacing:.02em;}
+  header .eyebrow{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:4px;}
+  main{max-width:640px;margin:0 auto;padding:28px 20px 80px;}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:22px 24px;margin-bottom:18px;box-shadow:var(--shadow);}
+  .card h2{font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:var(--text-dim);margin:0 0 16px;}
+  label{display:block;font-size:12.5px;color:var(--text-dim);margin-bottom:5px;}
+  input[type=text], select, textarea{
+    width:100%;padding:9px 10px;border:1px solid var(--border);border-radius:6px;
+    background:var(--surface);color:var(--text);font:inherit;font-size:13.5px;
+  }
+  input[type=text]:focus, select:focus{outline:2px solid var(--accent);outline-offset:1px;border-color:var(--accent);}
+  .row{margin-bottom:14px;}
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  @media (max-width:520px){.grid-2{grid-template-columns:1fr;}}
+
+  .name-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
+  @media (max-width:520px){.name-row{grid-template-columns:1fr;}}
+  .name-row input:disabled{background:var(--surface-2);color:var(--text-faint);}
+  .check-inline{
+    display:flex;align-items:center;gap:6px;margin:8px 0 0;font-size:12.5px;color:var(--text-dim);cursor:pointer;
+  }
+  .check-inline input{width:auto;accent-color:var(--accent);}
+
+  .trait-row{display:grid;grid-template-columns:150px 1fr 26px;align-items:center;gap:10px;margin-bottom:10px;}
+  .trait-row label{margin:0;text-transform:capitalize;}
+  .trait-row input[type=range]{width:100%;accent-color:var(--accent);}
+  .trait-val{font-family:"IBM Plex Mono",monospace;font-size:13px;text-align:right;color:var(--accent-ink);font-weight:600;}
+
+  .toggle-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;}
+  .toggle-hint{margin:0 0 14px;font-size:12px;color:var(--text-faint);}
+
+  .switch{position:relative;display:inline-block;cursor:pointer;}
+  .switch input{position:absolute;opacity:0;width:0;height:0;}
+  .switch-track{
+    display:block;width:34px;height:19px;border-radius:999px;
+    background:var(--surface-2);border:1px solid var(--border);
+    transition:background .15s;
+  }
+  .switch-thumb{
+    display:block;width:13px;height:13px;border-radius:50%;background:var(--text-faint);
+    margin:2px; transition:transform .15s, background .15s;
+  }
+  .switch input:checked + .switch-track{background:var(--accent);border-color:var(--accent);}
+  .switch input:checked + .switch-track .switch-thumb{transform:translateX(15px);background:#fff;}
+  .switch input:focus-visible + .switch-track{outline:2px solid var(--accent);outline-offset:2px;}
+
+  .btn{
+    background:var(--accent);color:#fff;border:none;border-radius:8px;
+    padding:12px 20px;font-size:14px;font-weight:600;cursor:pointer;width:100%;
+  }
+  .btn:hover{filter:brightness(1.08);}
+  .btn:disabled{opacity:.55;cursor:not-allowed;}
+
+  .banner{border-radius:10px;padding:16px 18px;font-size:13.5px;margin-bottom:18px;display:none;}
+  .banner.good{background:var(--good-soft);color:var(--good);border:1px solid var(--good);}
+  .banner.warn{background:var(--warn-soft);color:var(--warn);border:1px solid var(--warn);}
+  .banner.bad{background:var(--bad-soft);color:var(--bad);border:1px solid var(--bad);}
+  .banner b{display:block;font-size:14px;margin-bottom:4px;}
+
+  .field-err{color:var(--bad);font-size:12px;margin-top:8px;display:none;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">StudyMatch</div>
+  <h1>Study Group Entry Survey</h1>
+</header>
+
+<main>
+  <div class="banner" id="result-banner"></div>
+
+  <form id="survey-form">
+    <div class="card">
+      <h2>About You</h2>
+      <div class="row">
+        <label>Name</label>
+        <div class="name-row">
+          <input type="text" id="f-first" placeholder="First" required autocomplete="given-name">
+          <input type="text" id="f-middle" placeholder="Middle" autocomplete="additional-name">
+          <input type="text" id="f-last" placeholder="Last" required autocomplete="family-name">
+        </div>
+        <label class="check-inline"><input type="checkbox" id="f-no-middle"> No middle name</label>
+      </div>
+      <div class="row"><label for="f-course">Course</label><select id="f-course" required><option value="">Loading…</option></select></div>
+      <div class="grid-2">
+        <div class="row"><label for="f-year">Year</label>
+          <select id="f-year"><option>Freshman</option><option>Sophomore</option><option>Junior</option><option>Senior</option></select>
+        </div>
+        <div class="row"><label for="f-gender">Gender</label>
+          <select id="f-gender"><option>Woman</option><option>Man</option><option>Non-binary</option><option>Prefer not to say</option></select>
+        </div>
+      </div>
+      <div class="row"><label for="f-major">Major</label>
+        <select id="f-major"><option>Computer Science</option><option>Math</option><option>Art</option><option>Business</option><option>Economy</option></select>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Personality (1 = low, 5 = high)</h2>
+      <div id="trait-sliders"></div>
+    </div>
+
+    <div class="card">
+      <div class="toggle-head">
+        <h2 style="margin:0;">Availability</h2>
+        <label class="switch" title="Off: nothing below is recorded">
+          <input type="checkbox" id="f-avail-on">
+          <span class="switch-track"><span class="switch-thumb"></span></span>
+        </label>
+      </div>
+      <p class="toggle-hint" id="avail-hint">Off — these fields won't be recorded.</p>
+      <div class="grid-2">
+        <div class="row"><label for="f-loc">Preferred location</label>
+          <select id="f-loc" disabled><option>Library</option><option>Dorm/Apartment</option><option>Study Lounge</option><option>Coffee Shop</option><option>Online</option></select>
+        </div>
+        <div class="row"><label for="f-mode">In person / online</label>
+          <select id="f-mode" disabled><option value="in_person">In person</option><option value="online">Online</option><option value="hybrid">Hybrid</option></select>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="toggle-head">
+        <h2 style="margin:0;">Academic</h2>
+        <label class="switch" title="Off: nothing below is recorded">
+          <input type="checkbox" id="f-academic-on">
+          <span class="switch-track"><span class="switch-thumb"></span></span>
+        </label>
+      </div>
+      <p class="toggle-hint" id="academic-hint">Off — these fields won't be recorded.</p>
+      <div class="row"><label for="f-grade">Target grade</label>
+        <select id="f-grade" disabled><option>A</option><option>A-</option><option>B+</option><option>B</option></select>
+      </div>
+    </div>
+
+    <button type="submit" class="btn" id="submit-btn">Submit &amp; Find My Group</button>
+    <div class="field-err" id="field-err">Please fill in your name, course, and all personality traits.</div>
+  </form>
+</main>
+
+<script>
+const API = '';
+let TRAITS = [];
+
+function label(t){ return t.replace(/_/g, ' '); }
+
+// Name fields: strip all whitespace as typed, force the first letter to caps -
+// applied live so the field always reflects the sanitized value, not just on submit.
+function sanitizeNamePart(v){
+  v = v.replace(/\s+/g, '');
+  return v ? v.charAt(0).toUpperCase() + v.slice(1) : v;
+}
+['f-first', 'f-middle', 'f-last'].forEach(id => {
+  const el = document.getElementById(id);
+  el.addEventListener('input', () => {
+    const pos = el.selectionStart;
+    const before = el.value.length;
+    el.value = sanitizeNamePart(el.value);
+    // keep the caret sane when a stripped space shifts everything left
+    el.setSelectionRange(Math.max(0, pos - (before - el.value.length)), Math.max(0, pos - (before - el.value.length)));
+  });
+});
+
+const middleInput = document.getElementById('f-middle');
+document.getElementById('f-no-middle').addEventListener('change', function(){
+  middleInput.disabled = this.checked;
+  if (this.checked) middleInput.value = '';
+});
+
+// Availability / Academic toggles: off (default) -> fields disabled and NOT
+// sent at all, so the record stays empty rather than sending whatever the
+// selects happen to be sitting on. On -> fields enabled and included.
+function wireToggle(switchId, hintId, fieldIds){
+  const fields = fieldIds.map(id => document.getElementById(id));
+  document.getElementById(switchId).addEventListener('change', function(){
+    fields.forEach(el => { el.disabled = !this.checked; });
+    document.getElementById(hintId).textContent = this.checked
+      ? 'On — recorded with your submission.'
+      : "Off — these fields won't be recorded.";
+  });
+}
+wireToggle('f-avail-on', 'avail-hint', ['f-loc', 'f-mode']);
+wireToggle('f-academic-on', 'academic-hint', ['f-grade']);
+
+async function init(){
+  const [{ traits }, courses] = await Promise.all([
+    fetch(API + '/api/survey/traits').then(r => r.json()),
+    fetch(API + '/api/courses').then(r => r.json()),
+  ]);
+  TRAITS = traits;
+
+  const sliders = document.getElementById('trait-sliders');
+  sliders.innerHTML = traits.map(t => `
+    <div class="trait-row">
+      <label for="t-${t}">${label(t)}</label>
+      <input type="range" id="t-${t}" min="1" max="5" value="3" step="1"
+             oninput="document.getElementById('v-${t}').textContent = this.value">
+      <span class="trait-val" id="v-${t}">3</span>
+    </div>
+  `).join('');
+
+  const courseSel = document.getElementById('f-course');
+  courseSel.innerHTML = courses.map(c => `<option value="${c.course_id}">${c.course_code} — ${c.course_title}</option>`).join('');
+}
+init();
+
+function banner(kind, title, msg){
+  const el = document.getElementById('result-banner');
+  el.className = 'banner ' + kind;
+  el.innerHTML = `<b>${title}</b>${msg}`;
+  el.style.display = 'block';
+  el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+document.getElementById('survey-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const first = sanitizeNamePart(document.getElementById('f-first').value);
+  const middle = document.getElementById('f-no-middle').checked ? '' : sanitizeNamePart(document.getElementById('f-middle').value);
+  const last = sanitizeNamePart(document.getElementById('f-last').value);
+  const name = [first, middle, last].filter(Boolean).join(' ');
+  const course_id = document.getElementById('f-course').value;
+  document.getElementById('field-err').style.display = (!first || !last || !course_id) ? 'block' : 'none';
+  if (!first || !last || !course_id) return;
+
+  const personality = {};
+  TRAITS.forEach(t => { personality[t] = +document.getElementById(`t-${t}`).value; });
+
+  const btn = document.getElementById('submit-btn');
+  btn.disabled = true;
+  btn.textContent = 'Matching you…';
+
+  const availabilityOn = document.getElementById('f-avail-on').checked;
+  const academicOn = document.getElementById('f-academic-on').checked;
+
+  try {
+    const res = await fetch(API + '/api/survey', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name,
+        year: document.getElementById('f-year').value,
+        gender: document.getElementById('f-gender').value,
+        major: document.getElementById('f-major').value || null,
+        course_id,
+        personality,
+        // Both omitted entirely when off, not sent-with-defaults - stays empty on the record.
+        availability: availabilityOn ? {
+          preferred_location: document.getElementById('f-loc').value,
+          online_vs_in_person_preference: document.getElementById('f-mode').value,
+        } : null,
+        academic: academicOn ? { target_grade: document.getElementById('f-grade').value } : null,
+      }),
+    });
+    if (!res.ok) throw new Error((await res.json()).detail || res.statusText);
+    const data = await res.json();
+
+    if (data.status === 'pending') {
+      banner('warn', 'Signed in — on the waiting list', data.message);
+    } else if (data.not_ideal) {
+      banner('warn', `Signed in — ${data.group_name}`, data.message);
+    } else {
+      banner('good', `Signed in — ${data.group_name}`, data.message);
+    }
+    document.getElementById('survey-form').reset();
+    middleInput.disabled = false; // .reset() unchecks the checkbox but doesn't refire its listener
+    btn.textContent = 'Submitted';
+  } catch (err) {
+    banner('bad', 'Something went wrong', err.message);
+    btn.disabled = false;
+    btn.textContent = 'Submit & Find My Group';
+  }
+});
+</script>
+</body>
+</html>

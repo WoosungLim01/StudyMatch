@@ -163,8 +163,8 @@
   },
   {
     "student_id": "stu_0028",
-    "course_id": "psu-cmpsc465-001-fa26",
-    "section": "001",
+    "course_id": "psu-math230-002-fa26",
+    "section": "002",
     "semester": "Fall 2026"
   },
   {
@@ -199,24 +199,6 @@
   },
   {
     "student_id": "stu_0034",
-    "course_id": "psu-math230-002-fa26",
-    "section": "002",
-    "semester": "Fall 2026"
-  },
-  {
-    "student_id": "stu_0035",
-    "course_id": "psu-math230-002-fa26",
-    "section": "002",
-    "semester": "Fall 2026"
-  },
-  {
-    "student_id": "stu_0036",
-    "course_id": "psu-math230-002-fa26",
-    "section": "002",
-    "semester": "Fall 2026"
-  },
-  {
-    "student_id": "stu_0037",
     "course_id": "psu-math230-002-fa26",
     "section": "002",
     "semester": "Fall 2026"

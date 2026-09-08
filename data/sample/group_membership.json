@@ -1,63 +1,63 @@
 [
   {
     "group_id": "grp_001",
-    "student_id": "stu_0002",
-    "joined_at": "2026-08-25T14:00:00Z",
-    "group_role": "Problem Solver"
-  },
-  {
-    "group_id": "grp_001",
-    "student_id": "stu_0003",
-    "joined_at": "2026-08-25T14:00:00Z",
-    "group_role": "Problem Solver"
-  },
-  {
-    "group_id": "grp_001",
-    "student_id": "stu_0014",
+    "student_id": "stu_0020",
     "joined_at": "2026-08-25T14:00:00Z",
     "group_role": "Flexible/No Preference"
   },
   {
     "group_id": "grp_001",
-    "student_id": "stu_0008",
+    "student_id": "stu_0027",
+    "joined_at": "2026-08-25T14:00:00Z",
+    "group_role": "Explainer"
+  },
+  {
+    "group_id": "grp_001",
+    "student_id": "stu_0011",
     "joined_at": "2026-08-25T14:00:00Z",
     "group_role": "Flexible/No Preference"
   },
   {
     "group_id": "grp_001",
-    "student_id": "stu_0001",
+    "student_id": "stu_0026",
     "joined_at": "2026-08-25T14:00:00Z",
-    "group_role": "Organizer"
+    "group_role": "Problem Solver"
   },
   {
-    "group_id": "grp_002",
+    "group_id": "grp_001",
     "student_id": "stu_0004",
     "joined_at": "2026-08-25T14:00:00Z",
     "group_role": "Flexible/No Preference"
   },
   {
     "group_id": "grp_002",
-    "student_id": "stu_0011",
+    "student_id": "stu_0002",
+    "joined_at": "2026-08-25T14:00:00Z",
+    "group_role": "Problem Solver"
+  },
+  {
+    "group_id": "grp_002",
+    "student_id": "stu_0003",
+    "joined_at": "2026-08-25T14:00:00Z",
+    "group_role": "Problem Solver"
+  },
+  {
+    "group_id": "grp_002",
+    "student_id": "stu_0014",
     "joined_at": "2026-08-25T14:00:00Z",
     "group_role": "Flexible/No Preference"
   },
   {
     "group_id": "grp_002",
-    "student_id": "stu_0020",
+    "student_id": "stu_0008",
     "joined_at": "2026-08-25T14:00:00Z",
     "group_role": "Flexible/No Preference"
   },
   {
     "group_id": "grp_002",
-    "student_id": "stu_0023",
+    "student_id": "stu_0001",
     "joined_at": "2026-08-25T14:00:00Z",
-    "group_role": "Listener"
-  },
-  {
-    "group_id": "grp_002",
-    "student_id": "stu_0019",
-    "joined_at": "2026-08-25T14:00:00Z",
-    "group_role": "Listener"
+    "group_role": "Organizer"
   },
   {
     "group_id": "grp_003",
@@ -91,69 +91,81 @@
   },
   {
     "group_id": "grp_004",
-    "student_id": "stu_0005",
+    "student_id": "stu_0023",
     "joined_at": "2026-08-25T14:00:00Z",
-    "group_role": "Explainer"
+    "group_role": "Listener"
   },
   {
     "group_id": "grp_004",
-    "student_id": "stu_0012",
+    "student_id": "stu_0025",
     "joined_at": "2026-08-25T14:00:00Z",
-    "group_role": "Explainer"
+    "group_role": "Listener"
   },
   {
     "group_id": "grp_004",
-    "student_id": "stu_0021",
+    "student_id": "stu_0019",
     "joined_at": "2026-08-25T14:00:00Z",
-    "group_role": "Explainer"
+    "group_role": "Listener"
   },
   {
     "group_id": "grp_004",
-    "student_id": "stu_0009",
-    "joined_at": "2026-08-25T14:00:00Z",
-    "group_role": "Organizer"
-  },
-  {
-    "group_id": "grp_004",
-    "student_id": "stu_0016",
-    "joined_at": "2026-08-25T14:00:00Z",
-    "group_role": "Explainer"
-  },
-  {
-    "group_id": "grp_005",
     "student_id": "stu_0007",
     "joined_at": "2026-08-25T14:00:00Z",
     "group_role": "Organizer"
   },
   {
-    "group_id": "grp_005",
+    "group_id": "grp_004",
     "student_id": "stu_0013",
     "joined_at": "2026-08-25T14:00:00Z",
     "group_role": "Problem Solver"
   },
   {
     "group_id": "grp_005",
-    "student_id": "stu_0017",
+    "student_id": "stu_0005",
     "joined_at": "2026-08-25T14:00:00Z",
     "group_role": "Explainer"
   },
   {
     "group_id": "grp_005",
-    "student_id": "stu_0018",
+    "student_id": "stu_0012",
     "joined_at": "2026-08-25T14:00:00Z",
     "group_role": "Explainer"
   },
   {
-    "group_id": "grp_006",
-    "student_id": "stu_0030",
+    "group_id": "grp_005",
+    "student_id": "stu_0016",
+    "joined_at": "2026-08-25T14:00:00Z",
+    "group_role": "Explainer"
+  },
+  {
+    "group_id": "grp_005",
+    "student_id": "stu_0021",
+    "joined_at": "2026-08-25T14:00:00Z",
+    "group_role": "Explainer"
+  },
+  {
+    "group_id": "grp_005",
+    "student_id": "stu_0009",
     "joined_at": "2026-08-25T14:00:00Z",
     "group_role": "Organizer"
   },
   {
     "group_id": "grp_006",
-    "student_id": "stu_0031",
+    "student_id": "stu_0028",
+    "joined_at": "2026-08-25T14:00:00Z",
+    "group_role": "Organizer"
+  },
+  {
+    "group_id": "grp_006",
+    "student_id": "stu_0030",
     "joined_at": "2026-08-25T14:00:00Z",
     "group_role": "Explainer"
+  },
+  {
+    "group_id": "grp_006",
+    "student_id": "stu_0032",
+    "joined_at": "2026-08-25T14:00:00Z",
+    "group_role": "Problem Solver"
   },
   {
     "group_id": "grp_006",
@@ -163,8 +175,8 @@
   },
   {
     "group_id": "grp_006",
-    "student_id": "stu_0032",
+    "student_id": "stu_0034",
     "joined_at": "2026-08-25T14:00:00Z",
-    "group_role": "Listener"
+    "group_role": "Explainer"
   }
 ]

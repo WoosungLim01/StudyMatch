@@ -2,14 +2,149 @@
   {
     "message_id": "msg_0001",
     "course_id": "psu-cmpsc465-001-fa26",
+    "student_id": "stu_0009",
+    "type": "answer",
+    "text": "For Network Flow, the trick is to draw it out first \u2014 happy to hop on a call if that helps.",
+    "upvotes": 6,
+    "timestamp": "2026-09-08T10:30:00Z"
+  },
+  {
+    "message_id": "msg_0002",
+    "course_id": "psu-cmpsc465-001-fa26",
     "student_id": "stu_0012",
+    "type": "answer",
+    "text": "Yeah professor mentioned NP-Completeness is fair game, review the slides from week 4.",
+    "upvotes": 5,
+    "timestamp": "2026-09-02T22:10:00Z"
+  },
+  {
+    "message_id": "msg_0003",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "student_id": "stu_0011",
+    "type": "answer",
+    "text": "Yeah professor mentioned Recursion is fair game, review the slides from week 4.",
+    "upvotes": 4,
+    "timestamp": "2026-09-07T22:48:00Z"
+  },
+  {
+    "message_id": "msg_0004",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "student_id": "stu_0018",
+    "type": "question",
+    "text": "Anyone understand how Recursion works for problem set 3? I'm stuck on part b.",
+    "upvotes": 0,
+    "timestamp": "2026-09-06T13:20:00Z"
+  },
+  {
+    "message_id": "msg_0005",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "student_id": "stu_0004",
+    "type": "answer",
+    "text": "Yeah professor mentioned Sorting & Searching is fair game, review the slides from week 4.",
+    "upvotes": 0,
+    "timestamp": "2026-09-08T15:03:00Z"
+  },
+  {
+    "message_id": "msg_0006",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "student_id": "stu_0007",
+    "type": "social",
+    "text": "Anyone want to form a group for the final project? Still looking!",
+    "upvotes": 4,
+    "timestamp": "2026-09-08T19:28:00Z"
+  },
+  {
+    "message_id": "msg_0007",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "student_id": "stu_0025",
+    "type": "question",
+    "text": "Anyone understand how Greedy Algorithms works for problem set 3? I'm stuck on part b.",
+    "upvotes": 2,
+    "timestamp": "2026-09-03T23:18:00Z"
+  },
+  {
+    "message_id": "msg_0008",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "student_id": "stu_0015",
+    "type": "social",
+    "text": "Study Captains United is holding an open review session Thursday 7pm in the library if anyone wants to join.",
+    "upvotes": 0,
+    "timestamp": "2026-09-01T19:38:00Z"
+  },
+  {
+    "message_id": "msg_0009",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "student_id": "stu_0026",
+    "type": "answer",
+    "text": "For Proofs & Correctness, the trick is to draw it out first \u2014 happy to hop on a call if that helps.",
+    "upvotes": 4,
+    "timestamp": "2026-09-01T17:26:00Z"
+  },
+  {
+    "message_id": "msg_0010",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "student_id": "stu_0003",
+    "type": "answer",
+    "text": "For Dynamic Programming, the trick is to draw it out first \u2014 happy to hop on a call if that helps.",
+    "upvotes": 7,
+    "timestamp": "2026-09-02T19:53:00Z"
+  },
+  {
+    "message_id": "msg_0011",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "student_id": "stu_0005",
+    "type": "answer",
+    "text": "Yeah professor mentioned Divide and Conquer is fair game, review the slides from week 4.",
+    "upvotes": 8,
+    "timestamp": "2026-09-05T15:53:00Z"
+  },
+  {
+    "message_id": "msg_0012",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "student_id": "stu_0016",
+    "type": "answer",
+    "text": "Yeah professor mentioned Greedy Algorithms is fair game, review the slides from week 4.",
+    "upvotes": 7,
+    "timestamp": "2026-09-03T15:12:00Z"
+  },
+  {
+    "message_id": "msg_0013",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "student_id": "stu_0020",
+    "type": "social",
+    "text": "Anyone want to form a group for the final project? Still looking!",
+    "upvotes": 0,
+    "timestamp": "2026-09-05T21:50:00Z"
+  },
+  {
+    "message_id": "msg_0014",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "student_id": "stu_0014",
     "type": "question",
     "text": "Is the Sorting & Searching section going to be on the midterm?",
+    "upvotes": 2,
+    "timestamp": "2026-09-01T13:46:00Z"
+  },
+  {
+    "message_id": "msg_0015",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "student_id": "stu_0010",
+    "type": "social",
+    "text": "Anyone want to form a group for the final project? Still looking!",
+    "upvotes": 3,
+    "timestamp": "2026-09-03T16:34:00Z"
+  },
+  {
+    "message_id": "msg_0016",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "student_id": "stu_0016",
+    "type": "question",
+    "text": "Is the NP-Completeness section going to be on the midterm?",
     "upvotes": 4,
     "timestamp": "2026-09-07T16:59:00Z"
   },
   {
-    "message_id": "msg_0002",
+    "message_id": "msg_0017",
     "course_id": "psu-cmpsc465-001-fa26",
     "student_id": "stu_0011",
     "type": "answer",
@@ -18,7 +153,7 @@
     "timestamp": "2026-09-07T12:54:00Z"
   },
   {
-    "message_id": "msg_0003",
+    "message_id": "msg_0018",
     "course_id": "psu-cmpsc465-001-fa26",
     "student_id": "stu_0025",
     "type": "answer",
@@ -27,7 +162,7 @@
     "timestamp": "2026-09-08T20:58:00Z"
   },
   {
-    "message_id": "msg_0004",
+    "message_id": "msg_0019",
     "course_id": "psu-cmpsc465-001-fa26",
     "student_id": "stu_0026",
     "type": "answer",
@@ -36,7 +171,7 @@
     "timestamp": "2026-09-03T16:02:00Z"
   },
   {
-    "message_id": "msg_0005",
+    "message_id": "msg_0020",
     "course_id": "psu-cmpsc465-001-fa26",
     "student_id": "stu_0005",
     "type": "social",
@@ -45,7 +180,7 @@
     "timestamp": "2026-09-02T22:54:00Z"
   },
   {
-    "message_id": "msg_0006",
+    "message_id": "msg_0021",
     "course_id": "psu-cmpsc465-001-fa26",
     "student_id": "stu_0015",
     "type": "question",
@@ -54,7 +189,7 @@
     "timestamp": "2026-09-01T20:09:00Z"
   },
   {
-    "message_id": "msg_0007",
+    "message_id": "msg_0022",
     "course_id": "psu-cmpsc465-001-fa26",
     "student_id": "stu_0014",
     "type": "social",
@@ -63,7 +198,7 @@
     "timestamp": "2026-09-08T21:16:00Z"
   },
   {
-    "message_id": "msg_0008",
+    "message_id": "msg_0023",
     "course_id": "psu-cmpsc465-001-fa26",
     "student_id": "stu_0011",
     "type": "social",
@@ -72,16 +207,16 @@
     "timestamp": "2026-09-06T22:43:00Z"
   },
   {
-    "message_id": "msg_0009",
+    "message_id": "msg_0024",
     "course_id": "psu-cmpsc465-001-fa26",
-    "student_id": "stu_0028",
-    "type": "social",
-    "text": "Anyone want to form a group for the final project? Still looking!",
-    "upvotes": 2,
+    "student_id": "stu_0018",
+    "type": "answer",
+    "text": "Yeah professor mentioned NP-Completeness is fair game, review the slides from week 4.",
+    "upvotes": 10,
     "timestamp": "2026-09-08T22:34:00Z"
   },
   {
-    "message_id": "msg_0010",
+    "message_id": "msg_0025",
     "course_id": "psu-cmpsc465-001-fa26",
     "student_id": "stu_0002",
     "type": "social",
@@ -90,7 +225,7 @@
     "timestamp": "2026-09-05T12:47:00Z"
   },
   {
-    "message_id": "msg_0011",
+    "message_id": "msg_0026",
     "course_id": "psu-cmpsc465-001-fa26",
     "student_id": "stu_0003",
     "type": "answer",
@@ -99,7 +234,7 @@
     "timestamp": "2026-09-02T16:10:00Z"
   },
   {
-    "message_id": "msg_0012",
+    "message_id": "msg_0027",
     "course_id": "psu-cmpsc465-001-fa26",
     "student_id": "stu_0023",
     "type": "question",
@@ -108,7 +243,7 @@
     "timestamp": "2026-09-06T21:03:00Z"
   },
   {
-    "message_id": "msg_0013",
+    "message_id": "msg_0028",
     "course_id": "psu-cmpsc465-001-fa26",
     "student_id": "stu_0010",
     "type": "question",
@@ -117,7 +252,7 @@
     "timestamp": "2026-09-03T12:33:00Z"
   },
   {
-    "message_id": "msg_0014",
+    "message_id": "msg_0029",
     "course_id": "psu-cmpsc465-001-fa26",
     "student_id": "stu_0014",
     "type": "social",
@@ -126,70 +261,70 @@
     "timestamp": "2026-09-03T10:39:00Z"
   },
   {
-    "message_id": "msg_0015",
+    "message_id": "msg_0030",
     "course_id": "psu-cmpsc465-001-fa26",
-    "student_id": "stu_0028",
-    "type": "answer",
-    "text": "Yeah professor mentioned Network Flow is fair game, review the slides from week 4.",
-    "upvotes": 10,
-    "timestamp": "2026-09-04T16:58:00Z"
+    "student_id": "stu_0013",
+    "type": "social",
+    "text": "Anyone want to form a group for the final project? Still looking!",
+    "upvotes": 3,
+    "timestamp": "2026-09-03T12:29:00Z"
   },
   {
-    "message_id": "msg_0016",
+    "message_id": "msg_0031",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "student_id": "stu_0021",
+    "type": "question",
+    "text": "Is the Recursion section going to be on the midterm?",
+    "upvotes": 2,
+    "timestamp": "2026-09-01T23:51:00Z"
+  },
+  {
+    "message_id": "msg_0032",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "student_id": "stu_0015",
+    "type": "question",
+    "text": "Is the Sorting & Searching section going to be on the midterm?",
+    "upvotes": 1,
+    "timestamp": "2026-09-02T16:22:00Z"
+  },
+  {
+    "message_id": "msg_0033",
     "course_id": "psu-cmpsc465-001-fa26",
     "student_id": "stu_0019",
-    "type": "answer",
-    "text": "For Greedy Algorithms, the trick is to draw it out first \u2014 happy to hop on a call if that helps.",
-    "upvotes": 7,
-    "timestamp": "2026-09-05T16:16:00Z"
-  },
-  {
-    "message_id": "msg_0017",
-    "course_id": "psu-cmpsc465-001-fa26",
-    "student_id": "stu_0022",
     "type": "question",
-    "text": "Anyone understand how Recursion works for problem set 3? I'm stuck on part b.",
+    "text": "Is the Big-O Analysis section going to be on the midterm?",
     "upvotes": 2,
-    "timestamp": "2026-09-03T10:28:00Z"
+    "timestamp": "2026-09-08T22:19:00Z"
   },
   {
-    "message_id": "msg_0018",
+    "message_id": "msg_0034",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "student_id": "stu_0007",
+    "type": "answer",
+    "text": "Yeah professor mentioned Recursion is fair game, review the slides from week 4.",
+    "upvotes": 1,
+    "timestamp": "2026-09-04T15:36:00Z"
+  },
+  {
+    "message_id": "msg_0035",
     "course_id": "psu-cmpsc465-001-fa26",
     "student_id": "stu_0012",
     "type": "social",
     "text": "Anyone want to form a group for the final project? Still looking!",
-    "upvotes": 3,
-    "timestamp": "2026-09-05T16:54:00Z"
-  },
-  {
-    "message_id": "msg_0019",
-    "course_id": "psu-cmpsc465-001-fa26",
-    "student_id": "stu_0010",
-    "type": "answer",
-    "text": "For Big-O Analysis, the trick is to draw it out first \u2014 happy to hop on a call if that helps.",
-    "upvotes": 7,
-    "timestamp": "2026-09-02T12:24:00Z"
-  },
-  {
-    "message_id": "msg_0020",
-    "course_id": "psu-cmpsc465-001-fa26",
-    "student_id": "stu_0019",
-    "type": "question",
-    "text": "Is the Network Flow section going to be on the midterm?",
     "upvotes": 2,
-    "timestamp": "2026-09-05T09:53:00Z"
+    "timestamp": "2026-09-01T22:42:00Z"
   },
   {
-    "message_id": "msg_0021",
+    "message_id": "msg_0036",
     "course_id": "psu-cmpsc465-001-fa26",
-    "student_id": "stu_0022",
-    "type": "answer",
-    "text": "Yeah professor mentioned Divide and Conquer is fair game, review the slides from week 4.",
-    "upvotes": 0,
+    "student_id": "stu_0013",
+    "type": "question",
+    "text": "Is the Graph Algorithms section going to be on the midterm?",
+    "upvotes": 4,
     "timestamp": "2026-09-01T23:38:00Z"
   },
   {
-    "message_id": "msg_0022",
+    "message_id": "msg_0037",
     "course_id": "psu-cmpsc465-001-fa26",
     "student_id": "stu_0024",
     "type": "answer",
@@ -198,7 +333,7 @@
     "timestamp": "2026-09-04T18:51:00Z"
   },
   {
-    "message_id": "msg_0023",
+    "message_id": "msg_0038",
     "course_id": "psu-cmpsc465-001-fa26",
     "student_id": "stu_0012",
     "type": "answer",
@@ -207,7 +342,7 @@
     "timestamp": "2026-09-05T19:48:00Z"
   },
   {
-    "message_id": "msg_0024",
+    "message_id": "msg_0039",
     "course_id": "psu-cmpsc465-001-fa26",
     "student_id": "stu_0024",
     "type": "social",
@@ -216,7 +351,7 @@
     "timestamp": "2026-09-01T13:50:00Z"
   },
   {
-    "message_id": "msg_0025",
+    "message_id": "msg_0040",
     "course_id": "psu-cmpsc465-001-fa26",
     "student_id": "stu_0015",
     "type": "question",
@@ -225,273 +360,138 @@
     "timestamp": "2026-09-03T10:58:00Z"
   },
   {
-    "message_id": "msg_0026",
-    "course_id": "psu-cmpsc465-001-fa26",
-    "student_id": "stu_0010",
+    "message_id": "msg_0041",
+    "course_id": "psu-math230-002-fa26",
+    "student_id": "stu_0030",
     "type": "question",
-    "text": "Is the Big-O Analysis section going to be on the midterm?",
+    "text": "Is the Line Integrals section going to be on the midterm?",
     "upvotes": 1,
     "timestamp": "2026-09-04T11:50:00Z"
   },
   {
-    "message_id": "msg_0027",
-    "course_id": "psu-cmpsc465-001-fa26",
-    "student_id": "stu_0018",
+    "message_id": "msg_0042",
+    "course_id": "psu-math230-002-fa26",
+    "student_id": "stu_0032",
     "type": "question",
-    "text": "Is the Sorting & Searching section going to be on the midterm?",
+    "text": "Is the Parametric Surfaces section going to be on the midterm?",
     "upvotes": 4,
     "timestamp": "2026-09-05T22:10:00Z"
   },
   {
-    "message_id": "msg_0028",
-    "course_id": "psu-cmpsc465-001-fa26",
-    "student_id": "stu_0009",
+    "message_id": "msg_0043",
+    "course_id": "psu-math230-002-fa26",
+    "student_id": "stu_0030",
     "type": "answer",
-    "text": "Yeah professor mentioned Divide and Conquer is fair game, review the slides from week 4.",
+    "text": "Yeah professor mentioned Vector Fields is fair game, review the slides from week 4.",
     "upvotes": 11,
     "timestamp": "2026-09-06T21:07:00Z"
   },
   {
-    "message_id": "msg_0029",
-    "course_id": "psu-cmpsc465-001-fa26",
-    "student_id": "stu_0015",
+    "message_id": "msg_0044",
+    "course_id": "psu-math230-002-fa26",
+    "student_id": "stu_0031",
     "type": "question",
-    "text": "Anyone understand how Proofs & Correctness works for problem set 3? I'm stuck on part b.",
+    "text": "Anyone understand how Double Integrals works for problem set 3? I'm stuck on part b.",
     "upvotes": 1,
     "timestamp": "2026-09-07T22:51:00Z"
   },
   {
-    "message_id": "msg_0030",
-    "course_id": "psu-cmpsc465-001-fa26",
-    "student_id": "stu_0018",
+    "message_id": "msg_0045",
+    "course_id": "psu-math230-002-fa26",
+    "student_id": "stu_0032",
     "type": "question",
-    "text": "Is the Dynamic Programming section going to be on the midterm?",
+    "text": "Is the Partial Derivatives section going to be on the midterm?",
     "upvotes": 3,
     "timestamp": "2026-09-01T13:34:00Z"
   },
   {
-    "message_id": "msg_0031",
-    "course_id": "psu-cmpsc465-001-fa26",
-    "student_id": "stu_0004",
+    "message_id": "msg_0046",
+    "course_id": "psu-math230-002-fa26",
+    "student_id": "stu_0028",
     "type": "answer",
-    "text": "Yeah professor mentioned NP-Completeness is fair game, review the slides from week 4.",
+    "text": "Yeah professor mentioned Lagrange Multipliers is fair game, review the slides from week 4.",
     "upvotes": 10,
     "timestamp": "2026-09-05T18:24:00Z"
   },
   {
-    "message_id": "msg_0032",
-    "course_id": "psu-cmpsc465-001-fa26",
-    "student_id": "stu_0027",
+    "message_id": "msg_0047",
+    "course_id": "psu-math230-002-fa26",
+    "student_id": "stu_0034",
     "type": "social",
     "text": "Study Captains United is holding an open review session Thursday 7pm in the library if anyone wants to join.",
     "upvotes": 0,
     "timestamp": "2026-09-04T16:01:00Z"
   },
   {
-    "message_id": "msg_0033",
-    "course_id": "psu-cmpsc465-001-fa26",
-    "student_id": "stu_0020",
+    "message_id": "msg_0048",
+    "course_id": "psu-math230-002-fa26",
+    "student_id": "stu_0032",
     "type": "social",
     "text": "Anyone want to form a group for the final project? Still looking!",
     "upvotes": 4,
     "timestamp": "2026-09-04T19:04:00Z"
   },
   {
-    "message_id": "msg_0034",
-    "course_id": "psu-cmpsc465-001-fa26",
-    "student_id": "stu_0021",
+    "message_id": "msg_0049",
+    "course_id": "psu-math230-002-fa26",
+    "student_id": "stu_0033",
     "type": "answer",
-    "text": "Yeah professor mentioned Divide and Conquer is fair game, review the slides from week 4.",
+    "text": "Yeah professor mentioned Vector Fields is fair game, review the slides from week 4.",
     "upvotes": 10,
     "timestamp": "2026-09-07T10:08:00Z"
   },
   {
-    "message_id": "msg_0035",
-    "course_id": "psu-cmpsc465-001-fa26",
-    "student_id": "stu_0002",
+    "message_id": "msg_0050",
+    "course_id": "psu-math230-002-fa26",
+    "student_id": "stu_0028",
     "type": "question",
-    "text": "Anyone understand how Divide and Conquer works for problem set 3? I'm stuck on part b.",
+    "text": "Anyone understand how Vector Fields works for problem set 3? I'm stuck on part b.",
     "upvotes": 3,
     "timestamp": "2026-09-02T10:15:00Z"
   },
   {
-    "message_id": "msg_0036",
-    "course_id": "psu-cmpsc465-001-fa26",
-    "student_id": "stu_0018",
+    "message_id": "msg_0051",
+    "course_id": "psu-math230-002-fa26",
+    "student_id": "stu_0032",
     "type": "answer",
-    "text": "For Big-O Analysis, the trick is to draw it out first \u2014 happy to hop on a call if that helps.",
+    "text": "For Line Integrals, the trick is to draw it out first \u2014 happy to hop on a call if that helps.",
     "upvotes": 7,
     "timestamp": "2026-09-06T19:47:00Z"
   },
   {
-    "message_id": "msg_0037",
-    "course_id": "psu-cmpsc465-001-fa26",
-    "student_id": "stu_0023",
+    "message_id": "msg_0052",
+    "course_id": "psu-math230-002-fa26",
+    "student_id": "stu_0033",
     "type": "social",
     "text": "Anyone want to form a group for the final project? Still looking!",
     "upvotes": 4,
     "timestamp": "2026-09-03T23:26:00Z"
   },
   {
-    "message_id": "msg_0038",
-    "course_id": "psu-cmpsc465-001-fa26",
-    "student_id": "stu_0021",
+    "message_id": "msg_0053",
+    "course_id": "psu-math230-002-fa26",
+    "student_id": "stu_0033",
     "type": "question",
-    "text": "Anyone understand how Recursion works for problem set 3? I'm stuck on part b.",
+    "text": "Anyone understand how Green's Theorem works for problem set 3? I'm stuck on part b.",
     "upvotes": 4,
     "timestamp": "2026-09-07T13:02:00Z"
   },
   {
-    "message_id": "msg_0039",
-    "course_id": "psu-cmpsc465-001-fa26",
-    "student_id": "stu_0023",
+    "message_id": "msg_0054",
+    "course_id": "psu-math230-002-fa26",
+    "student_id": "stu_0033",
     "type": "question",
-    "text": "Is the Greedy Algorithms section going to be on the midterm?",
+    "text": "Is the Triple Integrals section going to be on the midterm?",
     "upvotes": 3,
     "timestamp": "2026-09-08T12:54:00Z"
   },
   {
-    "message_id": "msg_0040",
-    "course_id": "psu-cmpsc465-001-fa26",
-    "student_id": "stu_0012",
-    "type": "question",
-    "text": "Anyone understand how NP-Completeness works for problem set 3? I'm stuck on part b.",
-    "upvotes": 4,
-    "timestamp": "2026-09-06T09:25:00Z"
-  },
-  {
-    "message_id": "msg_0041",
-    "course_id": "psu-math230-002-fa26",
-    "student_id": "stu_0033",
-    "type": "answer",
-    "text": "For Partial Derivatives, the trick is to draw it out first \u2014 happy to hop on a call if that helps.",
-    "upvotes": 7,
-    "timestamp": "2026-09-02T19:13:00Z"
-  },
-  {
-    "message_id": "msg_0042",
-    "course_id": "psu-math230-002-fa26",
-    "student_id": "stu_0029",
-    "type": "question",
-    "text": "Anyone understand how Lagrange Multipliers works for problem set 3? I'm stuck on part b.",
-    "upvotes": 1,
-    "timestamp": "2026-09-03T21:36:00Z"
-  },
-  {
-    "message_id": "msg_0043",
-    "course_id": "psu-math230-002-fa26",
-    "student_id": "stu_0032",
-    "type": "question",
-    "text": "Anyone understand how Parametric Surfaces works for problem set 3? I'm stuck on part b.",
-    "upvotes": 1,
-    "timestamp": "2026-09-04T22:55:00Z"
-  },
-  {
-    "message_id": "msg_0044",
-    "course_id": "psu-math230-002-fa26",
-    "student_id": "stu_0032",
-    "type": "question",
-    "text": "Is the Double Integrals section going to be on the midterm?",
-    "upvotes": 4,
-    "timestamp": "2026-09-01T13:54:00Z"
-  },
-  {
-    "message_id": "msg_0045",
-    "course_id": "psu-math230-002-fa26",
-    "student_id": "stu_0031",
-    "type": "answer",
-    "text": "For Parametric Surfaces, the trick is to draw it out first \u2014 happy to hop on a call if that helps.",
-    "upvotes": 4,
-    "timestamp": "2026-09-03T10:42:00Z"
-  },
-  {
-    "message_id": "msg_0046",
-    "course_id": "psu-math230-002-fa26",
-    "student_id": "stu_0029",
-    "type": "answer",
-    "text": "For Multivariable Limits, the trick is to draw it out first \u2014 happy to hop on a call if that helps.",
-    "upvotes": 5,
-    "timestamp": "2026-09-04T18:20:00Z"
-  },
-  {
-    "message_id": "msg_0047",
-    "course_id": "psu-math230-002-fa26",
-    "student_id": "stu_0029",
-    "type": "answer",
-    "text": "For Vector Fields, the trick is to draw it out first \u2014 happy to hop on a call if that helps.",
-    "upvotes": 0,
-    "timestamp": "2026-09-03T20:26:00Z"
-  },
-  {
-    "message_id": "msg_0048",
-    "course_id": "psu-math230-002-fa26",
-    "student_id": "stu_0037",
-    "type": "question",
-    "text": "Anyone understand how Partial Derivatives works for problem set 3? I'm stuck on part b.",
-    "upvotes": 3,
-    "timestamp": "2026-09-08T21:23:00Z"
-  },
-  {
-    "message_id": "msg_0049",
-    "course_id": "psu-math230-002-fa26",
-    "student_id": "stu_0037",
-    "type": "social",
-    "text": "Anyone want to form a group for the final project? Still looking!",
-    "upvotes": 3,
-    "timestamp": "2026-09-04T18:02:00Z"
-  },
-  {
-    "message_id": "msg_0050",
-    "course_id": "psu-math230-002-fa26",
-    "student_id": "stu_0037",
-    "type": "question",
-    "text": "Is the Green's Theorem section going to be on the midterm?",
-    "upvotes": 0,
-    "timestamp": "2026-09-01T16:54:00Z"
-  },
-  {
-    "message_id": "msg_0051",
-    "course_id": "psu-math230-002-fa26",
-    "student_id": "stu_0035",
-    "type": "answer",
-    "text": "Yeah professor mentioned Partial Derivatives is fair game, review the slides from week 4.",
-    "upvotes": 7,
-    "timestamp": "2026-09-08T10:57:00Z"
-  },
-  {
-    "message_id": "msg_0052",
+    "message_id": "msg_0055",
     "course_id": "psu-math230-002-fa26",
     "student_id": "stu_0030",
     "type": "question",
-    "text": "Is the Double Integrals section going to be on the midterm?",
-    "upvotes": 0,
-    "timestamp": "2026-09-03T13:39:00Z"
-  },
-  {
-    "message_id": "msg_0053",
-    "course_id": "psu-math230-002-fa26",
-    "student_id": "stu_0037",
-    "type": "social",
-    "text": "Study Captains United is holding an open review session Thursday 7pm in the library if anyone wants to join.",
-    "upvotes": 3,
-    "timestamp": "2026-09-05T16:32:00Z"
-  },
-  {
-    "message_id": "msg_0054",
-    "course_id": "psu-math230-002-fa26",
-    "student_id": "stu_0035",
-    "type": "question",
-    "text": "Anyone understand how Partial Derivatives works for problem set 3? I'm stuck on part b.",
+    "text": "Anyone understand how Lagrange Multipliers works for problem set 3? I'm stuck on part b.",
     "upvotes": 4,
-    "timestamp": "2026-09-04T15:28:00Z"
-  },
-  {
-    "message_id": "msg_0055",
-    "course_id": "psu-math230-002-fa26",
-    "student_id": "stu_0032",
-    "type": "answer",
-    "text": "Yeah professor mentioned Lagrange Multipliers is fair game, review the slides from week 4.",
-    "upvotes": 7,
-    "timestamp": "2026-09-07T15:46:00Z"
+    "timestamp": "2026-09-06T09:25:00Z"
   }
 ]

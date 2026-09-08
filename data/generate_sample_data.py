@@ -227,8 +227,11 @@ def make_student(course, n_blocks_range, looking_for_group=True):
 cmpsc = courses[0]
 math230 = courses[1]
 
-cmpsc_students = [make_student(cmpsc, (3, 4)) for _ in range(28)]
-math_students = [make_student(math230, (2, 4)) for _ in range(9)]
+# Population sizes are deliberately (multiple of 5) + 2 per course, so batch
+# group formation (exactly-5 groups, see form_groups()) leaves exactly 2
+# people unassigned per course — the live intake demo's starting point.
+cmpsc_students = [make_student(cmpsc, (3, 4)) for _ in range(27)]
+math_students = [make_student(math230, (2, 4)) for _ in range(7)]
 
 # ---------------------------------------------------------------------------
 # 3. Archetypes — discovered via KMeans over the real personality vectors
@@ -371,10 +374,18 @@ def group_score(members):
 
 
 def form_groups(course_students, target_looking_ids):
+    """
+    Groups are exactly 5 — no more 4-5 range. Any remainder (<5) is left in
+    `unassigned` on purpose: population sizes are chosen (see below) so each
+    course ends batch generation with exactly 2 people left over, matching
+    the live intake policy in group_placement.py (a 1-2 remainder joins an
+    existing group; a 3-4 remainder becomes its own smaller group) — those 2
+    are what a real survey respondent completes into a group.
+    """
     pool = [s for s in course_students if s in target_looking_ids]
     unassigned = set(pool)
     formed = []
-    while len(unassigned) >= 4:
+    while len(unassigned) >= 5:
         # seed with the best compatible pair remaining
         best_pair, best_val = None, -1
         rem = sorted(unassigned)  # sorted, not list(set(...)) — set order depends on the interpreter's per-process hash seed
@@ -383,27 +394,17 @@ def form_groups(course_students, target_looking_ids):
                 s = pair_score(rem[i], rem[j])
                 if s > best_val:
                     best_val, best_pair = s, (rem[i], rem[j])
-        if best_pair is None:
-            break
         group = list(best_pair)
         unassigned -= set(group)
-        while len(group) < 5 and unassigned:
+        while len(group) < 5:
             best_c, best_avg = None, -1
             for cand in sorted(unassigned):
                 avg = mean(group_pair_scores(group + [cand]))
                 if avg > best_avg:
                     best_avg, best_c = avg, cand
-            if best_c is None:
-                break
             group.append(best_c)
             unassigned.remove(best_c)
-            if len(group) >= 4 and len(unassigned) < 4 and len(group) < 5:
-                continue  # keep trying to reach 5 if possible
-        if len(group) >= 4:
-            formed.append(group)
-        else:
-            unassigned |= set(group)
-            break
+        formed.append(group)
     return formed, unassigned
 
 
@@ -429,15 +430,14 @@ def local_search_swap(groups, rounds=25):
     return groups
 
 
-cmpsc_looking = set(cmpsc_students[:24])  # leaves 4th/5th-seat vacancies for the recruiting demo
-math_looking = set(math_students[:4])     # one under-capacity group of 4, open to recruiting
-
-cmpsc_groups, cmpsc_unassigned = form_groups(cmpsc_students, cmpsc_looking)
-math_groups, math_unassigned = form_groups(math_students, math_looking)
+# Everyone looks for a group in this batch — the old "leave a few students not
+# looking" mechanic is superseded by the exactly-2-unassigned remainder above.
+cmpsc_groups, cmpsc_unassigned = form_groups(cmpsc_students, set(cmpsc_students))
+math_groups, math_unassigned = form_groups(math_students, set(math_students))
 cmpsc_groups = local_search_swap(cmpsc_groups)
 math_groups = local_search_swap(math_groups)
 
-all_unassigned = cmpsc_unassigned | math_unassigned | (set(cmpsc_students) - cmpsc_looking) | (set(math_students) - math_looking)
+all_unassigned = cmpsc_unassigned | math_unassigned
 
 # ---------------------------------------------------------------------------
 # 7. Groups / group_membership output

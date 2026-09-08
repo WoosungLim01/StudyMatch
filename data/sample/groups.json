@@ -2,7 +2,18 @@
   {
     "group_id": "grp_001",
     "course_id": "psu-cmpsc465-001-fa26",
-    "group_name": "Async Study Crew",
+    "group_name": "The Recursion Rangers",
+    "max_members": 5,
+    "current_members": 5,
+    "created_at": "2026-08-25T14:00:00Z",
+    "group_score": 84.6,
+    "avg_pairwise": 84.6,
+    "worst_pairwise": 80.4
+  },
+  {
+    "group_id": "grp_002",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "group_name": "Late Night Loopers",
     "max_members": 5,
     "current_members": 5,
     "created_at": "2026-08-25T14:00:00Z",
@@ -11,20 +22,9 @@
     "worst_pairwise": 80.4
   },
   {
-    "group_id": "grp_002",
-    "course_id": "psu-cmpsc465-001-fa26",
-    "group_name": "Tree Traversers",
-    "max_members": 5,
-    "current_members": 5,
-    "created_at": "2026-08-25T14:00:00Z",
-    "group_score": 74.6,
-    "avg_pairwise": 74.6,
-    "worst_pairwise": 60.7
-  },
-  {
     "group_id": "grp_003",
     "course_id": "psu-cmpsc465-001-fa26",
-    "group_name": "Proof Squad",
+    "group_name": "Async Study Crew",
     "max_members": 5,
     "current_members": 5,
     "created_at": "2026-08-25T14:00:00Z",
@@ -35,7 +35,18 @@
   {
     "group_id": "grp_004",
     "course_id": "psu-cmpsc465-001-fa26",
-    "group_name": "Vector Vanguard",
+    "group_name": "The Greedy Algorithm",
+    "max_members": 5,
+    "current_members": 5,
+    "created_at": "2026-08-25T14:00:00Z",
+    "group_score": 76.8,
+    "avg_pairwise": 76.8,
+    "worst_pairwise": 67.9
+  },
+  {
+    "group_id": "grp_005",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "group_name": "Study Captains United",
     "max_members": 5,
     "current_members": 5,
     "created_at": "2026-08-25T14:00:00Z",
@@ -44,25 +55,14 @@
     "worst_pairwise": 78.6
   },
   {
-    "group_id": "grp_005",
-    "course_id": "psu-cmpsc465-001-fa26",
-    "group_name": "The Greedy Algorithm",
-    "max_members": 5,
-    "current_members": 4,
-    "created_at": "2026-08-25T14:00:00Z",
-    "group_score": 78.0,
-    "avg_pairwise": 78.0,
-    "worst_pairwise": 69.6
-  },
-  {
     "group_id": "grp_006",
     "course_id": "psu-math230-002-fa26",
     "group_name": "Integral Insurgents",
     "max_members": 5,
-    "current_members": 4,
+    "current_members": 5,
     "created_at": "2026-08-25T14:00:00Z",
-    "group_score": 61.6,
-    "avg_pairwise": 61.6,
-    "worst_pairwise": 51.8
+    "group_score": 72.5,
+    "avg_pairwise": 72.5,
+    "worst_pairwise": 58.9
   }
 ]
