@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StudyMatch</title>
+<link rel="stylesheet" href="style.css">
+<!-- Chart.js from cdnjs -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+</head>
+<body>
+
+<header>
+  <h1>STUDYMATCH</h1>
+  <span>Penn State DS440 — Study Group Matching Demo</span>
+  <span class="badge">BETA</span>
+  <span id="hdr-status" style="margin-left:auto; color:var(--muted); font-size:11px;"></span>
+</header>
+
+<nav>
+  <button class="tab-btn active" data-tab="gen">01 · Generator</button>
+  <button class="tab-btn" data-tab="pipeline" id="tab-pipeline" disabled>02 · Pipeline</button>
+  <button class="tab-btn" data-tab="cluster"  id="tab-cluster"  disabled>03 · Archetypes</button>
+  <button class="tab-btn" data-tab="match"    id="tab-match"    disabled>04 · Groups</button>
+  <button class="tab-btn" data-tab="explain"  id="tab-explain">05 · Explainer</button>
+</nav>
+
+<main>
+
+<!-- ══════════════════════════════════════════════════════════
+     TAB 1 — Synthetic Data Generator
+═══════════════════════════════════════════════════════════════ -->
+<section class="tab-panel active" id="panel-gen">
+  <div class="grid-2">
+    <div>
+      <div class="card">
+        <div class="card-title">Cohort Parameters</div>
+
+        <div class="control-row">
+          <label>Students (N)</label>
+          <input type="range" id="sl-n" min="12" max="200" value="60" step="4">
+          <span class="val" id="vl-n">60</span>
+        </div>
+        <div class="control-row">
+          <label>Survey Noise Level</label>
+          <input type="range" id="sl-noise" min="0" max="100" value="40" step="5">
+          <span class="val" id="vl-noise">0.40</span>
+        </div>
+        <div class="control-row">
+          <label>Archetype Separation</label>
+          <input type="range" id="sl-sep" min="10" max="100" value="80" step="5">
+          <span class="val" id="vl-sep">0.80</span>
+        </div>
+        <div class="control-row">
+          <label>Low-effort Responders %</label>
+          <input type="range" id="sl-low" min="0" max="20" value="8" step="1">
+          <span class="val" id="vl-low">8%</span>
+        </div>
+        <div class="control-row">
+          <label>True # Archetypes</label>
+          <input type="range" id="sl-k" min="2" max="5" value="4" step="1">
+          <span class="val" id="vl-k">4</span>
+        </div>
+        <div class="control-row">
+          <label>Random Seed</label>
+          <input type="range" id="sl-seed" min="0" max="99" value="42" step="1">
+          <span class="val" id="vl-seed">42</span>
+        </div>
+
+        <div style="margin-top:16px; display:flex; gap:10px;">
+          <button class="btn btn-green" id="btn-generate">▶ GENERATE COHORT</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Cohort Summary</div>
+        <div class="grid-4" id="gen-stats">
+          <div class="stat-tile"><span class="stat-val" id="st-n">—</span><span class="stat-label">Students</span></div>
+          <div class="stat-tile warn"><span class="stat-val" id="st-low">—</span><span class="stat-label">Low-effort</span></div>
+          <div class="stat-tile"><span class="stat-val" id="st-k">—</span><span class="stat-label">Archetypes</span></div>
+          <div class="stat-tile"><span class="stat-val" id="st-noise">—</span><span class="stat-label">Noise σ</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Archetype Distribution (True Labels — Oracle Only)</div>
+        <div class="chart-wrap-sm"><canvas id="chart-archetype-dist"></canvas></div>
+      </div>
+    </div>
+
+    <div>
+      <div class="card">
+        <div class="card-title">Generated Cohort <span id="gen-table-count" style="color:var(--muted)"></span></div>
+        <div id="gen-status" class="status-bar" style="display:none"></div>
+        <div class="tbl-wrap">
+          <table id="gen-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>True Archetype</th>
+                <th>Low-effort</th>
+                <th>plan</th>
+                <th>env</th>
+                <th>collab</th>
+                <th>flex</th>
+                <th>feedback</th>
+                <th>motiv</th>
+              </tr>
+            </thead>
+            <tbody id="gen-tbody"></tbody>
+          </table>
+        </div>
+        <div style="margin-top:14px;">
+          <button class="btn" id="btn-run-pipeline" disabled>▶ RUN PIPELINE →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════
+     TAB 2 — Scoring + Consistency Check
+═══════════════════════════════════════════════════════════════ -->
+<section class="tab-panel" id="panel-pipeline">
+  <div class="card">
+    <div class="card-title">Axis Scoring + Consistency Check (§3 Steps 1–2)</div>
+    <p style="color:var(--muted); font-size:11px; margin-bottom:14px;">
+      Reverse-coded items are flipped (score = 7 − raw). Axis score = mean of recoded items.
+      Flagged students have inconsistent reverse items or straight-line responses.
+    </p>
+    <div id="pipeline-status" class="status-bar" style="display:none"></div>
+    <div class="grid-4" style="margin-bottom:18px;">
+      <div class="stat-tile"><span class="stat-val" id="pp-n">—</span><span class="stat-label">Scored</span></div>
+      <div class="stat-tile warn"><span class="stat-val" id="pp-flagged">—</span><span class="stat-label">Flagged</span></div>
+      <div class="stat-tile"><span class="stat-val" id="pp-pct">—</span><span class="stat-label">Flag %</span></div>
+      <div class="stat-tile green"><span class="stat-val" id="pp-clean">—</span><span class="stat-label">Clean</span></div>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">Axis Score Distribution</div>
+      <div class="chart-wrap"><canvas id="chart-axis-dist"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Response Consistency (SD of raw answers)</div>
+      <div class="chart-wrap"><canvas id="chart-sd-dist"></canvas></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Scored Students</div>
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Flag</th>
+            <th>Issues</th>
+            <th>resp_sd</th>
+            <th>planning</th>
+            <th>environment</th>
+            <th>collaboration</th>
+            <th>flexibility</th>
+            <th>feedback</th>
+            <th>motivation</th>
+          </tr>
+        </thead>
+        <tbody id="pipeline-tbody"></tbody>
+      </table>
+    </div>
+    <div style="margin-top:14px;">
+      <button class="btn" id="btn-run-cluster" disabled>▶ RUN GMM CLUSTERING →</button>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════
+     TAB 3 — GMM Archetype Dashboard
+═══════════════════════════════════════════════════════════════ -->
+<section class="tab-panel" id="panel-cluster">
+  <div class="card">
+    <div class="card-title">GMM Clustering — Archetype Discovery (§3 Steps 3–4)</div>
+    <p style="color:var(--muted); font-size:11px; margin-bottom:14px;">
+      N archetypes is <em>discovered</em> from data via BIC + silhouette — never hard-coded.
+      Soft membership (step 4a) is displayed here. Raw continuous vectors (step 4b) go to matching.
+    </p>
+    <div id="cluster-status" class="status-bar" style="display:none"></div>
+    <div class="grid-4" style="margin-bottom:0;">
+      <div class="stat-tile"><span class="stat-val" id="cl-k">—</span><span class="stat-label">Archetypes Found</span></div>
+      <div class="stat-tile"><span class="stat-val" id="cl-n">—</span><span class="stat-label">Students</span></div>
+      <div class="stat-tile green"><span class="stat-val" id="cl-best-bic">—</span><span class="stat-label">Best BIC k</span></div>
+      <div class="stat-tile green"><span class="stat-val" id="cl-best-sil">—</span><span class="stat-label">Best Sil k</span></div>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">BIC vs k (lower = better)</div>
+      <div class="chart-wrap"><canvas id="chart-bic"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Silhouette vs k (higher = better)</div>
+      <div class="chart-wrap"><canvas id="chart-sil"></canvas></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Discovered Archetypes — Mean Axis Profiles (DISPLAY LAYER)</div>
+    <div class="chart-wrap" style="height:300px;"><canvas id="chart-radar"></canvas></div>
+    <div id="archetype-cards" class="grid-3" style="margin-top:16px;"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Student Soft Membership (DISPLAY LAYER — step 4a)</div>
+    <p style="color:var(--muted); font-size:11px; margin-bottom:10px;">
+      These labels are for UX display only. Matching uses the raw axis vector (step 4b), not these labels.
+    </p>
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Primary Archetype</th>
+            <th>Strength %</th>
+            <th>Membership Mix</th>
+          </tr>
+        </thead>
+        <tbody id="cluster-tbody"></tbody>
+      </table>
+    </div>
+    <div style="margin-top:14px;">
+      <button class="btn btn-warn" id="btn-run-match" disabled>▶ RUN ILP MATCHING →</button>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════
+     TAB 4 — Group Results
+═══════════════════════════════════════════════════════════════ -->
+<section class="tab-panel" id="panel-match">
+  <div class="card">
+    <div class="card-title">ILP Group Formation — Results (§3 Step 6)</div>
+    <p style="color:var(--muted); font-size:11px; margin-bottom:14px;">
+      ILP uses scored axis vectors. Oracle uses true noise-free vectors (upper bound).
+      No inter-group fairness constraint — intentional (§6/7).
+    </p>
+
+    <!-- Axis weight sliders -->
+    <div id="weight-controls" style="margin-bottom:18px;"></div>
+    <button class="btn btn-warn" id="btn-rerun-match">↺ RE-RUN WITH NEW WEIGHTS</button>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Algorithm Comparison</div>
+    <div id="match-status" class="status-bar" style="display:none"></div>
+    <div class="grid-3" style="margin-bottom:18px;">
+      <div class="stat-tile">
+        <span class="stat-val" id="mc-random">—</span>
+        <span class="stat-label">Random Total Compat</span>
+      </div>
+      <div class="stat-tile green">
+        <span class="stat-val" id="mc-ilp">—</span>
+        <span class="stat-label">ILP Total Compat</span>
+      </div>
+      <div class="stat-tile warn">
+        <span class="stat-val" id="mc-oracle">—</span>
+        <span class="stat-label">Oracle Total Compat</span>
+      </div>
+    </div>
+
+    <!-- Visual comparison bars -->
+    <div class="compare-bars" id="compare-bars">
+      <div class="cmp-row">
+        <span class="cmp-label" style="color:var(--muted)">Random</span>
+        <div class="cmp-bar-bg"><div class="cmp-bar-fill" id="bar-random" style="background:var(--muted); width:0%"></div></div>
+        <span class="cmp-val" id="cmp-random-val" style="color:var(--muted)">—</span>
+      </div>
+      <div class="cmp-row">
+        <span class="cmp-label" style="color:var(--accent)">ILP</span>
+        <div class="cmp-bar-bg"><div class="cmp-bar-fill" id="bar-ilp" style="background:var(--accent); width:0%"></div></div>
+        <span class="cmp-val" id="cmp-ilp-val" style="color:var(--accent)">—</span>
+      </div>
+      <div class="cmp-row">
+        <span class="cmp-label" style="color:var(--warn)">Oracle</span>
+        <div class="cmp-bar-bg"><div class="cmp-bar-fill" id="bar-oracle" style="background:var(--warn); width:0%"></div></div>
+        <span class="cmp-val" id="cmp-oracle-val" style="color:var(--warn)">—</span>
+      </div>
+    </div>
+
+    <div style="margin-top:14px; font-size:11px; color:var(--muted);">
+      ILP gap from Oracle: <span id="gap-oracle" style="color:var(--accent)">—</span> &nbsp;|&nbsp;
+      ILP gain over Random: <span id="gap-random" style="color:var(--accent2)">—</span> &nbsp;|&nbsp;
+      Solve time: <span id="solve-time" style="color:var(--muted)">—</span>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">Group Compat Distribution</div>
+      <div class="chart-wrap"><canvas id="chart-group-compat"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Compatibility Heatmap (ILP groups ordered)</div>
+      <div id="heatmap-container" style="overflow:auto; max-height:280px;">
+        <canvas id="chart-heatmap"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid-3">
+    <div class="card">
+      <div class="card-title" style="color:var(--muted)">Random Groups</div>
+      <div class="group-grid" id="groups-random"></div>
+    </div>
+    <div class="card">
+      <div class="card-title" style="color:var(--accent)">ILP Groups</div>
+      <div class="group-grid" id="groups-ilp"></div>
+    </div>
+    <div class="card">
+      <div class="card-title" style="color:var(--warn)">Oracle Groups (upper bound)</div>
+      <div class="group-grid" id="groups-oracle"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════
+     TAB 5 — Pipeline Explainer
+═══════════════════════════════════════════════════════════════ -->
+<section class="tab-panel" id="panel-explain">
+  <div class="card">
+    <div class="card-title">StudyMatch Pipeline (§3)</div>
+
+    <div style="display:flex; flex-direction:column; gap:0;">
+      <div style="display:flex; align-items:center; gap:0;">
+        <div class="step-box">
+          <div class="step-num">Step 1</div>
+          <div class="step-name">Preference Survey</div>
+          <div class="step-desc">18 items, 6-point Likert scale, ~half reverse-coded. ~5 min. NOT binary/forced-choice (avoids ipsative data problem).</div>
+        </div>
+        <div class="step-arrow">↓</div>
+      </div>
+
+      <div style="display:flex; align-items:center; gap:0;">
+        <div class="step-box">
+          <div class="step-num">Step 2</div>
+          <div class="step-name">score_axis() + Consistency Check</div>
+          <div class="step-desc">Reverse-code flagged items (7 − raw). Average per axis → continuous vector in [1,6]. Flag straight-liners (SD &lt; 0.75) and reverse-inconsistent responses.</div>
+        </div>
+        <div class="step-arrow">↓</div>
+      </div>
+
+      <div style="display:flex; align-items:center; gap:0;">
+        <div class="step-box">
+          <div class="step-num">Step 3</div>
+          <div class="step-name">GMM Clustering</div>
+          <div class="step-desc">sklearn GaussianMixture. k discovered via BIC + silhouette — NOT hard-coded. This is the key difference from MBTI's theory-first fixed axes.</div>
+        </div>
+        <div class="step-arrow">↓</div>
+      </div>
+
+      <div style="display:flex; align-items:center; gap:0;">
+        <div class="step-box">
+          <div class="step-num">Step 4</div>
+          <div class="step-name">predict_proba() → BRANCH</div>
+          <div class="step-desc">Soft membership probabilities are computed. The pipeline forks into two paths that must never merge.</div>
+        </div>
+      </div>
+
+      <div style="display:flex; gap:8px; margin: 0 0 0 0; padding: 0 0 0 20px;">
+        <div class="step-box" style="border-color:var(--accent2);">
+          <div class="branch-label" style="color:var(--accent2)">4a — Display Layer</div>
+          <div class="step-name">Archetype Label + Strength %</div>
+          <div class="step-desc">e.g. "72% Dedicated Planner". Used ONLY for UX display and shareable result. Never passed to step 5.</div>
+        </div>
+        <div class="step-arrow">|</div>
+        <div class="step-box" style="border-color:var(--accent);">
+          <div class="branch-label" style="color:var(--accent)">4b — Matching Layer</div>
+          <div class="step-name">Raw Continuous Vector</div>
+          <div class="step-desc">The actual 6-axis float vector from step 2. This is the ONLY input to step 5. Collapsing it to a label would lose information.</div>
+        </div>
+      </div>
+
+      <div style="display:flex; align-items:center; gap:0; margin-top:0;">
+        <div class="step-box">
+          <div class="step-num">Step 5</div>
+          <div class="step-name">Pairwise Compatibility Score</div>
+          <div class="step-desc">Weighted similarity over axes (OkCupid-style). Motivation axis has highest weight (quasi-mandatory). Input: raw vectors only (4b).</div>
+        </div>
+        <div class="step-arrow">↓</div>
+      </div>
+
+      <div style="display:flex; align-items:center; gap:0;">
+        <div class="step-box" style="border-color:var(--warn);">
+          <div class="step-num">Step 6</div>
+          <div class="step-name">ILP Group Formation (OR-Tools CP-SAT)</div>
+          <div class="step-desc">Maximize Σ compat(i,j) for pairs in same group. Each student in exactly 1 group. Group size ∈ {4,5}. NO inter-group fairness — intentional (§6/7).</div>
+        </div>
+      </div>
+
+      <div style="display:flex; align-items:center; gap:0;">
+        <div class="step-box" style="border-color:var(--muted); border-style:dashed;">
+          <div class="step-num">Step 7 — TODO (stretch goal)</div>
+          <div class="step-name">Feedback Loop</div>
+          <div class="step-desc">Pulse surveys → Beta-Binomial update of archetype-pair compat matrix → informs next matching cycle. Not v1.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Design Decisions</div>
+    <table>
+      <thead><tr><th>Decision</th><th>Choice</th><th>Why</th></tr></thead>
+      <tbody>
+        <tr><td>Response format</td><td>Likert 6-pt</td><td>Not binary — avoids ipsative data; MBTI binary has poor test-retest reliability</td></tr>
+        <tr><td>Archetype axes</td><td>Discovered via GMM</td><td>Data-first; avoids MBTI's theory-first empirically-shaky axes</td></tr>
+        <tr><td>Matching philosophy</td><td>Homogeneous</td><td>Opt-in app — students want people like them, not mandatory group fairness</td></tr>
+        <tr><td>Inter-group fairness</td><td>Not optimized</td><td>Would work against the product goal; tracked as outcome metric instead</td></tr>
+        <tr><td>Algorithm</td><td>ILP over GA</td><td>Provable optimum, reproducible, scope fits exact solvers</td></tr>
+        <tr><td>Label vs vector separation</td><td>Label = UX only; vector = matching</td><td>Prevents information loss from collapsing continuous signal</td></tr>
+        <tr><td>Demographics</td><td>Metadata only</td><td>Never in matching math — avoids sensitive-attribute-driven matching</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Known Limitation — Echo Chamber Effect (§7)</div>
+    <p style="font-size:12px; color:var(--muted); line-height:1.8;">
+      Homogeneous matching may widen the gap between high-motivation and low-motivation cohorts over time:
+      high performers keep grouping with other high performers, and vice versa.
+      This is an <strong style="color:var(--warn)">accepted tradeoff</strong> of the opt-in product philosophy, not a bug.
+      Track it as an outcome metric during beta (do archetype groups show diverging performance/retention
+      over the semester?) rather than constraining the algorithm to prevent it.
+    </p>
+  </div>
+</section>
+
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>
