@@ -4,10 +4,9 @@
     "student_b": "stu_0002",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 57.2,
+    "compatibility_score": 80.4,
     "breakdown": {
-      "similarity": 84.4,
-      "complementarity": 25.0,
+      "similarity": 80.4,
       "study_style": 50.0,
       "academic": 0.0
     }
@@ -17,10 +16,9 @@
     "student_b": "stu_0003",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 180,
-    "compatibility_score": 80.5,
+    "compatibility_score": 83.9,
     "breakdown": {
-      "similarity": 96.9,
-      "complementarity": 41.7,
+      "similarity": 83.9,
       "study_style": 68.8,
       "academic": 100.0
     }
@@ -30,10 +28,9 @@
     "student_b": "stu_0004",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 68.3,
+    "compatibility_score": 60.7,
     "breakdown": {
-      "similarity": 75.0,
-      "complementarity": 66.7,
+      "similarity": 60.7,
       "study_style": 62.5,
       "academic": 50.0
     }
@@ -43,10 +40,9 @@
     "student_b": "stu_0005",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 49.8,
+    "compatibility_score": 55.4,
     "breakdown": {
-      "similarity": 56.2,
-      "complementarity": 58.3,
+      "similarity": 55.4,
       "study_style": 50.0,
       "academic": 0.0
     }
@@ -56,10 +52,9 @@
     "student_b": "stu_0006",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 77.5,
+    "compatibility_score": 67.9,
     "breakdown": {
-      "similarity": 84.4,
-      "complementarity": 66.7,
+      "similarity": 67.9,
       "study_style": 60.0,
       "academic": 100.0
     }
@@ -69,10 +64,9 @@
     "student_b": "stu_0007",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 64.8,
+    "compatibility_score": 66.1,
     "breakdown": {
-      "similarity": 71.9,
-      "complementarity": 41.7,
+      "similarity": 66.1,
       "study_style": 77.5,
       "academic": 50.0
     }
@@ -82,10 +76,9 @@
     "student_b": "stu_0008",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 60,
-    "compatibility_score": 68.7,
+    "compatibility_score": 60.7,
     "breakdown": {
-      "similarity": 65.6,
-      "complementarity": 58.3,
+      "similarity": 60.7,
       "study_style": 71.2,
       "academic": 100.0
     }
@@ -95,10 +88,9 @@
     "student_b": "stu_0009",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 360,
-    "compatibility_score": 66.0,
+    "compatibility_score": 58.9,
     "breakdown": {
-      "similarity": 68.8,
-      "complementarity": 58.3,
+      "similarity": 58.9,
       "study_style": 75.0,
       "academic": 50.0
     }
@@ -108,10 +100,9 @@
     "student_b": "stu_0010",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 55.7,
+    "compatibility_score": 83.9,
     "breakdown": {
-      "similarity": 78.1,
-      "complementarity": 8.3,
+      "similarity": 83.9,
       "study_style": 75.0,
       "academic": 0.0
     }
@@ -121,10 +112,9 @@
     "student_b": "stu_0011",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 420,
-    "compatibility_score": 57.8,
+    "compatibility_score": 64.3,
     "breakdown": {
-      "similarity": 65.6,
-      "complementarity": 50.0,
+      "similarity": 64.3,
       "study_style": 75.0,
       "academic": 0.0
     }
@@ -134,10 +124,9 @@
     "student_b": "stu_0012",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 65.3,
+    "compatibility_score": 60.7,
     "breakdown": {
-      "similarity": 75.0,
-      "complementarity": 66.7,
+      "similarity": 60.7,
       "study_style": 72.5,
       "academic": 0.0
     }
@@ -147,10 +136,9 @@
     "student_b": "stu_0013",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 120,
-    "compatibility_score": 65.2,
+    "compatibility_score": 73.2,
     "breakdown": {
-      "similarity": 78.1,
-      "complementarity": 33.3,
+      "similarity": 73.2,
       "study_style": 72.5,
       "academic": 50.0
     }
@@ -160,10 +148,9 @@
     "student_b": "stu_0014",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 120,
-    "compatibility_score": 58.4,
+    "compatibility_score": 85.7,
     "breakdown": {
-      "similarity": 84.4,
-      "complementarity": 8.3,
+      "similarity": 85.7,
       "study_style": 47.5,
       "academic": 50.0
     }
@@ -173,10 +160,9 @@
     "student_b": "stu_0015",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 60,
-    "compatibility_score": 60.9,
+    "compatibility_score": 60.7,
     "breakdown": {
-      "similarity": 71.9,
-      "complementarity": 58.3,
+      "similarity": 60.7,
       "study_style": 66.2,
       "academic": 0.0
     }
@@ -186,10 +172,9 @@
     "student_b": "stu_0016",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 72.6,
+    "compatibility_score": 67.9,
     "breakdown": {
-      "similarity": 71.9,
-      "complementarity": 58.3,
+      "similarity": 67.9,
       "study_style": 75.0,
       "academic": 100.0
     }
@@ -199,10 +184,9 @@
     "student_b": "stu_0017",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 240,
-    "compatibility_score": 57.4,
+    "compatibility_score": 53.6,
     "breakdown": {
-      "similarity": 53.1,
-      "complementarity": 66.7,
+      "similarity": 53.6,
       "study_style": 62.5,
       "academic": 50.0
     }
@@ -212,10 +196,9 @@
     "student_b": "stu_0018",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 64.5,
+    "compatibility_score": 57.1,
     "breakdown": {
-      "similarity": 65.6,
-      "complementarity": 58.3,
+      "similarity": 57.1,
       "study_style": 50.0,
       "academic": 100.0
     }
@@ -225,10 +208,9 @@
     "student_b": "stu_0019",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 63.3,
+    "compatibility_score": 66.1,
     "breakdown": {
-      "similarity": 75.0,
-      "complementarity": 66.7,
+      "similarity": 66.1,
       "study_style": 62.5,
       "academic": 0.0
     }
@@ -238,10 +220,9 @@
     "student_b": "stu_0020",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 180,
-    "compatibility_score": 55.0,
+    "compatibility_score": 60.7,
     "breakdown": {
-      "similarity": 62.5,
-      "complementarity": 50.0,
+      "similarity": 60.7,
       "study_style": 68.8,
       "academic": 0.0
     }
@@ -251,10 +232,9 @@
     "student_b": "stu_0021",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 180,
-    "compatibility_score": 51.8,
+    "compatibility_score": 53.6,
     "breakdown": {
-      "similarity": 59.4,
-      "complementarity": 66.7,
+      "similarity": 53.6,
       "study_style": 43.8,
       "academic": 0.0
     }
@@ -264,10 +244,9 @@
     "student_b": "stu_0022",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 420,
-    "compatibility_score": 62.7,
+    "compatibility_score": 60.7,
     "breakdown": {
-      "similarity": 68.8,
-      "complementarity": 66.7,
+      "similarity": 60.7,
       "study_style": 75.0,
       "academic": 0.0
     }
@@ -277,10 +256,9 @@
     "student_b": "stu_0023",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 360,
-    "compatibility_score": 66.6,
+    "compatibility_score": 87.5,
     "breakdown": {
-      "similarity": 90.6,
-      "complementarity": 16.7,
+      "similarity": 87.5,
       "study_style": 65.0,
       "academic": 50.0
     }
@@ -290,10 +268,9 @@
     "student_b": "stu_0024",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 420,
-    "compatibility_score": 58.1,
+    "compatibility_score": 80.4,
     "breakdown": {
-      "similarity": 71.9,
-      "complementarity": 8.3,
+      "similarity": 80.4,
       "study_style": 77.5,
       "academic": 50.0
     }
@@ -303,10 +280,9 @@
     "student_b": "stu_0025",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 480,
-    "compatibility_score": 65.6,
+    "compatibility_score": 73.2,
     "breakdown": {
-      "similarity": 81.2,
-      "complementarity": 50.0,
+      "similarity": 73.2,
       "study_style": 75.0,
       "academic": 0.0
     }
@@ -316,10 +292,9 @@
     "student_b": "stu_0026",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 67.8,
+    "compatibility_score": 62.5,
     "breakdown": {
-      "similarity": 65.6,
-      "complementarity": 50.0,
+      "similarity": 62.5,
       "study_style": 75.0,
       "academic": 100.0
     }
@@ -329,10 +304,9 @@
     "student_b": "stu_0027",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 480,
-    "compatibility_score": 74.6,
+    "compatibility_score": 85.7,
     "breakdown": {
-      "similarity": 87.5,
-      "complementarity": 16.7,
+      "similarity": 85.7,
       "study_style": 87.5,
       "academic": 100.0
     }
@@ -342,10 +316,9 @@
     "student_b": "stu_0028",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 180,
-    "compatibility_score": 56.6,
+    "compatibility_score": 78.6,
     "breakdown": {
-      "similarity": 75.0,
-      "complementarity": 16.7,
+      "similarity": 78.6,
       "study_style": 78.8,
       "academic": 0.0
     }
@@ -355,10 +328,9 @@
     "student_b": "stu_0003",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 120,
-    "compatibility_score": 57.6,
+    "compatibility_score": 89.3,
     "breakdown": {
-      "similarity": 87.5,
-      "complementarity": 16.7,
+      "similarity": 89.3,
       "study_style": 27.5,
       "academic": 50.0
     }
@@ -368,10 +340,9 @@
     "student_b": "stu_0004",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 420,
-    "compatibility_score": 62.9,
+    "compatibility_score": 73.2,
     "breakdown": {
-      "similarity": 78.1,
-      "complementarity": 41.7,
+      "similarity": 73.2,
       "study_style": 52.5,
       "academic": 50.0
     }
@@ -381,10 +352,9 @@
     "student_b": "stu_0005",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 360,
-    "compatibility_score": 65.5,
+    "compatibility_score": 64.3,
     "breakdown": {
-      "similarity": 65.6,
-      "complementarity": 58.3,
+      "similarity": 64.3,
       "study_style": 80.0,
       "academic": 50.0
     }
@@ -394,10 +364,9 @@
     "student_b": "stu_0006",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 360,
-    "compatibility_score": 74.0,
+    "compatibility_score": 76.8,
     "breakdown": {
-      "similarity": 81.2,
-      "complementarity": 41.7,
+      "similarity": 76.8,
       "study_style": 75.0,
       "academic": 100.0
     }
@@ -407,10 +376,9 @@
     "student_b": "stu_0007",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 360,
-    "compatibility_score": 65.3,
+    "compatibility_score": 78.6,
     "breakdown": {
-      "similarity": 75.0,
-      "complementarity": 16.7,
+      "similarity": 78.6,
       "study_style": 72.5,
       "academic": 100.0
     }
@@ -420,10 +388,9 @@
     "student_b": "stu_0008",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 120,
-    "compatibility_score": 56.5,
+    "compatibility_score": 73.2,
     "breakdown": {
-      "similarity": 68.8,
-      "complementarity": 33.3,
+      "similarity": 73.2,
       "study_style": 27.5,
       "academic": 100.0
     }
@@ -433,10 +400,9 @@
     "student_b": "stu_0009",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 420,
-    "compatibility_score": 67.6,
+    "compatibility_score": 64.3,
     "breakdown": {
-      "similarity": 71.9,
-      "complementarity": 58.3,
+      "similarity": 64.3,
       "study_style": 75.0,
       "academic": 50.0
     }
@@ -446,10 +412,9 @@
     "student_b": "stu_0010",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 180,
-    "compatibility_score": 61.0,
+    "compatibility_score": 78.6,
     "breakdown": {
-      "similarity": 81.2,
-      "complementarity": 33.3,
+      "similarity": 78.6,
       "study_style": 68.8,
       "academic": 0.0
     }
@@ -459,10 +424,9 @@
     "student_b": "stu_0011",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 240,
-    "compatibility_score": 54.0,
+    "compatibility_score": 73.2,
     "breakdown": {
-      "similarity": 68.8,
-      "complementarity": 33.3,
+      "similarity": 73.2,
       "study_style": 40.0,
       "academic": 50.0
     }
@@ -472,10 +436,9 @@
     "student_b": "stu_0012",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 60,
-    "compatibility_score": 49.9,
+    "compatibility_score": 66.1,
     "breakdown": {
-      "similarity": 65.6,
-      "complementarity": 41.7,
+      "similarity": 66.1,
       "study_style": 43.8,
       "academic": 0.0
     }
@@ -485,10 +448,9 @@
     "student_b": "stu_0013",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 180,
-    "compatibility_score": 54.4,
+    "compatibility_score": 82.1,
     "breakdown": {
-      "similarity": 81.2,
-      "complementarity": 25.0,
+      "similarity": 82.1,
       "study_style": 43.8,
       "academic": 0.0
     }
@@ -498,10 +460,9 @@
     "student_b": "stu_0014",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 180,
-    "compatibility_score": 65.8,
+    "compatibility_score": 87.5,
     "breakdown": {
       "similarity": 87.5,
-      "complementarity": 16.7,
       "study_style": 68.8,
       "academic": 50.0
     }
@@ -511,10 +472,9 @@
     "student_b": "stu_0015",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 120,
-    "compatibility_score": 54.8,
+    "compatibility_score": 76.8,
     "breakdown": {
-      "similarity": 81.2,
-      "complementarity": 33.3,
+      "similarity": 76.8,
       "study_style": 37.5,
       "academic": 0.0
     }
@@ -524,10 +484,9 @@
     "student_b": "stu_0016",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 69.5,
+    "compatibility_score": 69.6,
     "breakdown": {
-      "similarity": 75.0,
-      "complementarity": 50.0,
+      "similarity": 69.6,
       "study_style": 60.0,
       "academic": 100.0
     }
@@ -537,10 +496,9 @@
     "student_b": "stu_0017",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 180,
-    "compatibility_score": 64.3,
+    "compatibility_score": 66.1,
     "breakdown": {
-      "similarity": 68.8,
-      "complementarity": 58.3,
+      "similarity": 66.1,
       "study_style": 66.2,
       "academic": 50.0
     }
@@ -550,10 +508,9 @@
     "student_b": "stu_0018",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 74.2,
+    "compatibility_score": 73.2,
     "breakdown": {
-      "similarity": 75.0,
-      "complementarity": 33.3,
+      "similarity": 73.2,
       "study_style": 100.0,
       "academic": 100.0
     }
@@ -563,10 +520,9 @@
     "student_b": "stu_0019",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 60,
-    "compatibility_score": 57.5,
+    "compatibility_score": 71.4,
     "breakdown": {
-      "similarity": 78.1,
-      "complementarity": 58.3,
+      "similarity": 71.4,
       "study_style": 33.8,
       "academic": 0.0
     }
@@ -576,10 +532,9 @@
     "student_b": "stu_0020",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 180,
-    "compatibility_score": 49.6,
+    "compatibility_score": 73.2,
     "breakdown": {
-      "similarity": 65.6,
-      "complementarity": 25.0,
+      "similarity": 73.2,
       "study_style": 33.8,
       "academic": 50.0
     }
@@ -589,10 +544,9 @@
     "student_b": "stu_0021",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 120,
-    "compatibility_score": 61.5,
+    "compatibility_score": 62.5,
     "breakdown": {
-      "similarity": 68.8,
-      "complementarity": 58.3,
+      "similarity": 62.5,
       "study_style": 52.5,
       "academic": 50.0
     }
@@ -602,10 +556,9 @@
     "student_b": "stu_0022",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 180,
-    "compatibility_score": 56.0,
+    "compatibility_score": 66.1,
     "breakdown": {
-      "similarity": 71.9,
-      "complementarity": 66.7,
+      "similarity": 66.1,
       "study_style": 33.8,
       "academic": 0.0
     }
@@ -615,10 +568,9 @@
     "student_b": "stu_0023",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 420,
-    "compatibility_score": 64.3,
+    "compatibility_score": 85.7,
     "breakdown": {
-      "similarity": 81.2,
-      "complementarity": 8.3,
+      "similarity": 85.7,
       "study_style": 85.0,
       "academic": 50.0
     }
@@ -628,10 +580,9 @@
     "student_b": "stu_0024",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 360,
-    "compatibility_score": 63.5,
+    "compatibility_score": 82.1,
     "breakdown": {
-      "similarity": 81.2,
-      "complementarity": 16.7,
+      "similarity": 82.1,
       "study_style": 72.5,
       "academic": 50.0
     }
@@ -641,10 +592,9 @@
     "student_b": "stu_0025",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 240,
-    "compatibility_score": 59.4,
+    "compatibility_score": 75.0,
     "breakdown": {
-      "similarity": 78.1,
-      "complementarity": 41.7,
+      "similarity": 75.0,
       "study_style": 60.0,
       "academic": 0.0
     }
@@ -654,10 +604,9 @@
     "student_b": "stu_0026",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 240,
-    "compatibility_score": 59.7,
+    "compatibility_score": 71.4,
     "breakdown": {
-      "similarity": 68.8,
-      "complementarity": 41.7,
+      "similarity": 71.4,
       "study_style": 60.0,
       "academic": 50.0
     }
@@ -667,10 +616,9 @@
     "student_b": "stu_0027",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 180,
-    "compatibility_score": 68.4,
+    "compatibility_score": 83.9,
     "breakdown": {
-      "similarity": 84.4,
-      "complementarity": 25.0,
+      "similarity": 83.9,
       "study_style": 56.2,
       "academic": 100.0
     }
@@ -680,10 +628,9 @@
     "student_b": "stu_0028",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 120,
-    "compatibility_score": 54.7,
+    "compatibility_score": 83.9,
     "breakdown": {
-      "similarity": 84.4,
-      "complementarity": 25.0,
+      "similarity": 83.9,
       "study_style": 37.5,
       "academic": 0.0
     }
@@ -693,10 +640,9 @@
     "student_b": "stu_0004",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 180,
-    "compatibility_score": 73.6,
+    "compatibility_score": 73.2,
     "breakdown": {
-      "similarity": 78.1,
-      "complementarity": 41.7,
+      "similarity": 73.2,
       "study_style": 81.2,
       "academic": 100.0
     }
@@ -706,10 +652,9 @@
     "student_b": "stu_0005",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 180,
-    "compatibility_score": 58.8,
+    "compatibility_score": 64.3,
     "breakdown": {
-      "similarity": 59.4,
-      "complementarity": 41.7,
+      "similarity": 64.3,
       "study_style": 53.8,
       "academic": 100.0
     }
@@ -719,10 +664,9 @@
     "student_b": "stu_0006",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 180,
-    "compatibility_score": 65.8,
+    "compatibility_score": 80.4,
     "breakdown": {
-      "similarity": 87.5,
-      "complementarity": 41.7,
+      "similarity": 80.4,
       "study_style": 43.8,
       "academic": 50.0
     }
@@ -732,10 +676,9 @@
     "student_b": "stu_0007",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 180,
-    "compatibility_score": 60.1,
+    "compatibility_score": 78.6,
     "breakdown": {
-      "similarity": 75.0,
-      "complementarity": 16.7,
+      "similarity": 78.6,
       "study_style": 46.2,
       "academic": 100.0
     }
@@ -745,10 +688,9 @@
     "student_b": "stu_0008",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 120,
-    "compatibility_score": 55.5,
+    "compatibility_score": 73.2,
     "breakdown": {
-      "similarity": 68.8,
-      "complementarity": 33.3,
+      "similarity": 73.2,
       "study_style": 72.5,
       "academic": 0.0
     }
@@ -758,10 +700,9 @@
     "student_b": "stu_0009",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 120,
-    "compatibility_score": 68.1,
+    "compatibility_score": 64.3,
     "breakdown": {
-      "similarity": 71.9,
-      "complementarity": 58.3,
+      "similarity": 64.3,
       "study_style": 52.5,
       "academic": 100.0
     }
@@ -771,10 +712,9 @@
     "student_b": "stu_0010",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 180,
-    "compatibility_score": 64.0,
+    "compatibility_score": 78.6,
     "breakdown": {
-      "similarity": 81.2,
-      "complementarity": 33.3,
+      "similarity": 78.6,
       "study_style": 58.8,
       "academic": 50.0
     }
@@ -784,10 +724,9 @@
     "student_b": "stu_0011",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 120,
-    "compatibility_score": 55.5,
+    "compatibility_score": 73.2,
     "breakdown": {
-      "similarity": 68.8,
-      "complementarity": 33.3,
+      "similarity": 73.2,
       "study_style": 72.5,
       "academic": 0.0
     }
@@ -797,10 +736,9 @@
     "student_b": "stu_0012",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 180,
-    "compatibility_score": 68.6,
+    "compatibility_score": 73.2,
     "breakdown": {
-      "similarity": 78.1,
-      "complementarity": 41.7,
+      "similarity": 73.2,
       "study_style": 56.2,
       "academic": 100.0
     }
@@ -810,10 +748,9 @@
     "student_b": "stu_0013",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 180,
-    "compatibility_score": 56.2,
+    "compatibility_score": 78.6,
     "breakdown": {
-      "similarity": 75.0,
-      "complementarity": 25.0,
+      "similarity": 78.6,
       "study_style": 68.8,
       "academic": 0.0
     }
@@ -823,10 +760,9 @@
     "student_b": "stu_0014",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 180,
-    "compatibility_score": 62.2,
+    "compatibility_score": 83.9,
     "breakdown": {
-      "similarity": 87.5,
-      "complementarity": 33.3,
+      "similarity": 83.9,
       "study_style": 58.8,
       "academic": 0.0
     }
@@ -836,10 +772,9 @@
     "student_b": "stu_0015",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 120,
-    "compatibility_score": 61.7,
+    "compatibility_score": 73.2,
     "breakdown": {
-      "similarity": 75.0,
-      "complementarity": 33.3,
+      "similarity": 73.2,
       "study_style": 62.5,
       "academic": 50.0
     }
@@ -849,10 +784,9 @@
     "student_b": "stu_0016",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 180,
-    "compatibility_score": 64.2,
+    "compatibility_score": 69.6,
     "breakdown": {
-      "similarity": 75.0,
-      "complementarity": 50.0,
+      "similarity": 69.6,
       "study_style": 58.8,
       "academic": 50.0
     }
@@ -862,10 +796,9 @@
     "student_b": "stu_0017",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 120,
-    "compatibility_score": 60.8,
+    "compatibility_score": 58.9,
     "breakdown": {
-      "similarity": 56.2,
-      "complementarity": 58.3,
+      "similarity": 58.9,
       "study_style": 55.0,
       "academic": 100.0
     }
@@ -875,10 +808,9 @@
     "student_b": "stu_0018",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 180,
-    "compatibility_score": 52.8,
+    "compatibility_score": 69.6,
     "breakdown": {
-      "similarity": 68.8,
-      "complementarity": 33.3,
+      "similarity": 69.6,
       "study_style": 33.8,
       "academic": 50.0
     }
@@ -888,10 +820,9 @@
     "student_b": "stu_0019",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 180,
-    "compatibility_score": 70.5,
+    "compatibility_score": 71.4,
     "breakdown": {
-      "similarity": 71.9,
-      "complementarity": 41.7,
+      "similarity": 71.4,
       "study_style": 81.2,
       "academic": 100.0
     }
@@ -901,10 +832,9 @@
     "student_b": "stu_0020",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 180,
-    "compatibility_score": 56.6,
+    "compatibility_score": 73.2,
     "breakdown": {
-      "similarity": 65.6,
-      "complementarity": 25.0,
+      "similarity": 73.2,
       "study_style": 93.8,
       "academic": 0.0
     }
@@ -914,10 +844,9 @@
     "student_b": "stu_0021",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 120,
-    "compatibility_score": 49.1,
+    "compatibility_score": 62.5,
     "breakdown": {
       "similarity": 62.5,
-      "complementarity": 41.7,
       "study_style": 47.5,
       "academic": 0.0
     }
@@ -927,10 +856,9 @@
     "student_b": "stu_0022",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 180,
-    "compatibility_score": 66.7,
+    "compatibility_score": 69.6,
     "breakdown": {
-      "similarity": 71.9,
-      "complementarity": 50.0,
+      "similarity": 69.6,
       "study_style": 78.8,
       "academic": 50.0
     }
@@ -940,10 +868,9 @@
     "student_b": "stu_0023",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 180,
-    "compatibility_score": 68.6,
+    "compatibility_score": 89.3,
     "breakdown": {
-      "similarity": 93.8,
-      "complementarity": 25.0,
+      "similarity": 89.3,
       "study_style": 33.8,
       "academic": 100.0
     }
@@ -953,10 +880,9 @@
     "student_b": "stu_0024",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 180,
-    "compatibility_score": 53.4,
+    "compatibility_score": 75.0,
     "breakdown": {
       "similarity": 75.0,
-      "complementarity": 33.3,
       "study_style": 46.2,
       "academic": 0.0
     }
@@ -966,10 +892,9 @@
     "student_b": "stu_0025",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 180,
-    "compatibility_score": 63.8,
+    "compatibility_score": 78.6,
     "breakdown": {
-      "similarity": 78.1,
-      "complementarity": 25.0,
+      "similarity": 78.6,
       "study_style": 73.8,
       "academic": 50.0
     }
@@ -979,10 +904,9 @@
     "student_b": "stu_0026",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 180,
-    "compatibility_score": 57.5,
+    "compatibility_score": 71.4,
     "breakdown": {
-      "similarity": 68.8,
-      "complementarity": 41.7,
+      "similarity": 71.4,
       "study_style": 73.8,
       "academic": 0.0
     }
@@ -992,10 +916,9 @@
     "student_b": "stu_0027",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 180,
-    "compatibility_score": 64.9,
+    "compatibility_score": 83.9,
     "breakdown": {
-      "similarity": 90.6,
-      "complementarity": 41.7,
+      "similarity": 83.9,
       "study_style": 56.2,
       "academic": 0.0
     }
@@ -1005,10 +928,9 @@
     "student_b": "stu_0028",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 120,
-    "compatibility_score": 69.9,
+    "compatibility_score": 76.8,
     "breakdown": {
-      "similarity": 78.1,
-      "complementarity": 41.7,
+      "similarity": 76.8,
       "study_style": 62.5,
       "academic": 100.0
     }
@@ -1018,10 +940,9 @@
     "student_b": "stu_0005",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 360,
-    "compatibility_score": 62.0,
+    "compatibility_score": 66.1,
     "breakdown": {
-      "similarity": 75.0,
-      "complementarity": 50.0,
+      "similarity": 66.1,
       "study_style": 72.5,
       "academic": 0.0
     }
@@ -1031,10 +952,9 @@
     "student_b": "stu_0006",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 58.0,
+    "compatibility_score": 85.7,
     "breakdown": {
-      "similarity": 84.4,
-      "complementarity": 16.7,
+      "similarity": 85.7,
       "study_style": 62.5,
       "academic": 0.0
     }
@@ -1044,10 +964,9 @@
     "student_b": "stu_0007",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 420,
-    "compatibility_score": 60.2,
+    "compatibility_score": 83.9,
     "breakdown": {
-      "similarity": 84.4,
-      "complementarity": 25.0,
+      "similarity": 83.9,
       "study_style": 65.0,
       "academic": 0.0
     }
@@ -1057,10 +976,9 @@
     "student_b": "stu_0008",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 360,
-    "compatibility_score": 71.7,
+    "compatibility_score": 82.1,
     "breakdown": {
-      "similarity": 84.4,
-      "complementarity": 25.0,
+      "similarity": 82.1,
       "study_style": 72.5,
       "academic": 100.0
     }
@@ -1070,10 +988,9 @@
     "student_b": "stu_0009",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 540,
-    "compatibility_score": 58.0,
+    "compatibility_score": 66.1,
     "breakdown": {
-      "similarity": 75.0,
-      "complementarity": 50.0,
+      "similarity": 66.1,
       "study_style": 52.5,
       "academic": 0.0
     }
@@ -1083,10 +1000,9 @@
     "student_b": "stu_0010",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 71.4,
+    "compatibility_score": 58.9,
     "breakdown": {
-      "similarity": 71.9,
-      "complementarity": 75.0,
+      "similarity": 58.9,
       "study_style": 52.5,
       "academic": 100.0
     }
@@ -1096,10 +1012,9 @@
     "student_b": "stu_0011",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 66.7,
+    "compatibility_score": 78.6,
     "breakdown": {
-      "similarity": 84.4,
-      "complementarity": 25.0,
+      "similarity": 78.6,
       "study_style": 72.5,
       "academic": 50.0
     }
@@ -1109,10 +1024,9 @@
     "student_b": "stu_0012",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 62.3,
+    "compatibility_score": 82.1,
     "breakdown": {
-      "similarity": 81.2,
-      "complementarity": 33.3,
+      "similarity": 82.1,
       "study_style": 75.0,
       "academic": 0.0
     }
@@ -1122,10 +1036,9 @@
     "student_b": "stu_0013",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 420,
-    "compatibility_score": 65.3,
+    "compatibility_score": 66.1,
     "breakdown": {
-      "similarity": 65.6,
-      "complementarity": 50.0,
+      "similarity": 66.1,
       "study_style": 62.5,
       "academic": 100.0
     }
@@ -1135,10 +1048,9 @@
     "student_b": "stu_0014",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 69.4,
+    "compatibility_score": 71.4,
     "breakdown": {
-      "similarity": 84.4,
-      "complementarity": 58.3,
+      "similarity": 71.4,
       "study_style": 77.5,
       "academic": 0.0
     }
@@ -1148,10 +1060,9 @@
     "student_b": "stu_0015",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 180,
-    "compatibility_score": 71.8,
+    "compatibility_score": 82.1,
     "breakdown": {
-      "similarity": 84.4,
-      "complementarity": 41.7,
+      "similarity": 82.1,
       "study_style": 56.2,
       "academic": 100.0
     }
@@ -1161,10 +1072,9 @@
     "student_b": "stu_0016",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 480,
-    "compatibility_score": 53.5,
+    "compatibility_score": 57.1,
     "breakdown": {
-      "similarity": 59.4,
-      "complementarity": 41.7,
+      "similarity": 57.1,
       "study_style": 52.5,
       "academic": 50.0
     }
@@ -1174,10 +1084,9 @@
     "student_b": "stu_0017",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 58.6,
+    "compatibility_score": 67.9,
     "breakdown": {
-      "similarity": 71.9,
-      "complementarity": 33.3,
+      "similarity": 67.9,
       "study_style": 80.0,
       "academic": 0.0
     }
@@ -1187,10 +1096,9 @@
     "student_b": "stu_0018",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 480,
-    "compatibility_score": 67.7,
+    "compatibility_score": 85.7,
     "breakdown": {
-      "similarity": 84.4,
-      "complementarity": 25.0,
+      "similarity": 85.7,
       "study_style": 52.5,
       "academic": 100.0
     }
@@ -1200,10 +1108,9 @@
     "student_b": "stu_0019",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 240,
-    "compatibility_score": 66.3,
+    "compatibility_score": 51.8,
     "breakdown": {
-      "similarity": 62.5,
-      "complementarity": 75.0,
+      "similarity": 51.8,
       "study_style": 100.0,
       "academic": 0.0
     }
@@ -1213,10 +1120,9 @@
     "student_b": "stu_0020",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 68.5,
+    "compatibility_score": 71.4,
     "breakdown": {
-      "similarity": 68.8,
-      "complementarity": 33.3,
+      "similarity": 71.4,
       "study_style": 87.5,
       "academic": 100.0
     }
@@ -1226,10 +1132,9 @@
     "student_b": "stu_0021",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 62.3,
+    "compatibility_score": 60.7,
     "breakdown": {
-      "similarity": 65.6,
-      "complementarity": 50.0,
+      "similarity": 60.7,
       "study_style": 72.5,
       "academic": 50.0
     }
@@ -1239,10 +1144,9 @@
     "student_b": "stu_0022",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 240,
-    "compatibility_score": 68.7,
+    "compatibility_score": 64.3,
     "breakdown": {
-      "similarity": 75.0,
-      "complementarity": 58.3,
+      "similarity": 64.3,
       "study_style": 72.5,
       "academic": 50.0
     }
@@ -1252,10 +1156,9 @@
     "student_b": "stu_0023",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 540,
-    "compatibility_score": 59.6,
+    "compatibility_score": 69.6,
     "breakdown": {
-      "similarity": 78.1,
-      "complementarity": 50.0,
+      "similarity": 69.6,
       "study_style": 52.5,
       "academic": 0.0
     }
@@ -1265,10 +1168,9 @@
     "student_b": "stu_0024",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 240,
-    "compatibility_score": 70.6,
+    "compatibility_score": 62.5,
     "breakdown": {
-      "similarity": 71.9,
-      "complementarity": 58.3,
+      "similarity": 62.5,
       "study_style": 65.0,
       "academic": 100.0
     }
@@ -1278,10 +1180,9 @@
     "student_b": "stu_0025",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 64.8,
+    "compatibility_score": 58.9,
     "breakdown": {
-      "similarity": 62.5,
-      "complementarity": 50.0,
+      "similarity": 58.9,
       "study_style": 67.5,
       "academic": 100.0
     }
@@ -1291,10 +1192,9 @@
     "student_b": "stu_0026",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 480,
-    "compatibility_score": 55.1,
+    "compatibility_score": 58.9,
     "breakdown": {
-      "similarity": 53.1,
-      "complementarity": 50.0,
+      "similarity": 58.9,
       "study_style": 67.5,
       "academic": 50.0
     }
@@ -1304,10 +1204,9 @@
     "student_b": "stu_0027",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 240,
-    "compatibility_score": 62.5,
+    "compatibility_score": 67.9,
     "breakdown": {
-      "similarity": 75.0,
-      "complementarity": 50.0,
+      "similarity": 67.9,
       "study_style": 75.0,
       "academic": 0.0
     }
@@ -1317,10 +1216,9 @@
     "student_b": "stu_0028",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 240,
-    "compatibility_score": 60.0,
+    "compatibility_score": 67.9,
     "breakdown": {
-      "similarity": 75.0,
-      "complementarity": 50.0,
+      "similarity": 67.9,
       "study_style": 62.5,
       "academic": 0.0
     }
@@ -1330,10 +1228,9 @@
     "student_b": "stu_0006",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 480,
-    "compatibility_score": 71.1,
+    "compatibility_score": 58.9,
     "breakdown": {
-      "similarity": 65.6,
-      "complementarity": 66.7,
+      "similarity": 58.9,
       "study_style": 75.0,
       "academic": 100.0
     }
@@ -1343,10 +1240,9 @@
     "student_b": "stu_0007",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 55.0,
+    "compatibility_score": 60.7,
     "breakdown": {
-      "similarity": 65.6,
-      "complementarity": 58.3,
+      "similarity": 60.7,
       "study_style": 52.5,
       "academic": 0.0
     }
@@ -1356,10 +1252,9 @@
     "student_b": "stu_0008",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 240,
-    "compatibility_score": 64.8,
+    "compatibility_score": 58.9,
     "breakdown": {
-      "similarity": 65.6,
-      "complementarity": 75.0,
+      "similarity": 58.9,
       "study_style": 60.0,
       "academic": 50.0
     }
@@ -1369,10 +1264,9 @@
     "student_b": "stu_0009",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 61.4,
+    "compatibility_score": 82.1,
     "breakdown": {
-      "similarity": 87.5,
-      "complementarity": 33.3,
+      "similarity": 82.1,
       "study_style": 55.0,
       "academic": 0.0
     }
@@ -1382,10 +1276,9 @@
     "student_b": "stu_0010",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 58.8,
+    "compatibility_score": 64.3,
     "breakdown": {
-      "similarity": 65.6,
-      "complementarity": 50.0,
+      "similarity": 64.3,
       "study_style": 55.0,
       "academic": 50.0
     }
@@ -1395,10 +1288,9 @@
     "student_b": "stu_0011",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 480,
-    "compatibility_score": 66.1,
+    "compatibility_score": 80.4,
     "breakdown": {
-      "similarity": 78.1,
-      "complementarity": 25.0,
+      "similarity": 80.4,
       "study_style": 60.0,
       "academic": 100.0
     }
@@ -1408,10 +1300,9 @@
     "student_b": "stu_0012",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 180,
-    "compatibility_score": 67.3,
+    "compatibility_score": 55.4,
     "breakdown": {
-      "similarity": 68.8,
-      "complementarity": 83.3,
+      "similarity": 55.4,
       "study_style": 56.2,
       "academic": 50.0
     }
@@ -1421,10 +1312,9 @@
     "student_b": "stu_0013",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 180,
-    "compatibility_score": 58.2,
+    "compatibility_score": 67.9,
     "breakdown": {
-      "similarity": 65.6,
-      "complementarity": 33.3,
+      "similarity": 67.9,
       "study_style": 43.8,
       "academic": 100.0
     }
@@ -1434,10 +1324,9 @@
     "student_b": "stu_0014",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 59.5,
+    "compatibility_score": 66.1,
     "breakdown": {
-      "similarity": 65.6,
-      "complementarity": 58.3,
+      "similarity": 66.1,
       "study_style": 75.0,
       "academic": 0.0
     }
@@ -1447,10 +1336,9 @@
     "student_b": "stu_0015",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 240,
-    "compatibility_score": 67.8,
+    "compatibility_score": 55.4,
     "breakdown": {
-      "similarity": 65.6,
-      "complementarity": 75.0,
+      "similarity": 55.4,
       "study_style": 50.0,
       "academic": 100.0
     }
@@ -1460,10 +1348,9 @@
     "student_b": "stu_0016",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 180,
-    "compatibility_score": 54.8,
+    "compatibility_score": 66.1,
     "breakdown": {
-      "similarity": 59.4,
-      "complementarity": 41.7,
+      "similarity": 66.1,
       "study_style": 33.8,
       "academic": 100.0
     }
@@ -1473,10 +1360,9 @@
     "student_b": "stu_0017",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 69.4,
+    "compatibility_score": 83.9,
     "breakdown": {
-      "similarity": 84.4,
-      "complementarity": 33.3,
+      "similarity": 83.9,
       "study_style": 52.5,
       "academic": 100.0
     }
@@ -1486,10 +1372,9 @@
     "student_b": "stu_0018",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 180,
-    "compatibility_score": 64.2,
+    "compatibility_score": 58.9,
     "breakdown": {
-      "similarity": 65.6,
-      "complementarity": 58.3,
+      "similarity": 58.9,
       "study_style": 73.8,
       "academic": 50.0
     }
@@ -1499,10 +1384,9 @@
     "student_b": "stu_0019",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 57.6,
+    "compatibility_score": 64.3,
     "breakdown": {
-      "similarity": 56.2,
-      "complementarity": 50.0,
+      "similarity": 64.3,
       "study_style": 72.5,
       "academic": 50.0
     }
@@ -1512,10 +1396,9 @@
     "student_b": "stu_0020",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 240,
-    "compatibility_score": 63.5,
+    "compatibility_score": 55.4,
     "breakdown": {
-      "similarity": 56.2,
-      "complementarity": 66.7,
+      "similarity": 55.4,
       "study_style": 60.0,
       "academic": 100.0
     }
@@ -1525,10 +1408,9 @@
     "student_b": "stu_0021",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 120,
-    "compatibility_score": 66.9,
+    "compatibility_score": 80.4,
     "breakdown": {
-      "similarity": 78.1,
-      "complementarity": 16.7,
+      "similarity": 80.4,
       "study_style": 72.5,
       "academic": 100.0
     }
@@ -1538,10 +1420,9 @@
     "student_b": "stu_0022",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 360,
-    "compatibility_score": 62.4,
+    "compatibility_score": 91.1,
     "breakdown": {
-      "similarity": 87.5,
-      "complementarity": 8.3,
+      "similarity": 91.1,
       "study_style": 60.0,
       "academic": 50.0
     }
@@ -1551,10 +1432,9 @@
     "student_b": "stu_0023",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 480,
-    "compatibility_score": 51.2,
+    "compatibility_score": 57.1,
     "breakdown": {
-      "similarity": 53.1,
-      "complementarity": 58.3,
+      "similarity": 57.1,
       "study_style": 65.0,
       "academic": 0.0
     }
@@ -1564,10 +1444,9 @@
     "student_b": "stu_0024",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 420,
-    "compatibility_score": 60.2,
+    "compatibility_score": 60.7,
     "breakdown": {
-      "similarity": 59.4,
-      "complementarity": 50.0,
+      "similarity": 60.7,
       "study_style": 52.5,
       "academic": 100.0
     }
@@ -1577,10 +1456,9 @@
     "student_b": "stu_0025",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 420,
-    "compatibility_score": 47.6,
+    "compatibility_score": 75.0,
     "breakdown": {
-      "similarity": 62.5,
-      "complementarity": 16.7,
+      "similarity": 75.0,
       "study_style": 40.0,
       "academic": 50.0
     }
@@ -1590,10 +1468,9 @@
     "student_b": "stu_0026",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 120,
-    "compatibility_score": 51.9,
+    "compatibility_score": 64.3,
     "breakdown": {
-      "similarity": 59.4,
-      "complementarity": 33.3,
+      "similarity": 64.3,
       "study_style": 27.5,
       "academic": 100.0
     }
@@ -1603,10 +1480,9 @@
     "student_b": "stu_0027",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 60.6,
+    "compatibility_score": 55.4,
     "breakdown": {
-      "similarity": 56.2,
-      "complementarity": 75.0,
+      "similarity": 55.4,
       "study_style": 62.5,
       "academic": 50.0
     }
@@ -1616,10 +1492,9 @@
     "student_b": "stu_0028",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 240,
-    "compatibility_score": 64.4,
+    "compatibility_score": 62.5,
     "breakdown": {
-      "similarity": 68.8,
-      "complementarity": 75.0,
+      "similarity": 62.5,
       "study_style": 50.0,
       "academic": 50.0
     }
@@ -1629,10 +1504,9 @@
     "student_b": "stu_0007",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 63.1,
+    "compatibility_score": 80.4,
     "breakdown": {
-      "similarity": 81.2,
-      "complementarity": 25.0,
+      "similarity": 80.4,
       "study_style": 62.5,
       "academic": 50.0
     }
@@ -1642,10 +1516,9 @@
     "student_b": "stu_0008",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 240,
-    "compatibility_score": 57.5,
+    "compatibility_score": 78.6,
     "breakdown": {
-      "similarity": 75.0,
-      "complementarity": 25.0,
+      "similarity": 78.6,
       "study_style": 50.0,
       "academic": 50.0
     }
@@ -1655,10 +1528,9 @@
     "student_b": "stu_0009",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 64.1,
+    "compatibility_score": 69.6,
     "breakdown": {
-      "similarity": 78.1,
-      "complementarity": 50.0,
+      "similarity": 69.6,
       "study_style": 50.0,
       "academic": 50.0
     }
@@ -1668,10 +1540,9 @@
     "student_b": "stu_0010",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 360,
-    "compatibility_score": 72.5,
+    "compatibility_score": 62.5,
     "breakdown": {
-      "similarity": 75.0,
-      "complementarity": 75.0,
+      "similarity": 62.5,
       "study_style": 50.0,
       "academic": 100.0
     }
@@ -1681,10 +1552,9 @@
     "student_b": "stu_0011",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 420,
-    "compatibility_score": 58.8,
+    "compatibility_score": 71.4,
     "breakdown": {
-      "similarity": 75.0,
-      "complementarity": 41.7,
+      "similarity": 71.4,
       "study_style": 65.0,
       "academic": 0.0
     }
@@ -1694,10 +1564,9 @@
     "student_b": "stu_0012",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 120,
-    "compatibility_score": 65.5,
+    "compatibility_score": 85.7,
     "breakdown": {
-      "similarity": 84.4,
-      "complementarity": 16.7,
+      "similarity": 85.7,
       "study_style": 75.0,
       "academic": 50.0
     }
@@ -1707,10 +1576,9 @@
     "student_b": "stu_0013",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 180,
-    "compatibility_score": 58.2,
+    "compatibility_score": 73.2,
     "breakdown": {
-      "similarity": 75.0,
-      "complementarity": 50.0,
+      "similarity": 73.2,
       "study_style": 53.8,
       "academic": 0.0
     }
@@ -1720,10 +1588,9 @@
     "student_b": "stu_0014",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 74.3,
+    "compatibility_score": 71.4,
     "breakdown": {
-      "similarity": 81.2,
-      "complementarity": 58.3,
+      "similarity": 71.4,
       "study_style": 85.0,
       "academic": 50.0
     }
@@ -1733,10 +1600,9 @@
     "student_b": "stu_0015",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 240,
-    "compatibility_score": 62.5,
+    "compatibility_score": 78.6,
     "breakdown": {
-      "similarity": 75.0,
-      "complementarity": 25.0,
+      "similarity": 78.6,
       "study_style": 75.0,
       "academic": 50.0
     }
@@ -1746,10 +1612,9 @@
     "student_b": "stu_0016",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 180,
-    "compatibility_score": 59.5,
+    "compatibility_score": 64.3,
     "breakdown": {
-      "similarity": 68.8,
-      "complementarity": 41.7,
+      "similarity": 64.3,
       "study_style": 58.8,
       "academic": 50.0
     }
@@ -1759,10 +1624,9 @@
     "student_b": "stu_0017",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 360,
-    "compatibility_score": 50.4,
+    "compatibility_score": 64.3,
     "breakdown": {
-      "similarity": 62.5,
-      "complementarity": 33.3,
+      "similarity": 64.3,
       "study_style": 62.5,
       "academic": 0.0
     }
@@ -1772,10 +1636,9 @@
     "student_b": "stu_0018",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 180,
-    "compatibility_score": 56.2,
+    "compatibility_score": 78.6,
     "breakdown": {
-      "similarity": 75.0,
-      "complementarity": 25.0,
+      "similarity": 78.6,
       "study_style": 68.8,
       "academic": 0.0
     }
@@ -1785,10 +1648,9 @@
     "student_b": "stu_0019",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 240,
-    "compatibility_score": 65.1,
+    "compatibility_score": 62.5,
     "breakdown": {
-      "similarity": 71.9,
-      "complementarity": 58.3,
+      "similarity": 62.5,
       "study_style": 62.5,
       "academic": 50.0
     }
@@ -1798,10 +1660,9 @@
     "student_b": "stu_0020",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 52.6,
+    "compatibility_score": 75.0,
     "breakdown": {
-      "similarity": 71.9,
-      "complementarity": 33.3,
+      "similarity": 75.0,
       "study_style": 50.0,
       "academic": 0.0
     }
@@ -1811,10 +1672,9 @@
     "student_b": "stu_0021",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 120,
-    "compatibility_score": 59.9,
+    "compatibility_score": 64.3,
     "breakdown": {
-      "similarity": 68.8,
-      "complementarity": 50.0,
+      "similarity": 64.3,
       "study_style": 77.5,
       "academic": 0.0
     }
@@ -1824,10 +1684,9 @@
     "student_b": "stu_0022",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 360,
-    "compatibility_score": 63.7,
+    "compatibility_score": 67.9,
     "breakdown": {
-      "similarity": 78.1,
-      "complementarity": 58.3,
+      "similarity": 67.9,
       "study_style": 65.0,
       "academic": 0.0
     }
@@ -1837,10 +1696,9 @@
     "student_b": "stu_0023",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 540,
-    "compatibility_score": 65.6,
+    "compatibility_score": 73.2,
     "breakdown": {
-      "similarity": 81.2,
-      "complementarity": 50.0,
+      "similarity": 73.2,
       "study_style": 75.0,
       "academic": 0.0
     }
@@ -1850,10 +1708,9 @@
     "student_b": "stu_0024",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 360,
-    "compatibility_score": 63.5,
+    "compatibility_score": 62.5,
     "breakdown": {
-      "similarity": 68.8,
-      "complementarity": 58.3,
+      "similarity": 62.5,
       "study_style": 62.5,
       "academic": 50.0
     }
@@ -1863,10 +1720,9 @@
     "student_b": "stu_0025",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 480,
-    "compatibility_score": 60.9,
+    "compatibility_score": 66.1,
     "breakdown": {
-      "similarity": 71.9,
-      "complementarity": 50.0,
+      "similarity": 66.1,
       "study_style": 50.0,
       "academic": 50.0
     }
@@ -1876,10 +1732,9 @@
     "student_b": "stu_0026",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 180,
-    "compatibility_score": 46.7,
+    "compatibility_score": 69.6,
     "breakdown": {
-      "similarity": 62.5,
-      "complementarity": 33.3,
+      "similarity": 69.6,
       "study_style": 43.8,
       "academic": 0.0
     }
@@ -1889,10 +1744,9 @@
     "student_b": "stu_0027",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 68.6,
+    "compatibility_score": 71.4,
     "breakdown": {
-      "similarity": 78.1,
-      "complementarity": 50.0,
+      "similarity": 71.4,
       "study_style": 72.5,
       "academic": 50.0
     }
@@ -1902,10 +1756,9 @@
     "student_b": "stu_0028",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 71.1,
+    "compatibility_score": 71.4,
     "breakdown": {
-      "similarity": 78.1,
-      "complementarity": 50.0,
+      "similarity": 71.4,
       "study_style": 60.0,
       "academic": 100.0
     }
@@ -1915,10 +1768,9 @@
     "student_b": "stu_0008",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 240,
-    "compatibility_score": 62.5,
+    "compatibility_score": 83.9,
     "breakdown": {
-      "similarity": 81.2,
-      "complementarity": 16.7,
+      "similarity": 83.9,
       "study_style": 67.5,
       "academic": 50.0
     }
@@ -1928,10 +1780,9 @@
     "student_b": "stu_0009",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 420,
-    "compatibility_score": 59.0,
+    "compatibility_score": 60.7,
     "breakdown": {
-      "similarity": 65.6,
-      "complementarity": 58.3,
+      "similarity": 60.7,
       "study_style": 72.5,
       "academic": 0.0
     }
@@ -1941,10 +1792,9 @@
     "student_b": "stu_0010",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 63.9,
+    "compatibility_score": 64.3,
     "breakdown": {
-      "similarity": 68.8,
-      "complementarity": 50.0,
+      "similarity": 64.3,
       "study_style": 72.5,
       "academic": 50.0
     }
@@ -1954,10 +1804,9 @@
     "student_b": "stu_0011",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 56.5,
+    "compatibility_score": 69.6,
     "breakdown": {
-      "similarity": 68.8,
-      "complementarity": 33.3,
+      "similarity": 69.6,
       "study_style": 52.5,
       "academic": 50.0
     }
@@ -1967,10 +1816,9 @@
     "student_b": "stu_0012",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 120,
-    "compatibility_score": 67.8,
+    "compatibility_score": 87.5,
     "breakdown": {
-      "similarity": 90.6,
-      "complementarity": 25.0,
+      "similarity": 87.5,
       "study_style": 62.5,
       "academic": 50.0
     }
@@ -1980,10 +1828,9 @@
     "student_b": "stu_0013",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 240,
-    "compatibility_score": 53.8,
+    "compatibility_score": 67.9,
     "breakdown": {
-      "similarity": 62.5,
-      "complementarity": 25.0,
+      "similarity": 67.9,
       "study_style": 62.5,
       "academic": 50.0
     }
@@ -1993,10 +1840,9 @@
     "student_b": "stu_0014",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 180,
-    "compatibility_score": 63.5,
+    "compatibility_score": 76.8,
     "breakdown": {
-      "similarity": 81.2,
-      "complementarity": 33.3,
+      "similarity": 76.8,
       "study_style": 56.2,
       "academic": 50.0
     }
@@ -2006,10 +1852,9 @@
     "student_b": "stu_0015",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 240,
-    "compatibility_score": 64.6,
+    "compatibility_score": 87.5,
     "breakdown": {
       "similarity": 87.5,
-      "complementarity": 16.7,
       "study_style": 62.5,
       "academic": 50.0
     }
@@ -2019,10 +1864,9 @@
     "student_b": "stu_0016",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 360,
-    "compatibility_score": 52.4,
+    "compatibility_score": 62.5,
     "breakdown": {
       "similarity": 62.5,
-      "complementarity": 33.3,
       "study_style": 72.5,
       "academic": 0.0
     }
@@ -2032,10 +1876,9 @@
     "student_b": "stu_0017",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 180,
-    "compatibility_score": 60.3,
+    "compatibility_score": 62.5,
     "breakdown": {
       "similarity": 62.5,
-      "complementarity": 41.7,
       "study_style": 78.8,
       "academic": 50.0
     }
@@ -2045,10 +1888,9 @@
     "student_b": "stu_0018",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 360,
-    "compatibility_score": 60.3,
+    "compatibility_score": 80.4,
     "breakdown": {
-      "similarity": 75.0,
-      "complementarity": 16.7,
+      "similarity": 80.4,
       "study_style": 72.5,
       "academic": 50.0
     }
@@ -2058,10 +1900,9 @@
     "student_b": "stu_0019",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 120,
-    "compatibility_score": 56.9,
+    "compatibility_score": 57.1,
     "breakdown": {
-      "similarity": 59.4,
-      "complementarity": 58.3,
+      "similarity": 57.1,
       "study_style": 52.5,
       "academic": 50.0
     }
@@ -2071,10 +1912,9 @@
     "student_b": "stu_0020",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 120,
-    "compatibility_score": 58.7,
+    "compatibility_score": 83.9,
     "breakdown": {
-      "similarity": 78.1,
-      "complementarity": 8.3,
+      "similarity": 83.9,
       "study_style": 40.0,
       "academic": 100.0
     }
@@ -2084,10 +1924,9 @@
     "student_b": "stu_0021",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 180,
-    "compatibility_score": 55.3,
+    "compatibility_score": 62.5,
     "breakdown": {
-      "similarity": 68.8,
-      "complementarity": 58.3,
+      "similarity": 62.5,
       "study_style": 46.2,
       "academic": 0.0
     }
@@ -2097,10 +1936,9 @@
     "student_b": "stu_0022",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 66.6,
+    "compatibility_score": 58.9,
     "breakdown": {
-      "similarity": 65.6,
-      "complementarity": 66.7,
+      "similarity": 58.9,
       "study_style": 52.5,
       "academic": 100.0
     }
@@ -2110,10 +1948,9 @@
     "student_b": "stu_0023",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 360,
-    "compatibility_score": 60.0,
+    "compatibility_score": 75.0,
     "breakdown": {
       "similarity": 75.0,
-      "complementarity": 25.0,
       "study_style": 87.5,
       "academic": 0.0
     }
@@ -2123,10 +1960,9 @@
     "student_b": "stu_0024",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 67.9,
+    "compatibility_score": 64.3,
     "breakdown": {
-      "similarity": 62.5,
-      "complementarity": 33.3,
+      "similarity": 64.3,
       "study_style": 100.0,
       "academic": 100.0
     }
@@ -2136,10 +1972,9 @@
     "student_b": "stu_0025",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 65.6,
+    "compatibility_score": 64.3,
     "breakdown": {
-      "similarity": 65.6,
-      "complementarity": 41.7,
+      "similarity": 64.3,
       "study_style": 72.5,
       "academic": 100.0
     }
@@ -2149,10 +1984,9 @@
     "student_b": "stu_0026",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 54.1,
+    "compatibility_score": 67.9,
     "breakdown": {
-      "similarity": 62.5,
-      "complementarity": 41.7,
+      "similarity": 67.9,
       "study_style": 72.5,
       "academic": 0.0
     }
@@ -2162,10 +1996,9 @@
     "student_b": "stu_0027",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 240,
-    "compatibility_score": 63.9,
+    "compatibility_score": 73.2,
     "breakdown": {
-      "similarity": 71.9,
-      "complementarity": 25.0,
+      "similarity": 73.2,
       "study_style": 90.0,
       "academic": 50.0
     }
@@ -2175,10 +2008,9 @@
     "student_b": "stu_0028",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 180,
-    "compatibility_score": 52.2,
+    "compatibility_score": 73.2,
     "breakdown": {
-      "similarity": 71.9,
-      "complementarity": 25.0,
+      "similarity": 73.2,
       "study_style": 56.2,
       "academic": 0.0
     }
@@ -2188,10 +2020,9 @@
     "student_b": "stu_0009",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 120,
-    "compatibility_score": 71.4,
+    "compatibility_score": 62.5,
     "breakdown": {
-      "similarity": 71.9,
-      "complementarity": 75.0,
+      "similarity": 62.5,
       "study_style": 52.5,
       "academic": 100.0
     }
@@ -2201,10 +2032,9 @@
     "student_b": "stu_0010",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 59.5,
+    "compatibility_score": 55.4,
     "breakdown": {
-      "similarity": 56.2,
-      "complementarity": 66.7,
+      "similarity": 55.4,
       "study_style": 65.0,
       "academic": 50.0
     }
@@ -2214,10 +2044,9 @@
     "student_b": "stu_0011",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 60,
-    "compatibility_score": 62.6,
+    "compatibility_score": 67.9,
     "breakdown": {
-      "similarity": 68.8,
-      "complementarity": 50.0,
+      "similarity": 67.9,
       "study_style": 66.2,
       "academic": 50.0
     }
@@ -2227,10 +2056,9 @@
     "student_b": "stu_0012",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 240,
-    "compatibility_score": 63.2,
+    "compatibility_score": 82.1,
     "breakdown": {
-      "similarity": 78.1,
-      "complementarity": 8.3,
+      "similarity": 82.1,
       "study_style": 62.5,
       "academic": 100.0
     }
@@ -2240,10 +2068,9 @@
     "student_b": "stu_0013",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 360,
-    "compatibility_score": 59.6,
+    "compatibility_score": 66.1,
     "breakdown": {
-      "similarity": 62.5,
-      "complementarity": 41.7,
+      "similarity": 66.1,
       "study_style": 75.0,
       "academic": 50.0
     }
@@ -2253,10 +2080,9 @@
     "student_b": "stu_0014",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 540,
-    "compatibility_score": 59.4,
+    "compatibility_score": 67.9,
     "breakdown": {
-      "similarity": 68.8,
-      "complementarity": 50.0,
+      "similarity": 67.9,
       "study_style": 50.0,
       "academic": 50.0
     }
@@ -2266,10 +2092,9 @@
     "student_b": "stu_0015",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 59.0,
+    "compatibility_score": 82.1,
     "breakdown": {
-      "similarity": 81.2,
-      "complementarity": 16.7,
+      "similarity": 82.1,
       "study_style": 75.0,
       "academic": 0.0
     }
@@ -2279,10 +2104,9 @@
     "student_b": "stu_0016",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 240,
-    "compatibility_score": 47.8,
+    "compatibility_score": 60.7,
     "breakdown": {
-      "similarity": 56.2,
-      "complementarity": 33.3,
+      "similarity": 60.7,
       "study_style": 65.0,
       "academic": 0.0
     }
@@ -2292,10 +2116,9 @@
     "student_b": "stu_0017",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 61.5,
+    "compatibility_score": 64.3,
     "breakdown": {
-      "similarity": 68.8,
-      "complementarity": 58.3,
+      "similarity": 64.3,
       "study_style": 52.5,
       "academic": 50.0
     }
@@ -2305,10 +2128,9 @@
     "student_b": "stu_0018",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 240,
-    "compatibility_score": 52.0,
+    "compatibility_score": 82.1,
     "breakdown": {
-      "similarity": 81.2,
-      "complementarity": 16.7,
+      "similarity": 82.1,
       "study_style": 40.0,
       "academic": 0.0
     }
@@ -2318,10 +2140,9 @@
     "student_b": "stu_0019",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 240,
-    "compatibility_score": 69.0,
+    "compatibility_score": 58.9,
     "breakdown": {
-      "similarity": 65.6,
-      "complementarity": 58.3,
+      "similarity": 58.9,
       "study_style": 72.5,
       "academic": 100.0
     }
@@ -2331,10 +2152,9 @@
     "student_b": "stu_0020",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 480,
-    "compatibility_score": 62.7,
+    "compatibility_score": 85.7,
     "breakdown": {
-      "similarity": 78.1,
-      "complementarity": 8.3,
+      "similarity": 85.7,
       "study_style": 85.0,
       "academic": 50.0
     }
@@ -2344,10 +2164,9 @@
     "student_b": "stu_0021",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 360,
-    "compatibility_score": 69.5,
+    "compatibility_score": 64.3,
     "breakdown": {
-      "similarity": 75.0,
-      "complementarity": 75.0,
+      "similarity": 64.3,
       "study_style": 60.0,
       "academic": 50.0
     }
@@ -2357,10 +2176,9 @@
     "student_b": "stu_0022",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 76.5,
+    "compatibility_score": 57.1,
     "breakdown": {
-      "similarity": 65.6,
-      "complementarity": 83.3,
+      "similarity": 57.1,
       "study_style": 85.0,
       "academic": 100.0
     }
@@ -2370,10 +2188,9 @@
     "student_b": "stu_0023",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 480,
-    "compatibility_score": 63.7,
+    "compatibility_score": 69.6,
     "breakdown": {
-      "similarity": 68.8,
-      "complementarity": 41.7,
+      "similarity": 69.6,
       "study_style": 55.0,
       "academic": 100.0
     }
@@ -2383,10 +2200,9 @@
     "student_b": "stu_0024",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 180,
-    "compatibility_score": 50.4,
+    "compatibility_score": 58.9,
     "breakdown": {
-      "similarity": 56.2,
-      "complementarity": 50.0,
+      "similarity": 58.9,
       "study_style": 61.3,
       "academic": 0.0
     }
@@ -2396,10 +2212,9 @@
     "student_b": "stu_0025",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 60,
-    "compatibility_score": 53.7,
+    "compatibility_score": 62.5,
     "breakdown": {
-      "similarity": 65.6,
-      "complementarity": 58.3,
+      "similarity": 62.5,
       "study_style": 46.2,
       "academic": 0.0
     }
@@ -2409,10 +2224,9 @@
     "student_b": "stu_0026",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 420,
-    "compatibility_score": 55.9,
+    "compatibility_score": 66.1,
     "breakdown": {
-      "similarity": 62.5,
-      "complementarity": 58.3,
+      "similarity": 66.1,
       "study_style": 65.0,
       "academic": 0.0
     }
@@ -2422,10 +2236,9 @@
     "student_b": "stu_0027",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 60,
-    "compatibility_score": 52.9,
+    "compatibility_score": 67.9,
     "breakdown": {
-      "similarity": 65.6,
-      "complementarity": 41.7,
+      "similarity": 67.9,
       "study_style": 58.8,
       "academic": 0.0
     }
@@ -2435,10 +2248,9 @@
     "student_b": "stu_0028",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 64.3,
+    "compatibility_score": 71.4,
     "breakdown": {
-      "similarity": 71.9,
-      "complementarity": 41.7,
+      "similarity": 71.4,
       "study_style": 75.0,
       "academic": 50.0
     }
@@ -2448,10 +2260,9 @@
     "student_b": "stu_0010",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 240,
-    "compatibility_score": 74.3,
+    "compatibility_score": 60.7,
     "breakdown": {
-      "similarity": 71.9,
-      "complementarity": 66.7,
+      "similarity": 60.7,
       "study_style": 100.0,
       "academic": 50.0
     }
@@ -2461,10 +2272,9 @@
     "student_b": "stu_0011",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 54.1,
+    "compatibility_score": 66.1,
     "breakdown": {
-      "similarity": 65.6,
-      "complementarity": 41.7,
+      "similarity": 66.1,
       "study_style": 65.0,
       "academic": 0.0
     }
@@ -2474,10 +2284,9 @@
     "student_b": "stu_0012",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 180,
-    "compatibility_score": 59.0,
+    "compatibility_score": 58.9,
     "breakdown": {
-      "similarity": 68.8,
-      "complementarity": 66.7,
+      "similarity": 58.9,
       "study_style": 56.2,
       "academic": 0.0
     }
@@ -2487,10 +2296,9 @@
     "student_b": "stu_0013",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 240,
-    "compatibility_score": 60.7,
+    "compatibility_score": 71.4,
     "breakdown": {
-      "similarity": 78.1,
-      "complementarity": 33.3,
+      "similarity": 71.4,
       "study_style": 75.0,
       "academic": 0.0
     }
@@ -2500,10 +2308,9 @@
     "student_b": "stu_0014",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 60,
-    "compatibility_score": 57.2,
+    "compatibility_score": 66.1,
     "breakdown": {
-      "similarity": 71.9,
-      "complementarity": 50.0,
+      "similarity": 66.1,
       "study_style": 31.2,
       "academic": 50.0
     }
@@ -2513,10 +2320,9 @@
     "student_b": "stu_0015",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 120,
-    "compatibility_score": 62.0,
+    "compatibility_score": 58.9,
     "breakdown": {
-      "similarity": 65.6,
-      "complementarity": 58.3,
+      "similarity": 58.9,
       "study_style": 62.5,
       "academic": 50.0
     }
@@ -2526,10 +2332,9 @@
     "student_b": "stu_0016",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 420,
-    "compatibility_score": 66.3,
+    "compatibility_score": 69.6,
     "breakdown": {
-      "similarity": 71.9,
-      "complementarity": 41.7,
+      "similarity": 69.6,
       "study_style": 85.0,
       "academic": 50.0
     }
@@ -2539,10 +2344,9 @@
     "student_b": "stu_0017",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 240,
-    "compatibility_score": 56.9,
+    "compatibility_score": 80.4,
     "breakdown": {
-      "similarity": 78.1,
-      "complementarity": 16.7,
+      "similarity": 80.4,
       "study_style": 72.5,
       "academic": 0.0
     }
@@ -2552,10 +2356,9 @@
     "student_b": "stu_0018",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 420,
-    "compatibility_score": 69.5,
+    "compatibility_score": 58.9,
     "breakdown": {
-      "similarity": 65.6,
-      "complementarity": 58.3,
+      "similarity": 58.9,
       "study_style": 75.0,
       "academic": 100.0
     }
@@ -2565,10 +2368,9 @@
     "student_b": "stu_0019",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 120,
-    "compatibility_score": 52.4,
+    "compatibility_score": 67.9,
     "breakdown": {
-      "similarity": 68.8,
-      "complementarity": 50.0,
+      "similarity": 67.9,
       "study_style": 40.0,
       "academic": 0.0
     }
@@ -2578,10 +2380,9 @@
     "student_b": "stu_0020",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 120,
-    "compatibility_score": 57.0,
+    "compatibility_score": 55.4,
     "breakdown": {
-      "similarity": 56.2,
-      "complementarity": 66.7,
+      "similarity": 55.4,
       "study_style": 52.5,
       "academic": 50.0
     }
@@ -2591,10 +2392,9 @@
     "student_b": "stu_0021",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 60,
-    "compatibility_score": 43.5,
+    "compatibility_score": 80.4,
     "breakdown": {
-      "similarity": 71.9,
-      "complementarity": 16.7,
+      "similarity": 80.4,
       "study_style": 21.3,
       "academic": 0.0
     }
@@ -2604,10 +2404,9 @@
     "student_b": "stu_0022",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 180,
-    "compatibility_score": 62.4,
+    "compatibility_score": 80.4,
     "breakdown": {
-      "similarity": 81.2,
-      "complementarity": 25.0,
+      "similarity": 80.4,
       "study_style": 58.8,
       "academic": 50.0
     }
@@ -2617,10 +2416,9 @@
     "student_b": "stu_0023",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 360,
-    "compatibility_score": 58.1,
+    "compatibility_score": 60.7,
     "breakdown": {
-      "similarity": 65.6,
-      "complementarity": 66.7,
+      "similarity": 60.7,
       "study_style": 60.0,
       "academic": 0.0
     }
@@ -2630,10 +2428,9 @@
     "student_b": "stu_0024",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 240,
-    "compatibility_score": 69.0,
+    "compatibility_score": 60.7,
     "breakdown": {
-      "similarity": 65.6,
-      "complementarity": 58.3,
+      "similarity": 60.7,
       "study_style": 72.5,
       "academic": 100.0
     }
@@ -2643,10 +2440,9 @@
     "student_b": "stu_0025",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 360,
-    "compatibility_score": 71.2,
+    "compatibility_score": 75.0,
     "breakdown": {
       "similarity": 75.0,
-      "complementarity": 33.3,
       "study_style": 85.0,
       "academic": 100.0
     }
@@ -2656,10 +2452,9 @@
     "student_b": "stu_0026",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 240,
-    "compatibility_score": 61.3,
+    "compatibility_score": 75.0,
     "breakdown": {
-      "similarity": 71.9,
-      "complementarity": 16.7,
+      "similarity": 75.0,
       "study_style": 85.0,
       "academic": 50.0
     }
@@ -2669,10 +2464,9 @@
     "student_b": "stu_0027",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 71.9,
+    "compatibility_score": 58.9,
     "breakdown": {
-      "similarity": 68.8,
-      "complementarity": 75.0,
+      "similarity": 58.9,
       "study_style": 62.5,
       "academic": 100.0
     }
@@ -2682,10 +2476,9 @@
     "student_b": "stu_0028",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 120,
-    "compatibility_score": 65.0,
+    "compatibility_score": 62.5,
     "breakdown": {
-      "similarity": 75.0,
-      "complementarity": 75.0,
+      "similarity": 62.5,
       "study_style": 62.5,
       "academic": 0.0
     }
@@ -2695,10 +2488,9 @@
     "student_b": "stu_0011",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 180,
-    "compatibility_score": 54.7,
+    "compatibility_score": 62.5,
     "breakdown": {
       "similarity": 62.5,
-      "complementarity": 58.3,
       "study_style": 58.8,
       "academic": 0.0
     }
@@ -2708,10 +2500,9 @@
     "student_b": "stu_0012",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 60.3,
+    "compatibility_score": 55.4,
     "breakdown": {
-      "similarity": 65.6,
-      "complementarity": 75.0,
+      "similarity": 55.4,
       "study_style": 62.5,
       "academic": 0.0
     }
@@ -2721,10 +2512,9 @@
     "student_b": "stu_0013",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 360,
-    "compatibility_score": 57.7,
+    "compatibility_score": 67.9,
     "breakdown": {
-      "similarity": 68.8,
-      "complementarity": 41.7,
+      "similarity": 67.9,
       "study_style": 75.0,
       "academic": 0.0
     }
@@ -2734,10 +2524,9 @@
     "student_b": "stu_0014",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 360,
-    "compatibility_score": 57.1,
+    "compatibility_score": 87.5,
     "breakdown": {
       "similarity": 87.5,
-      "complementarity": 16.7,
       "study_style": 50.0,
       "academic": 0.0
     }
@@ -2747,10 +2536,9 @@
     "student_b": "stu_0015",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 59.6,
+    "compatibility_score": 55.4,
     "breakdown": {
-      "similarity": 62.5,
-      "complementarity": 66.7,
+      "similarity": 55.4,
       "study_style": 75.0,
       "academic": 0.0
     }
@@ -2760,10 +2548,9 @@
     "student_b": "stu_0016",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 120,
-    "compatibility_score": 72.2,
+    "compatibility_score": 66.1,
     "breakdown": {
-      "similarity": 68.8,
-      "complementarity": 66.7,
+      "similarity": 66.1,
       "study_style": 72.5,
       "academic": 100.0
     }
@@ -2773,10 +2560,9 @@
     "student_b": "stu_0017",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 480,
-    "compatibility_score": 65.8,
+    "compatibility_score": 58.9,
     "breakdown": {
-      "similarity": 62.5,
-      "complementarity": 75.0,
+      "similarity": 58.9,
       "study_style": 72.5,
       "academic": 50.0
     }
@@ -2786,10 +2572,9 @@
     "student_b": "stu_0018",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 120,
-    "compatibility_score": 67.1,
+    "compatibility_score": 55.4,
     "breakdown": {
-      "similarity": 62.5,
-      "complementarity": 66.7,
+      "similarity": 55.4,
       "study_style": 62.5,
       "academic": 100.0
     }
@@ -2799,10 +2584,9 @@
     "student_b": "stu_0019",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 240,
-    "compatibility_score": 61.9,
+    "compatibility_score": 60.7,
     "breakdown": {
-      "similarity": 59.4,
-      "complementarity": 58.3,
+      "similarity": 60.7,
       "study_style": 52.5,
       "academic": 100.0
     }
@@ -2812,10 +2596,9 @@
     "student_b": "stu_0020",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 48.1,
+    "compatibility_score": 51.8,
     "breakdown": {
-      "similarity": 46.9,
-      "complementarity": 58.3,
+      "similarity": 51.8,
       "study_style": 65.0,
       "academic": 0.0
     }
@@ -2825,10 +2608,9 @@
     "student_b": "stu_0021",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 180,
-    "compatibility_score": 46.5,
+    "compatibility_score": 55.4,
     "breakdown": {
-      "similarity": 56.2,
-      "complementarity": 58.3,
+      "similarity": 55.4,
       "study_style": 33.8,
       "academic": 0.0
     }
@@ -2838,10 +2620,9 @@
     "student_b": "stu_0022",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 540,
-    "compatibility_score": 60.6,
+    "compatibility_score": 66.1,
     "breakdown": {
-      "similarity": 71.9,
-      "complementarity": 58.3,
+      "similarity": 66.1,
       "study_style": 65.0,
       "academic": 0.0
     }
@@ -2851,10 +2632,9 @@
     "student_b": "stu_0023",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 360,
-    "compatibility_score": 62.6,
+    "compatibility_score": 82.1,
     "breakdown": {
-      "similarity": 81.2,
-      "complementarity": 25.0,
+      "similarity": 82.1,
       "study_style": 60.0,
       "academic": 50.0
     }
@@ -2864,10 +2644,9 @@
     "student_b": "stu_0024",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 240,
-    "compatibility_score": 63.5,
+    "compatibility_score": 85.7,
     "breakdown": {
-      "similarity": 81.2,
-      "complementarity": 16.7,
+      "similarity": 85.7,
       "study_style": 72.5,
       "academic": 50.0
     }
@@ -2877,10 +2656,9 @@
     "student_b": "stu_0025",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 61.3,
+    "compatibility_score": 71.4,
     "breakdown": {
-      "similarity": 71.9,
-      "complementarity": 41.7,
+      "similarity": 71.4,
       "study_style": 85.0,
       "academic": 0.0
     }
@@ -2890,10 +2668,9 @@
     "student_b": "stu_0026",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 360,
-    "compatibility_score": 69.9,
+    "compatibility_score": 60.7,
     "breakdown": {
-      "similarity": 62.5,
-      "complementarity": 58.3,
+      "similarity": 60.7,
       "study_style": 85.0,
       "academic": 100.0
     }
@@ -2903,10 +2680,9 @@
     "student_b": "stu_0027",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 64.7,
+    "compatibility_score": 83.9,
     "breakdown": {
-      "similarity": 84.4,
-      "complementarity": 25.0,
+      "similarity": 83.9,
       "study_style": 62.5,
       "academic": 50.0
     }
@@ -2916,10 +2692,9 @@
     "student_b": "stu_0028",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 360,
-    "compatibility_score": 64.1,
+    "compatibility_score": 80.4,
     "breakdown": {
-      "similarity": 78.1,
-      "complementarity": 25.0,
+      "similarity": 80.4,
       "study_style": 75.0,
       "academic": 50.0
     }
@@ -2929,10 +2704,9 @@
     "student_b": "stu_0012",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 240,
-    "compatibility_score": 68.1,
+    "compatibility_score": 64.3,
     "breakdown": {
-      "similarity": 71.9,
-      "complementarity": 58.3,
+      "similarity": 64.3,
       "study_style": 77.5,
       "academic": 50.0
     }
@@ -2942,10 +2716,9 @@
     "student_b": "stu_0013",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 60,
-    "compatibility_score": 52.7,
+    "compatibility_score": 62.5,
     "breakdown": {
-      "similarity": 56.2,
-      "complementarity": 41.7,
+      "similarity": 62.5,
       "study_style": 56.2,
       "academic": 50.0
     }
@@ -2955,10 +2728,9 @@
     "student_b": "stu_0014",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 240,
-    "compatibility_score": 54.4,
+    "compatibility_score": 71.4,
     "breakdown": {
-      "similarity": 68.8,
-      "complementarity": 50.0,
+      "similarity": 71.4,
       "study_style": 50.0,
       "academic": 0.0
     }
@@ -2968,10 +2740,9 @@
     "student_b": "stu_0015",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 60,
-    "compatibility_score": 58.6,
+    "compatibility_score": 64.3,
     "breakdown": {
-      "similarity": 68.8,
-      "complementarity": 50.0,
+      "similarity": 64.3,
       "study_style": 71.2,
       "academic": 0.0
     }
@@ -2981,10 +2752,9 @@
     "student_b": "stu_0016",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 360,
-    "compatibility_score": 51.0,
+    "compatibility_score": 57.1,
     "breakdown": {
-      "similarity": 50.0,
-      "complementarity": 50.0,
+      "similarity": 57.1,
       "study_style": 80.0,
       "academic": 0.0
     }
@@ -2994,10 +2764,9 @@
     "student_b": "stu_0017",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 120,
-    "compatibility_score": 50.7,
+    "compatibility_score": 71.4,
     "breakdown": {
-      "similarity": 68.8,
-      "complementarity": 41.7,
+      "similarity": 71.4,
       "study_style": 40.0,
       "academic": 0.0
     }
@@ -3007,10 +2776,9 @@
     "student_b": "stu_0018",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 52.2,
+    "compatibility_score": 71.4,
     "breakdown": {
-      "similarity": 75.0,
-      "complementarity": 33.3,
+      "similarity": 71.4,
       "study_style": 40.0,
       "academic": 0.0
     }
@@ -3020,10 +2788,9 @@
     "student_b": "stu_0019",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 240,
-    "compatibility_score": 61.1,
+    "compatibility_score": 55.4,
     "breakdown": {
-      "similarity": 53.1,
-      "complementarity": 75.0,
+      "similarity": 55.4,
       "study_style": 72.5,
       "academic": 50.0
     }
@@ -3033,10 +2800,9 @@
     "student_b": "stu_0020",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 180,
-    "compatibility_score": 53.8,
+    "compatibility_score": 64.3,
     "breakdown": {
-      "similarity": 59.4,
-      "complementarity": 41.7,
+      "similarity": 64.3,
       "study_style": 78.8,
       "academic": 0.0
     }
@@ -3046,10 +2812,9 @@
     "student_b": "stu_0021",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 240,
-    "compatibility_score": 57.7,
+    "compatibility_score": 67.9,
     "breakdown": {
-      "similarity": 68.8,
-      "complementarity": 41.7,
+      "similarity": 67.9,
       "study_style": 75.0,
       "academic": 0.0
     }
@@ -3059,10 +2824,9 @@
     "student_b": "stu_0022",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 65.7,
+    "compatibility_score": 78.6,
     "breakdown": {
-      "similarity": 78.1,
-      "complementarity": 33.3,
+      "similarity": 78.6,
       "study_style": 100.0,
       "academic": 0.0
     }
@@ -3072,10 +2836,9 @@
     "student_b": "stu_0023",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 480,
-    "compatibility_score": 45.9,
+    "compatibility_score": 69.6,
     "breakdown": {
-      "similarity": 62.5,
-      "complementarity": 33.3,
+      "similarity": 69.6,
       "study_style": 40.0,
       "academic": 0.0
     }
@@ -3085,10 +2848,9 @@
     "student_b": "stu_0024",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 480,
-    "compatibility_score": 47.0,
+    "compatibility_score": 62.5,
     "breakdown": {
-      "similarity": 56.2,
-      "complementarity": 41.7,
+      "similarity": 62.5,
       "study_style": 52.5,
       "academic": 0.0
     }
@@ -3098,10 +2860,9 @@
     "student_b": "stu_0025",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 360,
-    "compatibility_score": 47.9,
+    "compatibility_score": 62.5,
     "breakdown": {
-      "similarity": 53.1,
-      "complementarity": 41.7,
+      "similarity": 62.5,
       "study_style": 65.0,
       "academic": 0.0
     }
@@ -3111,10 +2872,9 @@
     "student_b": "stu_0026",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 180,
-    "compatibility_score": 42.0,
+    "compatibility_score": 55.4,
     "breakdown": {
-      "similarity": 43.8,
-      "complementarity": 41.7,
+      "similarity": 55.4,
       "study_style": 58.8,
       "academic": 0.0
     }
@@ -3124,10 +2884,9 @@
     "student_b": "stu_0027",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 420,
-    "compatibility_score": 62.2,
+    "compatibility_score": 64.3,
     "breakdown": {
-      "similarity": 59.4,
-      "complementarity": 50.0,
+      "similarity": 64.3,
       "study_style": 62.5,
       "academic": 100.0
     }
@@ -3137,10 +2896,9 @@
     "student_b": "stu_0028",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 120,
-    "compatibility_score": 60.3,
+    "compatibility_score": 67.9,
     "breakdown": {
-      "similarity": 65.6,
-      "complementarity": 50.0,
+      "similarity": 67.9,
       "study_style": 62.5,
       "academic": 50.0
     }
@@ -3150,10 +2908,9 @@
     "student_b": "stu_0013",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 54.2,
+    "compatibility_score": 62.5,
     "breakdown": {
-      "similarity": 59.4,
-      "complementarity": 50.0,
+      "similarity": 62.5,
       "study_style": 72.5,
       "academic": 0.0
     }
@@ -3163,10 +2920,9 @@
     "student_b": "stu_0014",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 75.2,
+    "compatibility_score": 67.9,
     "breakdown": {
-      "similarity": 78.1,
-      "complementarity": 58.3,
+      "similarity": 67.9,
       "study_style": 72.5,
       "academic": 100.0
     }
@@ -3176,10 +2932,9 @@
     "student_b": "stu_0015",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 60,
-    "compatibility_score": 54.5,
+    "compatibility_score": 85.7,
     "breakdown": {
-      "similarity": 78.1,
-      "complementarity": 8.3,
+      "similarity": 85.7,
       "study_style": 68.8,
       "academic": 0.0
     }
@@ -3189,10 +2944,9 @@
     "student_b": "stu_0016",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 58.5,
+    "compatibility_score": 57.1,
     "breakdown": {
-      "similarity": 59.4,
-      "complementarity": 41.7,
+      "similarity": 57.1,
       "study_style": 77.5,
       "academic": 50.0
     }
@@ -3202,10 +2956,9 @@
     "student_b": "stu_0017",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 360,
-    "compatibility_score": 54.7,
+    "compatibility_score": 57.1,
     "breakdown": {
-      "similarity": 59.4,
-      "complementarity": 50.0,
+      "similarity": 57.1,
       "study_style": 75.0,
       "academic": 0.0
     }
@@ -3215,10 +2968,9 @@
     "student_b": "stu_0018",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 58.4,
+    "compatibility_score": 78.6,
     "breakdown": {
-      "similarity": 71.9,
-      "complementarity": 25.0,
+      "similarity": 78.6,
       "study_style": 62.5,
       "academic": 50.0
     }
@@ -3228,10 +2980,9 @@
     "student_b": "stu_0019",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 480,
-    "compatibility_score": 53.1,
+    "compatibility_score": 51.8,
     "breakdown": {
-      "similarity": 56.2,
-      "complementarity": 50.0,
+      "similarity": 51.8,
       "study_style": 75.0,
       "academic": 0.0
     }
@@ -3241,10 +2992,9 @@
     "student_b": "stu_0020",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 240,
-    "compatibility_score": 58.3,
+    "compatibility_score": 78.6,
     "breakdown": {
-      "similarity": 75.0,
-      "complementarity": 16.7,
+      "similarity": 78.6,
       "study_style": 62.5,
       "academic": 50.0
     }
@@ -3254,10 +3004,9 @@
     "student_b": "stu_0021",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 360,
-    "compatibility_score": 69.8,
+    "compatibility_score": 60.7,
     "breakdown": {
-      "similarity": 71.9,
-      "complementarity": 66.7,
+      "similarity": 60.7,
       "study_style": 77.5,
       "academic": 50.0
     }
@@ -3267,10 +3016,9 @@
     "student_b": "stu_0022",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 68.0,
+    "compatibility_score": 60.7,
     "breakdown": {
-      "similarity": 75.0,
-      "complementarity": 75.0,
+      "similarity": 60.7,
       "study_style": 77.5,
       "academic": 0.0
     }
@@ -3280,10 +3028,9 @@
     "student_b": "stu_0023",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 61.6,
+    "compatibility_score": 69.6,
     "breakdown": {
-      "similarity": 78.1,
-      "complementarity": 50.0,
+      "similarity": 69.6,
       "study_style": 62.5,
       "academic": 0.0
     }
@@ -3293,10 +3040,9 @@
     "student_b": "stu_0024",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 180,
-    "compatibility_score": 60.1,
+    "compatibility_score": 55.4,
     "breakdown": {
-      "similarity": 59.4,
-      "complementarity": 58.3,
+      "similarity": 55.4,
       "study_style": 68.8,
       "academic": 50.0
     }
@@ -3306,10 +3052,9 @@
     "student_b": "stu_0025",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 240,
-    "compatibility_score": 57.1,
+    "compatibility_score": 55.4,
     "breakdown": {
-      "similarity": 62.5,
-      "complementarity": 66.7,
+      "similarity": 55.4,
       "study_style": 62.5,
       "academic": 0.0
     }
@@ -3319,10 +3064,9 @@
     "student_b": "stu_0026",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 480,
-    "compatibility_score": 57.2,
+    "compatibility_score": 62.5,
     "breakdown": {
-      "similarity": 59.4,
-      "complementarity": 50.0,
+      "similarity": 62.5,
       "study_style": 62.5,
       "academic": 50.0
     }
@@ -3332,10 +3076,9 @@
     "student_b": "stu_0027",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 74.5,
+    "compatibility_score": 67.9,
     "breakdown": {
-      "similarity": 75.0,
-      "complementarity": 50.0,
+      "similarity": 67.9,
       "study_style": 85.0,
       "academic": 100.0
     }
@@ -3345,10 +3088,9 @@
     "student_b": "stu_0028",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 120,
-    "compatibility_score": 56.4,
+    "compatibility_score": 64.3,
     "breakdown": {
-      "similarity": 68.8,
-      "complementarity": 50.0,
+      "similarity": 64.3,
       "study_style": 60.0,
       "academic": 0.0
     }
@@ -3358,10 +3100,9 @@
     "student_b": "stu_0014",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 61.4,
+    "compatibility_score": 73.2,
     "breakdown": {
-      "similarity": 68.8,
-      "complementarity": 25.0,
+      "similarity": 73.2,
       "study_style": 60.0,
       "academic": 100.0
     }
@@ -3371,10 +3112,9 @@
     "student_b": "stu_0015",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 240,
-    "compatibility_score": 59.7,
+    "compatibility_score": 69.6,
     "breakdown": {
-      "similarity": 68.8,
-      "complementarity": 41.7,
+      "similarity": 69.6,
       "study_style": 85.0,
       "academic": 0.0
     }
@@ -3384,10 +3124,9 @@
     "student_b": "stu_0016",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 240,
-    "compatibility_score": 60.6,
+    "compatibility_score": 76.8,
     "breakdown": {
-      "similarity": 81.2,
-      "complementarity": 25.0,
+      "similarity": 76.8,
       "study_style": 75.0,
       "academic": 0.0
     }
@@ -3397,10 +3136,9 @@
     "student_b": "stu_0017",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 360,
-    "compatibility_score": 56.7,
+    "compatibility_score": 73.2,
     "breakdown": {
-      "similarity": 75.0,
-      "complementarity": 33.3,
+      "similarity": 73.2,
       "study_style": 62.5,
       "academic": 0.0
     }
@@ -3410,10 +3148,9 @@
     "student_b": "stu_0018",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 240,
-    "compatibility_score": 49.6,
+    "compatibility_score": 66.1,
     "breakdown": {
-      "similarity": 62.5,
-      "complementarity": 41.7,
+      "similarity": 66.1,
       "study_style": 50.0,
       "academic": 0.0
     }
@@ -3423,10 +3160,9 @@
     "student_b": "stu_0019",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 240,
-    "compatibility_score": 66.4,
+    "compatibility_score": 78.6,
     "breakdown": {
-      "similarity": 84.4,
-      "complementarity": 33.3,
+      "similarity": 78.6,
       "study_style": 62.5,
       "academic": 50.0
     }
@@ -3436,10 +3172,9 @@
     "student_b": "stu_0020",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 56.4,
+    "compatibility_score": 66.1,
     "breakdown": {
-      "similarity": 59.4,
-      "complementarity": 33.3,
+      "similarity": 66.1,
       "study_style": 75.0,
       "academic": 50.0
     }
@@ -3449,10 +3184,9 @@
     "student_b": "stu_0021",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 59.2,
+    "compatibility_score": 69.6,
     "breakdown": {
-      "similarity": 75.0,
-      "complementarity": 33.3,
+      "similarity": 69.6,
       "study_style": 50.0,
       "academic": 50.0
     }
@@ -3462,10 +3196,9 @@
     "student_b": "stu_0022",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 67.4,
+    "compatibility_score": 73.2,
     "breakdown": {
-      "similarity": 78.1,
-      "complementarity": 41.7,
+      "similarity": 73.2,
       "study_style": 75.0,
       "academic": 50.0
     }
@@ -3475,10 +3208,9 @@
     "student_b": "stu_0023",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 56.0,
+    "compatibility_score": 71.4,
     "breakdown": {
-      "similarity": 68.8,
-      "complementarity": 33.3,
+      "similarity": 71.4,
       "study_style": 50.0,
       "academic": 50.0
     }
@@ -3488,10 +3220,9 @@
     "student_b": "stu_0024",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 120,
-    "compatibility_score": 49.4,
+    "compatibility_score": 71.4,
     "breakdown": {
-      "similarity": 68.8,
-      "complementarity": 25.0,
+      "similarity": 71.4,
       "study_style": 50.0,
       "academic": 0.0
     }
@@ -3501,10 +3232,9 @@
     "student_b": "stu_0025",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 120,
-    "compatibility_score": 61.1,
+    "compatibility_score": 85.7,
     "breakdown": {
-      "similarity": 90.6,
-      "complementarity": 16.7,
+      "similarity": 85.7,
       "study_style": 62.5,
       "academic": 0.0
     }
@@ -3514,10 +3244,9 @@
     "student_b": "stu_0026",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 480,
-    "compatibility_score": 55.8,
+    "compatibility_score": 78.6,
     "breakdown": {
-      "similarity": 75.0,
-      "complementarity": 16.7,
+      "similarity": 78.6,
       "study_style": 75.0,
       "academic": 0.0
     }
@@ -3527,10 +3256,9 @@
     "student_b": "stu_0027",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 120,
-    "compatibility_score": 62.9,
+    "compatibility_score": 69.6,
     "breakdown": {
-      "similarity": 71.9,
-      "complementarity": 50.0,
+      "similarity": 69.6,
       "study_style": 60.0,
       "academic": 50.0
     }
@@ -3540,10 +3268,9 @@
     "student_b": "stu_0028",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 240,
-    "compatibility_score": 74.1,
+    "compatibility_score": 73.2,
     "breakdown": {
-      "similarity": 78.1,
-      "complementarity": 50.0,
+      "similarity": 73.2,
       "study_style": 100.0,
       "academic": 50.0
     }
@@ -3553,10 +3280,9 @@
     "student_b": "stu_0015",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 64.5,
+    "compatibility_score": 67.9,
     "breakdown": {
-      "similarity": 75.0,
-      "complementarity": 50.0,
+      "similarity": 67.9,
       "study_style": 60.0,
       "academic": 50.0
     }
@@ -3566,10 +3292,9 @@
     "student_b": "stu_0016",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 180,
-    "compatibility_score": 53.1,
+    "compatibility_score": 67.9,
     "breakdown": {
-      "similarity": 68.8,
-      "complementarity": 50.0,
+      "similarity": 67.9,
       "study_style": 43.8,
       "academic": 0.0
     }
@@ -3579,10 +3304,9 @@
     "student_b": "stu_0017",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 420,
-    "compatibility_score": 63.4,
+    "compatibility_score": 64.3,
     "breakdown": {
-      "similarity": 62.5,
-      "complementarity": 58.3,
+      "similarity": 64.3,
       "study_style": 77.5,
       "academic": 50.0
     }
@@ -3592,10 +3316,9 @@
     "student_b": "stu_0018",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 180,
-    "compatibility_score": 66.3,
+    "compatibility_score": 67.9,
     "breakdown": {
-      "similarity": 75.0,
-      "complementarity": 50.0,
+      "similarity": 67.9,
       "study_style": 68.8,
       "academic": 50.0
     }
@@ -3605,10 +3328,9 @@
     "student_b": "stu_0019",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 420,
-    "compatibility_score": 65.0,
+    "compatibility_score": 66.1,
     "breakdown": {
-      "similarity": 65.6,
-      "complementarity": 58.3,
+      "similarity": 66.1,
       "study_style": 77.5,
       "academic": 50.0
     }
@@ -3618,10 +3340,9 @@
     "student_b": "stu_0020",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 480,
-    "compatibility_score": 51.0,
+    "compatibility_score": 64.3,
     "breakdown": {
-      "similarity": 59.4,
-      "complementarity": 41.7,
+      "similarity": 64.3,
       "study_style": 65.0,
       "academic": 0.0
     }
@@ -3631,10 +3352,9 @@
     "student_b": "stu_0021",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 57.9,
+    "compatibility_score": 60.7,
     "breakdown": {
-      "similarity": 62.5,
-      "complementarity": 58.3,
+      "similarity": 60.7,
       "study_style": 75.0,
       "academic": 0.0
     }
@@ -3644,10 +3364,9 @@
     "student_b": "stu_0022",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 360,
-    "compatibility_score": 64.3,
+    "compatibility_score": 67.9,
     "breakdown": {
-      "similarity": 71.9,
-      "complementarity": 66.7,
+      "similarity": 67.9,
       "study_style": 50.0,
       "academic": 50.0
     }
@@ -3657,10 +3376,9 @@
     "student_b": "stu_0023",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 540,
-    "compatibility_score": 68.8,
+    "compatibility_score": 87.5,
     "breakdown": {
       "similarity": 87.5,
-      "complementarity": 25.0,
       "study_style": 75.0,
       "academic": 50.0
     }
@@ -3670,10 +3388,9 @@
     "student_b": "stu_0024",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 240,
-    "compatibility_score": 56.5,
+    "compatibility_score": 83.9,
     "breakdown": {
-      "similarity": 81.2,
-      "complementarity": 16.7,
+      "similarity": 83.9,
       "study_style": 62.5,
       "academic": 0.0
     }
@@ -3683,10 +3400,9 @@
     "student_b": "stu_0025",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 240,
-    "compatibility_score": 62.3,
+    "compatibility_score": 73.2,
     "breakdown": {
-      "similarity": 71.9,
-      "complementarity": 41.7,
+      "similarity": 73.2,
       "study_style": 65.0,
       "academic": 50.0
     }
@@ -3696,10 +3412,9 @@
     "student_b": "stu_0026",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 62.6,
+    "compatibility_score": 66.1,
     "breakdown": {
-      "similarity": 62.5,
-      "complementarity": 41.7,
+      "similarity": 66.1,
       "study_style": 65.0,
       "academic": 100.0
     }
@@ -3709,10 +3424,9 @@
     "student_b": "stu_0027",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 120,
-    "compatibility_score": 62.3,
+    "compatibility_score": 89.3,
     "breakdown": {
-      "similarity": 90.6,
-      "complementarity": 25.0,
+      "similarity": 89.3,
       "study_style": 60.0,
       "academic": 0.0
     }
@@ -3722,10 +3436,9 @@
     "student_b": "stu_0028",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 56.1,
+    "compatibility_score": 82.1,
     "breakdown": {
-      "similarity": 78.1,
-      "complementarity": 25.0,
+      "similarity": 82.1,
       "study_style": 60.0,
       "academic": 0.0
     }
@@ -3735,10 +3448,9 @@
     "student_b": "stu_0016",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 60,
-    "compatibility_score": 57.2,
+    "compatibility_score": 60.7,
     "breakdown": {
-      "similarity": 62.5,
-      "complementarity": 33.3,
+      "similarity": 60.7,
       "study_style": 71.2,
       "academic": 50.0
     }
@@ -3748,10 +3460,9 @@
     "student_b": "stu_0017",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 180,
-    "compatibility_score": 55.8,
+    "compatibility_score": 60.7,
     "breakdown": {
-      "similarity": 62.5,
-      "complementarity": 41.7,
+      "similarity": 60.7,
       "study_style": 56.2,
       "academic": 50.0
     }
@@ -3761,10 +3472,9 @@
     "student_b": "stu_0018",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 60,
-    "compatibility_score": 55.2,
+    "compatibility_score": 85.7,
     "breakdown": {
-      "similarity": 81.2,
-      "complementarity": 16.7,
+      "similarity": 85.7,
       "study_style": 31.2,
       "academic": 50.0
     }
@@ -3774,10 +3484,9 @@
     "student_b": "stu_0019",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 60,
-    "compatibility_score": 56.6,
+    "compatibility_score": 58.9,
     "breakdown": {
-      "similarity": 65.6,
-      "complementarity": 50.0,
+      "similarity": 58.9,
       "study_style": 43.8,
       "academic": 50.0
     }
@@ -3787,10 +3496,9 @@
     "student_b": "stu_0020",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 240,
-    "compatibility_score": 58.9,
+    "compatibility_score": 85.7,
     "breakdown": {
-      "similarity": 84.4,
-      "complementarity": 8.3,
+      "similarity": 85.7,
       "study_style": 75.0,
       "academic": 0.0
     }
@@ -3800,10 +3508,9 @@
     "student_b": "stu_0021",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 180,
-    "compatibility_score": 57.8,
+    "compatibility_score": 60.7,
     "breakdown": {
-      "similarity": 68.8,
-      "complementarity": 58.3,
+      "similarity": 60.7,
       "study_style": 58.8,
       "academic": 0.0
     }
@@ -3813,10 +3520,9 @@
     "student_b": "stu_0022",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 64.1,
+    "compatibility_score": 57.1,
     "breakdown": {
-      "similarity": 65.6,
-      "complementarity": 66.7,
+      "similarity": 57.1,
       "study_style": 90.0,
       "academic": 0.0
     }
@@ -3826,10 +3532,9 @@
     "student_b": "stu_0023",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 240,
-    "compatibility_score": 60.8,
+    "compatibility_score": 69.6,
     "breakdown": {
-      "similarity": 75.0,
-      "complementarity": 41.7,
+      "similarity": 69.6,
       "study_style": 50.0,
       "academic": 50.0
     }
@@ -3839,10 +3544,9 @@
     "student_b": "stu_0024",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 180,
-    "compatibility_score": 55.6,
+    "compatibility_score": 62.5,
     "breakdown": {
-      "similarity": 68.8,
-      "complementarity": 50.0,
+      "similarity": 62.5,
       "study_style": 56.2,
       "academic": 0.0
     }
@@ -3852,10 +3556,9 @@
     "student_b": "stu_0025",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 60,
-    "compatibility_score": 55.7,
+    "compatibility_score": 58.9,
     "breakdown": {
-      "similarity": 65.6,
-      "complementarity": 58.3,
+      "similarity": 58.9,
       "study_style": 56.2,
       "academic": 0.0
     }
@@ -3865,10 +3568,9 @@
     "student_b": "stu_0026",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 240,
-    "compatibility_score": 54.6,
+    "compatibility_score": 66.1,
     "breakdown": {
-      "similarity": 62.5,
-      "complementarity": 41.7,
+      "similarity": 66.1,
       "study_style": 75.0,
       "academic": 0.0
     }
@@ -3878,10 +3580,9 @@
     "student_b": "stu_0027",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 60,
-    "compatibility_score": 65.0,
+    "compatibility_score": 67.9,
     "breakdown": {
-      "similarity": 71.9,
-      "complementarity": 41.7,
+      "similarity": 67.9,
       "study_style": 53.8,
       "academic": 100.0
     }
@@ -3891,10 +3592,9 @@
     "student_b": "stu_0028",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 240,
-    "compatibility_score": 66.3,
+    "compatibility_score": 67.9,
     "breakdown": {
-      "similarity": 71.9,
-      "complementarity": 41.7,
+      "similarity": 67.9,
       "study_style": 85.0,
       "academic": 50.0
     }
@@ -3904,10 +3604,9 @@
     "student_b": "stu_0017",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 180,
-    "compatibility_score": 49.5,
+    "compatibility_score": 71.4,
     "breakdown": {
-      "similarity": 62.5,
-      "complementarity": 25.0,
+      "similarity": 71.4,
       "study_style": 66.2,
       "academic": 0.0
     }
@@ -3917,10 +3616,9 @@
     "student_b": "stu_0018",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 540,
-    "compatibility_score": 43.5,
+    "compatibility_score": 60.7,
     "breakdown": {
-      "similarity": 56.2,
-      "complementarity": 16.7,
+      "similarity": 60.7,
       "study_style": 60.0,
       "academic": 0.0
     }
@@ -3930,10 +3628,9 @@
     "student_b": "stu_0019",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 72.7,
+    "compatibility_score": 76.8,
     "breakdown": {
-      "similarity": 84.4,
-      "complementarity": 50.0,
+      "similarity": 76.8,
       "study_style": 52.5,
       "academic": 100.0
     }
@@ -3943,10 +3640,9 @@
     "student_b": "stu_0020",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 180,
-    "compatibility_score": 46.4,
+    "compatibility_score": 64.3,
     "breakdown": {
-      "similarity": 59.4,
-      "complementarity": 25.0,
+      "similarity": 64.3,
       "study_style": 58.8,
       "academic": 0.0
     }
@@ -3956,10 +3652,9 @@
     "student_b": "stu_0021",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 420,
-    "compatibility_score": 50.6,
+    "compatibility_score": 64.3,
     "breakdown": {
-      "similarity": 62.5,
-      "complementarity": 41.7,
+      "similarity": 64.3,
       "study_style": 55.0,
       "academic": 0.0
     }
@@ -3969,10 +3664,9 @@
     "student_b": "stu_0022",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 180,
-    "compatibility_score": 60.7,
+    "compatibility_score": 71.4,
     "breakdown": {
-      "similarity": 71.9,
-      "complementarity": 50.0,
+      "similarity": 71.4,
       "study_style": 73.8,
       "academic": 0.0
     }
@@ -3982,10 +3676,9 @@
     "student_b": "stu_0023",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 420,
-    "compatibility_score": 58.0,
+    "compatibility_score": 66.1,
     "breakdown": {
-      "similarity": 68.8,
-      "complementarity": 58.3,
+      "similarity": 66.1,
       "study_style": 60.0,
       "academic": 0.0
     }
@@ -3995,10 +3688,9 @@
     "student_b": "stu_0024",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 180,
-    "compatibility_score": 62.6,
+    "compatibility_score": 69.6,
     "breakdown": {
-      "similarity": 68.8,
-      "complementarity": 50.0,
+      "similarity": 69.6,
       "study_style": 66.2,
       "academic": 50.0
     }
@@ -4008,10 +3700,9 @@
     "student_b": "stu_0025",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 69.2,
+    "compatibility_score": 83.9,
     "breakdown": {
-      "similarity": 84.4,
-      "complementarity": 25.0,
+      "similarity": 83.9,
       "study_style": 85.0,
       "academic": 50.0
     }
@@ -4021,10 +3712,9 @@
     "student_b": "stu_0026",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 480,
-    "compatibility_score": 73.9,
+    "compatibility_score": 83.9,
     "breakdown": {
-      "similarity": 93.8,
-      "complementarity": 25.0,
+      "similarity": 83.9,
       "study_style": 85.0,
       "academic": 50.0
     }
@@ -4034,10 +3724,9 @@
     "student_b": "stu_0027",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 60.1,
+    "compatibility_score": 67.9,
     "breakdown": {
-      "similarity": 71.9,
-      "complementarity": 58.3,
+      "similarity": 67.9,
       "study_style": 62.5,
       "academic": 0.0
     }
@@ -4047,10 +3736,9 @@
     "student_b": "stu_0028",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 60,
-    "compatibility_score": 72.0,
+    "compatibility_score": 71.4,
     "breakdown": {
-      "similarity": 78.1,
-      "complementarity": 58.3,
+      "similarity": 71.4,
       "study_style": 56.2,
       "academic": 100.0
     }
@@ -4060,10 +3748,9 @@
     "student_b": "stu_0018",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 180,
-    "compatibility_score": 59.1,
+    "compatibility_score": 67.9,
     "breakdown": {
-      "similarity": 75.0,
-      "complementarity": 41.7,
+      "similarity": 67.9,
       "study_style": 66.2,
       "academic": 0.0
     }
@@ -4073,10 +3760,9 @@
     "student_b": "stu_0019",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 58.8,
+    "compatibility_score": 69.6,
     "breakdown": {
-      "similarity": 65.6,
-      "complementarity": 50.0,
+      "similarity": 69.6,
       "study_style": 80.0,
       "academic": 0.0
     }
@@ -4086,10 +3772,9 @@
     "student_b": "stu_0020",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 420,
-    "compatibility_score": 46.9,
+    "compatibility_score": 53.6,
     "breakdown": {
-      "similarity": 46.9,
-      "complementarity": 50.0,
+      "similarity": 53.6,
       "study_style": 67.5,
       "academic": 0.0
     }
@@ -4099,10 +3784,9 @@
     "student_b": "stu_0021",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 240,
-    "compatibility_score": 51.3,
+    "compatibility_score": 78.6,
     "breakdown": {
-      "similarity": 75.0,
-      "complementarity": 16.7,
+      "similarity": 78.6,
       "study_style": 52.5,
       "academic": 0.0
     }
@@ -4112,10 +3796,9 @@
     "student_b": "stu_0022",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 420,
-    "compatibility_score": 54.6,
+    "compatibility_score": 82.1,
     "breakdown": {
-      "similarity": 78.1,
-      "complementarity": 25.0,
+      "similarity": 82.1,
       "study_style": 52.5,
       "academic": 0.0
     }
@@ -4125,10 +3808,9 @@
     "student_b": "stu_0023",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 480,
-    "compatibility_score": 52.8,
+    "compatibility_score": 55.4,
     "breakdown": {
-      "similarity": 50.0,
-      "complementarity": 66.7,
+      "similarity": 55.4,
       "study_style": 72.5,
       "academic": 0.0
     }
@@ -4138,10 +3820,9 @@
     "student_b": "stu_0024",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 240,
-    "compatibility_score": 61.8,
+    "compatibility_score": 58.9,
     "breakdown": {
-      "similarity": 56.2,
-      "complementarity": 58.3,
+      "similarity": 58.9,
       "study_style": 85.0,
       "academic": 50.0
     }
@@ -4151,10 +3832,9 @@
     "student_b": "stu_0025",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 240,
-    "compatibility_score": 65.1,
+    "compatibility_score": 76.8,
     "breakdown": {
-      "similarity": 71.9,
-      "complementarity": 33.3,
+      "similarity": 76.8,
       "study_style": 87.5,
       "academic": 50.0
     }
@@ -4164,10 +3844,9 @@
     "student_b": "stu_0026",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 420,
-    "compatibility_score": 52.1,
+    "compatibility_score": 69.6,
     "breakdown": {
-      "similarity": 62.5,
-      "complementarity": 16.7,
+      "similarity": 69.6,
       "study_style": 87.5,
       "academic": 0.0
     }
@@ -4177,10 +3856,9 @@
     "student_b": "stu_0027",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 240,
-    "compatibility_score": 64.9,
+    "compatibility_score": 57.1,
     "breakdown": {
-      "similarity": 53.1,
-      "complementarity": 66.7,
+      "similarity": 57.1,
       "study_style": 75.0,
       "academic": 100.0
     }
@@ -4190,10 +3868,9 @@
     "student_b": "stu_0028",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 61.8,
+    "compatibility_score": 67.9,
     "breakdown": {
-      "similarity": 71.9,
-      "complementarity": 66.7,
+      "similarity": 67.9,
       "study_style": 62.5,
       "academic": 0.0
     }
@@ -4203,10 +3880,9 @@
     "student_b": "stu_0019",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 61.6,
+    "compatibility_score": 55.4,
     "breakdown": {
-      "similarity": 65.6,
-      "complementarity": 66.7,
+      "similarity": 55.4,
       "study_style": 52.5,
       "academic": 50.0
     }
@@ -4216,10 +3892,9 @@
     "student_b": "stu_0020",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 180,
-    "compatibility_score": 41.2,
+    "compatibility_score": 75.0,
     "breakdown": {
-      "similarity": 65.6,
-      "complementarity": 8.3,
+      "similarity": 75.0,
       "study_style": 33.8,
       "academic": 0.0
     }
@@ -4229,10 +3904,9 @@
     "student_b": "stu_0021",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 360,
-    "compatibility_score": 60.9,
+    "compatibility_score": 57.1,
     "breakdown": {
-      "similarity": 62.5,
-      "complementarity": 58.3,
+      "similarity": 57.1,
       "study_style": 65.0,
       "academic": 50.0
     }
@@ -4242,10 +3916,9 @@
     "student_b": "stu_0022",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 120,
-    "compatibility_score": 56.6,
+    "compatibility_score": 57.1,
     "breakdown": {
-      "similarity": 65.6,
-      "complementarity": 66.7,
+      "similarity": 57.1,
       "study_style": 27.5,
       "academic": 50.0
     }
@@ -4255,10 +3928,9 @@
     "student_b": "stu_0023",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 420,
-    "compatibility_score": 69.7,
+    "compatibility_score": 66.1,
     "breakdown": {
-      "similarity": 68.8,
-      "complementarity": 41.7,
+      "similarity": 66.1,
       "study_style": 85.0,
       "academic": 100.0
     }
@@ -4268,10 +3940,9 @@
     "student_b": "stu_0024",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 180,
-    "compatibility_score": 59.5,
+    "compatibility_score": 58.9,
     "breakdown": {
-      "similarity": 62.5,
-      "complementarity": 50.0,
+      "similarity": 58.9,
       "study_style": 66.2,
       "academic": 50.0
     }
@@ -4281,10 +3952,9 @@
     "student_b": "stu_0025",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 58.1,
+    "compatibility_score": 62.5,
     "breakdown": {
-      "similarity": 65.6,
-      "complementarity": 41.7,
+      "similarity": 62.5,
       "study_style": 60.0,
       "academic": 50.0
     }
@@ -4294,10 +3964,9 @@
     "student_b": "stu_0026",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 480,
-    "compatibility_score": 48.5,
+    "compatibility_score": 62.5,
     "breakdown": {
-      "similarity": 56.2,
-      "complementarity": 41.7,
+      "similarity": 62.5,
       "study_style": 60.0,
       "academic": 0.0
     }
@@ -4307,10 +3976,9 @@
     "student_b": "stu_0027",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 240,
-    "compatibility_score": 53.6,
+    "compatibility_score": 64.3,
     "breakdown": {
-      "similarity": 65.6,
-      "complementarity": 41.7,
+      "similarity": 64.3,
       "study_style": 62.5,
       "academic": 0.0
     }
@@ -4320,10 +3988,9 @@
     "student_b": "stu_0028",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 60,
-    "compatibility_score": 52.4,
+    "compatibility_score": 64.3,
     "breakdown": {
-      "similarity": 65.6,
-      "complementarity": 41.7,
+      "similarity": 64.3,
       "study_style": 31.2,
       "academic": 50.0
     }
@@ -4333,10 +4000,9 @@
     "student_b": "stu_0020",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 360,
-    "compatibility_score": 65.4,
+    "compatibility_score": 58.9,
     "breakdown": {
-      "similarity": 62.5,
-      "complementarity": 58.3,
+      "similarity": 58.9,
       "study_style": 87.5,
       "academic": 50.0
     }
@@ -4346,10 +4012,9 @@
     "student_b": "stu_0021",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 360,
-    "compatibility_score": 59.0,
+    "compatibility_score": 69.6,
     "breakdown": {
-      "similarity": 65.6,
-      "complementarity": 33.3,
+      "similarity": 69.6,
       "study_style": 72.5,
       "academic": 50.0
     }
@@ -4359,10 +4024,9 @@
     "student_b": "stu_0022",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 57.2,
+    "compatibility_score": 73.2,
     "breakdown": {
-      "similarity": 68.8,
-      "complementarity": 41.7,
+      "similarity": 73.2,
       "study_style": 72.5,
       "academic": 0.0
     }
@@ -4372,10 +4036,9 @@
     "student_b": "stu_0023",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 420,
-    "compatibility_score": 56.6,
+    "compatibility_score": 64.3,
     "breakdown": {
-      "similarity": 65.6,
-      "complementarity": 66.7,
+      "similarity": 64.3,
       "study_style": 52.5,
       "academic": 0.0
     }
@@ -4385,10 +4048,9 @@
     "student_b": "stu_0024",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 65.6,
+    "compatibility_score": 67.9,
     "breakdown": {
-      "similarity": 71.9,
-      "complementarity": 58.3,
+      "similarity": 67.9,
       "study_style": 65.0,
       "academic": 50.0
     }
@@ -4398,10 +4060,9 @@
     "student_b": "stu_0025",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 240,
-    "compatibility_score": 63.9,
+    "compatibility_score": 85.7,
     "breakdown": {
-      "similarity": 87.5,
-      "complementarity": 33.3,
+      "similarity": 85.7,
       "study_style": 67.5,
       "academic": 0.0
     }
@@ -4411,10 +4072,9 @@
     "student_b": "stu_0026",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 420,
-    "compatibility_score": 67.4,
+    "compatibility_score": 78.6,
     "breakdown": {
-      "similarity": 84.4,
-      "complementarity": 33.3,
+      "similarity": 78.6,
       "study_style": 67.5,
       "academic": 50.0
     }
@@ -4424,10 +4084,9 @@
     "student_b": "stu_0027",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 76.0,
+    "compatibility_score": 62.5,
     "breakdown": {
-      "similarity": 68.8,
-      "complementarity": 83.3,
+      "similarity": 62.5,
       "study_style": 75.0,
       "academic": 100.0
     }
@@ -4437,10 +4096,9 @@
     "student_b": "stu_0028",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 120,
-    "compatibility_score": 69.2,
+    "compatibility_score": 66.1,
     "breakdown": {
-      "similarity": 75.0,
-      "complementarity": 83.3,
+      "similarity": 66.1,
       "study_style": 50.0,
       "academic": 50.0
     }
@@ -4450,10 +4108,9 @@
     "student_b": "stu_0021",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 240,
-    "compatibility_score": 66.3,
+    "compatibility_score": 64.3,
     "breakdown": {
-      "similarity": 71.9,
-      "complementarity": 66.7,
+      "similarity": 64.3,
       "study_style": 60.0,
       "academic": 50.0
     }
@@ -4463,10 +4120,9 @@
     "student_b": "stu_0022",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 360,
-    "compatibility_score": 63.3,
+    "compatibility_score": 57.1,
     "breakdown": {
-      "similarity": 62.5,
-      "complementarity": 75.0,
+      "similarity": 57.1,
       "study_style": 85.0,
       "academic": 0.0
     }
@@ -4476,10 +4132,9 @@
     "student_b": "stu_0023",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 540,
-    "compatibility_score": 52.5,
+    "compatibility_score": 69.6,
     "breakdown": {
-      "similarity": 65.6,
-      "complementarity": 33.3,
+      "similarity": 69.6,
       "study_style": 40.0,
       "academic": 50.0
     }
@@ -4489,10 +4144,9 @@
     "student_b": "stu_0024",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 180,
-    "compatibility_score": 44.1,
+    "compatibility_score": 58.9,
     "breakdown": {
-      "similarity": 53.1,
-      "complementarity": 41.7,
+      "similarity": 58.9,
       "study_style": 46.2,
       "academic": 0.0
     }
@@ -4502,10 +4156,9 @@
     "student_b": "stu_0025",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 54.1,
+    "compatibility_score": 58.9,
     "breakdown": {
-      "similarity": 56.2,
-      "complementarity": 50.0,
+      "similarity": 58.9,
       "study_style": 80.0,
       "academic": 0.0
     }
@@ -4515,10 +4168,9 @@
     "student_b": "stu_0026",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 55.7,
+    "compatibility_score": 66.1,
     "breakdown": {
-      "similarity": 59.4,
-      "complementarity": 50.0,
+      "similarity": 66.1,
       "study_style": 80.0,
       "academic": 0.0
     }
@@ -4528,10 +4180,9 @@
     "student_b": "stu_0027",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 120,
-    "compatibility_score": 52.9,
+    "compatibility_score": 67.9,
     "breakdown": {
-      "similarity": 62.5,
-      "complementarity": 33.3,
+      "similarity": 67.9,
       "study_style": 50.0,
       "academic": 50.0
     }
@@ -4541,10 +4192,9 @@
     "student_b": "stu_0028",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 360,
-    "compatibility_score": 61.0,
+    "compatibility_score": 71.4,
     "breakdown": {
-      "similarity": 68.8,
-      "complementarity": 33.3,
+      "similarity": 71.4,
       "study_style": 75.0,
       "academic": 50.0
     }
@@ -4554,10 +4204,9 @@
     "student_b": "stu_0022",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 240,
-    "compatibility_score": 63.9,
+    "compatibility_score": 85.7,
     "breakdown": {
-      "similarity": 84.4,
-      "complementarity": 8.3,
+      "similarity": 85.7,
       "study_style": 75.0,
       "academic": 50.0
     }
@@ -4567,10 +4216,9 @@
     "student_b": "stu_0023",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 54.5,
+    "compatibility_score": 55.4,
     "breakdown": {
-      "similarity": 56.2,
-      "complementarity": 66.7,
+      "similarity": 55.4,
       "study_style": 65.0,
       "academic": 0.0
     }
@@ -4580,10 +4228,9 @@
     "student_b": "stu_0024",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 120,
-    "compatibility_score": 52.8,
+    "compatibility_score": 55.4,
     "breakdown": {
-      "similarity": 56.2,
-      "complementarity": 58.3,
+      "similarity": 55.4,
       "study_style": 40.0,
       "academic": 50.0
     }
@@ -4593,10 +4240,9 @@
     "student_b": "stu_0025",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 180,
-    "compatibility_score": 47.9,
+    "compatibility_score": 73.2,
     "breakdown": {
-      "similarity": 65.6,
-      "complementarity": 16.7,
+      "similarity": 73.2,
       "study_style": 33.8,
       "academic": 50.0
     }
@@ -4606,10 +4252,9 @@
     "student_b": "stu_0026",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 360,
-    "compatibility_score": 42.6,
+    "compatibility_score": 69.6,
     "breakdown": {
-      "similarity": 62.5,
-      "complementarity": 16.7,
+      "similarity": 69.6,
       "study_style": 40.0,
       "academic": 0.0
     }
@@ -4619,10 +4264,9 @@
     "student_b": "stu_0027",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 240,
-    "compatibility_score": 63.9,
+    "compatibility_score": 53.6,
     "breakdown": {
-      "similarity": 59.4,
-      "complementarity": 83.3,
+      "similarity": 53.6,
       "study_style": 62.5,
       "academic": 50.0
     }
@@ -4632,10 +4276,9 @@
     "student_b": "stu_0028",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 120,
-    "compatibility_score": 65.1,
+    "compatibility_score": 60.7,
     "breakdown": {
-      "similarity": 71.9,
-      "complementarity": 83.3,
+      "similarity": 60.7,
       "study_style": 37.5,
       "academic": 50.0
     }
@@ -4645,10 +4288,9 @@
     "student_b": "stu_0023",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 360,
-    "compatibility_score": 59.1,
+    "compatibility_score": 62.5,
     "breakdown": {
-      "similarity": 65.6,
-      "complementarity": 66.7,
+      "similarity": 62.5,
       "study_style": 40.0,
       "academic": 50.0
     }
@@ -4658,10 +4300,9 @@
     "student_b": "stu_0024",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 55.0,
+    "compatibility_score": 62.5,
     "breakdown": {
-      "similarity": 65.6,
-      "complementarity": 58.3,
+      "similarity": 62.5,
       "study_style": 52.5,
       "academic": 0.0
     }
@@ -4671,10 +4312,9 @@
     "student_b": "stu_0025",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 360,
-    "compatibility_score": 55.5,
+    "compatibility_score": 80.4,
     "breakdown": {
-      "similarity": 75.0,
-      "complementarity": 25.0,
+      "similarity": 80.4,
       "study_style": 65.0,
       "academic": 0.0
     }
@@ -4684,10 +4324,9 @@
     "student_b": "stu_0026",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 55.8,
+    "compatibility_score": 69.6,
     "breakdown": {
-      "similarity": 65.6,
-      "complementarity": 25.0,
+      "similarity": 69.6,
       "study_style": 65.0,
       "academic": 50.0
     }
@@ -4697,10 +4336,9 @@
     "student_b": "stu_0027",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 420,
-    "compatibility_score": 73.5,
+    "compatibility_score": 60.7,
     "breakdown": {
-      "similarity": 68.8,
-      "complementarity": 83.3,
+      "similarity": 60.7,
       "study_style": 62.5,
       "academic": 100.0
     }
@@ -4710,10 +4348,9 @@
     "student_b": "stu_0028",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 360,
-    "compatibility_score": 72.3,
+    "compatibility_score": 67.9,
     "breakdown": {
-      "similarity": 81.2,
-      "complementarity": 83.3,
+      "similarity": 67.9,
       "study_style": 75.0,
       "academic": 0.0
     }
@@ -4723,10 +4360,9 @@
     "student_b": "stu_0024",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 420,
-    "compatibility_score": 69.8,
+    "compatibility_score": 85.7,
     "breakdown": {
-      "similarity": 81.2,
-      "complementarity": 8.3,
+      "similarity": 85.7,
       "study_style": 87.5,
       "academic": 100.0
     }
@@ -4736,10 +4372,9 @@
     "student_b": "stu_0025",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 480,
-    "compatibility_score": 67.9,
+    "compatibility_score": 71.4,
     "breakdown": {
-      "similarity": 71.9,
-      "complementarity": 50.0,
+      "similarity": 71.4,
       "study_style": 60.0,
       "academic": 100.0
     }
@@ -4749,10 +4384,9 @@
     "student_b": "stu_0026",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 360,
-    "compatibility_score": 58.2,
+    "compatibility_score": 64.3,
     "breakdown": {
-      "similarity": 62.5,
-      "complementarity": 50.0,
+      "similarity": 64.3,
       "study_style": 60.0,
       "academic": 50.0
     }
@@ -4762,10 +4396,9 @@
     "student_b": "stu_0027",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 69.1,
+    "compatibility_score": 91.1,
     "breakdown": {
-      "similarity": 90.6,
-      "complementarity": 16.7,
+      "similarity": 91.1,
       "study_style": 77.5,
       "academic": 50.0
     }
@@ -4775,10 +4408,9 @@
     "student_b": "stu_0028",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 360,
-    "compatibility_score": 49.3,
+    "compatibility_score": 80.4,
     "breakdown": {
-      "similarity": 71.9,
-      "complementarity": 16.7,
+      "similarity": 80.4,
       "study_style": 50.0,
       "academic": 0.0
     }
@@ -4788,10 +4420,9 @@
     "student_b": "stu_0025",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 360,
-    "compatibility_score": 55.6,
+    "compatibility_score": 67.9,
     "breakdown": {
-      "similarity": 65.6,
-      "complementarity": 41.7,
+      "similarity": 67.9,
       "study_style": 72.5,
       "academic": 0.0
     }
@@ -4801,10 +4432,9 @@
     "student_b": "stu_0026",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 120,
-    "compatibility_score": 51.6,
+    "compatibility_score": 64.3,
     "breakdown": {
-      "similarity": 62.5,
-      "complementarity": 41.7,
+      "similarity": 64.3,
       "study_style": 60.0,
       "academic": 0.0
     }
@@ -4814,10 +4444,9 @@
     "student_b": "stu_0027",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 70.2,
+    "compatibility_score": 83.9,
     "breakdown": {
-      "similarity": 84.4,
-      "complementarity": 25.0,
+      "similarity": 83.9,
       "study_style": 90.0,
       "academic": 50.0
     }
@@ -4827,10 +4456,9 @@
     "student_b": "stu_0028",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 180,
-    "compatibility_score": 54.1,
+    "compatibility_score": 73.2,
     "breakdown": {
-      "similarity": 65.6,
-      "complementarity": 25.0,
+      "similarity": 73.2,
       "study_style": 56.2,
       "academic": 50.0
     }
@@ -4840,10 +4468,9 @@
     "student_b": "stu_0026",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 65.5,
+    "compatibility_score": 82.1,
     "breakdown": {
-      "similarity": 84.4,
-      "complementarity": 16.7,
+      "similarity": 82.1,
       "study_style": 100.0,
       "academic": 0.0
     }
@@ -4853,10 +4480,9 @@
     "student_b": "stu_0027",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 420,
-    "compatibility_score": 73.3,
+    "compatibility_score": 69.6,
     "breakdown": {
-      "similarity": 75.0,
-      "complementarity": 66.7,
+      "similarity": 69.6,
       "study_style": 62.5,
       "academic": 100.0
     }
@@ -4866,10 +4492,9 @@
     "student_b": "stu_0028",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 180,
-    "compatibility_score": 64.6,
+    "compatibility_score": 69.6,
     "breakdown": {
-      "similarity": 75.0,
-      "complementarity": 66.7,
+      "similarity": 69.6,
       "study_style": 68.8,
       "academic": 0.0
     }
@@ -4879,10 +4504,9 @@
     "student_b": "stu_0027",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 63.6,
+    "compatibility_score": 62.5,
     "breakdown": {
-      "similarity": 65.6,
-      "complementarity": 66.7,
+      "similarity": 62.5,
       "study_style": 62.5,
       "academic": 50.0
     }
@@ -4892,10 +4516,9 @@
     "student_b": "stu_0028",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 180,
-    "compatibility_score": 73.0,
+    "compatibility_score": 66.1,
     "breakdown": {
-      "similarity": 71.9,
-      "complementarity": 66.7,
+      "similarity": 66.1,
       "study_style": 68.8,
       "academic": 100.0
     }
@@ -4905,10 +4528,9 @@
     "student_b": "stu_0028",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 180,
-    "compatibility_score": 60.8,
+    "compatibility_score": 85.7,
     "breakdown": {
-      "similarity": 75.0,
-      "complementarity": 0.0,
+      "similarity": 85.7,
       "study_style": 66.2,
       "academic": 100.0
     }
@@ -4918,10 +4540,9 @@
     "student_b": "stu_0030",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 480,
-    "compatibility_score": 64.7,
+    "compatibility_score": 80.4,
     "breakdown": {
-      "similarity": 84.4,
-      "complementarity": 25.0,
+      "similarity": 80.4,
       "study_style": 87.5,
       "academic": 0.0
     }
@@ -4931,10 +4552,9 @@
     "student_b": "stu_0031",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 77.4,
+    "compatibility_score": 64.3,
     "breakdown": {
-      "similarity": 78.1,
-      "complementarity": 66.7,
+      "similarity": 64.3,
       "study_style": 75.0,
       "academic": 100.0
     }
@@ -4944,10 +4564,9 @@
     "student_b": "stu_0032",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 540,
-    "compatibility_score": 68.1,
+    "compatibility_score": 89.3,
     "breakdown": {
-      "similarity": 90.6,
-      "complementarity": 16.7,
+      "similarity": 89.3,
       "study_style": 72.5,
       "academic": 50.0
     }
@@ -4957,10 +4576,9 @@
     "student_b": "stu_0033",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 540,
-    "compatibility_score": 61.1,
+    "compatibility_score": 76.8,
     "breakdown": {
-      "similarity": 81.2,
-      "complementarity": 25.0,
+      "similarity": 76.8,
       "study_style": 77.5,
       "academic": 0.0
     }
@@ -4970,10 +4588,9 @@
     "student_b": "stu_0034",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 360,
-    "compatibility_score": 62.0,
+    "compatibility_score": 62.5,
     "breakdown": {
-      "similarity": 65.6,
-      "complementarity": 58.3,
+      "similarity": 62.5,
       "study_style": 62.5,
       "academic": 50.0
     }
@@ -4983,10 +4600,9 @@
     "student_b": "stu_0035",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 420,
-    "compatibility_score": 63.8,
+    "compatibility_score": 53.6,
     "breakdown": {
-      "similarity": 62.5,
-      "complementarity": 75.0,
+      "similarity": 53.6,
       "study_style": 62.5,
       "academic": 50.0
     }
@@ -4996,10 +4612,9 @@
     "student_b": "stu_0036",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 240,
-    "compatibility_score": 58.0,
+    "compatibility_score": 67.9,
     "breakdown": {
-      "similarity": 65.6,
-      "complementarity": 33.3,
+      "similarity": 67.9,
       "study_style": 67.5,
       "academic": 50.0
     }
@@ -5009,10 +4624,9 @@
     "student_b": "stu_0037",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 420,
-    "compatibility_score": 61.6,
+    "compatibility_score": 75.0,
     "breakdown": {
-      "similarity": 78.1,
-      "complementarity": 25.0,
+      "similarity": 75.0,
       "study_style": 87.5,
       "academic": 0.0
     }
@@ -5022,10 +4636,9 @@
     "student_b": "stu_0031",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 240,
-    "compatibility_score": 63.5,
+    "compatibility_score": 66.1,
     "breakdown": {
-      "similarity": 68.8,
-      "complementarity": 58.3,
+      "similarity": 66.1,
       "study_style": 62.5,
       "academic": 50.0
     }
@@ -5035,10 +4648,9 @@
     "student_b": "stu_0032",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 600,
-    "compatibility_score": 65.8,
+    "compatibility_score": 83.9,
     "breakdown": {
-      "similarity": 87.5,
-      "complementarity": 25.0,
+      "similarity": 83.9,
       "study_style": 60.0,
       "academic": 50.0
     }
@@ -5048,10 +4660,9 @@
     "student_b": "stu_0033",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 660,
-    "compatibility_score": 60.6,
+    "compatibility_score": 75.0,
     "breakdown": {
-      "similarity": 71.9,
-      "complementarity": 33.3,
+      "similarity": 75.0,
       "study_style": 90.0,
       "academic": 0.0
     }
@@ -5061,10 +4672,9 @@
     "student_b": "stu_0034",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 360,
-    "compatibility_score": 66.2,
+    "compatibility_score": 64.3,
     "breakdown": {
-      "similarity": 62.5,
-      "complementarity": 50.0,
+      "similarity": 64.3,
       "study_style": 75.0,
       "academic": 100.0
     }
@@ -5074,10 +4684,9 @@
     "student_b": "stu_0035",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 480,
-    "compatibility_score": 70.9,
+    "compatibility_score": 69.6,
     "breakdown": {
-      "similarity": 71.9,
-      "complementarity": 50.0,
+      "similarity": 69.6,
       "study_style": 75.0,
       "academic": 100.0
     }
@@ -5087,10 +4696,9 @@
     "student_b": "stu_0036",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 420,
-    "compatibility_score": 52.2,
+    "compatibility_score": 69.6,
     "breakdown": {
-      "similarity": 62.5,
-      "complementarity": 25.0,
+      "similarity": 69.6,
       "study_style": 80.0,
       "academic": 0.0
     }
@@ -5100,10 +4708,9 @@
     "student_b": "stu_0037",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 70.4,
+    "compatibility_score": 80.4,
     "breakdown": {
-      "similarity": 87.5,
-      "complementarity": 33.3,
+      "similarity": 80.4,
       "study_style": 100.0,
       "academic": 0.0
     }
@@ -5113,10 +4720,9 @@
     "student_b": "stu_0032",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 68.1,
+    "compatibility_score": 71.4,
     "breakdown": {
-      "similarity": 81.2,
-      "complementarity": 50.0,
+      "similarity": 71.4,
       "study_style": 62.5,
       "academic": 50.0
     }
@@ -5126,10 +4732,9 @@
     "student_b": "stu_0033",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 70.2,
+    "compatibility_score": 73.2,
     "breakdown": {
-      "similarity": 78.1,
-      "complementarity": 58.3,
+      "similarity": 73.2,
       "study_style": 72.5,
       "academic": 50.0
     }
@@ -5139,10 +4744,9 @@
     "student_b": "stu_0034",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 180,
-    "compatibility_score": 60.5,
+    "compatibility_score": 83.9,
     "breakdown": {
-      "similarity": 81.2,
-      "complementarity": 8.3,
+      "similarity": 83.9,
       "study_style": 66.2,
       "academic": 50.0
     }
@@ -5152,10 +4756,9 @@
     "student_b": "stu_0035",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 240,
-    "compatibility_score": 65.4,
+    "compatibility_score": 75.0,
     "breakdown": {
-      "similarity": 71.9,
-      "complementarity": 25.0,
+      "similarity": 75.0,
       "study_style": 72.5,
       "academic": 100.0
     }
@@ -5165,10 +4768,9 @@
     "student_b": "stu_0036",
     "schedule_compatible": false,
     "weekly_overlap_minutes": 0,
-    "compatibility_score": 59.8,
+    "compatibility_score": 78.6,
     "breakdown": {
-      "similarity": 81.2,
-      "complementarity": 33.3,
+      "similarity": 78.6,
       "study_style": 37.5,
       "academic": 50.0
     }
@@ -5178,10 +4780,9 @@
     "student_b": "stu_0037",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 120,
-    "compatibility_score": 61.0,
+    "compatibility_score": 64.3,
     "breakdown": {
-      "similarity": 68.8,
-      "complementarity": 58.3,
+      "similarity": 64.3,
       "study_style": 50.0,
       "academic": 50.0
     }
@@ -5191,10 +4792,9 @@
     "student_b": "stu_0033",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 600,
-    "compatibility_score": 62.2,
+    "compatibility_score": 80.4,
     "breakdown": {
-      "similarity": 84.4,
-      "complementarity": 25.0,
+      "similarity": 80.4,
       "study_style": 50.0,
       "academic": 50.0
     }
@@ -5204,10 +4804,9 @@
     "student_b": "stu_0034",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 360,
-    "compatibility_score": 62.7,
+    "compatibility_score": 69.6,
     "breakdown": {
-      "similarity": 68.8,
-      "complementarity": 41.7,
+      "similarity": 69.6,
       "study_style": 50.0,
       "academic": 100.0
     }
@@ -5217,10 +4816,9 @@
     "student_b": "stu_0035",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 420,
-    "compatibility_score": 67.6,
+    "compatibility_score": 64.3,
     "breakdown": {
-      "similarity": 71.9,
-      "complementarity": 58.3,
+      "similarity": 64.3,
       "study_style": 50.0,
       "academic": 100.0
     }
@@ -5230,10 +4828,9 @@
     "student_b": "stu_0036",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 360,
-    "compatibility_score": 50.7,
+    "compatibility_score": 75.0,
     "breakdown": {
-      "similarity": 68.8,
-      "complementarity": 16.7,
+      "similarity": 75.0,
       "study_style": 40.0,
       "academic": 50.0
     }
@@ -5243,10 +4840,9 @@
     "student_b": "stu_0037",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 360,
-    "compatibility_score": 54.5,
+    "compatibility_score": 75.0,
     "breakdown": {
       "similarity": 75.0,
-      "complementarity": 25.0,
       "study_style": 60.0,
       "academic": 0.0
     }
@@ -5256,10 +4852,9 @@
     "student_b": "stu_0034",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 360,
-    "compatibility_score": 64.8,
+    "compatibility_score": 67.9,
     "breakdown": {
-      "similarity": 65.6,
-      "complementarity": 50.0,
+      "similarity": 67.9,
       "study_style": 85.0,
       "academic": 50.0
     }
@@ -5269,10 +4864,9 @@
     "student_b": "stu_0035",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 480,
-    "compatibility_score": 74.7,
+    "compatibility_score": 62.5,
     "breakdown": {
-      "similarity": 68.8,
-      "complementarity": 66.7,
+      "similarity": 62.5,
       "study_style": 85.0,
       "academic": 100.0
     }
@@ -5282,10 +4876,9 @@
     "student_b": "stu_0036",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 360,
-    "compatibility_score": 56.0,
+    "compatibility_score": 66.1,
     "breakdown": {
-      "similarity": 59.4,
-      "complementarity": 41.7,
+      "similarity": 66.1,
       "study_style": 90.0,
       "academic": 0.0
     }
@@ -5295,10 +4888,9 @@
     "student_b": "stu_0037",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 360,
-    "compatibility_score": 57.1,
+    "compatibility_score": 83.9,
     "breakdown": {
-      "similarity": 78.1,
-      "complementarity": 0.0,
+      "similarity": 83.9,
       "study_style": 90.0,
       "academic": 0.0
     }
@@ -5308,10 +4900,9 @@
     "student_b": "stu_0035",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 62.4,
+    "compatibility_score": 76.8,
     "breakdown": {
-      "similarity": 78.1,
-      "complementarity": 16.7,
+      "similarity": 76.8,
       "study_style": 100.0,
       "academic": 0.0
     }
@@ -5321,10 +4912,9 @@
     "student_b": "stu_0036",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 240,
-    "compatibility_score": 76.9,
+    "compatibility_score": 91.1,
     "breakdown": {
-      "similarity": 93.8,
-      "complementarity": 25.0,
+      "similarity": 91.1,
       "study_style": 75.0,
       "academic": 100.0
     }
@@ -5334,10 +4924,9 @@
     "student_b": "stu_0037",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 180,
-    "compatibility_score": 61.9,
+    "compatibility_score": 62.5,
     "breakdown": {
-      "similarity": 56.2,
-      "complementarity": 50.0,
+      "similarity": 62.5,
       "study_style": 68.8,
       "academic": 100.0
     }
@@ -5347,10 +4936,9 @@
     "student_b": "stu_0036",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 180,
-    "compatibility_score": 68.0,
+    "compatibility_score": 67.9,
     "breakdown": {
-      "similarity": 71.9,
-      "complementarity": 41.7,
+      "similarity": 67.9,
       "study_style": 68.8,
       "academic": 100.0
     }
@@ -5360,10 +4948,9 @@
     "student_b": "stu_0037",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 66.1,
+    "compatibility_score": 57.1,
     "breakdown": {
-      "similarity": 65.6,
-      "complementarity": 66.7,
+      "similarity": 57.1,
       "study_style": 75.0,
       "academic": 50.0
     }
@@ -5373,10 +4960,9 @@
     "student_b": "stu_0037",
     "schedule_compatible": true,
     "weekly_overlap_minutes": 300,
-    "compatibility_score": 55.6,
+    "compatibility_score": 67.9,
     "breakdown": {
-      "similarity": 62.5,
-      "complementarity": 41.7,
+      "similarity": 67.9,
       "study_style": 80.0,
       "academic": 0.0
     }

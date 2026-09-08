@@ -6,10 +6,9 @@
     "max_members": 5,
     "current_members": 5,
     "created_at": "2026-08-25T14:00:00Z",
-    "group_score": 70.9,
-    "avg_pairwise": 68.6,
-    "worst_pairwise": 61.6,
-    "balance_score": 91.4
+    "group_score": 82.5,
+    "avg_pairwise": 82.5,
+    "worst_pairwise": 78.6
   },
   {
     "group_id": "grp_002",
@@ -18,10 +17,9 @@
     "max_members": 5,
     "current_members": 5,
     "created_at": "2026-08-25T14:00:00Z",
-    "group_score": 68.3,
-    "avg_pairwise": 66.5,
-    "worst_pairwise": 58.6,
-    "balance_score": 85.9
+    "group_score": 85.0,
+    "avg_pairwise": 85.0,
+    "worst_pairwise": 80.4
   },
   {
     "group_id": "grp_003",
@@ -30,10 +28,9 @@
     "max_members": 5,
     "current_members": 5,
     "created_at": "2026-08-25T14:00:00Z",
-    "group_score": 69.5,
-    "avg_pairwise": 67.0,
-    "worst_pairwise": 61.0,
-    "balance_score": 90.1
+    "group_score": 84.3,
+    "avg_pairwise": 84.3,
+    "worst_pairwise": 78.6
   },
   {
     "group_id": "grp_004",
@@ -42,10 +39,9 @@
     "max_members": 5,
     "current_members": 5,
     "created_at": "2026-08-25T14:00:00Z",
-    "group_score": 66.1,
-    "avg_pairwise": 62.1,
-    "worst_pairwise": 55.0,
-    "balance_score": 96.1
+    "group_score": 76.8,
+    "avg_pairwise": 76.8,
+    "worst_pairwise": 69.6
   },
   {
     "group_id": "grp_005",
@@ -54,10 +50,9 @@
     "max_members": 5,
     "current_members": 4,
     "created_at": "2026-08-25T14:00:00Z",
-    "group_score": 64.7,
-    "avg_pairwise": 62.1,
-    "worst_pairwise": 56.4,
-    "balance_score": 85.0
+    "group_score": 75.9,
+    "avg_pairwise": 75.9,
+    "worst_pairwise": 69.6
   },
   {
     "group_id": "grp_006",
@@ -66,9 +61,8 @@
     "max_members": 5,
     "current_members": 4,
     "created_at": "2026-08-25T14:00:00Z",
-    "group_score": 70.7,
-    "avg_pairwise": 67.9,
-    "worst_pairwise": 63.5,
-    "balance_score": 90.9
+    "group_score": 75.9,
+    "avg_pairwise": 75.9,
+    "worst_pairwise": 64.3
   }
 ]

@@ -13,17 +13,33 @@ heuristic placeholders described in the spec (section 11/12) — weights
 are explicitly temporary and meant to be replaced by learned weights
 once real outcome feedback (group_feedback) accumulates.
 
+Matching scope (current decision): compatibility is personality-similarity
+ONLY. Availability/schedule data and academic strong/weak-topic data are
+still generated and stored (nothing here is deleted), but neither factors
+into compatibility_score or group_score anymore — see similarity_component()
+and pair_compatibility() below. There's also no "reward differences"
+complementarity term: a good pair is simply a similar one, across the full
+14-trait personality vector.
+
 Run:  python generate_sample_data.py
 Output: ./sample/*.json
+
+Shared matching math (similarity_component, pair_compatibility, etc.) lives in
+matching_lib.py so add_student.py's incremental path uses the exact same
+formulas — see that module's docstring.
 """
 
 import json
 import random
 from pathlib import Path
-from statistics import mean, pstdev
+from statistics import mean
 
 import numpy as np
 from sklearn.cluster import KMeans
+
+from matching_lib import (
+    TRAITS, weekly_overlap_minutes, pair_compatibility, preferred_role_for,
+)
 
 random.seed(42)
 np.random.seed(42)
@@ -31,17 +47,10 @@ np.random.seed(42)
 OUT = Path(__file__).parent / "sample"
 OUT.mkdir(exist_ok=True)
 
-TRAITS = [
-    "seriousness", "structure", "accountability", "social_preference",
-    "communication_frequency", "competitiveness", "preparation",
-    "leadership", "talkativeness", "assertiveness", "helpfulness",
-    "collaboration", "study_pace", "patience",
-]
-
-SIMILARITY_TRAITS = [
-    "seriousness", "structure", "accountability", "social_preference",
-    "communication_frequency", "preparation", "competitiveness", "study_pace",
-]
+# Matching uses the full personality vector as one similarity signal — no
+# similarity/complementarity trait split anymore (see matching_lib.similarity_component()).
+# COMPLEMENT_TRAITS survives only as the set role_for_member() reads to assign
+# a group_role label further down; it no longer feeds any score.
 COMPLEMENT_TRAITS = ["leadership", "talkativeness", "assertiveness", "helpfulness"]
 
 ROLES = ["Organizer", "Explainer", "Problem Solver", "Listener", "Motivator", "Flexible/No Preference"]
@@ -294,83 +303,12 @@ for row, lab in zip(personality_rows, labels):
     row["archetype"] = label_to_name[lab]
     row["archetype_id"] = label_to_archetype[lab]
     # a lightweight self-reported role preference, correlated with traits but distinct from archetype
-    lead, talk, help_, collab = row["leadership"], row["talkativeness"], row["helpfulness"], row["collaboration"]
-    scores = {
-        "Organizer": lead, "Explainer": help_, "Problem Solver": collab,
-        "Listener": 6 - talk, "Motivator": (lead + talk) / 2,
-    }
-    top_role = max(scores, key=scores.get)
+    top_role = preferred_role_for(row)
     row["preferred_role"] = top_role if random.random() > 0.15 else "Flexible/No Preference"
 
 # ---------------------------------------------------------------------------
-# 4. Availability overlap + compatibility helpers
+# 4. Availability overlap + compatibility helpers — see matching_lib.py
 # ---------------------------------------------------------------------------
-
-def to_minutes(hhmm):
-    h, m = hhmm.split(":")
-    return int(h) * 60 + int(m)
-
-
-def weekly_overlap_minutes(avail_list):
-    """Total overlapping minutes/week across ALL students in avail_list (same day required)."""
-    by_day = {}
-    for a in avail_list:
-        for b in a["blocks"]:
-            by_day.setdefault(b["day"], []).append((to_minutes(b["start_time"]), to_minutes(b["end_time"])))
-    total = 0
-    for day, spans in by_day.items():
-        if len(spans) < len(avail_list):
-            continue  # not everyone has a block this day
-        start = max(s for s, _ in spans)
-        end = min(e for _, e in spans)
-        if end > start:
-            total += end - start
-    return total
-
-
-def similarity_component(pa, pb):
-    sims = [1 - abs(pa[t] - pb[t]) / 4 for t in SIMILARITY_TRAITS]
-    return mean(sims)
-
-
-def complementarity_component(pa, pb):
-    # Reward some difference (diversity of leadership/talkativeness/assertiveness/
-    # helpfulness) without rewarding maximal extremes indefinitely.
-    scores = []
-    for t in COMPLEMENT_TRAITS:
-        diff = abs(pa[t] - pb[t])
-        scores.append(min(diff / 3.0, 1.0))
-    return mean(scores)
-
-
-def study_style_component(av_a, av_b, overlap_minutes):
-    overlap_score = min(overlap_minutes / 240, 1.0)  # 4 hrs/week -> full score
-    dur_sim = 1 - abs(av_a["preferred_session_duration"] - av_b["preferred_session_duration"]) / 60
-    dur_sim = max(0, min(1, dur_sim))
-    loc_match = 1.0 if av_a["preferred_location"] == av_b["preferred_location"] else 0.4
-    onl_a, onl_b = av_a["online_vs_in_person_preference"], av_b["online_vs_in_person_preference"]
-    onl_match = 1.0 if onl_a == onl_b else (0.6 if "hybrid" in (onl_a, onl_b) else 0.2)
-    return mean([overlap_score, dur_sim, loc_match, onl_match])
-
-
-def academic_component(ac_a, ac_b):
-    a_helps_b = len(set(ac_a["can_help_with"]) & set(ac_b["needs_help_with"]))
-    b_helps_a = len(set(ac_b["can_help_with"]) & set(ac_a["needs_help_with"]))
-    return min((a_helps_b + b_helps_a) / 2, 1.0)
-
-
-def pair_compatibility(pa, pb, av_a, av_b, ac_a, ac_b):
-    overlap = weekly_overlap_minutes([av_a, av_b])
-    sim = similarity_component(pa, pb)
-    comp = complementarity_component(pa, pb)
-    style = study_style_component(av_a, av_b, overlap)
-    acad = academic_component(ac_a, ac_b)
-    score = 0.50 * sim + 0.20 * comp + 0.20 * style + 0.10 * acad
-    return round(score * 100, 1), overlap, {
-        "similarity": round(sim * 100, 1), "complementarity": round(comp * 100, 1),
-        "study_style": round(style * 100, 1), "academic": round(acad * 100, 1),
-    }
-
 
 personality_by_id = {r["student_id"]: r for r in personality_rows}
 availability_by_id = {r["student_id"]: r for r in availability_rows}
@@ -378,6 +316,10 @@ academic_by_id = {r["student_id"]: r for r in academic_rows}
 
 # ---------------------------------------------------------------------------
 # 5. Pairwise compatibility matrix (within-course only — Stage 1 filter)
+#
+# schedule_compatible / weekly_overlap_minutes are still computed and stored
+# per pair (valid input data), but no longer exclude a pair from matching —
+# see pair_score() just below.
 # ---------------------------------------------------------------------------
 
 pairwise = []
@@ -405,42 +347,36 @@ for p in pairwise:
 
 
 def pair_score(a, b):
-    return pair_score_lookup[(a, b)]["compatibility_score"] if pair_score_lookup[(a, b)]["schedule_compatible"] else -1
+    # No schedule gate — time no longer factors into matching (still recorded
+    # per pair in schedule_compatible / weekly_overlap_minutes above, just unused here).
+    return pair_score_lookup[(a, b)]["compatibility_score"]
 
 
 # ---------------------------------------------------------------------------
 # 6. Group formation (greedy growth + 1 pass of local-search swaps)
 # ---------------------------------------------------------------------------
 
-def group_balance_score(members):
-    """Average across complement traits of a bell curve peaking at std ~= 1.0 (1-5 scale)."""
-    vals = []
-    for t in COMPLEMENT_TRAITS:
-        std = pstdev([personality_by_id[m][t] for m in members])
-        vals.append(max(0.0, 1 - abs(std - 1.0) / 2.0))
-    return round(mean(vals) * 100, 1)
-
-
 def group_pair_scores(members):
+    # No pair is ever excluded anymore (pair_score has no schedule gate), so
+    # this just collects every within-group pairwise similarity score.
     scores = []
     for i in range(len(members)):
         for j in range(i + 1, len(members)):
-            s = pair_score(members[i], members[j])
-            if s < 0:
-                return None
-            scores.append(s)
+            scores.append(pair_score(members[i], members[j]))
     return scores
 
 
 def group_score(members):
+    """
+    group_score = average pairwise similarity across the group. No
+    diversity/"balance" reward — that was a differences-based signal (spread
+    across leadership/talkativeness/assertiveness/helpfulness) and we only
+    want similarity now, same as the pairwise formula above.
+    """
     scores = group_pair_scores(members)
-    if scores is None:
-        return None
     avg = mean(scores)
     worst = min(scores)
-    balance = group_balance_score(members)
-    total = 0.70 * avg + 0.15 * worst + 0.15 * balance
-    return {"group_score": round(total, 1), "avg_pairwise": round(avg, 1), "worst_pairwise": round(worst, 1), "balance_score": balance}
+    return {"group_score": round(avg, 1), "avg_pairwise": round(avg, 1), "worst_pairwise": round(worst, 1)}
 
 
 def form_groups(course_students, target_looking_ids):
@@ -456,21 +392,17 @@ def form_groups(course_students, target_looking_ids):
                 s = pair_score(rem[i], rem[j])
                 if s > best_val:
                     best_val, best_pair = s, (rem[i], rem[j])
-        if best_pair is None or best_val < 0:
+        if best_pair is None:
             break
         group = list(best_pair)
         unassigned -= set(group)
         while len(group) < 5 and unassigned:
             best_c, best_avg = None, -1
             for cand in sorted(unassigned):
-                trial = group + [cand]
-                scores = group_pair_scores(trial)
-                if scores is None:
-                    continue
-                avg = mean(scores)
+                avg = mean(group_pair_scores(group + [cand]))
                 if avg > best_avg:
                     best_avg, best_c = avg, cand
-            if best_c is None or len(group) >= 4 and len(unassigned) <= 3 and best_avg < 0:
+            if best_c is None:
                 break
             group.append(best_c)
             unassigned.remove(best_c)
@@ -500,8 +432,6 @@ def local_search_swap(groups, rounds=25):
                         trial_i = groups[gi][:mi] + [b] + groups[gi][mi + 1:]
                         trial_j = groups[gj][:mj] + [a] + groups[gj][mj + 1:]
                         si, sj = group_score(trial_i), group_score(trial_j)
-                        if si is None or sj is None:
-                            continue
                         if si["group_score"] + sj["group_score"] > base_i + base_j + 0.5:
                             groups[gi], groups[gj] = trial_i, trial_j
                             improved = True

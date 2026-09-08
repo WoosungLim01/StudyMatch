@@ -1,0 +1,32 @@
+[
+  {
+    "name": "Jordan Lee",
+    "year": "Sophomore",
+    "gender": "Man",
+    "major": "Computer Science",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "section": "001",
+    "semester": "Fall 2026",
+    "looking_for_group": true,
+    "personality": {
+      "seriousness": 4, "structure": 4, "accountability": 4, "social_preference": 3,
+      "communication_frequency": 3, "competitiveness": 3, "preparation": 4,
+      "leadership": 3, "talkativeness": 3, "assertiveness": 3, "helpfulness": 4,
+      "collaboration": 4, "study_pace": 3, "patience": 4
+    },
+    "availability": {
+      "blocks": [{ "day": "Mon", "start_time": "18:00", "end_time": "21:00" }],
+      "preferred_study_period": "Evening",
+      "preferred_session_duration": 90,
+      "preferred_sessions_per_week": 2,
+      "preferred_location": "Library",
+      "online_vs_in_person_preference": "in_person"
+    },
+    "academic": {
+      "course_confidence": 4,
+      "target_grade": "A-",
+      "strong_topics": ["Recursion"],
+      "weak_topics": ["NP-Completeness"]
+    }
+  }
+]

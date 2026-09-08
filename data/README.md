@@ -11,6 +11,51 @@ math and group-formation logic in the script are the heuristic placeholders from
 spec, not a final algorithm — expect to replace both once real `group_feedback`
 accumulates (spec §16–17).
 
+**Matching scope**: compatibility is **personality similarity only** — see
+["How the pipeline was run"](#how-the-pipeline-was-run-mirrors-20) step 5.
+Availability/schedule and academic strong/weak-topic data are still generated
+and stored in full (nothing is deleted), they just don't factor into
+`compatibility_score` or `group_score` right now.
+
+## The actual database
+
+`schema.sql` + `build_database.py` turn `sample/*.json` into a real, normalized
+SQLite database at `studymatch.db` (17 tables, ~1,200 rows, zero FK violations).
+Rebuild it anytime with:
+
+```
+python build_database.py            # regenerates sample/*.json, then builds studymatch.db
+python build_database.py --no-regen # builds studymatch.db from whatever's already in sample/
+```
+
+Open `studymatch.db` in [DB Browser for SQLite](https://sqlitebrowser.org/) or any
+SQLite client. The ER diagram for this schema — plus the normalization decisions
+behind it (why some things are wide columns and others are junction tables) — is in
+[`ER_DIAGRAM.md`](ER_DIAGRAM.md).
+
+### Adding real people alongside the fake ones
+
+`student.source` (`'synthetic'` / `'real'`) lets real students coexist with the
+fake ones in the same tables. To add one, write their raw data into a JSON file
+(see [`new_students.example.json`](new_students.example.json) for the shape) and run:
+
+```
+python add_student.py new_students.example.json
+```
+
+This **only ever inserts** — it assigns the new student an archetype by nearest
+*existing* archetype centroid (not a re-clustering, so no other student's
+archetype changes), computes their `pairwise_compatibility` against every
+course-mate using the exact same formula as the generator (both now import
+[`matching_lib.py`](matching_lib.py), so they can't drift apart), and generates
+up to 3 recruiting recommendations into existing under-capacity groups. It never
+touches `study_group`/`group_membership` or any other student's row.
+
+Because `build_database.py`'s rebuild is destructive (deletes and recreates
+`studymatch.db` from `sample/*.json` every run), it will **refuse to run** once
+any real student exists, to avoid silently wiping them — pass `--force` if you
+really do want to blow the database away and start over from pure synthetic data.
+
 ## Viewing it as tables / rebuilding the browser yourself
 
 `studymatch-data-browser.html` is a self-contained page (data baked in, no server, no
@@ -80,12 +125,17 @@ them:
 | `archetypes.json` | 5 | §7 — **discovered by KMeans**, not hand-labeled (see below) |
 | `availability.json` | 37 | §4, §18 Availability |
 | `academic_profiles.json` | 37 | §6 (strong/weak topics, can/needs help, confidence, target grade) |
-| `pairwise_compatibility.json` | 414 | §9–11 — every within-course pair, similarity/complementarity/study-style/academic breakdown |
-| `groups.json` | 6 | §12, §18 Groups (group_score, avg/worst pairwise, balance_score) |
-| `group_membership.json` | 34 | §18 Group Membership (includes a suggested `group_role`) |
+| `pairwise_compatibility.json` | 414 | §9–11 — every within-course pair; `compatibility_score` is personality similarity only, `breakdown.study_style`/`breakdown.academic` are informational (not scored) |
+| `groups.json` | 6 | §12, §18 Groups (`group_score` == `avg_pairwise`; no diversity/balance term) |
+| `group_membership.json` | 28 | §18 Group Membership (includes a suggested `group_role`) |
 | `match_data.json` | 37 | §18 Match Data — both the accepted matches that formed each group and open recruiting recommendations for students still `looking_for_group` |
 | `course_chat_messages.json` | 55 | §15 Course Global Chat |
-| `group_feedback.json` | 34 | §16, §18 Group Feedback — outcome data correlated (with noise) to `group_score`, so a future model can recover whether the heuristic actually predicts satisfaction |
+| `group_feedback.json` | 28 | §16, §18 Group Feedback — outcome data correlated (with noise) to `group_score`, so a future model can recover whether the heuristic actually predicts satisfaction |
+
+`studymatch.db` (built from the above, see ["The actual database"](#the-actual-database))
+adds `topic` and two junction tables — `availability_block` (128 rows) and
+`academic_profile_topic` (296 rows) — normalizing the list-valued fields that stay
+embedded in the JSON (`availability.blocks`, and `academic_profiles`' 4 topic lists).
 
 ## How the pipeline was run (mirrors §20)
 
@@ -108,22 +158,23 @@ them:
    idiosyncratic block. This keeps schedules realistically clustered (so groups can
    actually form) while still leaving some students genuinely schedule-incompatible.
 5. **Pairwise compatibility** (§9–11) — for every in-course pair:
-   `score = 50% similarity + 20% complementarity + 20% study-style + 10% academic`,
-   scaled to 0–100. Similarity traits: seriousness, structure, accountability,
-   social_preference, communication_frequency, preparation, competitiveness,
-   study_pace. Complementarity traits: leadership, talkativeness, assertiveness,
-   helpfulness (difference-rewarding, capped). A pair with zero weekly schedule
-   overlap is flagged `schedule_compatible: false` and excluded from group formation
-   (Stage 2 constraint) but still scored, for transparency.
+   `compatibility_score = similarity`, scaled to 0–100, mean closeness across
+   **all 14 personality traits** — no differences-rewarding term. `study_style`
+   (schedule overlap, session length, location, online/in-person) and `academic`
+   (help-topic overlap) are still computed and stored in `breakdown`, but carry
+   zero weight — informational only. `schedule_compatible` / `weekly_overlap_minutes`
+   are likewise still computed and stored per pair, but no longer exclude a pair
+   from group formation (time isn't part of matching right now).
 6. **Group formation** (§13) — greedy: seed each new group from the best remaining
    compatible pair, grow to 5 by adding whichever remaining student maximizes the
    group's average pairwise score, then run a bounded local-search pass that swaps
    members between groups whenever it raises both groups' combined `group_score`.
    Two groups (one per course) were deliberately capped at 4/5 members to leave an
    open seat, exercising the recruiting flow.
-7. **Group score** (§12): `70% avg pairwise + 15% worst pairwise + 15% balance`,
-   where `balance_score` rewards a healthy spread (std ≈ 1.0 on the 1–5 scale) across
-   the complementarity traits rather than everyone being identical.
+7. **Group score** (§12): `group_score = avg_pairwise` (the group's mean pairwise
+   similarity). `worst_pairwise` is still reported alongside it as a diagnostic,
+   but no longer weighted in — no diversity/"balance" term either (that rewarded
+   trait spread, i.e. differences, which matching no longer does).
 8. **Recruiting recommendations** (§14) — every student left `looking_for_group`
    gets up to 3 ranked recommendations into existing under-capacity groups in their
    course, scored by average compatibility with current members.
@@ -134,10 +185,12 @@ them:
 
 ## Known simplifications (flag before reusing past prototyping)
 
-- Weights (50/20/20/10, 70/15/15) are the spec's placeholder numbers, not fit to data.
-- `complementarity_component` is a simple capped-linear "more difference = better"
-  function; the spec's own framing (§10) suggests a moderate-diversity sweet spot
-  might work better — worth A/B-ing once real feedback exists.
+- Compatibility is personality-similarity-only by current decision, not because
+  schedule/academic signal is believed useless — `study_style`/`academic` are kept
+  computed and stored specifically so they're easy to re-weight back in later.
 - Only 2 courses / 37 students — enough to exercise every stage of the pipeline, not
   a load-test.
 - Gender is collected but genuinely unused in every scoring function, per §3.
+- `academic_profile_topic`'s `strong`/`can_help` rows are currently identical to each
+  other (same for `weak`/`needs_help`) — the generator draws `can_help_with` directly
+  from `strong_topics` rather than sampling them independently.
