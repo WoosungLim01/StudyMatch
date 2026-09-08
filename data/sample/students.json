@@ -1,0 +1,372 @@
+[
+  {
+    "student_id": "stu_0001",
+    "name": "Liam Smith",
+    "year": "Sophomore",
+    "gender": "Man",
+    "major": "Data Science",
+    "course": "CMPSC 465",
+    "course_section": "001",
+    "looking_for_group": true
+  },
+  {
+    "student_id": "stu_0002",
+    "name": "Olivia Walker",
+    "year": "Freshman",
+    "gender": "Woman",
+    "major": "Math",
+    "course": "CMPSC 465",
+    "course_section": "001",
+    "looking_for_group": true
+  },
+  {
+    "student_id": "stu_0003",
+    "name": "Isabella Wilson",
+    "year": "Junior",
+    "gender": "Man",
+    "major": "Statistics",
+    "course": "CMPSC 465",
+    "course_section": "001",
+    "looking_for_group": true
+  },
+  {
+    "student_id": "stu_0004",
+    "name": "Olivia King",
+    "year": "Sophomore",
+    "gender": "Non-binary",
+    "major": "Statistics",
+    "course": "CMPSC 465",
+    "course_section": "001",
+    "looking_for_group": true
+  },
+  {
+    "student_id": "stu_0005",
+    "name": "Lily Wilson",
+    "year": "Freshman",
+    "gender": "Non-binary",
+    "major": "Information Sciences & Technology",
+    "course": "CMPSC 465",
+    "course_section": "001",
+    "looking_for_group": true
+  },
+  {
+    "student_id": "stu_0006",
+    "name": "Maya Edwards",
+    "year": "Sophomore",
+    "gender": "Prefer not to say",
+    "major": "Information Sciences & Technology",
+    "course": "CMPSC 465",
+    "course_section": "001",
+    "looking_for_group": true
+  },
+  {
+    "student_id": "stu_0007",
+    "name": "Maya Johnson",
+    "year": "Freshman",
+    "gender": "Woman",
+    "major": "Computer Engineering",
+    "course": "CMPSC 465",
+    "course_section": "001",
+    "looking_for_group": true
+  },
+  {
+    "student_id": "stu_0008",
+    "name": "Zoe Chen",
+    "year": "Sophomore",
+    "gender": "Man",
+    "major": "Information Sciences & Technology",
+    "course": "CMPSC 465",
+    "course_section": "001",
+    "looking_for_group": true
+  },
+  {
+    "student_id": "stu_0009",
+    "name": "Aisha Lopez",
+    "year": "Senior",
+    "gender": "Man",
+    "major": "Data Science",
+    "course": "CMPSC 465",
+    "course_section": "001",
+    "looking_for_group": true
+  },
+  {
+    "student_id": "stu_0010",
+    "name": "Marcus Walker",
+    "year": "Sophomore",
+    "gender": "Non-binary",
+    "major": "Math",
+    "course": "CMPSC 465",
+    "course_section": "001",
+    "looking_for_group": true
+  },
+  {
+    "student_id": "stu_0011",
+    "name": "Ken Nguyen",
+    "year": "Junior",
+    "gender": "Woman",
+    "major": "Data Science",
+    "course": "CMPSC 465",
+    "course_section": "001",
+    "looking_for_group": true
+  },
+  {
+    "student_id": "stu_0012",
+    "name": "Liam Kim",
+    "year": "Freshman",
+    "gender": "Non-binary",
+    "major": "Information Sciences & Technology",
+    "course": "CMPSC 465",
+    "course_section": "001",
+    "looking_for_group": true
+  },
+  {
+    "student_id": "stu_0013",
+    "name": "Chloe Wilson",
+    "year": "Senior",
+    "gender": "Woman",
+    "major": "Math",
+    "course": "CMPSC 465",
+    "course_section": "001",
+    "looking_for_group": true
+  },
+  {
+    "student_id": "stu_0014",
+    "name": "Lily Baker",
+    "year": "Senior",
+    "gender": "Woman",
+    "major": "Math",
+    "course": "CMPSC 465",
+    "course_section": "001",
+    "looking_for_group": true
+  },
+  {
+    "student_id": "stu_0015",
+    "name": "Carlos Nelson",
+    "year": "Junior",
+    "gender": "Prefer not to say",
+    "major": "Information Sciences & Technology",
+    "course": "CMPSC 465",
+    "course_section": "001",
+    "looking_for_group": true
+  },
+  {
+    "student_id": "stu_0016",
+    "name": "Wei Rodriguez",
+    "year": "Freshman",
+    "gender": "Man",
+    "major": "Math",
+    "course": "CMPSC 465",
+    "course_section": "001",
+    "looking_for_group": true
+  },
+  {
+    "student_id": "stu_0017",
+    "name": "Sam Parker",
+    "year": "Senior",
+    "gender": "Man",
+    "major": "Statistics",
+    "course": "CMPSC 465",
+    "course_section": "001",
+    "looking_for_group": true
+  },
+  {
+    "student_id": "stu_0018",
+    "name": "Carlos Johnson",
+    "year": "Senior",
+    "gender": "Prefer not to say",
+    "major": "Information Sciences & Technology",
+    "course": "CMPSC 465",
+    "course_section": "001",
+    "looking_for_group": true
+  },
+  {
+    "student_id": "stu_0019",
+    "name": "Noah Edwards",
+    "year": "Senior",
+    "gender": "Woman",
+    "major": "Computer Science",
+    "course": "CMPSC 465",
+    "course_section": "001",
+    "looking_for_group": true
+  },
+  {
+    "student_id": "stu_0020",
+    "name": "Olivia Young",
+    "year": "Senior",
+    "gender": "Woman",
+    "major": "Information Sciences & Technology",
+    "course": "CMPSC 465",
+    "course_section": "001",
+    "looking_for_group": true
+  },
+  {
+    "student_id": "stu_0021",
+    "name": "Daniel Edwards",
+    "year": "Junior",
+    "gender": "Woman",
+    "major": "Information Sciences & Technology",
+    "course": "CMPSC 465",
+    "course_section": "001",
+    "looking_for_group": true
+  },
+  {
+    "student_id": "stu_0022",
+    "name": "Zoe Smith",
+    "year": "Junior",
+    "gender": "Man",
+    "major": "Math",
+    "course": "CMPSC 465",
+    "course_section": "001",
+    "looking_for_group": true
+  },
+  {
+    "student_id": "stu_0023",
+    "name": "Nina Young",
+    "year": "Junior",
+    "gender": "Prefer not to say",
+    "major": "Information Sciences & Technology",
+    "course": "CMPSC 465",
+    "course_section": "001",
+    "looking_for_group": true
+  },
+  {
+    "student_id": "stu_0024",
+    "name": "Isabella Martinez",
+    "year": "Freshman",
+    "gender": "Man",
+    "major": "Computer Engineering",
+    "course": "CMPSC 465",
+    "course_section": "001",
+    "looking_for_group": true
+  },
+  {
+    "student_id": "stu_0025",
+    "name": "Amara Hill",
+    "year": "Sophomore",
+    "gender": "Woman",
+    "major": "Information Sciences & Technology",
+    "course": "CMPSC 465",
+    "course_section": "001",
+    "looking_for_group": true
+  },
+  {
+    "student_id": "stu_0026",
+    "name": "Ben Lopez",
+    "year": "Sophomore",
+    "gender": "Non-binary",
+    "major": "Statistics",
+    "course": "CMPSC 465",
+    "course_section": "001",
+    "looking_for_group": true
+  },
+  {
+    "student_id": "stu_0027",
+    "name": "Sarah Perez",
+    "year": "Junior",
+    "gender": "Woman",
+    "major": "Computer Science",
+    "course": "CMPSC 465",
+    "course_section": "001",
+    "looking_for_group": true
+  },
+  {
+    "student_id": "stu_0028",
+    "name": "Carlos Campbell",
+    "year": "Senior",
+    "gender": "Woman",
+    "major": "Math",
+    "course": "CMPSC 465",
+    "course_section": "001",
+    "looking_for_group": true
+  },
+  {
+    "student_id": "stu_0029",
+    "name": "Emma Young",
+    "year": "Junior",
+    "gender": "Woman",
+    "major": "Information Sciences & Technology",
+    "course": "MATH 230",
+    "course_section": "002",
+    "looking_for_group": true
+  },
+  {
+    "student_id": "stu_0030",
+    "name": "Omar Wright",
+    "year": "Junior",
+    "gender": "Non-binary",
+    "major": "Information Sciences & Technology",
+    "course": "MATH 230",
+    "course_section": "002",
+    "looking_for_group": true
+  },
+  {
+    "student_id": "stu_0031",
+    "name": "Noah Parker",
+    "year": "Junior",
+    "gender": "Woman",
+    "major": "Math",
+    "course": "MATH 230",
+    "course_section": "002",
+    "looking_for_group": true
+  },
+  {
+    "student_id": "stu_0032",
+    "name": "Grace Lopez",
+    "year": "Freshman",
+    "gender": "Prefer not to say",
+    "major": "Computer Science",
+    "course": "MATH 230",
+    "course_section": "002",
+    "looking_for_group": true
+  },
+  {
+    "student_id": "stu_0033",
+    "name": "Marcus Turner",
+    "year": "Freshman",
+    "gender": "Prefer not to say",
+    "major": "Computer Engineering",
+    "course": "MATH 230",
+    "course_section": "002",
+    "looking_for_group": true
+  },
+  {
+    "student_id": "stu_0034",
+    "name": "Ravi Hall",
+    "year": "Junior",
+    "gender": "Man",
+    "major": "Statistics",
+    "course": "MATH 230",
+    "course_section": "002",
+    "looking_for_group": true
+  },
+  {
+    "student_id": "stu_0035",
+    "name": "Ethan King",
+    "year": "Junior",
+    "gender": "Non-binary",
+    "major": "Computer Science",
+    "course": "MATH 230",
+    "course_section": "002",
+    "looking_for_group": true
+  },
+  {
+    "student_id": "stu_0036",
+    "name": "Victor Scott",
+    "year": "Sophomore",
+    "gender": "Woman",
+    "major": "Statistics",
+    "course": "MATH 230",
+    "course_section": "002",
+    "looking_for_group": true
+  },
+  {
+    "student_id": "stu_0037",
+    "name": "Chloe Patel",
+    "year": "Sophomore",
+    "gender": "Prefer not to say",
+    "major": "Math",
+    "course": "MATH 230",
+    "course_section": "002",
+    "looking_for_group": true
+  }
+]

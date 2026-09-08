@@ -1,0 +1,170 @@
+[
+  {
+    "group_id": "grp_001",
+    "student_id": "stu_0001",
+    "joined_at": "2026-08-25T14:00:00Z",
+    "group_role": "Organizer"
+  },
+  {
+    "group_id": "grp_001",
+    "student_id": "stu_0003",
+    "joined_at": "2026-08-25T14:00:00Z",
+    "group_role": "Problem Solver"
+  },
+  {
+    "group_id": "grp_001",
+    "student_id": "stu_0006",
+    "joined_at": "2026-08-25T14:00:00Z",
+    "group_role": "Explainer"
+  },
+  {
+    "group_id": "grp_001",
+    "student_id": "stu_0023",
+    "joined_at": "2026-08-25T14:00:00Z",
+    "group_role": "Flexible/No Preference"
+  },
+  {
+    "group_id": "grp_001",
+    "student_id": "stu_0012",
+    "joined_at": "2026-08-25T14:00:00Z",
+    "group_role": "Explainer"
+  },
+  {
+    "group_id": "grp_002",
+    "student_id": "stu_0008",
+    "joined_at": "2026-08-25T14:00:00Z",
+    "group_role": "Organizer"
+  },
+  {
+    "group_id": "grp_002",
+    "student_id": "stu_0011",
+    "joined_at": "2026-08-25T14:00:00Z",
+    "group_role": "Flexible/No Preference"
+  },
+  {
+    "group_id": "grp_002",
+    "student_id": "stu_0004",
+    "joined_at": "2026-08-25T14:00:00Z",
+    "group_role": "Explainer"
+  },
+  {
+    "group_id": "grp_002",
+    "student_id": "stu_0022",
+    "joined_at": "2026-08-25T14:00:00Z",
+    "group_role": "Listener"
+  },
+  {
+    "group_id": "grp_002",
+    "student_id": "stu_0015",
+    "joined_at": "2026-08-25T14:00:00Z",
+    "group_role": "Explainer"
+  },
+  {
+    "group_id": "grp_003",
+    "student_id": "stu_0009",
+    "joined_at": "2026-08-25T14:00:00Z",
+    "group_role": "Listener"
+  },
+  {
+    "group_id": "grp_003",
+    "student_id": "stu_0010",
+    "joined_at": "2026-08-25T14:00:00Z",
+    "group_role": "Organizer"
+  },
+  {
+    "group_id": "grp_003",
+    "student_id": "stu_0016",
+    "joined_at": "2026-08-25T14:00:00Z",
+    "group_role": "Explainer"
+  },
+  {
+    "group_id": "grp_003",
+    "student_id": "stu_0002",
+    "joined_at": "2026-08-25T14:00:00Z",
+    "group_role": "Problem Solver"
+  },
+  {
+    "group_id": "grp_003",
+    "student_id": "stu_0024",
+    "joined_at": "2026-08-25T14:00:00Z",
+    "group_role": "Flexible/No Preference"
+  },
+  {
+    "group_id": "grp_004",
+    "student_id": "stu_0005",
+    "joined_at": "2026-08-25T14:00:00Z",
+    "group_role": "Listener"
+  },
+  {
+    "group_id": "grp_004",
+    "student_id": "stu_0017",
+    "joined_at": "2026-08-25T14:00:00Z",
+    "group_role": "Explainer"
+  },
+  {
+    "group_id": "grp_004",
+    "student_id": "stu_0014",
+    "joined_at": "2026-08-25T14:00:00Z",
+    "group_role": "Flexible/No Preference"
+  },
+  {
+    "group_id": "grp_004",
+    "student_id": "stu_0007",
+    "joined_at": "2026-08-25T14:00:00Z",
+    "group_role": "Organizer"
+  },
+  {
+    "group_id": "grp_004",
+    "student_id": "stu_0018",
+    "joined_at": "2026-08-25T14:00:00Z",
+    "group_role": "Explainer"
+  },
+  {
+    "group_id": "grp_005",
+    "student_id": "stu_0013",
+    "joined_at": "2026-08-25T14:00:00Z",
+    "group_role": "Organizer"
+  },
+  {
+    "group_id": "grp_005",
+    "student_id": "stu_0019",
+    "joined_at": "2026-08-25T14:00:00Z",
+    "group_role": "Listener"
+  },
+  {
+    "group_id": "grp_005",
+    "student_id": "stu_0020",
+    "joined_at": "2026-08-25T14:00:00Z",
+    "group_role": "Explainer"
+  },
+  {
+    "group_id": "grp_005",
+    "student_id": "stu_0021",
+    "joined_at": "2026-08-25T14:00:00Z",
+    "group_role": "Listener"
+  },
+  {
+    "group_id": "grp_006",
+    "student_id": "stu_0029",
+    "joined_at": "2026-08-25T14:00:00Z",
+    "group_role": "Organizer"
+  },
+  {
+    "group_id": "grp_006",
+    "student_id": "stu_0031",
+    "joined_at": "2026-08-25T14:00:00Z",
+    "group_role": "Flexible/No Preference"
+  },
+  {
+    "group_id": "grp_006",
+    "student_id": "stu_0032",
+    "joined_at": "2026-08-25T14:00:00Z",
+    "group_role": "Explainer"
+  },
+  {
+    "group_id": "grp_006",
+    "student_id": "stu_0030",
+    "joined_at": "2026-08-25T14:00:00Z",
+    "group_role": "Explainer"
+  }
+]

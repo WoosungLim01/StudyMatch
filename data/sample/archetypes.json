@@ -1,0 +1,112 @@
+[
+  {
+    "archetype_id": "arch_0",
+    "name": "Study Captain",
+    "description": "Takes charge, sets the pace, and pushes the group toward results.",
+    "member_count": 11,
+    "centroid_traits_1to5": {
+      "seriousness": 3.73,
+      "structure": 3.91,
+      "accountability": 3.73,
+      "social_preference": 3.18,
+      "communication_frequency": 3.27,
+      "competitiveness": 4.36,
+      "preparation": 3.73,
+      "leadership": 4.55,
+      "talkativeness": 3.45,
+      "assertiveness": 4.36,
+      "helpfulness": 3.0,
+      "collaboration": 3.27,
+      "study_pace": 4.18,
+      "patience": 2.55
+    }
+  },
+  {
+    "archetype_id": "arch_1",
+    "name": "Independent Strategist",
+    "description": "Prefers working things out solo, even inside a group; contributes best async.",
+    "member_count": 6,
+    "centroid_traits_1to5": {
+      "seriousness": 3.67,
+      "structure": 2.5,
+      "accountability": 2.67,
+      "social_preference": 1.67,
+      "communication_frequency": 1.5,
+      "competitiveness": 2.17,
+      "preparation": 2.0,
+      "leadership": 1.67,
+      "talkativeness": 1.83,
+      "assertiveness": 1.83,
+      "helpfulness": 2.5,
+      "collaboration": 1.5,
+      "study_pace": 3.67,
+      "patience": 3.5
+    }
+  },
+  {
+    "archetype_id": "arch_2",
+    "name": "Collaborative Guide",
+    "description": "Energized by teaching others and solving problems together; keeps the group warm.",
+    "member_count": 10,
+    "centroid_traits_1to5": {
+      "seriousness": 3.6,
+      "structure": 3.2,
+      "accountability": 3.1,
+      "social_preference": 4.4,
+      "communication_frequency": 4.0,
+      "competitiveness": 2.2,
+      "preparation": 3.0,
+      "leadership": 3.5,
+      "talkativeness": 4.2,
+      "assertiveness": 2.7,
+      "helpfulness": 4.6,
+      "collaboration": 4.7,
+      "study_pace": 3.1,
+      "patience": 4.6
+    }
+  },
+  {
+    "archetype_id": "arch_3",
+    "name": "Focused Architect",
+    "description": "Highly prepared, structure-loving, and quiet \u2014 thrives on a clear plan executed early.",
+    "member_count": 6,
+    "centroid_traits_1to5": {
+      "seriousness": 4.5,
+      "structure": 4.5,
+      "accountability": 4.0,
+      "social_preference": 1.83,
+      "communication_frequency": 2.33,
+      "competitiveness": 2.67,
+      "preparation": 4.5,
+      "leadership": 3.5,
+      "talkativeness": 1.83,
+      "assertiveness": 2.5,
+      "helpfulness": 3.0,
+      "collaboration": 3.0,
+      "study_pace": 2.5,
+      "patience": 3.17
+    }
+  },
+  {
+    "archetype_id": "arch_4",
+    "name": "Deadline Sprinter",
+    "description": "Ramps up fast close to deadlines; spontaneous over scheduled.",
+    "member_count": 4,
+    "centroid_traits_1to5": {
+      "seriousness": 2.75,
+      "structure": 2.25,
+      "accountability": 1.75,
+      "social_preference": 3.5,
+      "communication_frequency": 3.25,
+      "competitiveness": 2.5,
+      "preparation": 1.0,
+      "leadership": 1.75,
+      "talkativeness": 3.5,
+      "assertiveness": 1.75,
+      "helpfulness": 2.75,
+      "collaboration": 3.25,
+      "study_pace": 4.25,
+      "patience": 3.0
+    }
+  }
+]
