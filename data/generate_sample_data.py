@@ -16,31 +16,33 @@ once real outcome feedback (group_feedback) accumulates.
 Matching scope (current decision): compatibility is personality-similarity
 ONLY. Availability/schedule data is still generated and stored (nothing here
 is deleted), but doesn't factor into compatibility_score or group_score — see
-similarity_component() and pair_compatibility() in matching_lib.py. There's
-also no "reward differences" complementarity term: a good pair is simply a
-similar one, across the full 14-trait personality vector.
+similarity_component() and pair_compatibility() in ../algorithm/compatibility.py.
+There's also no "reward differences" complementarity term: a good pair is
+simply a similar one, across the full 14-trait personality vector.
 
 Academic profiles now carry only course_confidence/target_grade —
 per-topic strong/weak/can_help/needs_help tracking (and the shared `topic`
 table it needed) was removed; see README.md.
 
-Run:  python generate_sample_data.py
+Run (from this directory):  python generate_sample_data.py
 Output: ./sample/*.json
 
 Shared matching math (similarity_component, pair_compatibility, etc.) lives in
-matching_lib.py so add_student.py's incremental path uses the exact same
-formulas — see that module's docstring.
+../algorithm/compatibility.py so add_student.py's and app.py's incremental
+paths use the exact same formulas — see that module's docstring.
 """
 
 import json
 import random
+import sys
 from pathlib import Path
 from statistics import mean
 
 import numpy as np
 from sklearn.cluster import KMeans
 
-from matching_lib import TRAITS, pair_compatibility, preferred_role_for
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))  # repo root, for `algorithm`
+from algorithm.compatibility import TRAITS, pair_compatibility, preferred_role_for
 
 random.seed(42)
 np.random.seed(42)
@@ -49,7 +51,7 @@ OUT = Path(__file__).parent / "sample"
 OUT.mkdir(exist_ok=True)
 
 # Matching uses the full personality vector as one similarity signal — no
-# similarity/complementarity trait split anymore (see matching_lib.similarity_component()).
+# similarity/complementarity trait split anymore (see algorithm/compatibility.similarity_component()).
 # COMPLEMENT_TRAITS survives only as the set role_for_member() reads to assign
 # a group_role label further down; it no longer feeds any score.
 COMPLEMENT_TRAITS = ["leadership", "talkativeness", "assertiveness", "helpfulness"]
@@ -303,7 +305,7 @@ for row, lab in zip(personality_rows, labels):
     row["preferred_role"] = top_role if random.random() > 0.15 else "Flexible/No Preference"
 
 # ---------------------------------------------------------------------------
-# 4. Availability overlap + compatibility helpers — see matching_lib.py
+# 4. Availability overlap + compatibility helpers — see ../algorithm/compatibility.py
 # ---------------------------------------------------------------------------
 
 personality_by_id = {r["student_id"]: r for r in personality_rows}
@@ -378,7 +380,7 @@ def form_groups(course_students, target_looking_ids):
     Groups are exactly 5 — no more 4-5 range. Any remainder (<5) is left in
     `unassigned` on purpose: population sizes are chosen (see below) so each
     course ends batch generation with exactly 2 people left over, matching
-    the live intake policy in group_placement.py (a 1-2 remainder joins an
+    the live intake policy in ../algorithm/placement.py (a 1-2 remainder joins an
     existing group; a 3-4 remainder becomes its own smaller group) — those 2
     are what a real survey respondent completes into a group.
     """

@@ -44,18 +44,22 @@ def build(force=False):
     if DB_PATH.exists():
         if not force:
             probe = sqlite3.connect(DB_PATH)
-            try:
-                (real_count,) = probe.execute(
-                    "SELECT COUNT(*) FROM student WHERE source != 'synthetic'"
-                ).fetchone()
-            except sqlite3.OperationalError:
-                real_count = 0  # no student table / no source column yet - nothing to protect
+
+            def count(sql):
+                try:
+                    return probe.execute(sql).fetchone()[0]
+                except sqlite3.OperationalError:
+                    return 0  # table/column doesn't exist yet - nothing to protect
+
+            real_count = count("SELECT COUNT(*) FROM student WHERE source != 'synthetic'")
+            account_count = count("SELECT COUNT(*) FROM user_account")
             probe.close()
-            if real_count:
+            if real_count or account_count:
                 raise SystemExit(
                     f"Refusing to rebuild: studymatch.db has {real_count} real (non-synthetic) "
-                    f"student row(s) that would be lost. Re-run with --force to rebuild anyway, "
-                    f"or use add_student.py to add people without touching the rest of the DB."
+                    f"student row(s) and {account_count} login account(s) that would be lost. "
+                    f"Re-run with --force to rebuild anyway, or use add_student.py to add people "
+                    f"without touching the rest of the DB."
                 )
         DB_PATH.unlink()
     con = sqlite3.connect(DB_PATH)

@@ -1,8 +1,10 @@
 # StudyMatch — Sample Database ER Diagram
 
-Schema for `data/studymatch.db` (SQLite), built by `build_database.py` from
-`schema.sql` + `sample/*.json`. GitHub renders the diagram below natively;
-see `schema.sql` for the full DDL (types, `CHECK` constraints, defaults).
+Schema for [`data/studymatch.db`](../data/studymatch.db) (SQLite), built by
+[`data/build_database.py`](../data/build_database.py) from
+[`data/schema.sql`](../data/schema.sql) + `data/sample/*.json`. GitHub renders
+the diagram below natively; see `schema.sql` for the full DDL (types, `CHECK`
+constraints, defaults).
 
 Rendered version with row counts and design-decision notes:
 https://claude.ai/code/artifact/ea7b2a43-c040-44fe-9049-af37e590cddc
@@ -32,19 +34,32 @@ https://claude.ai/code/artifact/ea7b2a43-c040-44fe-9049-af37e590cddc
   `looking_for_group`, which is really per-course, not per-student).
 - **Provenance**: `student.source` (`'synthetic'` or `'real'`) lets fake and
   real people coexist in the same tables while staying distinguishable. See
-  `add_student.py` — it adds a real student's raw data, assigns them an
-  archetype by nearest *existing* centroid (no re-clustering), computes their
-  `pairwise_compatibility` against course-mates, and generates recruiting
-  recommendations — all as pure inserts, never touching an existing
-  `study_group`/`group_membership` row or another student's data.
-  `build_database.py`'s destructive rebuild refuses to run over real rows
-  unless you pass `--force`.
+  [`data/add_student.py`](../data/add_student.py) — it adds a real student's
+  raw data, assigns them an archetype by nearest *existing* centroid (no
+  re-clustering), computes their `pairwise_compatibility` against
+  course-mates, and generates recruiting recommendations — all as pure
+  inserts, never touching an existing `study_group`/`group_membership` row or
+  another student's data. `build_database.py`'s destructive rebuild refuses
+  to run over real rows unless you pass `--force`. The live equivalent —
+  [`app.py`](../app.py)'s `/survey` — actually places the new student into a
+  group instead of just recommending one; see
+  [`algorithm/placement.py`](../algorithm/placement.py).
+- **Login accounts are separate from students, on purpose**: `user_account`
+  exists (and can log in) *before* any survey is ever taken - `student_id`
+  starts `NULL` and is set once, which is also how login knows whether to
+  route someone to `/survey` or `/home`. Deleting a student sets any pointing
+  `user_account.student_id` back to `NULL` rather than leaving a dangling
+  reference; deleting an account leaves their student/survey data alone.
+  Passwords are hashed (stdlib PBKDF2, see
+  [`data/auth.py`](../data/auth.py)) — never stored plain.
 
 ## Diagram
 
 ```mermaid
 erDiagram
     UNIVERSITY ||--o{ COURSE : offers
+    USER_ACCOUNT |o--o| STUDENT : "linked to (after survey)"
+    USER_ACCOUNT ||--o{ SESSION : "logged in via"
     STUDENT ||--o{ COURSE_MEMBERSHIP : "enrolls via"
     COURSE ||--o{ COURSE_MEMBERSHIP : "enrolled via"
     STUDENT ||--o{ PERSONALITY_PROFILE : completes
@@ -68,6 +83,18 @@ erDiagram
     STUDY_GROUP ||--o{ GROUP_FEEDBACK : receives
     STUDENT ||--o{ GROUP_FEEDBACK : gives
 
+    USER_ACCOUNT {
+        string user_id PK
+        string email
+        string password_hash
+        string created_at
+        string student_id FK "unique, nullable"
+    }
+    SESSION {
+        string session_token PK
+        string user_id FK
+        string created_at
+    }
     UNIVERSITY {
         string university_id PK
         string name

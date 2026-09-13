@@ -119,6 +119,19 @@
     </div>
     <div class="empty" id="empty" style="display:none;">No matching people.</div>
   </div>
+
+  <h2 style="font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:var(--text-dim);margin:28px 0 14px;">Login Accounts</h2>
+  <div class="panel">
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr><th>Email</th><th>Created</th><th>Linked Student</th><th></th></tr>
+        </thead>
+        <tbody id="accounts-tbody"></tbody>
+      </table>
+    </div>
+    <div class="empty" id="accounts-empty" style="display:none;">No accounts yet.</div>
+  </div>
 </main>
 
 <div class="toast" id="toast"></div>
@@ -199,6 +212,45 @@ async function load(){
 ['search', 'filter-source', 'filter-course'].forEach(id =>
   document.getElementById(id).addEventListener('input', render));
 load();
+
+// ── Login accounts ──────────────────────────────────────────────────────
+let ACCOUNTS = [];
+
+function renderAccounts(){
+  document.getElementById('accounts-empty').style.display = ACCOUNTS.length ? 'none' : 'block';
+  document.getElementById('accounts-tbody').innerHTML = ACCOUNTS.map(a => `
+    <tr data-uid="${a.user_id}">
+      <td>${a.email}</td>
+      <td class="mono muted">${a.created_at}</td>
+      <td>${a.student_name ? a.student_name + ' <span class="muted mono">(' + a.student_id + ')</span>' : '<span class="muted">survey not completed</span>'}</td>
+      <td><button class="btn-del" onclick="delAccount('${a.user_id}', '${a.email.replace(/'/g, "\\'")}')">Delete</button></td>
+    </tr>
+  `).join('');
+}
+
+async function delAccount(userId, email){
+  if (!confirm(`Delete the account for ${email}? This only removes login access — any survey/group data they already have stays untouched.`)) return;
+  const btn = document.querySelector(`tr[data-uid="${userId}"] .btn-del`);
+  btn.disabled = true;
+  btn.textContent = '…';
+  try {
+    const res = await fetch(`${API}/api/admin/accounts/${userId}`, { method: 'DELETE' });
+    if (!res.ok) throw new Error((await res.json()).detail || res.statusText);
+    ACCOUNTS = ACCOUNTS.filter(a => a.user_id !== userId);
+    renderAccounts();
+    toast(`Deleted account for ${email}.`);
+  } catch (err) {
+    toast('Delete failed: ' + err.message);
+    btn.disabled = false;
+    btn.textContent = 'Delete';
+  }
+}
+
+async function loadAccounts(){
+  ACCOUNTS = await fetch(API + '/api/admin/accounts').then(r => r.json());
+  renderAccounts();
+}
+loadAccounts();
 </script>
 </body>
 </html>

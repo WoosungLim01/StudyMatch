@@ -34,7 +34,12 @@
   *{box-sizing:border-box;}
   body{margin:0;background:var(--bg);color:var(--text);font-family:"IBM Plex Sans",system-ui,sans-serif;font-size:14px;line-height:1.5;}
   .mono{font-family:"IBM Plex Mono",ui-monospace,monospace;}
-  header{border-bottom:1px solid var(--border);padding:16px 24px;}
+  header{border-bottom:1px solid var(--border);padding:16px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;}
+  .btn-ghost{
+    background:none;border:1px solid var(--border);border-radius:6px;color:var(--text-dim);
+    padding:7px 14px;font-size:12.5px;font-weight:600;cursor:pointer;
+  }
+  .btn-ghost:hover{background:var(--surface-2);}
   header h1{margin:0;font-size:16px;letter-spacing:.02em;}
   header .eyebrow{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:4px;}
   main{max-width:640px;margin:0 auto;padding:28px 20px 80px;}
@@ -100,8 +105,11 @@
 <body>
 
 <header>
-  <div class="eyebrow">StudyMatch</div>
-  <h1>Study Group Entry Survey</h1>
+  <div>
+    <div class="eyebrow">StudyMatch</div>
+    <h1>Study Group Entry Survey</h1>
+  </div>
+  <button class="btn-ghost" id="logout-btn">Log out</button>
 </header>
 
 <main>
@@ -242,6 +250,11 @@ async function init(){
 }
 init();
 
+document.getElementById('logout-btn').addEventListener('click', async () => {
+  await fetch(API + '/api/auth/logout', { method: 'POST' });
+  window.location.href = '/login';
+});
+
 function banner(kind, title, msg){
   const el = document.getElementById('result-banner');
   el.className = 'banner ' + kind;
@@ -289,6 +302,7 @@ document.getElementById('survey-form').addEventListener('submit', async (e) => {
         academic: academicOn ? { target_grade: document.getElementById('f-grade').value } : null,
       }),
     });
+    if (res.status === 401) { window.location.href = '/login'; return; }
     if (!res.ok) throw new Error((await res.json()).detail || res.statusText);
     const data = await res.json();
 

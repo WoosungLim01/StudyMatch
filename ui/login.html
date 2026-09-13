@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StudyMatch Log In</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F3F4F0; --surface:#FFFFFF; --surface-2:#EAEDE7; --border:#DBDFD6;
+    --text:#1B211D; --text-dim:#5C665E; --text-faint:#8B948B;
+    --accent:#2F6F5E; --accent-soft:#DEEBE6; --accent-ink:#0E362B;
+    --bad:#A83C3C; --bad-soft:#F3E0DD;
+    --shadow: 0 1px 2px rgba(20,24,20,.06), 0 6px 20px -12px rgba(20,24,20,.18);
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#14181A; --surface:#1B2123; --surface-2:#20272A; --border:#2B3234;
+      --text:#E8EBE6; --text-dim:#A2ABA1; --text-faint:#707A72;
+      --accent:#61C0A4; --accent-soft:#1E3833; --accent-ink:#CFF3E5;
+      --bad:#E27B7B; --bad-soft:#3A2222;
+      color-scheme: dark;
+    }
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;min-height:100vh;background:var(--bg);color:var(--text);
+    font-family:"IBM Plex Sans",system-ui,sans-serif;font-size:14px;line-height:1.5;
+    display:flex;align-items:center;justify-content:center;padding-block:40px;
+  }
+  .wrap{width:100%;max-width:380px;padding-inline:20px;}
+  .eyebrow{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:6px;text-align:center;}
+  h1{font-size:19px;margin:0 0 6px;text-align:center;text-wrap:balance;}
+  .sub{font-size:12.5px;color:var(--text-dim);text-align:center;margin:0 0 24px;}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:24px;box-shadow:var(--shadow);}
+  label{display:block;font-size:12.5px;color:var(--text-dim);margin-bottom:5px;}
+  input[type=email], input[type=password]{
+    width:100%;padding:10px 11px;border:1px solid var(--border);border-radius:6px;
+    background:var(--surface);color:var(--text);font:inherit;font-size:13.5px;
+  }
+  input:focus{outline:2px solid var(--accent);outline-offset:1px;border-color:var(--accent);}
+  .row{margin-bottom:14px;}
+  .btn{
+    background:var(--accent);color:#fff;border:none;border-radius:8px;
+    padding:12px 20px;font-size:14px;font-weight:600;cursor:pointer;width:100%;
+  }
+  .btn:hover{filter:brightness(1.08);}
+  .btn:disabled{opacity:.55;cursor:not-allowed;}
+  .hint{font-size:11.5px;color:var(--text-faint);margin-top:14px;text-align:center;line-height:1.6;}
+  .error{
+    background:var(--bad-soft);color:var(--bad);border:1px solid var(--bad);border-radius:8px;
+    padding:10px 12px;font-size:12.5px;margin-bottom:14px;display:none;
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <div class="eyebrow">StudyMatch</div>
+  <h1>Log In</h1>
+  <p class="sub">One form for both — new email creates an account, existing email logs you in.</p>
+
+  <div class="card">
+    <div class="error" id="error"></div>
+    <form id="login-form">
+      <div class="row">
+        <label for="f-email">Email</label>
+        <input type="email" id="f-email" required autocomplete="email" placeholder="you@psu.edu">
+      </div>
+      <div class="row">
+        <label for="f-password">Password</label>
+        <input type="password" id="f-password" required autocomplete="current-password" minlength="6">
+      </div>
+      <button type="submit" class="btn" id="submit-btn">Continue</button>
+    </form>
+    <p class="hint">First time here? Just enter an email and password — we'll set up your account and take you straight to the survey.</p>
+  </div>
+</div>
+
+<script>
+const API = '';
+
+document.getElementById('login-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const errorEl = document.getElementById('error');
+  errorEl.style.display = 'none';
+
+  const btn = document.getElementById('submit-btn');
+  btn.disabled = true;
+  btn.textContent = 'Checking…';
+
+  try {
+    const res = await fetch(API + '/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email: document.getElementById('f-email').value.trim(),
+        password: document.getElementById('f-password').value,
+      }),
+    });
+    if (!res.ok) {
+      const body = await res.json().catch(() => ({}));
+      throw new Error(body.detail || res.statusText);
+    }
+    const data = await res.json();
+    window.location.href = data.redirect;
+  } catch (err) {
+    errorEl.textContent = err.message;
+    errorEl.style.display = 'block';
+    btn.disabled = false;
+    btn.textContent = 'Continue';
+  }
+});
+</script>
+</body>
+</html>

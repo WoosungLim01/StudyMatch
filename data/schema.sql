@@ -45,6 +45,25 @@ CREATE TABLE student (
     source      TEXT NOT NULL DEFAULT 'synthetic' CHECK (source IN ('synthetic', 'real'))
 );
 
+-- Login account. Deliberately separate from `student`: an account exists
+-- BEFORE the survey is ever taken (you log in, then get sent to the survey),
+-- so student_id starts NULL and is set once - that's also how login knows
+-- whether to route someone to /survey or /home. Named user_account (not
+-- `user`) to dodge the reserved-word gotcha that bites plenty of SQL engines.
+CREATE TABLE user_account (
+    user_id         TEXT PRIMARY KEY,
+    email           TEXT NOT NULL UNIQUE COLLATE NOCASE,
+    password_hash   TEXT NOT NULL,
+    created_at      TEXT NOT NULL,
+    student_id      TEXT UNIQUE REFERENCES student(student_id)
+);
+
+CREATE TABLE session (
+    session_token   TEXT PRIMARY KEY,
+    user_id         TEXT NOT NULL REFERENCES user_account(user_id),
+    created_at      TEXT NOT NULL
+);
+
 CREATE TABLE course_membership (
     student_id          TEXT NOT NULL REFERENCES student(student_id),
     course_id           TEXT NOT NULL REFERENCES course(course_id),

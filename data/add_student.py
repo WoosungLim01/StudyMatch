@@ -8,12 +8,12 @@ each new student:
 
   1. Insert their raw data as given: student, course_membership,
      personality_profile, and availability/academic_profile if provided.
-  2. Assign an archetype_id by nearest EXISTING centroid (matching_lib.
-     nearest_archetype) — does NOT re-run KMeans, so no other student's
-     archetype_id can change.
+  2. Assign an archetype_id by nearest EXISTING centroid
+     (algorithm.compatibility.nearest_archetype) — does NOT re-run KMeans,
+     so no other student's archetype_id can change.
   3. Compute pairwise_compatibility against every other student already in
-     the same course (matching_lib.pair_compatibility — the exact same
-     formula generate_sample_data.py used).
+     the same course (algorithm.compatibility.pair_compatibility — the exact
+     same formula generate_sample_data.py used).
   4. Rank existing under-capacity groups in their course by average
      compatibility with current members, and insert up to 3 match_data
      recruiting recommendations (accepted=False) — same as the "still
@@ -61,9 +61,10 @@ from datetime import datetime, timezone
 from pathlib import Path
 from statistics import mean
 
-from matching_lib import TRAITS, pair_compatibility, preferred_role_for, nearest_archetype
-
 HERE = Path(__file__).parent
+sys.path.insert(0, str(HERE.resolve().parent))  # repo root, for `algorithm` -
+                                                 # harmless if already inserted (e.g. imported by app.py)
+from algorithm.compatibility import TRAITS, pair_compatibility, preferred_role_for, nearest_archetype
 
 
 def now_iso():
@@ -90,8 +91,8 @@ def add_one(con, s, recommend=True):
     under-capacity groups and record up to 3 match_data recommendations
     (never actually joins a group).
 
-    recommend=False: skip that step entirely - used by webapp.py, which
-    calls group_placement.run_placement() right after this instead, to
+    recommend=False: skip that step entirely - used by ../app.py, which
+    calls algorithm.placement.run_placement() right after this instead, to
     actually PLACE the student into a group per the remainder policy rather
     than just recommend one.
     """

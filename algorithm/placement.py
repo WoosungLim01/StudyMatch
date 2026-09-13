@@ -22,11 +22,11 @@ policy exactly as specified:
       3 or 4       -> they become a brand-new (smaller) group together.
 
 Called synchronously right after a survey submission is inserted (see
-webapp.py), so the respondent gets an immediate group-or-pending answer.
+../app.py), so the respondent gets an immediate group-or-pending answer.
 
 NOT_IDEAL_THRESHOLD reuses the same 65 used elsewhere in this project
 (generate_sample_data.py's group_feedback "left_group" cutoff) as the bar for
-"this is a compatibility score worth warning about" - see webapp.py's popup.
+"this is a compatibility score worth warning about" - see ../app.py's popup.
 """
 
 from statistics import mean
@@ -144,7 +144,7 @@ def _recompute_group_stats(cur, group_id, pair_score):
 
 def recompute_or_delete_group(cur, group_id, course_id):
     """
-    Used by webapp.py's admin delete: call after removing a member from
+    Used by ../app.py's admin delete: call after removing a member from
     group_membership. Recomputes group_score/avg_pairwise/worst_pairwise for
     whoever's left, or deletes the group outright if that was the last member.
     """
