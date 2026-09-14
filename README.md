@@ -88,6 +88,8 @@ MATH 230) and their study groups.
 
 Full schema + the normalization decisions behind it: [`docs/ER_DIAGRAM.md`](docs/ER_DIAGRAM.md).
 Data generation, reproducibility, and the remainder-policy math in detail: [`data/README.md`](data/README.md).
+A planned (not yet built) semester-length outcome simulation, for validating the
+matching algorithm without waiting on real semester-long feedback: [`docs/SIMULATION_PLAN.md`](docs/SIMULATION_PLAN.md).
 
 ## Known limitations / out of scope (v1)
 
