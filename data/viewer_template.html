@@ -1,0 +1,689 @@
+<title>StudyMatch Data Browser</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F3F4F0;
+    --surface:#FFFFFF;
+    --surface-2:#EAEDE7;
+    --border:#DBDFD6;
+    --text:#1B211D;
+    --text-dim:#5C665E;
+    --text-faint:#8B948B;
+    --accent:#2F6F5E;
+    --accent-soft:#DEEBE6;
+    --accent-ink:#0E362B;
+    --amber:#B97418;
+    --amber-soft:#F3E3CB;
+    --good:#357A54;
+    --good-soft:#E1EFE5;
+    --warn:#A5701E;
+    --warn-soft:#F2E5CE;
+    --bad:#A83C3C;
+    --bad-soft:#F3E0DD;
+    --shadow: 0 1px 2px rgba(20,24,20,.06), 0 6px 20px -12px rgba(20,24,20,.18);
+    --radius: 10px;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#14181A;
+      --surface:#1B2123;
+      --surface-2:#20272A;
+      --border:#2B3234;
+      --text:#E8EBE6;
+      --text-dim:#A2ABA1;
+      --text-faint:#707A72;
+      --accent:#61C0A4;
+      --accent-soft:#1E3833;
+      --accent-ink:#CFF3E5;
+      --amber:#EFB559;
+      --amber-soft:#3A2E1A;
+      --good:#5AB37E;
+      --good-soft:#1D3527;
+      --warn:#E0A247;
+      --warn-soft:#3A2F17;
+      --bad:#E27B7B;
+      --bad-soft:#3A2222;
+      --shadow: 0 1px 2px rgba(0,0,0,.4), 0 10px 30px -14px rgba(0,0,0,.6);
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#14181A;
+    --surface:#1B2123;
+    --surface-2:#20272A;
+    --border:#2B3234;
+    --text:#E8EBE6;
+    --text-dim:#A2ABA1;
+    --text-faint:#707A72;
+    --accent:#61C0A4;
+    --accent-soft:#1E3833;
+    --accent-ink:#CFF3E5;
+    --amber:#EFB559;
+    --amber-soft:#3A2E1A;
+    --good:#5AB37E;
+    --good-soft:#1D3527;
+    --warn:#E0A247;
+    --warn-soft:#3A2F17;
+    --bad:#E27B7B;
+    --bad-soft:#3A2222;
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 10px 30px -14px rgba(0,0,0,.6);
+    color-scheme: dark;
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:"IBM Plex Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-size:14px;
+    line-height:1.45;
+  }
+  .mono{ font-family:"IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace; }
+  .num{ font-variant-numeric: tabular-nums; font-family:"IBM Plex Mono", ui-monospace, monospace; }
+
+  a{ color:inherit; }
+
+  .app{
+    display:grid;
+    grid-template-columns: 252px 1fr;
+    min-height:100vh;
+  }
+
+  /* ---------- Sidebar ---------- */
+  .sidebar{
+    border-right:1px solid var(--border);
+    background:var(--surface);
+    padding:20px 14px 24px;
+    position:sticky;
+    top:0;
+    height:100vh;
+    overflow-y:auto;
+  }
+  .brand{
+    display:flex; align-items:baseline; gap:8px;
+    padding:2px 8px 4px;
+    margin-bottom:4px;
+  }
+  .brand-mark{
+    width:9px; height:9px; border-radius:2px;
+    background:var(--accent);
+    flex:none;
+    transform: translateY(-1px);
+  }
+  .brand-name{ font-weight:700; font-size:15px; letter-spacing:-0.01em; }
+  .brand-sub{
+    font-size:11px; color:var(--text-faint);
+    padding:0 8px 16px;
+    text-transform:uppercase; letter-spacing:.06em;
+  }
+  .nav-group{ margin-bottom:14px; }
+  .nav-group-label{
+    font-size:10.5px; font-weight:600; letter-spacing:.08em; text-transform:uppercase;
+    color:var(--text-faint);
+    padding:6px 8px 5px;
+  }
+  .nav-item{
+    display:flex; align-items:center; justify-content:space-between; gap:8px;
+    width:100%;
+    padding:7px 9px;
+    border-radius:7px;
+    border:none; background:transparent;
+    color:var(--text-dim);
+    font-size:13px;
+    font-family:inherit;
+    text-align:left;
+    cursor:pointer;
+    transition: background .12s ease, color .12s ease;
+  }
+  .nav-item:hover{ background:var(--surface-2); color:var(--text); }
+  .nav-item.active{ background:var(--accent-soft); color:var(--accent-ink); font-weight:600; }
+  .nav-item .count{
+    font-size:10.5px; font-family:"IBM Plex Mono", monospace;
+    color:var(--text-faint);
+    background:var(--surface-2);
+    border-radius:20px;
+    padding:1px 7px;
+    flex:none;
+  }
+  .nav-item.active .count{ background:rgba(0,0,0,.08); color:inherit; }
+
+  /* ---------- Main ---------- */
+  .main{ min-width:0; padding:26px 32px 60px; max-width:1320px; }
+
+  header.page-head{ margin-bottom:20px; }
+  header.page-head h1{
+    font-size:22px; font-weight:700; letter-spacing:-0.015em;
+    margin:0 0 4px; text-wrap:balance;
+  }
+  header.page-head p{
+    margin:0; color:var(--text-dim); font-size:13.5px; max-width:62ch;
+  }
+
+  .stat-row{
+    display:grid;
+    grid-template-columns:repeat(5, minmax(0,1fr));
+    gap:10px;
+    margin:20px 0 24px;
+  }
+  .stat-tile{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:12px 14px;
+  }
+  .stat-tile .v{ font-family:"IBM Plex Mono", monospace; font-size:20px; font-weight:600; line-height:1.1; }
+  .stat-tile .l{ font-size:11px; color:var(--text-faint); margin-top:4px; text-transform:uppercase; letter-spacing:.04em; }
+
+  .toolbar{
+    position:sticky; top:0; z-index:5;
+    display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+    background:var(--bg);
+    padding:10px 0 12px;
+    border-bottom:1px solid var(--border);
+    margin-bottom:0;
+  }
+  .segmented{
+    display:inline-flex; border:1px solid var(--border); border-radius:8px; overflow:hidden;
+    background:var(--surface);
+  }
+  .segmented button{
+    border:none; background:transparent; color:var(--text-dim);
+    font-family:inherit; font-size:12.5px; padding:6px 12px; cursor:pointer;
+    border-right:1px solid var(--border);
+  }
+  .segmented button:last-child{ border-right:none; }
+  .segmented button.active{ background:var(--accent); color:#fff; font-weight:600; }
+
+  .search-wrap{ position:relative; flex:1; min-width:180px; max-width:320px; }
+  .search-wrap input{
+    width:100%;
+    padding:6.5px 10px 6.5px 28px;
+    border-radius:8px;
+    border:1px solid var(--border);
+    background:var(--surface);
+    color:var(--text);
+    font-family:inherit; font-size:13px;
+  }
+  .search-wrap input:focus{ outline:2px solid var(--accent); outline-offset:-1px; }
+  .search-wrap svg{ position:absolute; left:9px; top:50%; transform:translateY(-50%); opacity:.5; }
+
+  .table-meta{ margin-left:auto; font-size:12px; color:var(--text-faint); }
+  .table-note{
+    font-size:12px; color:var(--text-faint); padding:10px 2px 4px;
+  }
+
+  .table-scroll{
+    overflow-x:auto;
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    background:var(--surface);
+    margin-top:14px;
+    box-shadow:var(--shadow);
+  }
+  table{ border-collapse:collapse; width:100%; min-width:640px; }
+  thead th{
+    position:sticky; top:0;
+    background:var(--surface-2);
+    text-align:left;
+    font-size:11px; text-transform:uppercase; letter-spacing:.05em;
+    color:var(--text-dim);
+    padding:9px 12px;
+    border-bottom:1px solid var(--border);
+    white-space:nowrap;
+    cursor:pointer;
+    user-select:none;
+  }
+  thead th:hover{ color:var(--text); }
+  thead th .arrow{ opacity:.55; font-size:10px; margin-left:3px; }
+  tbody td{
+    padding:8px 12px;
+    border-bottom:1px solid var(--border);
+    vertical-align:top;
+    font-size:13px;
+    max-width:320px;
+  }
+  tbody tr:last-child td{ border-bottom:none; }
+  tbody tr:hover{ background:var(--surface-2); }
+  .cell-wrap{ white-space:normal; }
+  .cell-nowrap{ white-space:nowrap; }
+  .cell-dim{ color:var(--text-faint); }
+
+  .chip{
+    display:inline-flex; align-items:center; gap:5px;
+    font-size:11.5px; font-weight:600;
+    padding:2.5px 8px; border-radius:20px;
+    white-space:nowrap;
+    line-height:1.5;
+  }
+  .chip-dot{ width:6px; height:6px; border-radius:50%; flex:none; }
+
+  .pill{
+    display:inline-flex; align-items:center; gap:5px;
+    font-size:12px; white-space:nowrap;
+  }
+  .pill .dot{ width:7px; height:7px; border-radius:50%; }
+  .dot-good{ background:var(--good); } .dot-bad{ background:var(--text-faint); }
+
+  .bar-cell{ display:flex; align-items:center; gap:8px; min-width:120px; }
+  .bar-track{ flex:1; height:6px; border-radius:4px; background:var(--surface-2); overflow:hidden; min-width:56px; }
+  .bar-fill{ height:100%; border-radius:4px; }
+  .bar-val{ font-size:12.5px; width:2.4em; text-align:right; flex:none; }
+
+  .taglist{ display:flex; flex-wrap:wrap; gap:4px; max-width:260px; }
+  .tag{
+    font-size:11px; padding:2px 6px; border-radius:5px;
+    background:var(--surface-2); color:var(--text-dim);
+    white-space:nowrap;
+  }
+  .tag.small{ font-size:10.5px; padding:1.5px 5px; }
+
+  .spark{ display:flex; align-items:flex-end; gap:1.5px; height:22px; }
+  .spark i{ display:block; width:5px; border-radius:1px 1px 0 0; background:var(--accent); opacity:.85; }
+
+  .empty-state{ padding:40px 20px; text-align:center; color:var(--text-faint); font-size:13px; }
+
+  footer.foot{
+    margin-top:28px; padding-top:14px; border-top:1px solid var(--border);
+    font-size:11.5px; color:var(--text-faint);
+  }
+
+  ::selection{ background:var(--accent-soft); }
+
+  @media (max-width:860px){
+    .app{ grid-template-columns:1fr; }
+    .sidebar{ position:relative; height:auto; }
+    .stat-row{ grid-template-columns:repeat(2,1fr); }
+  }
+</style>
+
+<div class="app">
+  <nav class="sidebar" id="sidebar">
+    <div class="brand"><span class="brand-mark"></span><span class="brand-name">StudyMatch</span></div>
+    <div class="brand-sub">Sample data · Penn State</div>
+    <div id="navHost"></div>
+  </nav>
+
+  <main class="main">
+    <header class="page-head">
+      <h1 id="pageTitle">Roster</h1>
+      <p id="pageSub">One row per record, generated for two Penn State course sections.</p>
+    </header>
+
+    <div class="stat-row" id="statRow"></div>
+
+    <div class="toolbar">
+      <div class="segmented" id="courseFilter"></div>
+      <div class="search-wrap">
+        <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="5.2" stroke="currentColor" stroke-width="1.4"/><path d="M11 11L14.2 14.2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        <input type="text" id="searchBox" placeholder="Search this table…">
+      </div>
+      <div class="table-meta" id="rowCount"></div>
+    </div>
+    <div class="table-note" id="tableNote"></div>
+    <div class="table-scroll"><table id="dataTable"><thead id="tHead"></thead><tbody id="tBody"></tbody></table></div>
+
+    <footer class="foot">Synthetic data generated for prototyping the StudyMatch matching pipeline — not real student records. Regenerate via <span class="mono">generate_sample_data.py</span>.</footer>
+  </main>
+</div>
+
+<script>
+const DATA = __DATA_PLACEHOLDER__;
+</script>
+<script>
+(function(){
+  "use strict";
+
+  const studentsById = Object.fromEntries(DATA.students.map(s=>[s.student_id,s]));
+  const coursesById = Object.fromEntries(DATA.courses.map(c=>[c.course_id,c]));
+  const groupsById = Object.fromEntries(DATA.groups.map(g=>[g.group_id,g]));
+  const courseCodeOf = cid => (coursesById[cid]||{}).course_code || cid;
+
+  function esc(s){
+    return String(s==null?"":s).replace(/[&<>"']/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  }
+  function studentName(id){ const s=studentsById[id]; return s? s.name : id; }
+
+  // ---- small renderers -----------------------------------------------
+  const ARCH_PALETTE = ["#2F6F5E","#B97418","#5A6BB0","#B0567A","#5C8A3A","#8A6BB0"];
+  function hashIdx(str,n){ let h=0; for(let i=0;i<str.length;i++) h=(h*31+str.charCodeAt(i))>>>0; return h%n; }
+  function archChip(name){
+    if(!name) return '<span class="cell-dim">—</span>';
+    const c = ARCH_PALETTE[hashIdx(name, ARCH_PALETTE.length)];
+    return `<span class="chip" style="background:${c}22; color:${c}"><span class="chip-dot" style="background:${c}"></span>${esc(name)}</span>`;
+  }
+  function scoreBand(v){ return v>=75?"good": v>=60?"warn":"bad"; }
+  function scoreBar(v, max){
+    max = max||100;
+    const pct = Math.max(0, Math.min(100, (v/max)*100));
+    const band = scoreBand((v/max)*100);
+    return `<div class="bar-cell"><div class="bar-track"><div class="bar-fill" style="width:${pct}%; background:var(--${band})"></div></div><span class="bar-val num">${v}</span></div>`;
+  }
+  function boolPill(v, t, f){
+    return `<span class="pill"><span class="dot ${v?'dot-good':'dot-bad'}"></span>${v? (t||"Yes") : (f||"No")}</span>`;
+  }
+  function tagList(arr, cls){
+    if(!arr || !arr.length) return '<span class="cell-dim">—</span>';
+    return `<div class="taglist">${arr.map(t=>`<span class="tag ${cls||''}">${esc(t)}</span>`).join("")}</div>`;
+  }
+  function traitSpark(traits, order){
+    const bars = order.map(k=>{
+      const v = traits[k]||0;
+      const h = Math.max(2, (v/5)*22);
+      const c = ARCH_PALETTE[hashIdx(traits.archetype||"x", ARCH_PALETTE.length)];
+      return `<i style="height:${h}px; background:${c}" title="${k}: ${v}"></i>`;
+    }).join("");
+    return `<div class="spark">${bars}</div>`;
+  }
+  function blocksSummary(blocks){
+    if(!blocks || !blocks.length) return '<span class="cell-dim">—</span>';
+    return `<div class="taglist">${blocks.map(b=>`<span class="tag small">${b.day} ${b.start_time}–${b.end_time}</span>`).join("")}</div>`;
+  }
+  function fmtTime(iso){
+    if(!iso) return "";
+    const d = new Date(iso);
+    if(isNaN(d)) return iso;
+    return d.toLocaleString(undefined,{month:"short",day:"numeric",hour:"numeric",minute:"2-digit"});
+  }
+
+  const TRAIT_KEYS = ["seriousness","structure","accountability","social_preference","communication_frequency","competitiveness","preparation","leadership","talkativeness","assertiveness","helpfulness","collaboration","study_pace","patience"];
+  const TRAIT_ABBR = {seriousness:"Ser",structure:"Str",accountability:"Acc",social_preference:"Soc",communication_frequency:"Comm",competitiveness:"Cmp",preparation:"Prep",leadership:"Lead",talkativeness:"Talk",assertiveness:"Assert",helpfulness:"Help",collaboration:"Collab",study_pace:"Pace",patience:"Pat"};
+
+  function traitCol(key){
+    return {key, label:TRAIT_ABBR[key], numeric:true, width:"46px",
+      get:r=>r[key], render:r=>`<span class="num">${r[key]}</span>`};
+  }
+
+  // ---- table configs ----------------------------------------------------
+  const TABLES = [
+    {
+      id:"students", group:"Roster", label:"Students", data:DATA.students,
+      sub:"One row per student profile — the basic fields collected on signup (spec §3).",
+      courseOf:r=>r.course,
+      search:r=>[r.name,r.student_id,r.major,r.course,r.year].join(" "),
+      columns:[
+        {key:"student_id", label:"ID", get:r=>r.student_id, render:r=>`<span class="mono cell-dim">${r.student_id}</span>`},
+        {key:"name", label:"Name", get:r=>r.name, render:r=>`<strong>${esc(r.name)}</strong>`},
+        {key:"year", label:"Year", get:r=>r.year},
+        {key:"major", label:"Major", get:r=>r.major},
+        {key:"course", label:"Course", get:r=>r.course, render:r=>`<span class="mono">${r.course}</span> <span class="cell-dim">§${r.course_section}</span>`},
+        {key:"gender", label:"Gender", get:r=>r.gender, render:r=>`<span class="cell-dim">${esc(r.gender)}</span>`},
+        {key:"looking_for_group", label:"Looking?", get:r=>r.looking_for_group?1:0, render:r=>boolPill(r.looking_for_group,"Looking","Placed")},
+      ]
+    },
+    {
+      id:"courses", group:"Roster", label:"Courses", data:DATA.courses,
+      sub:"The two course sections in this sample. Matching never crosses a course boundary (spec §2, Stage 1).",
+      courseOf:r=>r.course_code,
+      search:r=>[r.course_code,r.course_title,r.section].join(" "),
+      columns:[
+        {key:"course_code", label:"Course", get:r=>r.course_code, render:r=>`<span class="mono"><strong>${r.course_code}</strong></span>`},
+        {key:"course_title", label:"Title", get:r=>r.course_title},
+        {key:"section", label:"Section", get:r=>r.section, render:r=>`<span class="mono">§${r.section}</span>`},
+        {key:"semester", label:"Semester", get:r=>r.semester},
+        {key:"topic_pool", label:"Topic Pool", get:r=>(r.topic_pool||[]).length, render:r=>tagList(r.topic_pool)},
+      ]
+    },
+    {
+      id:"course_membership", group:"Roster", label:"Course Membership", data:DATA.course_membership,
+      sub:"Join table linking a student to a course section + semester.",
+      courseOf:r=>courseCodeOf(r.course_id),
+      search:r=>[studentName(r.student_id), r.course_id, r.section].join(" "),
+      columns:[
+        {key:"student_id", label:"Student", get:r=>studentName(r.student_id), render:r=>`${esc(studentName(r.student_id))} <span class="mono cell-dim">${r.student_id}</span>`},
+        {key:"course_id", label:"Course", get:r=>courseCodeOf(r.course_id), render:r=>`<span class="mono">${courseCodeOf(r.course_id)}</span>`},
+        {key:"section", label:"Section", get:r=>r.section},
+        {key:"semester", label:"Semester", get:r=>r.semester},
+      ]
+    },
+    {
+      id:"personality_profiles", group:"Personality", label:"Personality Survey", data:DATA.personality_profiles,
+      sub:"14 Likert traits (1–5) from the onboarding survey, plus the archetype + preferred role derived from them (spec §5, §7).",
+      courseOf:r=>courseCodeOf(r.course_id),
+      search:r=>[studentName(r.student_id), r.archetype, r.preferred_role].join(" "),
+      columns:[
+        {key:"student_id", label:"Student", get:r=>studentName(r.student_id), render:r=>`${esc(studentName(r.student_id))}`},
+        {key:"archetype", label:"Archetype", get:r=>r.archetype, render:r=>archChip(r.archetype)},
+        {key:"preferred_role", label:"Preferred Role", get:r=>r.preferred_role, render:r=>`<span class="tag">${esc(r.preferred_role)}</span>`},
+        ...TRAIT_KEYS.map(traitCol),
+      ]
+    },
+    {
+      id:"archetypes", group:"Personality", label:"Archetypes", data:DATA.archetypes,
+      sub:"Discovered by k-means over the raw trait vectors, then named from each cluster's centroid (spec §7) — engagement/presentation layer only, never a direct matching input.",
+      courseOf:null,
+      search:r=>[r.name, r.description].join(" "),
+      columns:[
+        {key:"name", label:"Archetype", get:r=>r.name, render:r=>archChip(r.name)},
+        {key:"member_count", label:"Members", get:r=>r.member_count, numeric:true, render:r=>`<span class="num">${r.member_count}</span>`},
+        {key:"description", label:"Description", get:r=>r.description, render:r=>`<span class="cell-wrap">${esc(r.description)}</span>`},
+        {key:"profile", label:"Trait Profile", get:r=>0, render:r=>traitSpark(Object.assign({archetype:r.name}, r.centroid_traits_1to5), TRAIT_KEYS)},
+      ]
+    },
+    {
+      id:"availability", group:"Logistics", label:"Availability", data:DATA.availability,
+      sub:"Weekly windows each student can study, used as a hard constraint before personality scoring (spec §4, Stage 2).",
+      courseOf:r=>courseCodeOf(r.course_id),
+      search:r=>[studentName(r.student_id), r.preferred_location, r.preferred_study_period].join(" "),
+      columns:[
+        {key:"student_id", label:"Student", get:r=>studentName(r.student_id)},
+        {key:"blocks", label:"Weekly Blocks", get:r=>(r.blocks||[]).length, render:r=>blocksSummary(r.blocks)},
+        {key:"preferred_study_period", label:"Period", get:r=>r.preferred_study_period},
+        {key:"preferred_session_duration", label:"Session", get:r=>r.preferred_session_duration, numeric:true, render:r=>`<span class="num">${r.preferred_session_duration}m</span>`},
+        {key:"preferred_sessions_per_week", label:"×/wk", get:r=>r.preferred_sessions_per_week, numeric:true, render:r=>`<span class="num">${r.preferred_sessions_per_week}</span>`},
+        {key:"preferred_location", label:"Location", get:r=>r.preferred_location},
+        {key:"online_vs_in_person_preference", label:"Mode", get:r=>r.online_vs_in_person_preference, render:r=>`<span class="tag small">${r.online_vs_in_person_preference}</span>`},
+      ]
+    },
+    {
+      id:"academic_profiles", group:"Logistics", label:"Academic Profile", data:DATA.academic_profiles,
+      sub:"Lightweight self-reported strengths/gaps — a secondary, low-weight signal behind personality (spec §6).",
+      courseOf:r=>courseCodeOf(r.course_id),
+      search:r=>[studentName(r.student_id), (r.strong_topics||[]).join(" "), (r.weak_topics||[]).join(" ")].join(" "),
+      columns:[
+        {key:"student_id", label:"Student", get:r=>studentName(r.student_id)},
+        {key:"strong_topics", label:"Strong In", get:r=>(r.strong_topics||[]).length, render:r=>tagList(r.strong_topics)},
+        {key:"weak_topics", label:"Needs Help With", get:r=>(r.weak_topics||[]).length, render:r=>tagList(r.weak_topics)},
+        {key:"course_confidence", label:"Confidence", get:r=>r.course_confidence, numeric:true, render:r=>scoreBar(r.course_confidence,5)},
+        {key:"target_grade", label:"Target", get:r=>r.target_grade, render:r=>`<span class="tag small">${r.target_grade}</span>`},
+      ]
+    },
+    {
+      id:"pairwise_compatibility", group:"Matching", label:"Pairwise Compatibility", data:DATA.pairwise_compatibility,
+      sub:"Every in-course pair scored 0–100 (spec §9–11): 50% similarity + 20% complementarity + 20% study-style + 10% academic. Pairs with zero schedule overlap are flagged, not deleted.",
+      courseOf:r=>courseCodeOf((DATA.personality_profiles.find(p=>p.student_id===r.student_a)||{}).course_id),
+      search:r=>[studentName(r.student_a), studentName(r.student_b)].join(" "),
+      columns:[
+        {key:"student_a", label:"Student A", get:r=>studentName(r.student_a)},
+        {key:"student_b", label:"Student B", get:r=>studentName(r.student_b)},
+        {key:"compatibility_score", label:"Score", get:r=>r.compatibility_score, numeric:true, render:r=>scoreBar(r.compatibility_score,100)},
+        {key:"schedule_compatible", label:"Schedule", get:r=>r.schedule_compatible?1:0, render:r=>boolPill(r.schedule_compatible,"Overlaps","No overlap")},
+        {key:"weekly_overlap_minutes", label:"Overlap", get:r=>r.weekly_overlap_minutes, numeric:true, render:r=>`<span class="num">${r.weekly_overlap_minutes}m</span>`},
+        {key:"similarity", label:"Similar", get:r=>r.breakdown.similarity, numeric:true, render:r=>`<span class="num cell-dim">${r.breakdown.similarity}</span>`},
+        {key:"complementarity", label:"Complement", get:r=>r.breakdown.complementarity, numeric:true, render:r=>`<span class="num cell-dim">${r.breakdown.complementarity}</span>`},
+        {key:"study_style", label:"Style", get:r=>r.breakdown.study_style, numeric:true, render:r=>`<span class="num cell-dim">${r.breakdown.study_style}</span>`},
+        {key:"academic", label:"Academic", get:r=>r.breakdown.academic, numeric:true, render:r=>`<span class="num cell-dim">${r.breakdown.academic}</span>`},
+      ]
+    },
+    {
+      id:"groups", group:"Matching", label:"Study Groups", data:DATA.groups,
+      sub:"Formed groups of 4–5, scored 70% avg pairwise + 15% worst pairwise + 15% personality balance (spec §12).",
+      courseOf:r=>courseCodeOf(r.course_id),
+      search:r=>[r.group_name, r.group_id].join(" "),
+      columns:[
+        {key:"group_name", label:"Group", get:r=>r.group_name, render:r=>`<strong>${esc(r.group_name)}</strong>`},
+        {key:"course_id", label:"Course", get:r=>courseCodeOf(r.course_id), render:r=>`<span class="mono">${courseCodeOf(r.course_id)}</span>`},
+        {key:"current_members", label:"Members", get:r=>r.current_members, numeric:true, render:r=>`<span class="num">${r.current_members}/${r.max_members}</span>`},
+        {key:"group_score", label:"Group Score", get:r=>r.group_score, numeric:true, render:r=>scoreBar(r.group_score,100)},
+        {key:"avg_pairwise", label:"Avg Pair", get:r=>r.avg_pairwise, numeric:true, render:r=>`<span class="num cell-dim">${r.avg_pairwise}</span>`},
+        {key:"worst_pairwise", label:"Worst Pair", get:r=>r.worst_pairwise, numeric:true, render:r=>`<span class="num cell-dim">${r.worst_pairwise}</span>`},
+        {key:"balance_score", label:"Balance", get:r=>r.balance_score, numeric:true, render:r=>`<span class="num cell-dim">${r.balance_score}</span>`},
+      ]
+    },
+    {
+      id:"group_membership", group:"Matching", label:"Group Membership", data:DATA.group_membership,
+      sub:"Which students landed in which group, and the natural role each tends toward (spec §18).",
+      courseOf:r=>courseCodeOf((groupsById[r.group_id]||{}).course_id),
+      search:r=>[studentName(r.student_id), (groupsById[r.group_id]||{}).group_name, r.group_role].join(" "),
+      columns:[
+        {key:"group_id", label:"Group", get:r=>(groupsById[r.group_id]||{}).group_name||r.group_id, render:r=>`<strong>${esc((groupsById[r.group_id]||{}).group_name||r.group_id)}</strong>`},
+        {key:"student_id", label:"Student", get:r=>studentName(r.student_id)},
+        {key:"group_role", label:"Role", get:r=>r.group_role, render:r=>`<span class="tag">${esc(r.group_role)}</span>`},
+        {key:"joined_at", label:"Joined", get:r=>r.joined_at, render:r=>`<span class="cell-dim">${fmtTime(r.joined_at)}</span>`},
+      ]
+    },
+    {
+      id:"match_data", group:"Matching", label:"Match Recommendations", data:DATA.match_data,
+      sub:"Every recommendation the engine produced — accepted matches that formed a group, and open recruiting suggestions for students still looking (spec §14, §18).",
+      courseOf:r=>courseCodeOf(((DATA.personality_profiles.find(p=>p.student_id===r.student_id))||{}).course_id),
+      search:r=>[studentName(r.student_id), (groupsById[r.recommended_group_id]||{}).group_name].join(" "),
+      columns:[
+        {key:"student_id", label:"Student", get:r=>studentName(r.student_id)},
+        {key:"recommended_group_id", label:"Recommended Group", get:r=>(groupsById[r.recommended_group_id]||{}).group_name||r.recommended_group_id},
+        {key:"compatibility_score", label:"Fit", get:r=>r.compatibility_score, numeric:true, render:r=>scoreBar(r.compatibility_score,100)},
+        {key:"accepted", label:"Status", get:r=>r.accepted?2:(r.rejected?0:1), render:r=>r.accepted? `<span class="pill"><span class="dot dot-good"></span>In group</span>` : (r.rejected? `<span class="pill"><span class="dot dot-bad"></span>Declined</span>` : `<span class="pill"><span class="dot" style="background:var(--amber)"></span>Open recommendation</span>`)},
+        {key:"timestamp", label:"When", get:r=>r.timestamp, render:r=>`<span class="cell-dim">${fmtTime(r.timestamp)}</span>`},
+      ]
+    },
+    {
+      id:"course_chat_messages", group:"Community", label:"Course Chat", data:DATA.course_chat_messages,
+      sub:"Sample activity from each course's global chat — the behavioral layer that can eventually feed back into matching (spec §15).",
+      courseOf:r=>courseCodeOf(r.course_id),
+      search:r=>[studentName(r.student_id), r.text, r.type].join(" "),
+      columns:[
+        {key:"student_id", label:"Student", get:r=>studentName(r.student_id)},
+        {key:"type", label:"Type", get:r=>r.type, render:r=>`<span class="tag small">${r.type}</span>`},
+        {key:"text", label:"Message", get:r=>r.text, render:r=>`<span class="cell-wrap">${esc(r.text)}</span>`},
+        {key:"upvotes", label:"Upvotes", get:r=>r.upvotes, numeric:true, render:r=>`<span class="num">${r.upvotes}</span>`},
+        {key:"timestamp", label:"When", get:r=>r.timestamp, render:r=>`<span class="cell-dim">${fmtTime(r.timestamp)}</span>`},
+      ]
+    },
+    {
+      id:"group_feedback", group:"Community", label:"Group Feedback", data:DATA.group_feedback,
+      sub:"Post-formation outcomes — the training signal for eventually learning the matching weights instead of assuming them (spec §16–17).",
+      courseOf:r=>courseCodeOf((groupsById[r.group_id]||{}).course_id),
+      search:r=>[studentName(r.student_id), (groupsById[r.group_id]||{}).group_name].join(" "),
+      columns:[
+        {key:"group_id", label:"Group", get:r=>(groupsById[r.group_id]||{}).group_name||r.group_id},
+        {key:"student_id", label:"Student", get:r=>studentName(r.student_id)},
+        {key:"satisfaction_score", label:"Satisfaction", get:r=>r.satisfaction_score, numeric:true, render:r=>scoreBar(r.satisfaction_score,5)},
+        {key:"meetings_attended", label:"Meetings", get:r=>r.meetings_attended, numeric:true, render:r=>`<span class="num">${r.meetings_attended}</span>`},
+        {key:"group_chat_activity", label:"Chat Activity", get:r=>r.group_chat_activity, render:r=>`<span class="tag small">${r.group_chat_activity}</span>`},
+        {key:"would_match_again", label:"Would Rematch", get:r=>r.would_match_again?1:0, render:r=>boolPill(r.would_match_again,"Yes","No")},
+        {key:"left_group", label:"Left Group", get:r=>r.left_group?1:0, render:r=>boolPill(r.left_group,"Left","Stayed")},
+        {key:"peer_helpfulness_rating", label:"Peer Help", get:r=>r.peer_helpfulness_rating, numeric:true, render:r=>`<span class="num cell-dim">${r.peer_helpfulness_rating}</span>`},
+        {key:"peer_reliability_rating", label:"Peer Reliability", get:r=>r.peer_reliability_rating, numeric:true, render:r=>`<span class="num cell-dim">${r.peer_reliability_rating}</span>`},
+      ]
+    },
+  ];
+
+  // ---- state --------------------------------------------------------
+  let state = { tableId:"students", course:"All", sortKey:null, sortDir:1, q:"" };
+
+  function buildNav(){
+    const groups = [];
+    TABLES.forEach(t=>{ if(!groups.includes(t.group)) groups.push(t.group); });
+    const host = document.getElementById("navHost");
+    host.innerHTML = groups.map(g=>{
+      const items = TABLES.filter(t=>t.group===g).map(t=>
+        `<button class="nav-item" data-id="${t.id}"><span>${t.label}</span><span class="count">${t.data.length}</span></button>`
+      ).join("");
+      return `<div class="nav-group"><div class="nav-group-label">${g}</div>${items}</div>`;
+    }).join("");
+    host.querySelectorAll(".nav-item").forEach(btn=>{
+      btn.addEventListener("click", ()=>{ state.tableId=btn.dataset.id; state.sortKey=null; state.q=""; state.course="All"; document.getElementById("searchBox").value=""; render(); });
+    });
+  }
+
+  function buildCourseFilter(){
+    const host = document.getElementById("courseFilter");
+    const opts = ["All", ...DATA.courses.map(c=>c.course_code)];
+    host.innerHTML = opts.map(o=>`<button data-c="${o}">${o}</button>`).join("");
+    host.querySelectorAll("button").forEach(btn=>{
+      btn.addEventListener("click", ()=>{ state.course = btn.dataset.c; render(); });
+    });
+  }
+
+  function buildStats(){
+    const s = DATA.students.length, c = DATA.courses.length, g = DATA.groups.length;
+    const pw = DATA.pairwise_compatibility.filter(p=>p.schedule_compatible);
+    const avg = pw.length? Math.round(pw.reduce((a,p)=>a+p.compatibility_score,0)/pw.length) : 0;
+    const looking = DATA.students.filter(s=>s.looking_for_group).length;
+    const tiles = [
+      ["Students", s],
+      ["Courses", c],
+      ["Groups formed", g],
+      ["Avg. compatible-pair score", avg],
+      ["Still looking for a group", looking],
+    ];
+    document.getElementById("statRow").innerHTML = tiles.map(([l,v])=>
+      `<div class="stat-tile"><div class="v">${v}</div><div class="l">${l}</div></div>`
+    ).join("");
+  }
+
+  function render(){
+    const t = TABLES.find(x=>x.id===state.tableId);
+    document.querySelectorAll(".nav-item").forEach(b=> b.classList.toggle("active", b.dataset.id===t.id));
+    document.getElementById("pageTitle").textContent = t.label;
+    document.getElementById("pageSub").textContent = t.group + " · " + t.data.length + " records";
+    document.getElementById("tableNote").textContent = t.sub || "";
+
+    const courseHost = document.getElementById("courseFilter");
+    courseHost.style.display = t.courseOf ? "inline-flex" : "none";
+    courseHost.querySelectorAll("button").forEach(b=> b.classList.toggle("active", b.dataset.c===state.course));
+
+    let rows = t.data.slice();
+    if(t.courseOf && state.course!=="All"){
+      rows = rows.filter(r=> t.courseOf(r)===state.course);
+    }
+    if(state.q){
+      const q = state.q.toLowerCase();
+      rows = rows.filter(r=> (t.search? t.search(r): "").toLowerCase().includes(q));
+    }
+    if(state.sortKey){
+      const col = t.columns.find(c=>c.key===state.sortKey);
+      rows.sort((a,b)=>{
+        const av=col.get(a), bv=col.get(b);
+        if(av<bv) return -1*state.sortDir; if(av>bv) return 1*state.sortDir; return 0;
+      });
+    }
+
+    document.getElementById("rowCount").textContent = rows.length + " of " + t.data.length + " rows";
+
+    const thead = document.getElementById("tHead");
+    thead.innerHTML = "<tr>" + t.columns.map(c=>{
+      const active = state.sortKey===c.key;
+      const arrow = active? (state.sortDir===1? "▲":"▼") : "";
+      return `<th data-key="${c.key}" style="${c.width?`width:${c.width};`:""}">${c.label}${arrow?` <span class="arrow">${arrow}</span>`:""}</th>`;
+    }).join("") + "</tr>";
+    thead.querySelectorAll("th").forEach(th=>{
+      th.addEventListener("click", ()=>{
+        const k = th.dataset.key;
+        if(state.sortKey===k) state.sortDir*=-1; else { state.sortKey=k; state.sortDir=1; }
+        render();
+      });
+    });
+
+    const tbody = document.getElementById("tBody");
+    if(!rows.length){
+      tbody.innerHTML = `<tr><td colspan="${t.columns.length}"><div class="empty-state">No rows match this filter.</div></td></tr>`;
+    } else {
+      tbody.innerHTML = rows.map(r=>
+        "<tr>" + t.columns.map(c=>{
+          const cls = c.numeric? "cell-nowrap" : "";
+          return `<td class="${cls}">${c.render? c.render(r) : esc(c.get(r))}</td>`;
+        }).join("") + "</tr>"
+      ).join("");
+    }
+  }
+
+  document.getElementById("searchBox").addEventListener("input", e=>{ state.q = e.target.value; render(); });
+
+  buildNav();
+  buildCourseFilter();
+  buildStats();
+  render();
+})();
+</script>

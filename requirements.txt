@@ -1,0 +1,10 @@
+# StudyMatch - one requirements file for the whole project.
+#
+# app.py (the FastAPI server)      needs fastapi + uvicorn
+# data/generate_sample_data.py     needs numpy + scikit-learn (KMeans)
+# everything else (algorithm/, data/add_student.py, data/build_database.py)
+#   is stdlib only: json, sqlite3, statistics
+fastapi==0.115.0
+uvicorn[standard]==0.30.6
+numpy==1.26.4
+scikit-learn==1.5.2

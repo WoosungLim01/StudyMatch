@@ -1,0 +1,100 @@
+[
+  {
+    "course_id": "psu-cmpsc465-001-fa26",
+    "university_id": "psu",
+    "course_code": "CMPSC 465",
+    "course_title": "Data Structures and Algorithms",
+    "section": "001",
+    "semester": "Fall 2026",
+    "topic_pool": [
+      "Graph Algorithms",
+      "Dynamic Programming",
+      "Proofs & Correctness",
+      "Greedy Algorithms",
+      "Divide and Conquer",
+      "NP-Completeness",
+      "Big-O Analysis",
+      "Recursion",
+      "Sorting & Searching",
+      "Network Flow"
+    ],
+    "popular_slots": [
+      [
+        "Mon",
+        18,
+        21
+      ],
+      [
+        "Wed",
+        18,
+        21
+      ],
+      [
+        "Tue",
+        14,
+        17
+      ],
+      [
+        "Thu",
+        14,
+        17
+      ],
+      [
+        "Sun",
+        16,
+        20
+      ],
+      [
+        "Mon",
+        19,
+        22
+      ],
+      [
+        "Wed",
+        19,
+        22
+      ]
+    ]
+  },
+  {
+    "course_id": "psu-math230-002-fa26",
+    "university_id": "psu",
+    "course_code": "MATH 230",
+    "course_title": "Calculus and Vector Analysis",
+    "section": "002",
+    "semester": "Fall 2026",
+    "topic_pool": [
+      "Multivariable Limits",
+      "Partial Derivatives",
+      "Double Integrals",
+      "Triple Integrals",
+      "Vector Fields",
+      "Lagrange Multipliers",
+      "Line Integrals",
+      "Green's Theorem",
+      "Parametric Surfaces"
+    ],
+    "popular_slots": [
+      [
+        "Mon",
+        19,
+        22
+      ],
+      [
+        "Wed",
+        19,
+        22
+      ],
+      [
+        "Sat",
+        10,
+        14
+      ],
+      [
+        "Tue",
+        18,
+        21
+      ]
+    ]
+  }
+]

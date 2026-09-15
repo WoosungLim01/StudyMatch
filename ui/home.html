@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StudyMatch Home</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F3F4F0; --surface:#FFFFFF; --surface-2:#EAEDE7; --border:#DBDFD6;
+    --text:#1B211D; --text-dim:#5C665E; --text-faint:#8B948B;
+    --accent:#2F6F5E; --accent-soft:#DEEBE6; --accent-ink:#0E362B;
+    --warn:#A5701E; --warn-soft:#F2E5CE;
+    --shadow: 0 1px 2px rgba(20,24,20,.06), 0 6px 20px -12px rgba(20,24,20,.18);
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#14181A; --surface:#1B2123; --surface-2:#20272A; --border:#2B3234;
+      --text:#E8EBE6; --text-dim:#A2ABA1; --text-faint:#707A72;
+      --accent:#61C0A4; --accent-soft:#1E3833; --accent-ink:#CFF3E5;
+      --warn:#E0A247; --warn-soft:#3A2F17;
+      color-scheme: dark;
+    }
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--text);font-family:"IBM Plex Sans",system-ui,sans-serif;font-size:14px;line-height:1.5;}
+  .mono{font-family:"IBM Plex Mono",ui-monospace,monospace;}
+  header{
+    border-bottom:1px solid var(--border);padding:16px 24px;
+    display:flex;align-items:center;justify-content:space-between;gap:16px;
+  }
+  .eyebrow{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);}
+  header h1{margin:0;font-size:16px;}
+  .btn-ghost{
+    background:none;border:1px solid var(--border);border-radius:6px;color:var(--text-dim);
+    padding:7px 14px;font-size:12.5px;font-weight:600;cursor:pointer;
+  }
+  .btn-ghost:hover{background:var(--surface-2);}
+  main{max-width:640px;margin:0 auto;padding:28px 20px 80px;}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:22px 24px;margin-bottom:18px;box-shadow:var(--shadow);}
+  .card h2{font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:var(--text-dim);margin:0 0 14px;}
+  .greeting{font-size:20px;font-weight:600;margin:0 0 4px;}
+  .greeting-sub{font-size:12.5px;color:var(--text-faint);margin:0;}
+  .group-name{font-size:22px;font-weight:700;color:var(--accent-ink);margin:0 0 4px;}
+  .score-pill{
+    display:inline-block;font-family:"IBM Plex Mono",monospace;font-size:12px;font-weight:600;
+    background:var(--accent-soft);color:var(--accent-ink);padding:3px 10px;border-radius:999px;margin-bottom:14px;
+  }
+  .member-list{list-style:none;margin:0;padding:0;}
+  .member-list li{padding:8px 0;border-top:1px solid var(--border);font-size:13.5px;}
+  .member-list li:first-child{border-top:none;}
+  .pending{
+    background:var(--warn-soft);color:var(--warn);border:1px solid var(--warn);
+    border-radius:8px;padding:14px 16px;font-size:13px;
+  }
+  .course-line{font-size:14px;}
+  .course-code{font-family:"IBM Plex Mono",monospace;font-weight:600;color:var(--accent-ink);}
+  .skeleton{color:var(--text-faint);font-size:13px;}
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <div class="eyebrow">StudyMatch</div>
+    <h1>Home</h1>
+  </div>
+  <button class="btn-ghost" id="logout-btn">Log out</button>
+</header>
+
+<main>
+  <div class="card" id="greeting-card">
+    <p class="skeleton">Loading…</p>
+  </div>
+
+  <div class="card" id="group-card" style="display:none;">
+    <h2>Your Study Group</h2>
+    <div id="group-content"></div>
+  </div>
+
+  <div class="card" id="course-card" style="display:none;">
+    <h2>Course</h2>
+    <div class="course-line" id="course-content"></div>
+  </div>
+</main>
+
+<script>
+const API = '';
+
+async function load(){
+  const res = await fetch(API + '/api/home');
+  if (res.status === 401) { window.location.href = '/login'; return; }
+  if (!res.ok) {
+    document.getElementById('greeting-card').innerHTML = '<p class="skeleton">Something went wrong loading your info.</p>';
+    return;
+  }
+  const data = await res.json();
+
+  document.getElementById('greeting-card').innerHTML = `
+    <p class="greeting">Welcome, ${data.name.split(' ')[0]}</p>
+    <p class="greeting-sub">${data.email}</p>
+  `;
+
+  const groupCard = document.getElementById('group-card');
+  const groupContent = document.getElementById('group-content');
+  groupCard.style.display = 'block';
+  if (data.status === 'grouped') {
+    groupContent.innerHTML = `
+      <div class="group-name">${data.group_name}</div>
+      <div class="score-pill">Compatibility ${data.group_score}</div>
+      <ul class="member-list">
+        ${data.members.map(m => `<li>${m}</li>`).join('') || '<li>No other members yet</li>'}
+      </ul>
+    `;
+  } else {
+    groupContent.innerHTML = `
+      <div class="pending">You're on the waiting list — no group had room right now. You'll be matched automatically as more students join.</div>
+    `;
+  }
+
+  if (data.course_code) {
+    const courseCard = document.getElementById('course-card');
+    courseCard.style.display = 'block';
+    document.getElementById('course-content').innerHTML =
+      `<span class="course-code">${data.course_code}</span> — ${data.course_title}`;
+  }
+}
+load();
+
+document.getElementById('logout-btn').addEventListener('click', async () => {
+  await fetch(API + '/api/auth/logout', { method: 'POST' });
+  window.location.href = '/login';
+});
+</script>
+</body>
+</html>
