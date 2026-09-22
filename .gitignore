@@ -6,3 +6,6 @@ __pycache__/
 .env
 venv/
 .venv/
+
+# presentation decks - generated artifacts, not source
+*.pptx

@@ -249,6 +249,11 @@ remaining list-valued field embedded in the JSON (`availability.blocks`).
 - Only 2 courses / 37 students — enough to exercise every stage of the pipeline, not
   a load-test.
 - Gender is collected but genuinely unused in every scoring function, per §3.
+- The 14 personality traits and the `SUBPOPULATIONS` archetype templates below
+  are invented, not derived from or validated against any published personality
+  distribution — see [`docs/DATA_GROUNDING.md`](../docs/DATA_GROUNDING.md) for
+  what real research *does* and doesn't back in this design, and a rough
+  cross-reference against Big Five (the actual validated framework).
 - Because generation draws from one seeded, sequential random stream, removing
   the topic-sampling calls shifted every random draw after them — this
   snapshot's exact group compositions/scores differ from earlier ones checked

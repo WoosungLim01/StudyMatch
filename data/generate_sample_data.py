@@ -128,6 +128,10 @@ GENDERS = ["Woman", "Man", "Non-binary", "Prefer not to say"]
 # answers would be. These are NOT exposed anywhere in the output — the
 # archetypes in archetypes.json are discovered later by clustering the
 # resulting personality_profiles, exactly as section 7 describes.
+#
+# These trait-value templates are hand-picked, not derived from or validated
+# against any published personality distribution - see ../docs/DATA_GROUNDING.md
+# for what real research does and doesn't back in this design.
 SUBPOPULATIONS = {
     "planner": dict(zip(TRAITS, [4.5, 4.5, 4.0, 2.0, 2.5, 3.0, 4.5, 3.0, 2.0, 2.5, 3.0, 3.0, 2.5, 3.5])),
     "connector": dict(zip(TRAITS, [3.5, 3.0, 3.0, 4.5, 4.5, 2.0, 3.0, 3.5, 4.5, 3.0, 4.5, 4.5, 3.0, 4.5])),
