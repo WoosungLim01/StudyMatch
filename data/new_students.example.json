@@ -8,11 +8,13 @@
     "section": "001",
     "semester": "Fall 2026",
     "looking_for_group": true,
-    "personality": {
-      "seriousness": 4, "structure": 4, "accountability": 4, "social_preference": 3,
-      "communication_frequency": 3, "competitiveness": 3, "preparation": 4,
-      "leadership": 3, "talkativeness": 3, "assertiveness": 3, "helpfulness": 4,
-      "collaboration": 4, "study_pace": 3, "patience": 4
+    "survey_responses": {
+      "1": 4, "2": 4, "3": 3, "4": 2,
+      "5": 4, "6": 2, "7": 3, "8": 2,
+      "9": 4, "10": 4, "11": 4, "12": 1,
+      "13": 3, "14": 4, "15": 3, "16": 2,
+      "17": 4, "18": 4, "19": 4, "20": 2,
+      "21": 4, "22": 2, "23": 3, "24": 2
     },
     "availability": {
       "blocks": [{ "day": "Mon", "start_time": "18:00", "end_time": "21:00" }],

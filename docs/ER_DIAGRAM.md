@@ -17,8 +17,15 @@ https://claude.ai/code/artifact/ea7b2a43-c040-44fe-9049-af37e590cddc
   `study_style_score` column on `pairwise_compatibility` is computed and
   stored the same way: zero weight.
 - **No complementarity**: the old formula rewarded personality *differences*
-  on 4 traits. Dropped — a good pair is simply a similar one across all 14
-  traits now. `group_score` lost its diversity/"balance" term the same way.
+  on 4 traits. Dropped — a good pair is simply a similar one across all 6
+  survey axes now. `group_score` lost its diversity/"balance" term the same way.
+- **Survey instrument**: the entry survey is a fixed 24-item, 5-point Likert
+  instrument (MSLQ-informed, "Version 3" of the redesign) — 6 axes x 4 items
+  each. Raw answers are stored per-item in `survey_response`; the 6 axis
+  scores in `personality_profile` are derived from them (reverse-coding
+  applied where an item is worded in the opposite direction) — see
+  [`algorithm/scoring.py`](../algorithm/scoring.py) for the item bank and
+  scoring function, used identically by real submissions and synthetic data.
 - **No academic topic tracking**: `topic` and `academic_profile_topic` were
   removed entirely (not just excluded from scoring, unlike availability).
   `academic_profile` now only carries `course_confidence`/`target_grade`.
@@ -65,6 +72,8 @@ erDiagram
     STUDENT ||--o{ PERSONALITY_PROFILE : completes
     COURSE ||--o{ PERSONALITY_PROFILE : scopes
     ARCHETYPE ||--o{ PERSONALITY_PROFILE : classifies
+    STUDENT ||--o{ SURVEY_RESPONSE : answers
+    COURSE ||--o{ SURVEY_RESPONSE : scopes
     STUDENT ||--o{ AVAILABILITY : sets
     COURSE ||--o{ AVAILABILITY : scopes
     AVAILABILITY ||--o{ AVAILABILITY_BLOCK : contains
@@ -128,40 +137,30 @@ erDiagram
         string name
         string description
         int member_count
-        float c_seriousness
+        float c_planning
+        float c_session_mode
+        float c_reliability
         float c_structure
-        float c_accountability
-        float c_social_preference
-        float c_communication_frequency
-        float c_competitiveness
-        float c_preparation
-        float c_leadership
-        float c_talkativeness
-        float c_assertiveness
-        float c_helpfulness
+        float c_intensity
         float c_collaboration
-        float c_study_pace
-        float c_patience
     }
     PERSONALITY_PROFILE {
         string student_id PK "also FK"
         string course_id PK "also FK"
-        int seriousness
-        int structure
-        int accountability
-        int social_preference
-        int communication_frequency
-        int competitiveness
-        int preparation
-        int leadership
-        int talkativeness
-        int assertiveness
-        int helpfulness
-        int collaboration
-        int study_pace
-        int patience
+        float planning
+        float session_mode
+        float reliability
+        float structure
+        float intensity
+        float collaboration
         string archetype_id FK
         string preferred_role
+    }
+    SURVEY_RESPONSE {
+        string student_id PK "also FK"
+        string course_id PK "also FK"
+        int item_number PK "1-24"
+        int response "1-5 Likert"
     }
     AVAILABILITY {
         string student_id PK "also FK"

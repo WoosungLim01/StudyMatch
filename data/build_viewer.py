@@ -29,7 +29,7 @@ OUTPUT = HERE / "studymatch-data-browser.html"
 
 KEYS = [
     "university", "courses", "students", "course_membership", "personality_profiles",
-    "archetypes", "availability", "academic_profiles", "pairwise_compatibility",
+    "survey_responses", "archetypes", "availability", "academic_profiles", "pairwise_compatibility",
     "groups", "group_membership", "match_data", "course_chat_messages", "group_feedback",
 ]
 

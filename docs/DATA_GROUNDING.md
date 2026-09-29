@@ -6,6 +6,19 @@ data using existing data (research)" gap honestly — some of our design
 choices turn out to have real support in the literature; others don't yet,
 and this says so plainly rather than overclaiming.
 
+**Update:** the survey redesign below ("What would actually close this gap,"
+item 1) has since been done — the entry survey is now a fixed 24-item,
+5-point Likert instrument pulled from validated MSLQ subscales where one
+exists (metacognitive self-regulation, effort regulation, organization,
+self-efficacy, task value), keeping original StudyMatch items only where
+MSLQ has no equivalent (`session_mode`, `collaboration` — MSLQ has no
+group-study-behavior subscale). See
+[`algorithm/scoring.py`](../algorithm/scoring.py) for the item bank and
+`references/` for the redesign doc. The analysis below (14 ad-hoc traits vs.
+Big Five) describes the *prior* instrument and is kept for historical
+context; item 2 (calibrating `SUBPOPULATIONS` against a published
+distribution) and item 3 (academic performance in matching) are still open.
+
 ## What's actually grounded in real research
 
 **Similarity, not complementarity, is the right call for compatibility.**

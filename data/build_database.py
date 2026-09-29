@@ -26,6 +26,9 @@ import sys
 from pathlib import Path
 
 HERE = Path(__file__).parent
+sys.path.insert(0, str(HERE.resolve().parent))  # repo root, for `algorithm`
+from algorithm.scoring import AXES
+
 SAMPLE_DIR = HERE / "sample"
 SCHEMA = HERE / "schema.sql"
 DB_PATH = HERE / "studymatch.db"
@@ -71,6 +74,7 @@ def build(force=False):
     students = load("students")
     course_membership = load("course_membership")
     personality = load("personality_profiles")
+    survey_responses = load("survey_responses")
     archetypes = load("archetypes")
     availability = load("availability")
     academic = load("academic_profiles")
@@ -111,27 +115,28 @@ def build(force=False):
         )
 
     # ── archetype ────────────────────────────────────────────────────────
-    TRAITS = [
-        "seriousness", "structure", "accountability", "social_preference",
-        "communication_frequency", "competitiveness", "preparation",
-        "leadership", "talkativeness", "assertiveness", "helpfulness",
-        "collaboration", "study_pace", "patience",
-    ]
     for a in archetypes:
         centroid = a["centroid_traits_1to5"]
         cur.execute(
-            f"INSERT INTO archetype VALUES (?,?,?,?,{','.join('?' * len(TRAITS))})",
-            (a["archetype_id"], a["name"], a["description"], a["member_count"], *[centroid[t] for t in TRAITS]),
+            f"INSERT INTO archetype VALUES (?,?,?,?,{','.join('?' * len(AXES))})",
+            (a["archetype_id"], a["name"], a["description"], a["member_count"], *[centroid[t] for t in AXES]),
         )
 
     # ── personality_profile ─────────────────────────────────────────────
     for p in personality:
         cur.execute(
-            f"INSERT INTO personality_profile VALUES (?,?,{','.join('?' * len(TRAITS))},?,?)",
+            f"INSERT INTO personality_profile VALUES (?,?,{','.join('?' * len(AXES))},?,?)",
             (
-                p["student_id"], p["course_id"], *[p[t] for t in TRAITS],
+                p["student_id"], p["course_id"], *[p[t] for t in AXES],
                 p.get("archetype_id"), p.get("preferred_role"),
             ),
+        )
+
+    # ── survey_response (raw 24-item Likert answers) ────────────────────
+    for r in survey_responses:
+        cur.execute(
+            "INSERT INTO survey_response VALUES (?,?,?,?)",
+            (r["student_id"], r["course_id"], r["item_number"], r["response"]),
         )
 
     # ── availability / availability_block ───────────────────────────────

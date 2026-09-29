@@ -4,21 +4,26 @@ StudyMatch — sample data generator.
 Produces synthetic-but-internally-consistent data for the StudyMatch spec:
 students, personality survey results, availability, academic profiles,
 derived archetypes (via real KMeans clustering, not hand-labeled), a
-pairwise personality-compatibility matrix, greedily-formed 4-5 person
-study groups, group membership, individual/group match recommendations,
-course global-chat activity, and post-formation outcome feedback.
+pairwise compatibility matrix, randomly-formed 5-person study groups, group
+membership, individual/group match recommendations, course global-chat
+activity, and post-formation outcome feedback.
 
-This is sample/demo data only. The scoring formulas below are the
-heuristic placeholders described in the spec (section 11/12) — weights
-are explicitly temporary and meant to be replaced by learned weights
-once real outcome feedback (group_feedback) accumulates.
+This is sample/demo data only.
 
-Matching scope (current decision): compatibility is personality-similarity
-ONLY. Availability/schedule data is still generated and stored (nothing here
-is deleted), but doesn't factor into compatibility_score or group_score — see
-similarity_component() and pair_compatibility() in ../algorithm/compatibility.py.
-There's also no "reward differences" complementarity term: a good pair is
-simply a similar one, across the full 14-trait personality vector.
+PLACEHOLDER NOTICE: group formation and compatibility_score are RANDOM right
+now, not a real matching algorithm — see algorithm/compatibility.py's and
+algorithm/placement.py's docstrings, and docs/Woosung.md for the handoff.
+The personality survey pipeline below (24-item Likert -> 6 axis scores) is
+real and final; only the matching/grouping step that consumes it is a
+placeholder.
+
+Personality survey: each synthetic student gets 24 raw Likert answers (the
+same "Version 3" instrument real respondents see in ui/survey.html — item
+bank + reverse-coding in ../algorithm/scoring.py), not hand-picked axis
+values directly. Raw answers are generated per-item around a hidden
+subpopulation's target axis value, then scored with the exact same
+score_axes() the live /api/survey endpoint uses, so synthetic and real
+students go through an identical pipeline.
 
 Academic profiles now carry only course_confidence/target_grade —
 per-topic strong/weak/can_help/needs_help tracking (and the shared `topic`
@@ -43,6 +48,7 @@ from sklearn.cluster import KMeans
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))  # repo root, for `algorithm`
 from algorithm.compatibility import TRAITS, pair_compatibility, preferred_role_for
+from algorithm.scoring import SURVEY_ITEMS, reverse_code, score_axes
 
 random.seed(42)
 np.random.seed(42)
@@ -52,9 +58,6 @@ OUT.mkdir(exist_ok=True)
 
 # Matching uses the full personality vector as one similarity signal — no
 # similarity/complementarity trait split anymore (see algorithm/compatibility.similarity_component()).
-# COMPLEMENT_TRAITS survives only as the set role_for_member() reads to assign
-# a group_role label further down; it no longer feeds any score.
-COMPLEMENT_TRAITS = ["leadership", "talkativeness", "assertiveness", "helpfulness"]
 
 ROLES = ["Organizer", "Explainer", "Problem Solver", "Listener", "Motivator", "Flexible/No Preference"]
 
@@ -129,15 +132,20 @@ GENDERS = ["Woman", "Man", "Non-binary", "Prefer not to say"]
 # archetypes in archetypes.json are discovered later by clustering the
 # resulting personality_profiles, exactly as section 7 describes.
 #
-# These trait-value templates are hand-picked, not derived from or validated
+# Target values are per AXIS (not per raw item) - sample_survey_responses()
+# below turns each into 4 noisy raw Likert answers per axis, reverse-encoding
+# the (R) items exactly like a real respondent's answer would be stored.
+#
+# These axis-value templates are hand-picked, not derived from or validated
 # against any published personality distribution - see ../docs/DATA_GROUNDING.md
-# for what real research does and doesn't back in this design.
+# for what real research does and doesn't back in this design (the survey
+# ITEMS themselves are now MSLQ-grounded; these hidden subpop targets are not).
 SUBPOPULATIONS = {
-    "planner": dict(zip(TRAITS, [4.5, 4.5, 4.0, 2.0, 2.5, 3.0, 4.5, 3.0, 2.0, 2.5, 3.0, 3.0, 2.5, 3.5])),
-    "connector": dict(zip(TRAITS, [3.5, 3.0, 3.0, 4.5, 4.5, 2.0, 3.0, 3.5, 4.5, 3.0, 4.5, 4.5, 3.0, 4.5])),
-    "captain": dict(zip(TRAITS, [4.0, 4.0, 4.0, 3.0, 3.5, 4.5, 3.5, 4.5, 3.5, 4.5, 3.0, 3.5, 4.0, 2.5])),
-    "loner": dict(zip(TRAITS, [3.5, 2.0, 2.0, 1.5, 1.5, 2.5, 2.5, 1.5, 1.5, 2.0, 2.5, 1.5, 3.5, 3.0])),
-    "sprinter": dict(zip(TRAITS, [2.5, 1.5, 2.0, 3.5, 3.0, 2.0, 1.5, 2.0, 3.5, 2.5, 3.0, 3.0, 4.5, 3.0])),
+    "planner":   dict(zip(TRAITS, [4.5, 2.5, 4.0, 4.5, 3.5, 2.5])),
+    "connector": dict(zip(TRAITS, [3.0, 4.5, 3.0, 2.5, 3.5, 4.5])),
+    "captain":   dict(zip(TRAITS, [4.0, 3.5, 4.5, 4.0, 4.5, 3.5])),
+    "loner":     dict(zip(TRAITS, [3.0, 1.5, 3.0, 2.5, 3.0, 1.5])),
+    "sprinter":  dict(zip(TRAITS, [1.5, 3.0, 2.5, 1.5, 4.0, 3.0])),
 }
 SUBPOP_NOISE_SD = 0.65
 
@@ -148,7 +156,7 @@ ONLINE_PREF = ["in_person", "online", "hybrid"]
 DURATIONS = [60, 90, 120]
 GRADES = ["A", "A-", "B+", "B"]
 
-students, course_membership, personality_rows, availability_rows, academic_rows = [], [], [], [], []
+students, course_membership, personality_rows, survey_response_rows, availability_rows, academic_rows = [], [], [], [], [], []
 
 sid_counter = 1
 
@@ -157,9 +165,21 @@ def clip_round(v):
     return int(round(min(5, max(1, v))))
 
 
-def sample_personality(subpop):
-    base = SUBPOPULATIONS[subpop]
-    return {t: clip_round(np.random.normal(base[t], SUBPOP_NOISE_SD)) for t in TRAITS}
+def sample_survey_responses(subpop):
+    """
+    24 raw 1-5 Likert answers for one synthetic student. Each item is drawn
+    centered on its axis's target value for this subpopulation, then stored
+    exactly as a real respondent's answer would be: reverse-worded items get
+    the mirrored value, so score_axes() run on this raw data recovers (up to
+    noise) the intended axis mean — same round-trip a real /api/survey
+    submission goes through.
+    """
+    target = SUBPOPULATIONS[subpop]
+    responses = {}
+    for item in SURVEY_ITEMS:
+        intended = clip_round(np.random.normal(target[item["axis"]], SUBPOP_NOISE_SD))
+        responses[item["id"]] = reverse_code(intended) if item["reverse"] else intended
+    return responses
 
 
 def sample_availability(student_id, course_id, n_blocks, popular_slots):
@@ -224,7 +244,10 @@ def make_student(course, n_blocks_range, looking_for_group=True):
         "student_id": sid, "course_id": course["course_id"],
         "section": course["section"], "semester": course["semester"],
     })
-    personality_rows.append({"student_id": sid, "course_id": course["course_id"], **sample_personality(subpop)})
+    responses = sample_survey_responses(subpop)
+    personality_rows.append({"student_id": sid, "course_id": course["course_id"], **score_axes(responses)})
+    for item_id, val in responses.items():
+        survey_response_rows.append({"student_id": sid, "course_id": course["course_id"], "item_number": item_id, "response": val})
     availability_rows.append(sample_availability(sid, course["course_id"], random.randint(*n_blocks_range), course["popular_slots"]))
     academic_rows.append(sample_academic(sid, course["course_id"]))
     return sid
@@ -257,20 +280,20 @@ labels = km.labels_
 # game-like name bank keyed by trait signature rather than assigning
 # MBTI-style labels by hand.
 NAME_BANK = [
-    (lambda c: c["preparation"] > 0.5 and c["structure"] > 0.5 and c["talkativeness"] < 0, "Focused Architect",
-     "Highly prepared, structure-loving, and quiet — thrives on a clear plan executed early."),
-    (lambda c: c["helpfulness"] > 0.5 and c["collaboration"] > 0.5 and c["social_preference"] > 0.3, "Collaborative Guide",
-     "Energized by teaching others and solving problems together; keeps the group warm."),
-    (lambda c: c["leadership"] > 0.5 and c["assertiveness"] > 0.5 and c["competitiveness"] > 0.3, "Study Captain",
-     "Takes charge, sets the pace, and pushes the group toward results."),
-    (lambda c: c["talkativeness"] < -0.3 and c["social_preference"] < -0.3 and c["collaboration"] < -0.3, "Independent Strategist",
+    (lambda c: c["planning"] > 0.5 and c["structure"] > 0.5 and c["session_mode"] < 0, "Focused Architect",
+     "Plans ahead and keeps things organized, but prefers working things out quietly over talking them through."),
+    (lambda c: c["collaboration"] > 0.5 and c["session_mode"] > 0.5, "Collaborative Guide",
+     "Learns by explaining and talking problems through out loud; keeps the group engaged."),
+    (lambda c: c["reliability"] > 0.5 and c["intensity"] > 0.5 and c["structure"] > 0.3, "Study Captain",
+     "Shows up prepared, pushes through hard material, and keeps sessions on track."),
+    (lambda c: c["session_mode"] < -0.3 and c["collaboration"] < -0.3, "Independent Strategist",
      "Prefers working things out solo, even inside a group; contributes best async."),
-    (lambda c: c["study_pace"] > 0.5 and c["preparation"] < -0.3 and c["structure"] < -0.3, "Deadline Sprinter",
-     "Ramps up fast close to deadlines; spontaneous over scheduled."),
-    (lambda c: c["social_preference"] > 0.3 and c["talkativeness"] > 0.3, "Social Solver",
-     "Blends academic focus with social energy; makes study sessions feel easy."),
+    (lambda c: c["intensity"] > 0.3 and c["planning"] < -0.3 and c["structure"] < -0.3, "Deadline Sprinter",
+     "Cares about doing well but ramps up close to deadlines rather than planning ahead."),
+    (lambda c: c["reliability"] > 0.3 and c["collaboration"] > 0.3, "Steady Teammate",
+     "Dependable and easy to work with; reliably follows through on commitments to the group."),
 ]
-FALLBACK_NAMES = ["Steady Contributor", "Balanced Collaborator", "Quiet Achiever"]
+FALLBACK_NAMES = ["Balanced Collaborator", "Quiet Achiever", "Adaptive Studier"]
 
 archetypes = []
 used_names = set()
@@ -353,7 +376,14 @@ def pair_score(a, b):
 
 
 # ---------------------------------------------------------------------------
-# 6. Group formation (greedy growth + 1 pass of local-search swaps)
+# 6. Group formation — PLACEHOLDER: pure random shuffle-and-chunk.
+#
+# The real matching algorithm (using the 6-axis personality data collected by
+# the survey) is being built separately (Woosung — see docs/Woosung.md).
+# pair_score() below still returns a number (algorithm/compatibility.py's
+# pair_compatibility() is currently random too), kept only so
+# pairwise_compatibility / group_score / match_data have something in them —
+# it does NOT drive who ends up in which group.
 # ---------------------------------------------------------------------------
 
 def group_pair_scores(members):
@@ -381,67 +411,27 @@ def group_score(members):
 
 def form_groups(course_students, target_looking_ids):
     """
-    Groups are exactly 5 — no more 4-5 range. Any remainder (<5) is left in
-    `unassigned` on purpose: population sizes are chosen (see below) so each
-    course ends batch generation with exactly 2 people left over, matching
-    the live intake policy in ../algorithm/placement.py (a 1-2 remainder joins an
-    existing group; a 3-4 remainder becomes its own smaller group) — those 2
-    are what a real survey respondent completes into a group.
+    PLACEHOLDER: pure random shuffle-and-chunk into exactly-5 groups. Any
+    remainder (<5) is left in `unassigned` on purpose: population sizes are
+    chosen (see below) so each course ends batch generation with exactly 2
+    people left over, matching the live intake policy in
+    ../algorithm/placement.py (a 1-2 remainder joins an existing group; a 3-4
+    remainder becomes its own smaller group) — those 2 are what a real survey
+    respondent completes into a group.
     """
-    pool = [s for s in course_students if s in target_looking_ids]
-    unassigned = set(pool)
+    pool = sorted(s for s in course_students if s in target_looking_ids)
+    random.shuffle(pool)
     formed = []
-    while len(unassigned) >= 5:
-        # seed with the best compatible pair remaining
-        best_pair, best_val = None, -1
-        rem = sorted(unassigned)  # sorted, not list(set(...)) — set order depends on the interpreter's per-process hash seed
-        for i in range(len(rem)):
-            for j in range(i + 1, len(rem)):
-                s = pair_score(rem[i], rem[j])
-                if s > best_val:
-                    best_val, best_pair = s, (rem[i], rem[j])
-        group = list(best_pair)
-        unassigned -= set(group)
-        while len(group) < 5:
-            best_c, best_avg = None, -1
-            for cand in sorted(unassigned):
-                avg = mean(group_pair_scores(group + [cand]))
-                if avg > best_avg:
-                    best_avg, best_c = avg, cand
-            group.append(best_c)
-            unassigned.remove(best_c)
-        formed.append(group)
-    return formed, unassigned
-
-
-def local_search_swap(groups, rounds=25):
-    improved = True
-    r = 0
-    while improved and r < rounds:
-        improved = False
-        r += 1
-        for gi in range(len(groups)):
-            for gj in range(gi + 1, len(groups)):
-                for mi in range(len(groups[gi])):
-                    for mj in range(len(groups[gj])):
-                        a, b = groups[gi][mi], groups[gj][mj]
-                        base_i = group_score(groups[gi])["group_score"]
-                        base_j = group_score(groups[gj])["group_score"]
-                        trial_i = groups[gi][:mi] + [b] + groups[gi][mi + 1:]
-                        trial_j = groups[gj][:mj] + [a] + groups[gj][mj + 1:]
-                        si, sj = group_score(trial_i), group_score(trial_j)
-                        if si["group_score"] + sj["group_score"] > base_i + base_j + 0.5:
-                            groups[gi], groups[gj] = trial_i, trial_j
-                            improved = True
-    return groups
+    while len(pool) >= 5:
+        formed.append(pool[:5])
+        pool = pool[5:]
+    return formed, set(pool)
 
 
 # Everyone looks for a group in this batch — the old "leave a few students not
 # looking" mechanic is superseded by the exactly-2-unassigned remainder above.
 cmpsc_groups, cmpsc_unassigned = form_groups(cmpsc_students, set(cmpsc_students))
 math_groups, math_unassigned = form_groups(math_students, set(math_students))
-cmpsc_groups = local_search_swap(cmpsc_groups)
-math_groups = local_search_swap(math_groups)
 
 all_unassigned = cmpsc_unassigned | math_unassigned
 
@@ -459,16 +449,15 @@ match_counter = 1
 
 
 def role_for_member(member_id, group_members):
-    lead = personality_by_id[member_id]["leadership"]
-    ranks = sorted(group_members, key=lambda m: (-personality_by_id[m]["leadership"], m))
-    if member_id == ranks[0] and lead >= 4:
+    row = personality_by_id[member_id]
+    ranks = sorted(group_members, key=lambda m: (-personality_by_id[m]["reliability"], m))
+    if member_id == ranks[0] and row["reliability"] >= 4:
         return "Organizer"
-    help_ = personality_by_id[member_id]["helpfulness"]
-    if help_ >= 4:
+    if row["collaboration"] >= 4:
         return "Explainer"
-    if personality_by_id[member_id]["collaboration"] >= 4:
+    if row["intensity"] >= 4:
         return "Problem Solver"
-    if personality_by_id[member_id]["talkativeness"] <= 2:
+    if row["session_mode"] <= 2:
         return "Listener"
     return "Flexible/No Preference"
 
@@ -514,20 +503,19 @@ emit_groups(cmpsc, cmpsc_groups)
 emit_groups(math230, math_groups)
 
 # students still looking for a group get "recruit me" style recommendations
-# into the existing groups they'd fit best (individual -> group matching, section 14)
+# into existing under-capacity groups — PLACEHOLDER: a random sample of up to
+# 3 eligible groups, not ranked by fit (individual -> group matching, section 14)
 for sid in sorted(all_unassigned):
     course = cmpsc if sid in cmpsc_students else math230
     candidate_groups = [g for g in groups_out if g["course_id"] == course["course_id"]]
-    ranked = []
+    eligible = []
     for g in candidate_groups:
         members = [m["student_id"] for m in group_membership_out if m["group_id"] == g["group_id"]]
-        if len(members) >= 5:
-            continue
-        avg = mean([pair_score(sid, o) for o in members])
-        if avg > 0:
-            ranked.append((g["group_id"], round(avg, 1)))
-    ranked.sort(key=lambda x: -x[1])
-    for gid, score in ranked[:3]:
+        if len(members) < 5:
+            eligible.append((g["group_id"], members))
+    picks = random.sample(eligible, k=min(3, len(eligible)))
+    for gid, members in picks:
+        score = round(mean([pair_score(sid, o) for o in members]), 1)
         match_data_out.append({
             "match_id": f"match_{match_counter:04d}",
             "student_id": sid,
@@ -615,6 +603,7 @@ dump("courses.json", [{k: v for k, v in c.items()} for c in courses])
 dump("students.json", students)
 dump("course_membership.json", course_membership)
 dump("personality_profiles.json", personality_rows)
+dump("survey_responses.json", survey_response_rows)
 dump("archetypes.json", archetypes)
 dump("availability.json", availability_rows)
 dump("academic_profiles.json", academic_rows)

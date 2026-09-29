@@ -6,9 +6,9 @@
     "max_members": 5,
     "current_members": 5,
     "created_at": "2026-08-25T14:00:00Z",
-    "group_score": 84.6,
-    "avg_pairwise": 84.6,
-    "worst_pairwise": 80.4
+    "group_score": 68.1,
+    "avg_pairwise": 68.1,
+    "worst_pairwise": 40.5
   },
   {
     "group_id": "grp_002",
@@ -17,42 +17,42 @@
     "max_members": 5,
     "current_members": 5,
     "created_at": "2026-08-25T14:00:00Z",
-    "group_score": 85.0,
-    "avg_pairwise": 85.0,
-    "worst_pairwise": 80.4
+    "group_score": 65.6,
+    "avg_pairwise": 65.6,
+    "worst_pairwise": 40.2
   },
   {
     "group_id": "grp_003",
-    "course_id": "psu-cmpsc465-001-fa26",
-    "group_name": "Async Study Crew",
-    "max_members": 5,
-    "current_members": 5,
-    "created_at": "2026-08-25T14:00:00Z",
-    "group_score": 82.8,
-    "avg_pairwise": 82.8,
-    "worst_pairwise": 76.8
-  },
-  {
-    "group_id": "grp_004",
     "course_id": "psu-cmpsc465-001-fa26",
     "group_name": "The Greedy Algorithm",
     "max_members": 5,
     "current_members": 5,
     "created_at": "2026-08-25T14:00:00Z",
-    "group_score": 76.8,
-    "avg_pairwise": 76.8,
-    "worst_pairwise": 67.9
+    "group_score": 71.1,
+    "avg_pairwise": 71.1,
+    "worst_pairwise": 55.0
   },
   {
-    "group_id": "grp_005",
+    "group_id": "grp_004",
     "course_id": "psu-cmpsc465-001-fa26",
     "group_name": "Study Captains United",
     "max_members": 5,
     "current_members": 5,
     "created_at": "2026-08-25T14:00:00Z",
-    "group_score": 83.2,
-    "avg_pairwise": 83.2,
-    "worst_pairwise": 78.6
+    "group_score": 76.1,
+    "avg_pairwise": 76.1,
+    "worst_pairwise": 46.0
+  },
+  {
+    "group_id": "grp_005",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "group_name": "Vector Vanguard",
+    "max_members": 5,
+    "current_members": 5,
+    "created_at": "2026-08-25T14:00:00Z",
+    "group_score": 73.0,
+    "avg_pairwise": 73.0,
+    "worst_pairwise": 50.4
   },
   {
     "group_id": "grp_006",
@@ -61,8 +61,8 @@
     "max_members": 5,
     "current_members": 5,
     "created_at": "2026-08-25T14:00:00Z",
-    "group_score": 72.5,
-    "avg_pairwise": 72.5,
-    "worst_pairwise": 58.9
+    "group_score": 62.2,
+    "avg_pairwise": 62.2,
+    "worst_pairwise": 43.7
   }
 ]

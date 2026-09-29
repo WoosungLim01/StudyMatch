@@ -1,0 +1,4898 @@
+[
+  {
+    "student_id": "stu_0001",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 1,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0001",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 2,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0001",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 3,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0001",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 4,
+    "response": 1
+  },
+  {
+    "student_id": "stu_0001",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 5,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0001",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 6,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0001",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 7,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0001",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 8,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0001",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 9,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0001",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 10,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0001",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 11,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0001",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 12,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0001",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 13,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0001",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 14,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0001",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 15,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0001",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 16,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0001",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 17,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0001",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 18,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0001",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 19,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0001",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 20,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0001",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 21,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0001",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 22,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0001",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 23,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0001",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 24,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0002",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 1,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0002",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 2,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0002",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 3,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0002",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 4,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0002",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 5,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0002",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 6,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0002",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 7,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0002",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 8,
+    "response": 1
+  },
+  {
+    "student_id": "stu_0002",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 9,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0002",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 10,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0002",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 11,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0002",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 12,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0002",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 13,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0002",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 14,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0002",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 15,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0002",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 16,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0002",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 17,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0002",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 18,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0002",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 19,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0002",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 20,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0002",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 21,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0002",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 22,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0002",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 23,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0002",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 24,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0003",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 1,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0003",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 2,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0003",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 3,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0003",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 4,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0003",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 5,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0003",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 6,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0003",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 7,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0003",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 8,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0003",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 9,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0003",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 10,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0003",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 11,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0003",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 12,
+    "response": 1
+  },
+  {
+    "student_id": "stu_0003",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 13,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0003",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 14,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0003",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 15,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0003",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 16,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0003",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 17,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0003",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 18,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0003",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 19,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0003",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 20,
+    "response": 1
+  },
+  {
+    "student_id": "stu_0003",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 21,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0003",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 22,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0003",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 23,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0003",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 24,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0004",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 1,
+    "response": 1
+  },
+  {
+    "student_id": "stu_0004",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 2,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0004",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 3,
+    "response": 1
+  },
+  {
+    "student_id": "stu_0004",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 4,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0004",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 5,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0004",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 6,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0004",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 7,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0004",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 8,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0004",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 9,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0004",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 10,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0004",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 11,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0004",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 12,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0004",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 13,
+    "response": 1
+  },
+  {
+    "student_id": "stu_0004",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 14,
+    "response": 1
+  },
+  {
+    "student_id": "stu_0004",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 15,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0004",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 16,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0004",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 17,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0004",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 18,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0004",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 19,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0004",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 20,
+    "response": 1
+  },
+  {
+    "student_id": "stu_0004",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 21,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0004",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 22,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0004",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 23,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0004",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 24,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0005",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 1,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0005",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 2,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0005",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 3,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0005",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 4,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0005",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 5,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0005",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 6,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0005",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 7,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0005",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 8,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0005",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 9,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0005",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 10,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0005",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 11,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0005",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 12,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0005",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 13,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0005",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 14,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0005",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 15,
+    "response": 1
+  },
+  {
+    "student_id": "stu_0005",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 16,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0005",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 17,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0005",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 18,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0005",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 19,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0005",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 20,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0005",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 21,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0005",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 22,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0005",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 23,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0005",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 24,
+    "response": 1
+  },
+  {
+    "student_id": "stu_0006",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 1,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0006",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 2,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0006",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 3,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0006",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 4,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0006",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 5,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0006",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 6,
+    "response": 1
+  },
+  {
+    "student_id": "stu_0006",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 7,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0006",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 8,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0006",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 9,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0006",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 10,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0006",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 11,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0006",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 12,
+    "response": 1
+  },
+  {
+    "student_id": "stu_0006",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 13,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0006",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 14,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0006",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 15,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0006",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 16,
+    "response": 1
+  },
+  {
+    "student_id": "stu_0006",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 17,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0006",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 18,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0006",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 19,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0006",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 20,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0006",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 21,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0006",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 22,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0006",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 23,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0006",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 24,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0007",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 1,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0007",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 2,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0007",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 3,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0007",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 4,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0007",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 5,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0007",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 6,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0007",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 7,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0007",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 8,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0007",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 9,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0007",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 10,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0007",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 11,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0007",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 12,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0007",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 13,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0007",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 14,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0007",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 15,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0007",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 16,
+    "response": 1
+  },
+  {
+    "student_id": "stu_0007",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 17,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0007",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 18,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0007",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 19,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0007",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 20,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0007",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 21,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0007",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 22,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0007",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 23,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0007",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 24,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0008",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 1,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0008",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 2,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0008",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 3,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0008",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 4,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0008",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 5,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0008",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 6,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0008",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 7,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0008",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 8,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0008",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 9,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0008",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 10,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0008",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 11,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0008",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 12,
+    "response": 1
+  },
+  {
+    "student_id": "stu_0008",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 13,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0008",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 14,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0008",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 15,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0008",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 16,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0008",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 17,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0008",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 18,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0008",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 19,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0008",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 20,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0008",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 21,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0008",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 22,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0008",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 23,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0008",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 24,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0009",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 1,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0009",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 2,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0009",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 3,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0009",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 4,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0009",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 5,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0009",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 6,
+    "response": 1
+  },
+  {
+    "student_id": "stu_0009",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 7,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0009",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 8,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0009",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 9,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0009",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 10,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0009",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 11,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0009",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 12,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0009",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 13,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0009",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 14,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0009",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 15,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0009",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 16,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0009",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 17,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0009",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 18,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0009",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 19,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0009",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 20,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0009",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 21,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0009",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 22,
+    "response": 1
+  },
+  {
+    "student_id": "stu_0009",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 23,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0009",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 24,
+    "response": 1
+  },
+  {
+    "student_id": "stu_0010",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 1,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0010",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 2,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0010",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 3,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0010",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 4,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0010",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 5,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0010",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 6,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0010",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 7,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0010",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 8,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0010",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 9,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0010",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 10,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0010",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 11,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0010",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 12,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0010",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 13,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0010",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 14,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0010",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 15,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0010",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 16,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0010",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 17,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0010",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 18,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0010",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 19,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0010",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 20,
+    "response": 1
+  },
+  {
+    "student_id": "stu_0010",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 21,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0010",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 22,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0010",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 23,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0010",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 24,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0011",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 1,
+    "response": 1
+  },
+  {
+    "student_id": "stu_0011",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 2,
+    "response": 1
+  },
+  {
+    "student_id": "stu_0011",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 3,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0011",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 4,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0011",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 5,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0011",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 6,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0011",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 7,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0011",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 8,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0011",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 9,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0011",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 10,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0011",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 11,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0011",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 12,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0011",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 13,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0011",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 14,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0011",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 15,
+    "response": 1
+  },
+  {
+    "student_id": "stu_0011",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 16,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0011",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 17,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0011",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 18,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0011",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 19,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0011",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 20,
+    "response": 1
+  },
+  {
+    "student_id": "stu_0011",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 21,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0011",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 22,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0011",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 23,
+    "response": 1
+  },
+  {
+    "student_id": "stu_0011",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 24,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0012",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 1,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0012",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 2,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0012",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 3,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0012",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 4,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0012",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 5,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0012",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 6,
+    "response": 1
+  },
+  {
+    "student_id": "stu_0012",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 7,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0012",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 8,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0012",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 9,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0012",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 10,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0012",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 11,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0012",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 12,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0012",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 13,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0012",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 14,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0012",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 15,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0012",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 16,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0012",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 17,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0012",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 18,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0012",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 19,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0012",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 20,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0012",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 21,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0012",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 22,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0012",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 23,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0012",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 24,
+    "response": 1
+  },
+  {
+    "student_id": "stu_0013",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 1,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0013",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 2,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0013",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 3,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0013",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 4,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0013",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 5,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0013",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 6,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0013",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 7,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0013",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 8,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0013",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 9,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0013",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 10,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0013",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 11,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0013",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 12,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0013",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 13,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0013",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 14,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0013",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 15,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0013",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 16,
+    "response": 1
+  },
+  {
+    "student_id": "stu_0013",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 17,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0013",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 18,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0013",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 19,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0013",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 20,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0013",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 21,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0013",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 22,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0013",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 23,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0013",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 24,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0014",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 1,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0014",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 2,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0014",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 3,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0014",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 4,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0014",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 5,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0014",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 6,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0014",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 7,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0014",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 8,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0014",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 9,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0014",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 10,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0014",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 11,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0014",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 12,
+    "response": 1
+  },
+  {
+    "student_id": "stu_0014",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 13,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0014",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 14,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0014",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 15,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0014",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 16,
+    "response": 1
+  },
+  {
+    "student_id": "stu_0014",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 17,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0014",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 18,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0014",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 19,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0014",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 20,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0014",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 21,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0014",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 22,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0014",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 23,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0014",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 24,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0015",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 1,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0015",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 2,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0015",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 3,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0015",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 4,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0015",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 5,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0015",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 6,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0015",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 7,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0015",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 8,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0015",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 9,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0015",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 10,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0015",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 11,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0015",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 12,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0015",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 13,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0015",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 14,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0015",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 15,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0015",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 16,
+    "response": 1
+  },
+  {
+    "student_id": "stu_0015",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 17,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0015",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 18,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0015",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 19,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0015",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 20,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0015",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 21,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0015",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 22,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0015",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 23,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0015",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 24,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0016",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 1,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0016",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 2,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0016",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 3,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0016",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 4,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0016",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 5,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0016",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 6,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0016",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 7,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0016",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 8,
+    "response": 1
+  },
+  {
+    "student_id": "stu_0016",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 9,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0016",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 10,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0016",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 11,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0016",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 12,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0016",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 13,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0016",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 14,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0016",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 15,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0016",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 16,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0016",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 17,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0016",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 18,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0016",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 19,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0016",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 20,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0016",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 21,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0016",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 22,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0016",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 23,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0016",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 24,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0017",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 1,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0017",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 2,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0017",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 3,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0017",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 4,
+    "response": 1
+  },
+  {
+    "student_id": "stu_0017",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 5,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0017",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 6,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0017",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 7,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0017",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 8,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0017",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 9,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0017",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 10,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0017",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 11,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0017",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 12,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0017",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 13,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0017",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 14,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0017",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 15,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0017",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 16,
+    "response": 1
+  },
+  {
+    "student_id": "stu_0017",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 17,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0017",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 18,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0017",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 19,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0017",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 20,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0017",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 21,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0017",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 22,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0017",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 23,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0017",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 24,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0018",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 1,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0018",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 2,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0018",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 3,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0018",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 4,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0018",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 5,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0018",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 6,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0018",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 7,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0018",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 8,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0018",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 9,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0018",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 10,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0018",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 11,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0018",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 12,
+    "response": 1
+  },
+  {
+    "student_id": "stu_0018",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 13,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0018",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 14,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0018",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 15,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0018",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 16,
+    "response": 1
+  },
+  {
+    "student_id": "stu_0018",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 17,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0018",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 18,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0018",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 19,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0018",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 20,
+    "response": 1
+  },
+  {
+    "student_id": "stu_0018",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 21,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0018",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 22,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0018",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 23,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0018",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 24,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0019",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 1,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0019",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 2,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0019",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 3,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0019",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 4,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0019",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 5,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0019",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 6,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0019",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 7,
+    "response": 1
+  },
+  {
+    "student_id": "stu_0019",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 8,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0019",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 9,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0019",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 10,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0019",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 11,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0019",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 12,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0019",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 13,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0019",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 14,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0019",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 15,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0019",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 16,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0019",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 17,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0019",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 18,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0019",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 19,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0019",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 20,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0019",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 21,
+    "response": 1
+  },
+  {
+    "student_id": "stu_0019",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 22,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0019",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 23,
+    "response": 1
+  },
+  {
+    "student_id": "stu_0019",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 24,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0020",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 1,
+    "response": 1
+  },
+  {
+    "student_id": "stu_0020",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 2,
+    "response": 1
+  },
+  {
+    "student_id": "stu_0020",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 3,
+    "response": 1
+  },
+  {
+    "student_id": "stu_0020",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 4,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0020",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 5,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0020",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 6,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0020",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 7,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0020",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 8,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0020",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 9,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0020",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 10,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0020",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 11,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0020",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 12,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0020",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 13,
+    "response": 1
+  },
+  {
+    "student_id": "stu_0020",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 14,
+    "response": 1
+  },
+  {
+    "student_id": "stu_0020",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 15,
+    "response": 1
+  },
+  {
+    "student_id": "stu_0020",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 16,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0020",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 17,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0020",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 18,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0020",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 19,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0020",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 20,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0020",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 21,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0020",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 22,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0020",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 23,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0020",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 24,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0021",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 1,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0021",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 2,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0021",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 3,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0021",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 4,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0021",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 5,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0021",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 6,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0021",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 7,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0021",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 8,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0021",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 9,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0021",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 10,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0021",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 11,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0021",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 12,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0021",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 13,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0021",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 14,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0021",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 15,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0021",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 16,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0021",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 17,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0021",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 18,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0021",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 19,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0021",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 20,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0021",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 21,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0021",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 22,
+    "response": 1
+  },
+  {
+    "student_id": "stu_0021",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 23,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0021",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 24,
+    "response": 1
+  },
+  {
+    "student_id": "stu_0022",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 1,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0022",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 2,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0022",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 3,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0022",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 4,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0022",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 5,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0022",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 6,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0022",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 7,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0022",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 8,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0022",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 9,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0022",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 10,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0022",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 11,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0022",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 12,
+    "response": 1
+  },
+  {
+    "student_id": "stu_0022",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 13,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0022",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 14,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0022",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 15,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0022",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 16,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0022",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 17,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0022",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 18,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0022",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 19,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0022",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 20,
+    "response": 1
+  },
+  {
+    "student_id": "stu_0022",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 21,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0022",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 22,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0022",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 23,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0022",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 24,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0023",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 1,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0023",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 2,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0023",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 3,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0023",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 4,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0023",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 5,
+    "response": 1
+  },
+  {
+    "student_id": "stu_0023",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 6,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0023",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 7,
+    "response": 1
+  },
+  {
+    "student_id": "stu_0023",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 8,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0023",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 9,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0023",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 10,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0023",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 11,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0023",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 12,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0023",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 13,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0023",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 14,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0023",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 15,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0023",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 16,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0023",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 17,
+    "response": 1
+  },
+  {
+    "student_id": "stu_0023",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 18,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0023",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 19,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0023",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 20,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0023",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 21,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0023",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 22,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0023",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 23,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0023",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 24,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0024",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 1,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0024",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 2,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0024",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 3,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0024",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 4,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0024",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 5,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0024",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 6,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0024",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 7,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0024",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 8,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0024",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 9,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0024",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 10,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0024",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 11,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0024",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 12,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0024",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 13,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0024",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 14,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0024",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 15,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0024",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 16,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0024",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 17,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0024",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 18,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0024",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 19,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0024",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 20,
+    "response": 1
+  },
+  {
+    "student_id": "stu_0024",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 21,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0024",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 22,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0024",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 23,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0024",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 24,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0025",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 1,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0025",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 2,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0025",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 3,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0025",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 4,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0025",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 5,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0025",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 6,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0025",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 7,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0025",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 8,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0025",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 9,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0025",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 10,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0025",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 11,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0025",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 12,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0025",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 13,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0025",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 14,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0025",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 15,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0025",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 16,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0025",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 17,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0025",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 18,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0025",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 19,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0025",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 20,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0025",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 21,
+    "response": 1
+  },
+  {
+    "student_id": "stu_0025",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 22,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0025",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 23,
+    "response": 1
+  },
+  {
+    "student_id": "stu_0025",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 24,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0026",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 1,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0026",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 2,
+    "response": 1
+  },
+  {
+    "student_id": "stu_0026",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 3,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0026",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 4,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0026",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 5,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0026",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 6,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0026",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 7,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0026",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 8,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0026",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 9,
+    "response": 1
+  },
+  {
+    "student_id": "stu_0026",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 10,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0026",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 11,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0026",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 12,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0026",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 13,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0026",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 14,
+    "response": 1
+  },
+  {
+    "student_id": "stu_0026",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 15,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0026",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 16,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0026",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 17,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0026",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 18,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0026",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 19,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0026",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 20,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0026",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 21,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0026",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 22,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0026",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 23,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0026",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 24,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0027",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 1,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0027",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 2,
+    "response": 1
+  },
+  {
+    "student_id": "stu_0027",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 3,
+    "response": 1
+  },
+  {
+    "student_id": "stu_0027",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 4,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0027",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 5,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0027",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 6,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0027",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 7,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0027",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 8,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0027",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 9,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0027",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 10,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0027",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 11,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0027",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 12,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0027",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 13,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0027",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 14,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0027",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 15,
+    "response": 1
+  },
+  {
+    "student_id": "stu_0027",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 16,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0027",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 17,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0027",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 18,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0027",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 19,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0027",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 20,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0027",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 21,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0027",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 22,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0027",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 23,
+    "response": 1
+  },
+  {
+    "student_id": "stu_0027",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "item_number": 24,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0028",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 1,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0028",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 2,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0028",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 3,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0028",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 4,
+    "response": 1
+  },
+  {
+    "student_id": "stu_0028",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 5,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0028",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 6,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0028",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 7,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0028",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 8,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0028",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 9,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0028",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 10,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0028",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 11,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0028",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 12,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0028",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 13,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0028",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 14,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0028",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 15,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0028",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 16,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0028",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 17,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0028",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 18,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0028",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 19,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0028",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 20,
+    "response": 1
+  },
+  {
+    "student_id": "stu_0028",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 21,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0028",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 22,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0028",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 23,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0028",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 24,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0029",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 1,
+    "response": 1
+  },
+  {
+    "student_id": "stu_0029",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 2,
+    "response": 1
+  },
+  {
+    "student_id": "stu_0029",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 3,
+    "response": 1
+  },
+  {
+    "student_id": "stu_0029",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 4,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0029",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 5,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0029",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 6,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0029",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 7,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0029",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 8,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0029",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 9,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0029",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 10,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0029",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 11,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0029",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 12,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0029",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 13,
+    "response": 1
+  },
+  {
+    "student_id": "stu_0029",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 14,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0029",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 15,
+    "response": 1
+  },
+  {
+    "student_id": "stu_0029",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 16,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0029",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 17,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0029",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 18,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0029",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 19,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0029",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 20,
+    "response": 1
+  },
+  {
+    "student_id": "stu_0029",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 21,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0029",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 22,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0029",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 23,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0029",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 24,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0030",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 1,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0030",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 2,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0030",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 3,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0030",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 4,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0030",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 5,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0030",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 6,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0030",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 7,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0030",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 8,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0030",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 9,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0030",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 10,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0030",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 11,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0030",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 12,
+    "response": 1
+  },
+  {
+    "student_id": "stu_0030",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 13,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0030",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 14,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0030",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 15,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0030",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 16,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0030",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 17,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0030",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 18,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0030",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 19,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0030",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 20,
+    "response": 1
+  },
+  {
+    "student_id": "stu_0030",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 21,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0030",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 22,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0030",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 23,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0030",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 24,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0031",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 1,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0031",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 2,
+    "response": 1
+  },
+  {
+    "student_id": "stu_0031",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 3,
+    "response": 1
+  },
+  {
+    "student_id": "stu_0031",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 4,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0031",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 5,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0031",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 6,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0031",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 7,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0031",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 8,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0031",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 9,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0031",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 10,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0031",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 11,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0031",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 12,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0031",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 13,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0031",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 14,
+    "response": 1
+  },
+  {
+    "student_id": "stu_0031",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 15,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0031",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 16,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0031",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 17,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0031",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 18,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0031",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 19,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0031",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 20,
+    "response": 1
+  },
+  {
+    "student_id": "stu_0031",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 21,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0031",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 22,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0031",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 23,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0031",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 24,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0032",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 1,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0032",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 2,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0032",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 3,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0032",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 4,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0032",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 5,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0032",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 6,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0032",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 7,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0032",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 8,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0032",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 9,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0032",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 10,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0032",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 11,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0032",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 12,
+    "response": 1
+  },
+  {
+    "student_id": "stu_0032",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 13,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0032",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 14,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0032",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 15,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0032",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 16,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0032",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 17,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0032",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 18,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0032",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 19,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0032",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 20,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0032",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 21,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0032",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 22,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0032",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 23,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0032",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 24,
+    "response": 1
+  },
+  {
+    "student_id": "stu_0033",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 1,
+    "response": 1
+  },
+  {
+    "student_id": "stu_0033",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 2,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0033",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 3,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0033",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 4,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0033",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 5,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0033",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 6,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0033",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 7,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0033",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 8,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0033",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 9,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0033",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 10,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0033",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 11,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0033",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 12,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0033",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 13,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0033",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 14,
+    "response": 1
+  },
+  {
+    "student_id": "stu_0033",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 15,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0033",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 16,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0033",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 17,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0033",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 18,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0033",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 19,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0033",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 20,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0033",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 21,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0033",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 22,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0033",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 23,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0033",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 24,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0034",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 1,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0034",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 2,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0034",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 3,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0034",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 4,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0034",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 5,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0034",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 6,
+    "response": 1
+  },
+  {
+    "student_id": "stu_0034",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 7,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0034",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 8,
+    "response": 1
+  },
+  {
+    "student_id": "stu_0034",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 9,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0034",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 10,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0034",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 11,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0034",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 12,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0034",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 13,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0034",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 14,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0034",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 15,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0034",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 16,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0034",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 17,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0034",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 18,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0034",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 19,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0034",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 20,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0034",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 21,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0034",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 22,
+    "response": 1
+  },
+  {
+    "student_id": "stu_0034",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 23,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0034",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 24,
+    "response": 2
+  }
+]
