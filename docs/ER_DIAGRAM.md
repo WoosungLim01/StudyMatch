@@ -94,6 +94,7 @@ erDiagram
         string session_token PK
         string user_id FK
         string created_at
+        string expires_at
     }
     UNIVERSITY {
         string university_id PK
@@ -189,7 +190,7 @@ erDiagram
     PAIRWISE_COMPATIBILITY {
         string student_a PK "also FK"
         string student_b PK "also FK"
-        string course_id FK
+        string course_id PK "also FK"
         float compatibility_score
         float similarity_score
         int schedule_compatible
