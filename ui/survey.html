@@ -98,14 +98,17 @@
   }
   .check-inline input{width:18px;height:18px;margin:0;accent-color:var(--navy);}
 
-  /* ── Personality scale (1–5 pills) ── */
+  /* ── Survey statements (1–5 agreement pills) ── */
   .scale-legend{display:flex;justify-content:flex-end;gap:8px;font-size:13px;color:var(--muted);margin:-8px 0 8px;}
   .trait-row{
     display:grid;grid-template-columns:1fr auto;align-items:center;gap:16px;
     padding:14px 0;border-top:1px solid var(--line-soft);
   }
   .trait-row:first-child{border-top:none;}
-  .trait-name{font-weight:700;text-transform:capitalize;color:var(--ink);}
+  .trait-name{display:flex;gap:10px;font-weight:600;color:var(--ink);}
+  .q-num{flex:none;min-width:24px;font-weight:700;color:var(--muted);}
+  .trait-row.unanswered .trait-name{color:var(--danger);}
+  .trait-row.unanswered .scale span{border-color:rgba(138,59,66,.45);}
   .scale{display:flex;gap:6px;}
   .scale label{margin:0;cursor:pointer;}
   .scale input{position:absolute;opacity:0;width:1px;height:1px;pointer-events:none;}
@@ -186,7 +189,7 @@
 
 <main>
   <div class="hero">
-    <span class="badge">One-time survey · about 3 min</span>
+    <span class="badge">One-time survey · about 5 min</span>
     <h1>Let's find your study group</h1>
     <p>Tell us a little about yourself and how you like to study. You'll only fill this out once.</p>
   </div>
@@ -230,7 +233,7 @@
           <p class="card-sub">There are no wrong answers, so just be honest.</p>
         </div>
       </div>
-      <div class="scale-legend"><span>1 = not really me</span><span>5 = totally me</span></div>
+      <div class="scale-legend"><span>1 = strongly disagree</span><span>5 = strongly agree</span></div>
       <div id="trait-sliders"></div>
     </section>
 
@@ -276,15 +279,42 @@
     </section>
 
     <button type="submit" class="btn" id="submit-btn">Submit &amp; Find My Group</button>
-    <div class="field-err" id="field-err">Please fill in your name, course, and all personality traits.</div>
+    <div class="field-err" id="field-err">Please fill in your name and course, and answer every statement.</div>
   </form>
 </main>
 
 <script>
 const API = '';
-let TRAITS = [];
 
-function label(t){ return t.replace(/_/g, ' '); }
+// Survey statements, in display order. `id` is what gets sent to the backend
+// (axis + position); `reverse` marks reverse-scored items - scoring is the
+// backend's job, so answers are sent raw (1-5) and this flag is never shown.
+const QUESTIONS = [
+  { id: 'planning_1', text: 'I set clear goals for what I want to accomplish before I start studying.' },
+  { id: 'planning_2', text: "I notice when a study strategy isn't working and switch to something else." },
+  { id: 'planning_3', text: 'I check my own understanding as I go, instead of waiting for a quiz to find out.' },
+  { id: 'planning_4', text: 'I rarely stop to think about whether my approach to studying is actually working.', reverse: true },
+  { id: 'session_mode_1', text: 'I prefer sessions where we talk through problems out loud together.' },
+  { id: 'session_mode_2', text: "I'd rather work through material quietly on my own, even in a group setting.", reverse: true },
+  { id: 'session_mode_3', text: 'I like sessions that follow a clear agenda rather than open-ended discussion.' },
+  { id: 'session_mode_4', text: 'I do better in loosely structured sessions where the conversation can wander.', reverse: true },
+  { id: 'reliability_1', text: 'Even when material is dry, I make myself keep working through it.' },
+  { id: 'reliability_2', text: 'I keep working on something difficult instead of giving up on it.' },
+  { id: 'reliability_3', text: 'I show up to group sessions having done what I said I would beforehand.' },
+  { id: 'reliability_4', text: "I've flaked on a study commitment to my group before.", reverse: true },
+  { id: 'structure_1', text: 'I outline or organize material before diving into the details.' },
+  { id: 'structure_2', text: 'I keep my study materials organized so I can find what I need quickly.' },
+  { id: 'structure_3', text: 'I like group sessions to follow a set structure or checklist.' },
+  { id: 'structure_4', text: "I'm fine with sessions that don't have a clear plan going in.", reverse: true },
+  { id: 'intensity_1', text: "I'm confident I can understand the most complex material in this course." },
+  { id: 'intensity_2', text: 'I believe I can do well in this course if I apply myself.' },
+  { id: 'intensity_3', text: 'I care about understanding the material, not just getting a good grade.' },
+  { id: 'intensity_4', text: "Compared to others in this course, I don't think I'm very capable.", reverse: true },
+  { id: 'collaboration_1', text: 'I learn material best by explaining it to someone else.' },
+  { id: 'collaboration_2', text: "I'd rather listen to someone explain it than explain it myself.", reverse: true },
+  { id: 'collaboration_3', text: "I'm comfortable being the person who answers the group's questions." },
+  { id: 'collaboration_4', text: "I'd rather attempt problems alone first and bring questions to the group.", reverse: true },
+];
 
 // Name fields: strip all whitespace as typed, force the first letter to caps -
 // applied live so the field always reflects the sanitized value, not just on submit.
@@ -325,25 +355,24 @@ wireToggle('f-avail-on', 'avail-hint', ['f-loc', 'f-mode']);
 wireToggle('f-academic-on', 'academic-hint', ['f-grade']);
 
 async function init(){
-  const [{ traits }, courses] = await Promise.all([
-    fetch(API + '/api/survey/traits').then(r => r.json()),
-    fetch(API + '/api/courses').then(r => r.json()),
-  ]);
-  TRAITS = traits;
+  const courses = await fetch(API + '/api/courses').then(r => r.json());
 
-  // Each trait is a 1-5 pill radio group; 3 is pre-selected so every trait
-  // always has a value (same guarantee the old sliders gave).
+  // Each statement is a 1-5 agreement pill group with nothing pre-selected -
+  // a default of 3 would silently record "neutral" for skipped statements.
   const sliders = document.getElementById('trait-sliders');
-  sliders.innerHTML = traits.map(t => `
-    <div class="trait-row">
-      <span class="trait-name" id="l-${t}">${label(t)}</span>
-      <div class="scale" role="radiogroup" aria-labelledby="l-${t}">
+  sliders.innerHTML = QUESTIONS.map((q, i) => `
+    <div class="trait-row" id="row-${q.id}">
+      <span class="trait-name" id="l-${q.id}"><span class="q-num">${i + 1}.</span><span>${q.text}</span></span>
+      <div class="scale" role="radiogroup" aria-labelledby="l-${q.id}">
         ${[1, 2, 3, 4, 5].map(n => `
-          <label><input type="radio" name="t-${t}" value="${n}" ${n === 3 ? 'checked' : ''}><span>${n}</span></label>
+          <label><input type="radio" name="q-${q.id}" value="${n}"><span>${n}</span></label>
         `).join('')}
       </div>
     </div>
   `).join('');
+  sliders.addEventListener('change', e => {
+    e.target.closest('.trait-row')?.classList.remove('unanswered');
+  });
 
   const courseSel = document.getElementById('f-course');
   courseSel.innerHTML = courses.map(c => `<option value="${c.course_id}">${c.course_code} — ${c.course_title}</option>`).join('');
@@ -370,11 +399,25 @@ document.getElementById('survey-form').addEventListener('submit', async (e) => {
   const last = sanitizeNamePart(document.getElementById('f-last').value);
   const name = [first, middle, last].filter(Boolean).join(' ');
   const course_id = document.getElementById('f-course').value;
-  document.getElementById('field-err').style.display = (!first || !last || !course_id) ? 'block' : 'none';
-  if (!first || !last || !course_id) return;
-
+  // Raw 1-5 answers keyed by question id (e.g. "reliability_4"); unanswered
+  // statements are flagged in place and block submission.
   const personality = {};
-  TRAITS.forEach(t => { personality[t] = +document.querySelector(`input[name="t-${t}"]:checked`).value; });
+  const unanswered = [];
+  QUESTIONS.forEach(q => {
+    const checked = document.querySelector(`input[name="q-${q.id}"]:checked`);
+    document.getElementById('row-' + q.id).classList.toggle('unanswered', !checked);
+    if (checked) personality[q.id] = +checked.value;
+    else unanswered.push(q.id);
+  });
+
+  const incomplete = !first || !last || !course_id || unanswered.length > 0;
+  document.getElementById('field-err').style.display = incomplete ? 'block' : 'none';
+  if (incomplete) {
+    if (unanswered.length && first && last && course_id) {
+      document.getElementById('row-' + unanswered[0]).scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+    return;
+  }
 
   const btn = document.getElementById('submit-btn');
   btn.disabled = true;
