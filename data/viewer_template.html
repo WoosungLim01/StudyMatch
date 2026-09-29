@@ -388,8 +388,42 @@ const DATA = __DATA_PLACEHOLDER__;
     return d.toLocaleString(undefined,{month:"short",day:"numeric",hour:"numeric",minute:"2-digit"});
   }
 
-  const TRAIT_KEYS = ["seriousness","structure","accountability","social_preference","communication_frequency","competitiveness","preparation","leadership","talkativeness","assertiveness","helpfulness","collaboration","study_pace","patience"];
-  const TRAIT_ABBR = {seriousness:"Ser",structure:"Str",accountability:"Acc",social_preference:"Soc",communication_frequency:"Comm",competitiveness:"Cmp",preparation:"Prep",leadership:"Lead",talkativeness:"Talk",assertiveness:"Assert",helpfulness:"Help",collaboration:"Collab",study_pace:"Pace",patience:"Pat"};
+  const TRAIT_KEYS = ["planning","session_mode","reliability","structure","intensity","collaboration"];
+  const TRAIT_ABBR = {planning:"Plan",session_mode:"Mode",reliability:"Reli",structure:"Struct",intensity:"Intens",collaboration:"Collab"};
+
+  // Mirrors algorithm/scoring.py's SURVEY_ITEMS — kept in sync by hand since
+  // this viewer is a static file with no access to the Python source.
+  const SURVEY_ITEMS = [
+    {id:1,axis:"planning",reverse:false,text:"I set clear goals for what I want to accomplish before I start studying."},
+    {id:2,axis:"planning",reverse:false,text:"I notice when a study strategy isn't working and switch to something else."},
+    {id:3,axis:"planning",reverse:false,text:"I check my own understanding as I go, instead of waiting for a quiz to find out."},
+    {id:4,axis:"planning",reverse:true,text:"I rarely stop to think about whether my approach to studying is actually working."},
+    {id:5,axis:"session_mode",reverse:false,text:"I prefer sessions where we talk through problems out loud together."},
+    {id:6,axis:"session_mode",reverse:true,text:"I'd rather work through material quietly on my own, even in a group setting."},
+    {id:7,axis:"session_mode",reverse:false,text:"I like sessions that follow a clear agenda rather than open-ended discussion."},
+    {id:8,axis:"session_mode",reverse:true,text:"I do better in loosely structured sessions where the conversation can wander."},
+    {id:9,axis:"reliability",reverse:false,text:"Even when material is dry, I make myself keep working through it."},
+    {id:10,axis:"reliability",reverse:false,text:"I keep working on something difficult instead of giving up on it."},
+    {id:11,axis:"reliability",reverse:false,text:"I show up to group sessions having done what I said I would beforehand."},
+    {id:12,axis:"reliability",reverse:true,text:"I've flaked on a study commitment to my group before."},
+    {id:13,axis:"structure",reverse:false,text:"I outline or organize material before diving into the details."},
+    {id:14,axis:"structure",reverse:false,text:"I keep my study materials organized so I can find what I need quickly."},
+    {id:15,axis:"structure",reverse:false,text:"I like group sessions to follow a set structure or checklist."},
+    {id:16,axis:"structure",reverse:true,text:"I'm fine with sessions that don't have a clear plan going in."},
+    {id:17,axis:"intensity",reverse:false,text:"I'm confident I can understand the most complex material in this course."},
+    {id:18,axis:"intensity",reverse:false,text:"I believe I can do well in this course if I apply myself."},
+    {id:19,axis:"intensity",reverse:false,text:"I care about understanding the material, not just getting a good grade."},
+    {id:20,axis:"intensity",reverse:true,text:"Compared to others in this course, I don't think I'm very capable."},
+    {id:21,axis:"collaboration",reverse:false,text:"I learn material best by explaining it to someone else."},
+    {id:22,axis:"collaboration",reverse:true,text:"I'd rather listen to someone explain it than explain it myself."},
+    {id:23,axis:"collaboration",reverse:false,text:"I'm comfortable being the person who answers the group's questions."},
+    {id:24,axis:"collaboration",reverse:true,text:"I'd rather attempt problems alone first and bring questions to the group."},
+  ];
+  const SURVEY_ITEM_BY_ID = Object.fromEntries(SURVEY_ITEMS.map(it=>[it.id,it]));
+  function scoredValue(itemNumber, raw){
+    const it = SURVEY_ITEM_BY_ID[itemNumber];
+    return (it && it.reverse) ? 6 - raw : raw;
+  }
 
   function traitCol(key){
     return {key, label:TRAIT_ABBR[key], numeric:true, width:"46px",
@@ -440,7 +474,7 @@ const DATA = __DATA_PLACEHOLDER__;
     },
     {
       id:"personality_profiles", group:"Personality", label:"Personality Survey", data:DATA.personality_profiles,
-      sub:"14 Likert traits (1–5) from the onboarding survey, plus the archetype + preferred role derived from them (spec §5, §7).",
+      sub:"6 axis scores (1–5), averaged from the 24-item Likert entry survey, plus the archetype + preferred role derived from them. See the raw Survey Responses table below for the 24 answers behind each score.",
       courseOf:r=>courseCodeOf(r.course_id),
       search:r=>[studentName(r.student_id), r.archetype, r.preferred_role].join(" "),
       columns:[
@@ -460,6 +494,23 @@ const DATA = __DATA_PLACEHOLDER__;
         {key:"member_count", label:"Members", get:r=>r.member_count, numeric:true, render:r=>`<span class="num">${r.member_count}</span>`},
         {key:"description", label:"Description", get:r=>r.description, render:r=>`<span class="cell-wrap">${esc(r.description)}</span>`},
         {key:"profile", label:"Trait Profile", get:r=>0, render:r=>traitSpark(Object.assign({archetype:r.name}, r.centroid_traits_1to5), TRAIT_KEYS)},
+      ]
+    },
+    {
+      id:"survey_responses", group:"Personality", label:"Survey Responses (raw)", data:DATA.survey_responses,
+      sub:"The 24 raw 1–5 answers behind each personality_profiles row, stored exactly as answered. \"Scored\" applies reverse-coding (algorithm/scoring.py) — average the 4 Scored values per axis per student to get the axis score above.",
+      courseOf:r=>courseCodeOf(r.course_id),
+      search:r=>{ const it=SURVEY_ITEM_BY_ID[r.item_number]; return [studentName(r.student_id), it?it.text:"", it?it.axis:""].join(" "); },
+      columns:[
+        {key:"student_id", label:"Student", get:r=>studentName(r.student_id)},
+        {key:"item_number", label:"#", get:r=>r.item_number, numeric:true, width:"36px", render:r=>`<span class="num cell-dim">${r.item_number}</span>`},
+        {key:"axis", label:"Axis", get:r=>(SURVEY_ITEM_BY_ID[r.item_number]||{}).axis, render:r=>`<span class="tag small">${(SURVEY_ITEM_BY_ID[r.item_number]||{}).axis||""}</span>`},
+        {key:"text", label:"Statement", get:r=>(SURVEY_ITEM_BY_ID[r.item_number]||{}).text||"", render:r=>{
+          const it = SURVEY_ITEM_BY_ID[r.item_number];
+          return `<span class="cell-wrap">${esc(it?it.text:"")}${it&&it.reverse?' <span class="tag small">reverse</span>':""}</span>`;
+        }},
+        {key:"response", label:"Raw", get:r=>r.response, numeric:true, render:r=>`<span class="num">${r.response}</span>`},
+        {key:"scored", label:"Scored", get:r=>scoredValue(r.item_number, r.response), numeric:true, render:r=>`<span class="num cell-dim">${scoredValue(r.item_number, r.response)}</span>`},
       ]
     },
     {

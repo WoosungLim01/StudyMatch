@@ -1,6 +1,13 @@
 """
 StudyMatch — live group-placement policy for incoming survey respondents.
 
+PLACEHOLDER NOTICE: group formation here is RANDOM, not a real matching
+algorithm - see algorithm/compatibility.py's docstring and docs/Woosung.md.
+_form_full_groups() just shuffles and chunks; the 1-2 remainder case joins a
+RANDOMLY chosen eligible group rather than the best-scoring one. This is
+deliberate so the whole pipeline (schema, live placement, the post-signup
+message) works end to end while the real algorithm is built separately.
+
 Batch generation (generate_sample_data.py) only ever forms exactly-5 groups
 and deliberately leaves a remainder unassigned per course (population sizes
 are chosen as a multiple of 5, plus 2 - see that file). This module is what
@@ -10,15 +17,14 @@ policy exactly as specified:
   - The course's currently-unassigned pool (looking_for_group students with
     no group_membership row - fake leftovers AND any previously-pending real
     students together) is re-evaluated fresh every time someone new joins.
-  - While >=5 people are unassigned: peel off exactly-5 groups, same
-    seed-and-grow algorithm as generate_sample_data.py's form_groups().
+  - While >=5 people are unassigned: peel off exactly-5 groups at random.
   - Whatever remains (0-4 people) is the "remainder":
       0            -> nothing to do.
-      1 or 2       -> each person individually joins whichever EXISTING
-                       under-capacity group (current_members < max_members)
-                       in the course scores best for them. If literally no
-                       group has room, they stay unassigned/pending - a real
-                       edge case this policy doesn't try to solve further.
+      1 or 2       -> each person individually joins a RANDOMLY chosen
+                       EXISTING under-capacity group (current_members <
+                       max_members) in the course. If literally no group has
+                       room, they stay unassigned/pending - a real edge case
+                       this policy doesn't try to solve further.
       3 or 4       -> they become a brand-new (smaller) group together.
 
 Called synchronously right after a survey submission is inserted (see
@@ -27,8 +33,11 @@ Called synchronously right after a survey submission is inserted (see
 NOT_IDEAL_THRESHOLD reuses the same 65 used elsewhere in this project
 (generate_sample_data.py's group_feedback "left_group" cutoff) as the bar for
 "this is a compatibility score worth warning about" - see ../app.py's popup.
+Since compatibility_score is currently random (see algorithm/compatibility.py),
+this threshold is only meaningful again once the real scoring is in place.
 """
 
+import random
 from statistics import mean
 
 NOT_IDEAL_THRESHOLD = 65.0
@@ -68,30 +77,15 @@ def _group_avg(members, pair_score):
     return pairs
 
 
-def _form_full_groups(unassigned, pair_score):
-    """Exactly-5 groups, same seed-and-grow as generate_sample_data.form_groups()."""
-    pool = set(unassigned)
+def _form_full_groups(unassigned):
+    """PLACEHOLDER: exactly-5 groups formed by pure random shuffle-and-chunk."""
+    pool = sorted(unassigned)
+    random.shuffle(pool)
     formed = []
     while len(pool) >= 5:
-        rem = sorted(pool)
-        best_pair, best_val = None, -1
-        for i in range(len(rem)):
-            for j in range(i + 1, len(rem)):
-                s = pair_score(rem[i], rem[j])
-                if s > best_val:
-                    best_val, best_pair = s, (rem[i], rem[j])
-        group = list(best_pair)
-        pool -= set(group)
-        while len(group) < 5:
-            best_c, best_avg = None, -1
-            for cand in sorted(pool):
-                avg = mean(_group_avg(group + [cand], pair_score))
-                if avg > best_avg:
-                    best_avg, best_c = avg, cand
-            group.append(best_c)
-            pool.remove(best_c)
-        formed.append(group)
-    return formed, pool  # pool is now the remainder (<5)
+        formed.append(pool[:5])
+        pool = pool[5:]
+    return formed, set(pool)  # pool is now the remainder (<5)
 
 
 def _next_group_id(cur):
@@ -179,7 +173,7 @@ def run_placement(con, course_id, now_iso):
 
     outcomes = {}
 
-    full_groups, remainder = _form_full_groups(pool, pair_score)
+    full_groups, remainder = _form_full_groups(pool)
     for group in full_groups:
         gid = _insert_group(cur, course_id, group, pair_score, now_iso)
         avg = mean(_group_avg(group, pair_score))
@@ -190,21 +184,18 @@ def run_placement(con, course_id, now_iso):
     remainder = sorted(remainder)
     if len(remainder) in (1, 2):
         for sid in remainder:
-            candidates = cur.execute(
+            candidates = [r[0] for r in cur.execute(
                 "SELECT group_id FROM study_group WHERE course_id=? AND current_members < max_members",
                 (course_id,),
-            ).fetchall()
-            best_gid, best_avg = None, -1
-            for (gid,) in candidates:
-                members = [r[0] for r in cur.execute(
-                    "SELECT student_id FROM group_membership WHERE group_id=?", (gid,)
-                ).fetchall()]
-                avg = mean(pair_score(sid, m) for m in members)
-                if avg > best_avg:
-                    best_avg, best_gid = avg, gid
-            if best_gid is None:
+            ).fetchall()]
+            if not candidates:
                 outcomes[sid] = {"status": "pending"}
                 continue
+            best_gid = random.choice(candidates)
+            members = [r[0] for r in cur.execute(
+                "SELECT student_id FROM group_membership WHERE group_id=?", (best_gid,)
+            ).fetchall()]
+            best_avg = mean(pair_score(sid, m) for m in members)
             cur.execute(
                 "INSERT INTO group_membership VALUES (?,?,?,?)",
                 (best_gid, sid, now_iso, "Flexible/No Preference"),

@@ -13,6 +13,11 @@
 -- populated input data - they are simply not used to compute
 -- compatibility_score or group_score right now (personality similarity only).
 --
+-- Survey instrument: personality_profile's 6 axes (planning, session_mode,
+-- reliability, structure, intensity, collaboration) are scored from the
+-- 24-item Likert survey stored raw in survey_response - see
+-- ../algorithm/scoring.py for the item bank and scoring function.
+--
 -- Topic tracking (a `topic` lookup table + academic strong/weak/can_help/
 -- needs_help tagging) was deliberately removed - academic_profile now only
 -- carries course_confidence/target_grade. See README.md.
@@ -78,34 +83,40 @@ CREATE TABLE archetype (
     name                        TEXT NOT NULL,
     description                 TEXT,
     member_count                INTEGER,
-    -- centroid, 1-5 scale, one column per personality trait (mirrors personality_profile)
-    c_seriousness               REAL, c_structure     REAL, c_accountability REAL,
-    c_social_preference         REAL, c_communication_frequency REAL, c_competitiveness REAL,
-    c_preparation               REAL, c_leadership    REAL, c_talkativeness  REAL,
-    c_assertiveness             REAL, c_helpfulness   REAL, c_collaboration  REAL,
-    c_study_pace                REAL, c_patience      REAL
+    -- centroid, 1-5 scale, one column per survey axis (mirrors personality_profile)
+    c_planning                  REAL, c_session_mode  REAL, c_reliability  REAL,
+    c_structure                 REAL, c_intensity     REAL, c_collaboration REAL
 );
 
+-- Six axis scores (1-5, averaged from the 24 raw Likert items in
+-- survey_response below) driving matching. See ../algorithm/scoring.py for
+-- the item bank and the reverse-coding/averaging that produces these.
 CREATE TABLE personality_profile (
     student_id                TEXT NOT NULL REFERENCES student(student_id),
     course_id                 TEXT NOT NULL REFERENCES course(course_id),
-    seriousness               INTEGER CHECK (seriousness BETWEEN 1 AND 5),
-    structure                 INTEGER CHECK (structure BETWEEN 1 AND 5),
-    accountability             INTEGER CHECK (accountability BETWEEN 1 AND 5),
-    social_preference          INTEGER CHECK (social_preference BETWEEN 1 AND 5),
-    communication_frequency    INTEGER CHECK (communication_frequency BETWEEN 1 AND 5),
-    competitiveness            INTEGER CHECK (competitiveness BETWEEN 1 AND 5),
-    preparation                INTEGER CHECK (preparation BETWEEN 1 AND 5),
-    leadership                 INTEGER CHECK (leadership BETWEEN 1 AND 5),
-    talkativeness               INTEGER CHECK (talkativeness BETWEEN 1 AND 5),
-    assertiveness               INTEGER CHECK (assertiveness BETWEEN 1 AND 5),
-    helpfulness                 INTEGER CHECK (helpfulness BETWEEN 1 AND 5),
-    collaboration                INTEGER CHECK (collaboration BETWEEN 1 AND 5),
-    study_pace                  INTEGER CHECK (study_pace BETWEEN 1 AND 5),
-    patience                    INTEGER CHECK (patience BETWEEN 1 AND 5),
+    planning                  REAL CHECK (planning BETWEEN 1 AND 5),
+    session_mode               REAL CHECK (session_mode BETWEEN 1 AND 5),
+    reliability                 REAL CHECK (reliability BETWEEN 1 AND 5),
+    structure                   REAL CHECK (structure BETWEEN 1 AND 5),
+    intensity                   REAL CHECK (intensity BETWEEN 1 AND 5),
+    collaboration                REAL CHECK (collaboration BETWEEN 1 AND 5),
     archetype_id                TEXT REFERENCES archetype(archetype_id),
     preferred_role              TEXT,
     PRIMARY KEY (student_id, course_id)
+);
+
+-- Raw answers to the 24-item entry survey ("Version 3" of the MSLQ-informed
+-- redesign) — one row per item per student, 5-point Likert (1=Strongly
+-- Disagree .. 5=Strongly Agree), reverse-worded items stored AS ANSWERED (not
+-- pre-flipped). Kept alongside the computed axis scores above so scoring can
+-- be audited or re-run without re-surveying anyone. item_number matches the
+-- id field in algorithm/scoring.py's SURVEY_ITEMS.
+CREATE TABLE survey_response (
+    student_id   TEXT NOT NULL REFERENCES student(student_id),
+    course_id    TEXT NOT NULL REFERENCES course(course_id),
+    item_number  INTEGER NOT NULL CHECK (item_number BETWEEN 1 AND 24),
+    response     INTEGER NOT NULL CHECK (response BETWEEN 1 AND 5),
+    PRIMARY KEY (student_id, course_id, item_number)
 );
 
 -- Kept as valid input data; excluded from compatibility/group scoring (see schema.sql header).

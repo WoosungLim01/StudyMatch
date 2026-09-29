@@ -50,8 +50,8 @@ from fastapi import FastAPI, HTTPException, Request, Response
 from fastapi.responses import FileResponse, HTMLResponse, RedirectResponse
 from pydantic import BaseModel, Field
 
-from algorithm.compatibility import TRAITS
 from algorithm.placement import NOT_IDEAL_THRESHOLD, recompute_or_delete_group, run_placement
+from algorithm.scoring import SURVEY_ITEMS
 from data.add_student import add_one
 from data.auth import hash_password, verify_password
 
@@ -239,7 +239,7 @@ class SurveyIn(BaseModel):
     gender: Optional[str] = None
     major: Optional[str] = None
     course_id: str
-    personality: Dict[str, int]
+    responses: Dict[int, int]   # item id (1-24) -> raw 1-5 Likert answer
     availability: Optional[AvailabilityIn] = None
     academic: Optional[AcademicIn] = None
 
@@ -252,10 +252,10 @@ def api_courses():
     return [{"course_id": r[0], "course_code": r[1], "course_title": r[2]} for r in rows]
 
 
-@app.get("/api/survey/traits")
-def api_traits():
-    """Trait list for the survey form to render sliders from — one source of truth."""
-    return {"traits": TRAITS}
+@app.get("/api/survey/items")
+def api_survey_items():
+    """24-item Likert survey bank for the survey form to render from — one source of truth."""
+    return {"items": SURVEY_ITEMS}
 
 
 @app.post("/api/survey")
@@ -264,14 +264,17 @@ def api_survey(body: SurveyIn, request: Request):
     if user["student_id"] is not None:
         raise HTTPException(400, "You've already completed the survey — it's one-time per account.")
 
-    missing = [t for t in TRAITS if t not in body.personality]
+    missing = [it["id"] for it in SURVEY_ITEMS if it["id"] not in body.responses]
     if missing:
-        raise HTTPException(400, f"Missing personality traits: {missing}")
+        raise HTTPException(400, f"Missing survey responses for item(s): {missing}")
+    out_of_range = sorted(i for i, v in body.responses.items() if not (1 <= v <= 5))
+    if out_of_range:
+        raise HTTPException(400, f"Survey responses must be 1-5: item(s) {out_of_range}")
 
     s = {
         "name": body.name, "year": body.year, "gender": body.gender, "major": body.major,
         "course_id": body.course_id, "looking_for_group": True, "source": "real",
-        "personality": body.personality,
+        "survey_responses": body.responses,
     }
     # exclude_none: unset optional fields must be ABSENT, not present-with-None -
     # add_student.py's dict.get(key, default) only falls back on a missing key.

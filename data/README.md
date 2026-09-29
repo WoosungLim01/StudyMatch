@@ -28,7 +28,7 @@ entirely (not just excluded from scoring) — see "Known simplifications" below.
 ## The actual database
 
 `schema.sql` + `build_database.py` turn `sample/*.json` into a real, normalized
-SQLite database at `studymatch.db` (17 tables, ~900 rows, zero FK violations).
+SQLite database at `studymatch.db` (18 tables, ~1,650 rows, zero FK violations).
 Rebuild it anytime with:
 
 ```
@@ -36,7 +36,7 @@ python build_database.py            # regenerates sample/*.json, then builds stu
 python build_database.py --no-regen # builds studymatch.db from whatever's already in sample/
 ```
 
-Two of those 17 tables aren't loaded from `sample/*.json` at all —
+Two of those 18 tables aren't loaded from `sample/*.json` at all —
 `user_account` and `session` (login accounts and their session tokens, see
 [`auth.py`](auth.py) and the [repo root README](../README.md#how-it-works))
 start empty and are only ever populated by real logins through
@@ -169,7 +169,8 @@ them:
 | `courses.json` | 2 courses (CMPSC 465, MATH 230) | §18 |
 | `students.json` | 34 | §3, §18 Students |
 | `course_membership.json` | 34 | §18 Course Membership |
-| `personality_profiles.json` | 34 | §5, §18 Personality Profile (14 Likert traits + `archetype` + `preferred_role`) |
+| `personality_profiles.json` | 34 | §5, §18 Personality Profile (6 axis scores + `archetype` + `preferred_role`) |
+| `survey_responses.json` | 816 | Raw 24-item Likert answers behind the axis scores above (34 students x 24 items) — see [`algorithm/scoring.py`](../algorithm/scoring.py) |
 | `archetypes.json` | 5 | §7 — **discovered by KMeans**, not hand-labeled (see below) |
 | `availability.json` | 34 | §4, §18 Availability |
 | `academic_profiles.json` | 34 | §6 — course confidence + target grade only (per-topic strong/weak/can-help/needs-help tracking was removed, see below) |
@@ -189,17 +190,21 @@ remaining list-valued field embedded in the JSON (`availability.blocks`).
 1. **Students & courses** — 27 students in CMPSC 465, 7 in MATH 230 (each a
    multiple of 5, plus 2 — see the remainder policy above). Matching is
    scoped per course throughout (Stage 1, §2).
-2. **Personality survey** — each student's 14 trait scores are sampled from one of
-   5 *hidden* generative subpopulations (used only to make the synthetic answers
-   internally consistent, e.g. a "planner" type scores high on structure/preparation
-   and low on talkativeness) with Gaussian noise. Ground-truth subpop labels are
-   **not** written to output — real onboarding data wouldn't have them either.
-3. **Archetypes** — `KMeans(k=5)` runs on the standardized 14-dim personality
-   vectors in `personality_profiles.json`. Each cluster centroid is matched against
-   a small rule bank (e.g. high leadership + high assertiveness + high competitiveness
-   → "Study Captain") to name it — this is the §7 requirement that archetypes come
-   *from* the data, not from an a-priori typology. Raw traits (not the archetype)
-   drive all downstream matching.
+2. **Personality survey** — each student answers the same fixed 24-item, 5-point
+   Likert survey a real respondent sees (`ui/survey.html`; item bank in
+   [`algorithm/scoring.py`](../algorithm/scoring.py)). Raw per-item answers are
+   sampled from one of 5 *hidden* generative subpopulations (used only to make
+   the synthetic answers internally consistent, e.g. a "planner" type scores
+   high on planning/structure and low on session_mode) with Gaussian noise per
+   item, then run through the exact same `score_axes()` a real submission uses
+   to get the 6 axis scores. Ground-truth subpop labels are **not** written to
+   output — real onboarding data wouldn't have them either.
+3. **Archetypes** — `KMeans(k=5)` runs on the standardized 6-dim axis vectors in
+   `personality_profiles.json`. Each cluster centroid is matched against a small
+   rule bank (e.g. high reliability + high intensity + high structure →
+   "Study Captain") to name it — this is the §7 requirement that archetypes come
+   *from* the data, not from an a-priori typology. Raw axis scores (not the
+   archetype) drive all downstream matching.
 4. **Availability** — each course has a shared "campus rhythm" of a handful of
    popular day/time windows (evenings after class, Sunday afternoon, etc.); each
    student draws 2–4 of those with small jitter, plus a 25% chance of one
@@ -207,7 +212,7 @@ remaining list-valued field embedded in the JSON (`availability.blocks`).
    actually form) while still leaving some students genuinely schedule-incompatible.
 5. **Pairwise compatibility** (§9–11) — for every in-course pair:
    `compatibility_score = similarity`, scaled to 0–100, mean closeness across
-   **all 14 personality traits** — no differences-rewarding term. `study_style`
+   **all 6 survey axes** — no differences-rewarding term. `study_style`
    (schedule overlap, session length, location, online/in-person) is still
    computed and stored in `breakdown`, but carries zero weight — informational
    only. `schedule_compatible` / `weekly_overlap_minutes` are likewise still
@@ -249,6 +254,15 @@ remaining list-valued field embedded in the JSON (`availability.blocks`).
 - Only 2 courses / 37 students — enough to exercise every stage of the pipeline, not
   a load-test.
 - Gender is collected but genuinely unused in every scoring function, per §3.
+- The 24 survey items are pulled from validated MSLQ subscales where one
+  exists (metacognitive self-regulation, effort regulation, organization,
+  self-efficacy, task value) and kept as original StudyMatch items where MSLQ
+  has no equivalent (session_mode, collaboration) — see
+  [`references/`](../references) for the redesign doc. The `SUBPOPULATIONS`
+  hidden-archetype *targets* used to generate synthetic answers are still
+  hand-picked, not derived from a published population distribution — see
+  [`docs/DATA_GROUNDING.md`](../docs/DATA_GROUNDING.md) for what's grounded
+  and what isn't.
 - Because generation draws from one seeded, sequential random stream, removing
   the topic-sampling calls shifted every random draw after them — this
   snapshot's exact group compositions/scores differ from earlier ones checked

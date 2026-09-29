@@ -18,7 +18,8 @@ StudyMatch/
 ├── requirements.txt
 ├── algorithm/                the matching math (no I/O, no framework)
 │   ├── compatibility.py        personality-similarity scoring
-│   └── placement.py            the group-size remainder policy
+│   ├── placement.py            the group-size remainder policy
+│   └── scoring.py               the 24-item survey bank + Likert scoring
 ├── data/                      the schema, the synthetic dataset, the live DB
 │   ├── schema.sql
 │   ├── studymatch.db           ← the actual database
@@ -61,19 +62,23 @@ MATH 230) and their study groups.
    brand-new account is routed to the survey; an account that's already
    completed it goes straight to the home page.
 2. **Survey** (`ui/survey.html`) — one-time per account. Name, course,
-   year/gender/major, and a 14-trait personality questionnaire (1-5 scale),
-   plus optional availability/academic sections (off by default — nothing
-   recorded unless switched on). Submitting it links the account to the new
-   student record, so it can never be seen (or re-taken) again from that
-   account.
-3. **Scoring** (`algorithm/compatibility.py`) — compatibility between two
-   students is their average closeness across all 14 traits. Purely
-   similarity-based, no "opposites attract" term.
+   year/gender/major, and a fixed 24-item, 5-point Likert questionnaire
+   (Strongly Disagree - Strongly Agree, blank by default, no pre-selected
+   option), plus optional availability/academic sections (off by default —
+   nothing recorded unless switched on). The 24 raw answers score into 6
+   study-behavior axes (`algorithm/scoring.py`); submitting links the account
+   to the new student record, so it can never be seen (or re-taken) again
+   from that account.
+3. **Scoring** (`algorithm/compatibility.py`) — **placeholder for now**:
+   `compatibility_score` is a random number, not computed from the survey
+   data. The real matching algorithm (built on the 6-axis scores above) is
+   being built separately — see [`docs/Woosung.md`](docs/Woosung.md).
 4. **Placement** (`algorithm/placement.py`) — groups target exactly 5.
-   Whoever's unassigned in a course gets peeled into full 5-groups where
-   possible; a 1-2 person remainder joins the best existing under-capacity
-   group; a 3-4 person remainder becomes its own new group. Never blocks
-   signup on a bad match — a below-threshold match still gets signed in, just
+   Whoever's unassigned in a course gets peeled into full 5-groups; a 1-2
+   person remainder joins a random existing under-capacity group; a 3-4
+   person remainder becomes its own new group — **which group forms with
+   whom is currently random too**, same placeholder as the scoring above.
+   Never blocks signup — a below-threshold match still gets signed in, just
    with a warning instead of a plain success message.
 5. **Home** (`ui/home.html`) — where a returning, already-matched account
    lands: their group, its members, their course. Shows a plain "you're on
@@ -90,6 +95,7 @@ Full schema + the normalization decisions behind it: [`docs/ER_DIAGRAM.md`](docs
 Data generation, reproducibility, and the remainder-policy math in detail: [`data/README.md`](data/README.md).
 A planned (not yet built) semester-length outcome simulation, for validating the
 matching algorithm without waiting on real semester-long feedback: [`docs/SIMULATION_PLAN.md`](docs/SIMULATION_PLAN.md).
+What real research backs (and doesn't yet back) the synthetic data's design: [`docs/DATA_GROUNDING.md`](docs/DATA_GROUNDING.md).
 
 ## Known limitations / out of scope (v1)
 

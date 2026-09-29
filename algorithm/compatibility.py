@@ -1,29 +1,27 @@
 """
 StudyMatch — shared matching math.
 
-Used by BOTH generate_sample_data.py (initial batch generation, fits a fresh
-KMeans over the whole population) and add_student.py (incremental: one new
-student at a time, assigned to the NEAREST existing archetype centroid rather
-than re-clustering everyone). Pulling these out of generate_sample_data.py
-means both paths score compatibility with the exact same formula — no risk of
-the incremental path silently drifting from the original one.
+PLACEHOLDER NOTICE: pair_compatibility() (and therefore group formation in
+generate_sample_data.py / algorithm/placement.py) is currently RANDOM, not a
+real matching algorithm — see pair_compatibility()'s docstring. The real
+algorithm is being built separately (Woosung) on top of the 6-axis survey
+data in personality_profile; see docs/Woosung.md for the handoff.
 
-Matching scope (current decision, same as generate_sample_data.py's docstring):
-compatibility is personality-similarity ONLY, across all 14 traits. Time
-(availability) is still computed here — study_style_component — but carries
-zero weight in pair_compatibility(); it's informational data, not a scoring
-input. Academic topic-help tracking was removed entirely (no topic data left
-to compute it from) — see README.md.
+similarity_component() (real personality-axis math) is kept and still used
+for nearest_archetype() — archetype labeling is descriptive/informational,
+not a matching decision, so it isn't randomized.
+
+TRAITS is the 6 axes produced by the entry survey (planning, session_mode,
+reliability, structure, intensity, collaboration) — see
+algorithm/scoring.py for the 24-item Likert instrument and reverse-coding
+that produces them from raw survey answers. Sourced from there so the axis
+list has one owner.
 """
 
+import random
 from statistics import mean
 
-TRAITS = [
-    "seriousness", "structure", "accountability", "social_preference",
-    "communication_frequency", "competitiveness", "preparation",
-    "leadership", "talkativeness", "assertiveness", "helpfulness",
-    "collaboration", "study_pace", "patience",
-]
+from algorithm.scoring import AXES as TRAITS
 
 
 def to_minutes(hhmm):
@@ -50,9 +48,10 @@ def weekly_overlap_minutes(avail_list):
 
 def similarity_component(pa, pb):
     """
-    The ONLY thing that drives compatibility_score: mean closeness across all
-    14 personality traits (1-5 scale). No trait is scored for "reward
-    differences" complementarity — a good pair is a similar pair.
+    Mean closeness across all 6 survey axes (1-5 scale). Used by
+    nearest_archetype() for archetype labeling — NOT used by
+    pair_compatibility() right now, which is a random placeholder (see its
+    docstring).
     """
     sims = [1 - abs(pa[t] - pb[t]) / 4 for t in TRAITS]
     return mean(sims)
@@ -71,33 +70,46 @@ def study_style_component(av_a, av_b, overlap_minutes):
 
 def pair_compatibility(pa, pb, av_a, av_b):
     """
-    compatibility_score = personality similarity only.
+    PLACEHOLDER — compatibility_score is a random number for now, not
+    computed from personality. Group FORMATION doesn't even use this score to
+    decide anything (generate_sample_data.form_groups() and
+    placement.run_placement() both just shuffle-and-chunk) - it only exists so
+    pairwise_compatibility / group_score / match_data have *something* in
+    them until the real algorithm (Woosung, see docs/Woosung.md) replaces it.
 
-    study_style is still computed and reported in `breakdown` (valid input
-    data, kept for future use / transparency) but carries zero weight in the
-    score.
+    study_style is still computed for real from availability data and
+    reported in `breakdown` (kept for whenever real scoring comes back).
     """
     overlap = weekly_overlap_minutes([av_a, av_b])
-    sim = similarity_component(pa, pb)
     style = study_style_component(av_a, av_b, overlap)
-    score = sim
-    return round(score * 100, 1), overlap, {
-        "similarity": round(sim * 100, 1),
-        "study_style": round(style * 100, 1),   # informational only, not scored
+    score = round(random.uniform(40, 95), 1)
+    return score, overlap, {
+        "similarity": score,
+        "study_style": round(style * 100, 1),
     }
 
 
 def preferred_role_for(traits):
     """
-    Deterministic top-role pick from a trait dict (the same scoring
+    Deterministic top-role pick from an axis-score dict (the same scoring
     generate_sample_data.py uses). Callers that want the ~15% "Flexible/No
     Preference" override apply their own randomness on top of this — kept
     out of here so this stays pure and reusable.
+
+    Axis -> role mapping (redesigned for the 6-axis MSLQ-informed survey,
+    replacing the old leadership/talkativeness/helpfulness-based version):
+      Organizer      <- plans ahead AND likes structured sessions
+      Explainer      <- learns by explaining / answering others' questions
+      Problem Solver <- confident tackling hard material (self-efficacy)
+      Listener       <- prefers quiet/independent work over talking through problems
+      Motivator      <- reliable, follows through on commitments
     """
-    lead, talk, help_, collab = traits["leadership"], traits["talkativeness"], traits["helpfulness"], traits["collaboration"]
     scores = {
-        "Organizer": lead, "Explainer": help_, "Problem Solver": collab,
-        "Listener": 6 - talk, "Motivator": (lead + talk) / 2,
+        "Organizer": (traits["planning"] + traits["structure"]) / 2,
+        "Explainer": traits["collaboration"],
+        "Problem Solver": traits["intensity"],
+        "Listener": 6 - traits["session_mode"],
+        "Motivator": traits["reliability"],
     }
     return max(scores, key=scores.get)
 

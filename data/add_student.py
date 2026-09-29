@@ -12,12 +12,12 @@ each new student:
      (algorithm.compatibility.nearest_archetype) — does NOT re-run KMeans,
      so no other student's archetype_id can change.
   3. Compute pairwise_compatibility against every other student already in
-     the same course (algorithm.compatibility.pair_compatibility — the exact
-     same formula generate_sample_data.py used).
-  4. Rank existing under-capacity groups in their course by average
-     compatibility with current members, and insert up to 3 match_data
-     recruiting recommendations (accepted=False) — same as the "still
-     looking for group" step in generate_sample_data.py.
+     the same course (algorithm.compatibility.pair_compatibility — currently
+     a random placeholder, see that module's docstring and docs/Woosung.md).
+  4. Insert up to 3 match_data recruiting recommendations (accepted=False)
+     into a random sample of existing under-capacity groups in their course —
+     same placeholder policy as the "still looking for group" step in
+     generate_sample_data.py.
 
 It never touches study_group, group_membership, or any other student's row.
 New students are tagged source='real' by default (see schema.sql) so they
@@ -42,7 +42,7 @@ example):
     "section": "001", "semester": "Fall 2026",
     "looking_for_group": true,
     "source": "real",                       // optional, defaults to "real"
-    "personality": { "seriousness": 4, "structure": 4, ... all 14 traits ... },
+    "survey_responses": { "1": 4, "2": 5, ... all 24 items (1-24), each 1-5 ... },
     "availability": {                       // optional
       "blocks": [{"day": "Mon", "start_time": "18:00", "end_time": "21:00"}],
       "preferred_study_period": "Evening", "preferred_session_duration": 90,
@@ -55,6 +55,7 @@ example):
 """
 
 import json
+import random
 import sqlite3
 import sys
 from datetime import datetime, timezone
@@ -65,6 +66,7 @@ HERE = Path(__file__).parent
 sys.path.insert(0, str(HERE.resolve().parent))  # repo root, for `algorithm` -
                                                  # harmless if already inserted (e.g. imported by app.py)
 from algorithm.compatibility import TRAITS, pair_compatibility, preferred_role_for, nearest_archetype
+from algorithm.scoring import SURVEY_ITEMS, score_axes
 
 
 def now_iso():
@@ -101,9 +103,11 @@ def add_one(con, s, recommend=True):
     if not cur.execute("SELECT 1 FROM course WHERE course_id=?", (s["course_id"],)).fetchone():
         raise ValueError(f"Unknown course_id {s['course_id']!r} — check `course` table first.")
 
-    missing = [t for t in TRAITS if t not in s["personality"]]
+    # Keys may arrive as strings (raw JSON) or ints (already-parsed, e.g. FastAPI) - normalize.
+    responses = {int(k): v for k, v in s["survey_responses"].items()}
+    missing = [it["id"] for it in SURVEY_ITEMS if it["id"] not in responses]
     if missing:
-        raise ValueError(f"{s.get('name', '?')}: missing personality traits {missing}")
+        raise ValueError(f"{s.get('name', '?')}: missing survey responses for item(s) {missing}")
 
     sid = s.get("student_id") or next_student_id(cur)
     if cur.execute("SELECT 1 FROM student WHERE student_id=?", (sid,)).fetchone():
@@ -120,7 +124,7 @@ def add_one(con, s, recommend=True):
     )
 
     # ── personality + archetype (nearest existing centroid, no re-clustering) ──
-    traits = {t: s["personality"][t] for t in TRAITS}
+    traits = score_axes(responses)
     archetypes = [
         {"archetype_id": row[0], "centroid_traits_1to5": {t: row[i + 1] for i, t in enumerate(TRAITS)}}
         for row in cur.execute(
@@ -133,6 +137,11 @@ def add_one(con, s, recommend=True):
         f"INSERT INTO personality_profile VALUES (?,?,{','.join('?' * len(TRAITS))},?,?)",
         (sid, s["course_id"], *[traits[t] for t in TRAITS], archetype_id, preferred_role),
     )
+    for item_id, val in responses.items():
+        cur.execute(
+            "INSERT INTO survey_response VALUES (?,?,?,?)",
+            (sid, s["course_id"], item_id, val),
+        )
 
     # ── availability (optional; defaults keep pair_compatibility computable) ──
     # `or default` (not `.get(key, default)`) on purpose: a caller may pass the
@@ -206,21 +215,22 @@ def add_one(con, s, recommend=True):
         new_scores[other_id] = score
 
     # ── recruiting recommendations into existing under-capacity groups ──────
+    # PLACEHOLDER: a random sample of up to 3 eligible groups, not ranked by
+    # fit — see algorithm/compatibility.py's docstring and docs/Woosung.md.
     if recommend and s.get("looking_for_group", True):
         candidates = cur.execute(
             "SELECT group_id, max_members FROM study_group WHERE course_id=?", (s["course_id"],)
         ).fetchall()
-        ranked = []
+        eligible = []
         for gid, max_members in candidates:
             members = [r[0] for r in cur.execute(
                 "SELECT student_id FROM group_membership WHERE group_id=?", (gid,)
             ).fetchall()]
-            if len(members) >= max_members:
-                continue
-            avg = mean(new_scores[m] for m in members if m in new_scores)
-            ranked.append((gid, round(avg, 1)))
-        ranked.sort(key=lambda x: -x[1])
-        for gid, score in ranked[:3]:
+            if len(members) < max_members:
+                eligible.append((gid, members))
+        picks = random.sample(eligible, k=min(3, len(eligible)))
+        for gid, members in picks:
+            score = round(mean(new_scores[m] for m in members if m in new_scores), 1)
             cur.execute(
                 "INSERT INTO match_data VALUES (?,?,?,?,?,?,?)",
                 (next_match_id(cur), sid, gid, score, 0, 0, now_iso()),
