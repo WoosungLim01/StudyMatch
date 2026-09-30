@@ -8,16 +8,18 @@ each new student:
 
   1. Insert their raw data as given: student, course_membership,
      personality_profile, and availability/academic_profile if provided.
-  2. Assign an archetype_id by nearest EXISTING centroid
-     (algorithm.compatibility.nearest_archetype) — does NOT re-run KMeans,
-     so no other student's archetype_id can change.
+  2. Classify them into one of the 4 study types (archetype_id +
+     archetype_strength) against the STORED type model
+     (data/archetype_store.py -> algorithm/clustering.py) — no re-fit, so no
+     other student's type can change — and set response_flag
+     (algorithm/quality.py). Display only; never used for matching.
   3. Compute pairwise_compatibility against every other student already in
-     the same course (algorithm.compatibility.pair_compatibility — currently
-     a random placeholder, see that module's docstring and docs/Woosung.md).
-  4. Insert up to 3 match_data recruiting recommendations (accepted=False)
-     into a random sample of existing under-capacity groups in their course —
-     same placeholder policy as the "still looking for group" step in
-     generate_sample_data.py.
+     the same course (algorithm.compatibility.pair_compatibility — weighted
+     6-axis similarity, 0-100).
+  4. Insert up to 3 match_data recruiting recommendations (accepted=False):
+     the existing under-capacity groups in their course where their average
+     compatibility with the members is highest — same policy as the "still
+     looking for group" step in generate_sample_data.py.
 
 It never touches study_group, group_membership, or any other student's row.
 New students are tagged source='real' by default (see schema.sql) so they
@@ -55,7 +57,6 @@ example):
 """
 
 import json
-import random
 import sqlite3
 import sys
 from datetime import datetime, timezone
@@ -65,8 +66,9 @@ from statistics import mean
 HERE = Path(__file__).parent
 sys.path.insert(0, str(HERE.resolve().parent))  # repo root, for `algorithm` -
                                                  # harmless if already inserted (e.g. imported by app.py)
-from algorithm.compatibility import TRAITS, pair_compatibility, preferred_role_for, nearest_archetype
+from algorithm.compatibility import TRAITS, pair_compatibility, preferred_role_for
 from algorithm.scoring import SURVEY_ITEMS, score_axes
+from data.archetype_store import classify_student, load_model, refresh_type_stats
 
 
 def now_iso():
@@ -123,19 +125,17 @@ def add_one(con, s, recommend=True):
         (sid, s["course_id"], s.get("section"), s.get("semester"), int(bool(s.get("looking_for_group", True)))),
     )
 
-    # ── personality + archetype (nearest existing centroid, no re-clustering) ──
+    # ── personality + study type (stored model, no re-fit) + response flag ──
+    # DISPLAY LAYER ONLY: archetype_id/strength/flag are never read by matching.
     traits = score_axes(responses)
-    archetypes = [
-        {"archetype_id": row[0], "centroid_traits_1to5": {t: row[i + 1] for i, t in enumerate(TRAITS)}}
-        for row in cur.execute(
-            f"SELECT archetype_id, {','.join('c_' + t for t in TRAITS)} FROM archetype"
-        ).fetchall()
-    ]
-    archetype_id = nearest_archetype(traits, archetypes) if archetypes else None
+    model = load_model(cur)
+    archetype_id, archetype_strength, flag = (
+        classify_student(traits, responses, model) if model else (None, None, None)
+    )
     preferred_role = s.get("preferred_role") or preferred_role_for(traits)
     cur.execute(
-        f"INSERT INTO personality_profile VALUES (?,?,{','.join('?' * len(TRAITS))},?,?)",
-        (sid, s["course_id"], *[traits[t] for t in TRAITS], archetype_id, preferred_role),
+        f"INSERT INTO personality_profile VALUES (?,?,{','.join('?' * len(TRAITS))},?,?,?,?)",
+        (sid, s["course_id"], *[traits[t] for t in TRAITS], archetype_id, preferred_role, archetype_strength, flag),
     )
     for item_id, val in responses.items():
         cur.execute(
@@ -143,7 +143,10 @@ def add_one(con, s, recommend=True):
             (sid, s["course_id"], item_id, val),
         )
 
-    # ── availability (optional; defaults keep pair_compatibility computable) ──
+    if model:
+        refresh_type_stats(cur)
+
+    # ── availability (optional; defaults keep pair_compatibility's study_style breakdown computable) ──
     # `or default` (not `.get(key, default)`) on purpose: a caller may pass the
     # key explicitly set to None (e.g. FastAPI's model_dump() without
     # exclude_none) rather than omitting it - either way it should fall back.
@@ -215,8 +218,7 @@ def add_one(con, s, recommend=True):
         new_scores[other_id] = score
 
     # ── recruiting recommendations into existing under-capacity groups ──────
-    # PLACEHOLDER: a random sample of up to 3 eligible groups, not ranked by
-    # fit — see algorithm/compatibility.py's docstring and docs/Woosung.md.
+    # Top 3 eligible groups by the newcomer's mean compatibility with members.
     if recommend and s.get("looking_for_group", True):
         candidates = cur.execute(
             "SELECT group_id, max_members FROM study_group WHERE course_id=?", (s["course_id"],)
@@ -226,11 +228,10 @@ def add_one(con, s, recommend=True):
             members = [r[0] for r in cur.execute(
                 "SELECT student_id FROM group_membership WHERE group_id=?", (gid,)
             ).fetchall()]
-            if len(members) < max_members:
-                eligible.append((gid, members))
-        picks = random.sample(eligible, k=min(3, len(eligible)))
-        for gid, members in picks:
-            score = round(mean(new_scores[m] for m in members if m in new_scores), 1)
+            scored = [new_scores[m] for m in members if m in new_scores]
+            if len(members) < max_members and scored:
+                eligible.append((round(mean(scored), 1), gid))
+        for score, gid in sorted(eligible, key=lambda e: (-e[0], e[1]))[:3]:
             cur.execute(
                 "INSERT INTO match_data VALUES (?,?,?,?,?,?,?)",
                 (next_match_id(cur), sid, gid, score, 0, 0, now_iso()),

@@ -1,0 +1,7 @@
+{
+  "source": "theory",
+  "n_fit": 0,
+  "covariance_type": "theory",
+  "loglik_threshold": -3.1987350880427643,
+  "note": "only 36 students (< 200) - using theory model"
+}

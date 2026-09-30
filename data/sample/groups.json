@@ -2,67 +2,89 @@
   {
     "group_id": "grp_001",
     "course_id": "psu-cmpsc465-001-fa26",
-    "group_name": "The Recursion Rangers",
+    "group_name": "CMPSC 465 Group 1",
     "max_members": 5,
     "current_members": 5,
     "created_at": "2026-08-25T14:00:00Z",
-    "group_score": 68.1,
-    "avg_pairwise": 68.1,
-    "worst_pairwise": 40.5
+    "group_score": 95.5,
+    "avg_pairwise": 95.5,
+    "worst_pairwise": 93.8
   },
   {
     "group_id": "grp_002",
     "course_id": "psu-cmpsc465-001-fa26",
-    "group_name": "Late Night Loopers",
+    "group_name": "CMPSC 465 Group 2",
     "max_members": 5,
     "current_members": 5,
     "created_at": "2026-08-25T14:00:00Z",
-    "group_score": 65.6,
-    "avg_pairwise": 65.6,
-    "worst_pairwise": 40.2
+    "group_score": 91.4,
+    "avg_pairwise": 91.4,
+    "worst_pairwise": 88.4
   },
   {
     "group_id": "grp_003",
     "course_id": "psu-cmpsc465-001-fa26",
-    "group_name": "The Greedy Algorithm",
+    "group_name": "CMPSC 465 Group 3",
     "max_members": 5,
-    "current_members": 5,
+    "current_members": 4,
     "created_at": "2026-08-25T14:00:00Z",
-    "group_score": 71.1,
-    "avg_pairwise": 71.1,
-    "worst_pairwise": 55.0
+    "group_score": 89.9,
+    "avg_pairwise": 89.9,
+    "worst_pairwise": 86.6
   },
   {
     "group_id": "grp_004",
     "course_id": "psu-cmpsc465-001-fa26",
-    "group_name": "Study Captains United",
+    "group_name": "CMPSC 465 Group 4",
     "max_members": 5,
     "current_members": 5,
     "created_at": "2026-08-25T14:00:00Z",
-    "group_score": 76.1,
-    "avg_pairwise": 76.1,
-    "worst_pairwise": 46.0
+    "group_score": 88.6,
+    "avg_pairwise": 88.6,
+    "worst_pairwise": 79.5
   },
   {
     "group_id": "grp_005",
     "course_id": "psu-cmpsc465-001-fa26",
-    "group_name": "Vector Vanguard",
+    "group_name": "CMPSC 465 Group 5",
     "max_members": 5,
-    "current_members": 5,
+    "current_members": 4,
     "created_at": "2026-08-25T14:00:00Z",
-    "group_score": 73.0,
-    "avg_pairwise": 73.0,
-    "worst_pairwise": 50.4
+    "group_score": 88.2,
+    "avg_pairwise": 88.2,
+    "worst_pairwise": 82.1
   },
   {
     "group_id": "grp_006",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "group_name": "CMPSC 465 Group 6",
+    "max_members": 5,
+    "current_members": 4,
+    "created_at": "2026-08-25T14:00:00Z",
+    "group_score": 83.1,
+    "avg_pairwise": 83.1,
+    "worst_pairwise": 73.7
+  },
+  {
+    "group_id": "grp_007",
     "course_id": "psu-math230-002-fa26",
-    "group_name": "Integral Insurgents",
+    "group_name": "MATH 230 Group 1",
+    "max_members": 5,
+    "current_members": 4,
+    "created_at": "2026-08-25T14:00:00Z",
+    "group_score": 79.3,
+    "avg_pairwise": 79.3,
+    "worst_pairwise": 62.9
+  },
+  {
+    "group_id": "grp_008",
+    "course_id": "psu-math230-002-fa26",
+    "group_name": "MATH 230 Group 2",
     "max_members": 5,
     "current_members": 5,
     "created_at": "2026-08-25T14:00:00Z",
-    "group_score": 62.2,
-    "avg_pairwise": 62.2,
-    "worst_pairwise": 43.7
+    "group_score": 82.3,
+    "avg_pairwise": 82.3,
+    "worst_pairwise": 66.1
   }
 ]

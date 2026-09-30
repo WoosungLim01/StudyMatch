@@ -1,9 +1,7 @@
 # StudyMatch — Data Layer Handoff
 
-This describes the data StudyMatch collects and stores — what a matching
-algorithm should be built against. The matching/grouping step itself is
-currently a random placeholder (see the last section). Building the real one
-is your part.
+This describes the data StudyMatch collects and stores, and the matching
+algorithm built on top of it (last section).
 
 ## The survey
 
@@ -109,10 +107,13 @@ where it came from.
 - **`survey_response`** *(student_id, course_id, item_number 1-24, response
   1-5)* — the raw answers behind those scores, kept for auditing or if you
   ever want to weight individual items instead of axis averages.
-- **`archetype`** — 5 descriptive clusters (e.g. "Study Captain", "Focused
-  Architect") discovered by KMeans over the 6 axes, purely for display/
-  labeling. Not used to decide who groups with whom — safe to ignore, or use
-  as a feature if it's useful to you.
+- **`archetype`** — the 4 fixed study types (Study Captain, Focused
+  Architect, Collaborative Explorer, Independent Sprinter), each row holding
+  its Gaussian-mixture component (`component` JSON over the two family
+  scores) so new signups get a soft membership
+  (`personality_profile.archetype_strength`) without a re-fit; `model_meta`
+  says whether the theory model or a fitted one is in use. Display only —
+  never used to decide who groups with whom.
 - **`availability`**, **`availability_block`**, **`academic_profile`** —
   schedule preferences and course-confidence/target-grade. Collected and
   populated for every student, but nothing currently reads them when forming
@@ -142,27 +143,24 @@ Full column-by-column schema: [`data/schema.sql`](../data/schema.sql).
   (or DB Browser for SQLite) and query `personality_profile` /
   `survey_response` there. That's the only place real submissions show up.
 
-## The algorithm is a placeholder right now — this is what's left
+## The matching algorithm
 
-`algorithm/compatibility.py`'s `pair_compatibility()` currently returns a
-**random number** instead of a real score. Group formation
-(`data/generate_sample_data.py`'s `form_groups()` for the synthetic batch,
-`algorithm/placement.py`'s `_form_full_groups()` and its remainder logic for
-live signups) just **shuffles students and chunks them into groups of 5** —
-it doesn't look at `personality_profile` at all. This exists only so the rest
-of the app (schema, the post-signup message, the home/admin pages) has
-something to run against while the real algorithm gets built.
+The random placeholder has been replaced. The algorithm follows the original
+StudyMatch brief (similar-with-similar grouping, ILP rather than a genetic
+algorithm, archetype labels kept separate from the matching vector):
 
-What to replace:
-- `pair_compatibility()` in `algorithm/compatibility.py` — should compute a
-  real score from two students' 6 axis values (and optionally their
-  availability/academic data) instead of `random.uniform(40, 95)`.
-- `form_groups()` in `data/generate_sample_data.py` and the grouping logic in
-  `algorithm/placement.py` — should use that real score to decide who groups
-  with whom, instead of a random shuffle.
+| Stage | Where | What |
+|---|---|---|
+| Study type (display) | `algorithm/clustering.py` | 4 theory types = 2x2 of self-regulation x social-mode family scores; GMM anchored at the theory centers gives soft membership; theory model below 200 students; intensity → separate motivation badge |
+| Response quality (admin) | `algorithm/quality.py` | straight-line / contradictory / fits-no-type flags on `personality_profile.response_flag` |
+| Pair score (matching) | `algorithm/compatibility.py` `pair_compatibility()` | `100 x` weighted mean of `1 - |a-b|/4` over the 6 axes; reliability & intensity weighted 1.5x |
+| Groups (matching) | `algorithm/grouping.py` `form_groups()` | CP-SAT ILP: groups of 4-5 per course, maximize total within-group pair score; deterministic; greedy+swap warm start as a floor |
+| Live signups | `algorithm/placement.py` `run_placement()` | ILP over the unassigned pool; leftovers join the best-fitting group with room, else pending |
 
-What to keep as-is: groups are capped at exactly 5 members; matching is
-scoped per course (never cross-course); `similarity_component()` in
-`algorithm/compatibility.py` already computes real personality-axis
-closeness (it's just not wired into `pair_compatibility()` right now) —
-worth a look before writing new math from scratch.
+Archetype labels never reach `compatibility.py` or `grouping.py`: only the raw
+6-axis vectors do. Kept as-is: max 5 members per group, matching scoped per
+course.
+
+Not built yet (candidates for next steps): per-student axis importance /
+dealbreakers, and the feedback loop that would learn weights from
+`group_feedback`.

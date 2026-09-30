@@ -4894,5 +4894,293 @@
     "course_id": "psu-math230-002-fa26",
     "item_number": 24,
     "response": 2
+  },
+  {
+    "student_id": "stu_0035",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 1,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0035",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 2,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0035",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 3,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0035",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 4,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0035",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 5,
+    "response": 1
+  },
+  {
+    "student_id": "stu_0035",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 6,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0035",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 7,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0035",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 8,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0035",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 9,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0035",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 10,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0035",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 11,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0035",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 12,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0035",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 13,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0035",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 14,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0035",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 15,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0035",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 16,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0035",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 17,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0035",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 18,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0035",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 19,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0035",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 20,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0035",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 21,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0035",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 22,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0035",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 23,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0035",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 24,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0036",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 1,
+    "response": 1
+  },
+  {
+    "student_id": "stu_0036",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 2,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0036",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 3,
+    "response": 1
+  },
+  {
+    "student_id": "stu_0036",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 4,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0036",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 5,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0036",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 6,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0036",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 7,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0036",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 8,
+    "response": 1
+  },
+  {
+    "student_id": "stu_0036",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 9,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0036",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 10,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0036",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 11,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0036",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 12,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0036",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 13,
+    "response": 1
+  },
+  {
+    "student_id": "stu_0036",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 14,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0036",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 15,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0036",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 16,
+    "response": 5
+  },
+  {
+    "student_id": "stu_0036",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 17,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0036",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 18,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0036",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 19,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0036",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 20,
+    "response": 2
+  },
+  {
+    "student_id": "stu_0036",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 21,
+    "response": 3
+  },
+  {
+    "student_id": "stu_0036",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 22,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0036",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 23,
+    "response": 4
+  },
+  {
+    "student_id": "stu_0036",
+    "course_id": "psu-math230-002-fa26",
+    "item_number": 24,
+    "response": 2
   }
 ]

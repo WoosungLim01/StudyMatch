@@ -1002,5 +1002,62 @@
     "preferred_sessions_per_week": 2,
     "preferred_location": "Library",
     "online_vs_in_person_preference": "hybrid"
+  },
+  {
+    "student_id": "stu_0035",
+    "course_id": "psu-math230-002-fa26",
+    "blocks": [
+      {
+        "day": "Sat",
+        "start_time": "09:00",
+        "end_time": "13:00"
+      },
+      {
+        "day": "Mon",
+        "start_time": "19:00",
+        "end_time": "22:00"
+      }
+    ],
+    "preferred_study_period": "Evening",
+    "preferred_session_duration": 120,
+    "preferred_sessions_per_week": 2,
+    "preferred_location": "Coffee Shop",
+    "online_vs_in_person_preference": "in_person"
+  },
+  {
+    "student_id": "stu_0036",
+    "course_id": "psu-math230-002-fa26",
+    "blocks": [
+      {
+        "day": "Mon",
+        "start_time": "18:00",
+        "end_time": "21:00"
+      },
+      {
+        "day": "Wed",
+        "start_time": "19:00",
+        "end_time": "23:00"
+      },
+      {
+        "day": "Sat",
+        "start_time": "11:00",
+        "end_time": "13:00"
+      },
+      {
+        "day": "Tue",
+        "start_time": "18:00",
+        "end_time": "22:00"
+      },
+      {
+        "day": "Sun",
+        "start_time": "10:00",
+        "end_time": "12:00"
+      }
+    ],
+    "preferred_study_period": "Evening",
+    "preferred_session_duration": 90,
+    "preferred_sessions_per_week": 3,
+    "preferred_location": "Coffee Shop",
+    "online_vs_in_person_preference": "online"
   }
 ]

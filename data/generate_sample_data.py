@@ -3,19 +3,17 @@ StudyMatch — sample data generator.
 
 Produces synthetic-but-internally-consistent data for the StudyMatch spec:
 students, personality survey results, availability, academic profiles,
-derived archetypes (via real KMeans clustering, not hand-labeled), a
-pairwise compatibility matrix, randomly-formed 5-person study groups, group
-membership, individual/group match recommendations, course global-chat
-activity, and post-formation outcome feedback.
+study types (4 theory-defined types, soft membership via a Gaussian
+mixture anchored at the theory centers), a pairwise compatibility
+matrix (weighted 6-axis similarity), ILP-optimized study groups of 4-5,
+group membership, individual/group match recommendations, course
+global-chat activity, and post-formation outcome feedback.
 
-This is sample/demo data only.
-
-PLACEHOLDER NOTICE: group formation and compatibility_score are RANDOM right
-now, not a real matching algorithm — see algorithm/compatibility.py's and
-algorithm/placement.py's docstrings, and docs/Woosung.md for the handoff.
-The personality survey pipeline below (24-item Likert -> 6 axis scores) is
-real and final; only the matching/grouping step that consumes it is a
-placeholder.
+This is sample/demo data only. The pipeline it runs is the real one:
+  survey -> score_axes() -> 6-dim vector
+     -> (display) algorithm/clustering.py: study type + strength % + motivation badge
+     -> (matching) algorithm/compatibility.py -> algorithm/grouping.py ILP
+Archetypes are never fed into matching - see algorithm/clustering.py.
 
 Personality survey: each synthetic student gets 24 raw Likert answers (the
 same "Version 3" instrument real respondents see in ui/survey.html — item
@@ -32,7 +30,7 @@ table it needed) was removed; see README.md.
 Run (from this directory):  python generate_sample_data.py
 Output: ./sample/*.json
 
-Shared matching math (similarity_component, pair_compatibility, etc.) lives in
+Shared matching math (weighted_similarity, pair_compatibility, etc.) lives in
 ../algorithm/compatibility.py so add_student.py's and app.py's incremental
 paths use the exact same formulas — see that module's docstring.
 """
@@ -44,10 +42,12 @@ from pathlib import Path
 from statistics import mean
 
 import numpy as np
-from sklearn.cluster import KMeans
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))  # repo root, for `algorithm`
+from algorithm.clustering import TYPES, classify, family_scores, fit_model
 from algorithm.compatibility import TRAITS, pair_compatibility, preferred_role_for
+from algorithm.grouping import form_groups as ilp_form_groups, random_baseline, total_score
+from algorithm.quality import response_flag
 from algorithm.scoring import SURVEY_ITEMS, reverse_code, score_axes
 
 random.seed(42)
@@ -56,8 +56,8 @@ np.random.seed(42)
 OUT = Path(__file__).parent / "sample"
 OUT.mkdir(exist_ok=True)
 
-# Matching uses the full personality vector as one similarity signal — no
-# similarity/complementarity trait split anymore (see algorithm/compatibility.similarity_component()).
+# Matching uses the full personality vector as one weighted similarity signal
+# (see algorithm/compatibility.weighted_similarity()).
 
 ROLES = ["Organizer", "Explainer", "Problem Solver", "Listener", "Motivator", "Flexible/No Preference"]
 
@@ -256,80 +256,53 @@ def make_student(course, n_blocks_range, looking_for_group=True):
 cmpsc = courses[0]
 math230 = courses[1]
 
-# Population sizes are deliberately (multiple of 5) + 2 per course, so batch
-# group formation (exactly-5 groups, see form_groups()) leaves exactly 2
-# people unassigned per course — the live intake demo's starting point.
+# 27 = 3x5 + 3x4 and 9 = 5 + 4: both split exactly into groups of 4-5, and
+# each leaves some 4-person groups with an open seat - the live intake
+# demo's starting point (a new signup joins the best-fitting one; see
+# ../algorithm/placement.py).
 cmpsc_students = [make_student(cmpsc, (3, 4)) for _ in range(27)]
-math_students = [make_student(math230, (2, 4)) for _ in range(7)]
+math_students = [make_student(math230, (2, 4)) for _ in range(9)]
 
 # ---------------------------------------------------------------------------
-# 3. Archetypes — discovered via KMeans over the real personality vectors
+# 3. Study types — the 4 fixed theory types (algorithm/clustering.py), with
+#    membership from a Gaussian mixture over the 2 family scores, anchored
+#    at the theory centers (theory model as-is below clustering.MIN_FIT_N
+#    students). Plus a response-quality flag.
+#    DISPLAY LAYER ONLY: nothing below section 3 reads archetype_id/strength.
 # ---------------------------------------------------------------------------
 
-vecs = np.array([[row[t] for t in TRAITS] for row in personality_rows], dtype=float)
-mu, sigma = vecs.mean(axis=0), vecs.std(axis=0)
-sigma[sigma == 0] = 1.0
-X = (vecs - mu) / sigma
+type_model = fit_model(np.array([family_scores(row) for row in personality_rows], dtype=float))
 
-K = 5
-km = KMeans(n_clusters=K, n_init=10, random_state=42).fit(X)
-labels = km.labels_
+responses_by_id = {}
+for r in survey_response_rows:
+    responses_by_id.setdefault(r["student_id"], {})[r["item_number"]] = r["response"]
 
-# Name each cluster from its centroid's most distinctive high/low traits
-# (z-scored relative to the whole population), picking from a curated,
-# game-like name bank keyed by trait signature rather than assigning
-# MBTI-style labels by hand.
-NAME_BANK = [
-    (lambda c: c["planning"] > 0.5 and c["structure"] > 0.5 and c["session_mode"] < 0, "Focused Architect",
-     "Plans ahead and keeps things organized, but prefers working things out quietly over talking them through."),
-    (lambda c: c["collaboration"] > 0.5 and c["session_mode"] > 0.5, "Collaborative Guide",
-     "Learns by explaining and talking problems through out loud; keeps the group engaged."),
-    (lambda c: c["reliability"] > 0.5 and c["intensity"] > 0.5 and c["structure"] > 0.3, "Study Captain",
-     "Shows up prepared, pushes through hard material, and keeps sessions on track."),
-    (lambda c: c["session_mode"] < -0.3 and c["collaboration"] < -0.3, "Independent Strategist",
-     "Prefers working things out solo, even inside a group; contributes best async."),
-    (lambda c: c["intensity"] > 0.3 and c["planning"] < -0.3 and c["structure"] < -0.3, "Deadline Sprinter",
-     "Cares about doing well but ramps up close to deadlines rather than planning ahead."),
-    (lambda c: c["reliability"] > 0.3 and c["collaboration"] > 0.3, "Steady Teammate",
-     "Dependable and easy to work with; reliably follows through on commitments to the group."),
-]
-FALLBACK_NAMES = ["Balanced Collaborator", "Quiet Achiever", "Adaptive Studier"]
-
-archetypes = []
-used_names = set()
-centroids_raw = km.cluster_centers_ * sigma + mu  # back to 1-5 scale
-for k in range(K):
-    c = {t: km.cluster_centers_[k][i] for i, t in enumerate(TRAITS)}  # z-scored centroid
-    chosen = None
-    for rule, name, desc in NAME_BANK:
-        if name in used_names:
-            continue
-        if rule(c):
-            chosen = (name, desc)
-            break
-    if chosen is None:
-        for fb in FALLBACK_NAMES:
-            if fb not in used_names:
-                chosen = (fb, "A moderate, well-rounded study profile without an extreme trait signature.")
-                break
-    used_names.add(chosen[0])
-    size = int((labels == k).sum())
-    archetypes.append({
-        "archetype_id": f"arch_{k}",
-        "name": chosen[0],
-        "description": chosen[1],
-        "member_count": size,
-        "centroid_traits_1to5": {t: round(float(centroids_raw[k][i]), 2) for i, t in enumerate(TRAITS)},
-    })
-
-label_to_archetype = {k: archetypes[k]["archetype_id"] for k in range(K)}
-label_to_name = {k: archetypes[k]["name"] for k in range(K)}
-for row, lab in zip(personality_rows, labels):
-    row["archetype"] = label_to_name[lab]
-    row["archetype_id"] = label_to_archetype[lab]
+name_by_id = {tid: name for tid, name, *_ in TYPES}
+for row in personality_rows:
+    result = classify(row, type_model)
+    row["archetype_id"] = result["archetype_id"]
+    row["archetype"] = name_by_id[result["archetype_id"]]
+    row["archetype_strength"] = result["strength"]
+    row["response_flag"] = response_flag(responses_by_id[row["student_id"]], atypical=result["atypical"])
     # a lightweight self-reported role preference, correlated with traits but distinct from archetype
     top_role = preferred_role_for(row)
     row["preferred_role"] = top_role if random.random() > 0.15 else "Flexible/No Preference"
+
+archetypes = []
+for c in type_model["components"]:
+    members = [r for r in personality_rows if r["archetype_id"] == c["archetype_id"]]
+    archetypes.append({
+        "archetype_id": c["archetype_id"],
+        "name": c["name"],
+        "description": c["description"],
+        "member_count": len(members),
+        # descriptive: members' average per axis (the model itself is 2-D, below)
+        "centroid_traits_1to5": {t: (round(mean(r[t] for r in members), 2) if members else None) for t in TRAITS},
+        "weight": round(c["weight"], 6),
+        "component": {"mean": [round(v, 6) for v in c["mean"]],
+                      "covariance": [[round(v, 6) for v in row] for row in c["covariance"]]},
+    })
+archetype_model_meta = {k: type_model[k] for k in ("source", "n_fit", "covariance_type", "loglik_threshold", "note")}
 
 # ---------------------------------------------------------------------------
 # 4. Availability overlap + compatibility helpers — see ../algorithm/compatibility.py
@@ -376,14 +349,8 @@ def pair_score(a, b):
 
 
 # ---------------------------------------------------------------------------
-# 6. Group formation — PLACEHOLDER: pure random shuffle-and-chunk.
-#
-# The real matching algorithm (using the 6-axis personality data collected by
-# the survey) is being built separately (Woosung — see docs/Woosung.md).
-# pair_score() below still returns a number (algorithm/compatibility.py's
-# pair_compatibility() is currently random too), kept only so
-# pairwise_compatibility / group_score / match_data have something in them —
-# it does NOT drive who ends up in which group.
+# 6. Group formation — ILP (algorithm/grouping.py), per course, groups of 4-5
+#    maximizing total within-group compatibility (step 4b: raw vectors only).
 # ---------------------------------------------------------------------------
 
 def group_pair_scores(members):
@@ -411,25 +378,20 @@ def group_score(members):
 
 def form_groups(course_students, target_looking_ids):
     """
-    PLACEHOLDER: pure random shuffle-and-chunk into exactly-5 groups. Any
-    remainder (<5) is left in `unassigned` on purpose: population sizes are
-    chosen (see below) so each course ends batch generation with exactly 2
-    people left over, matching the live intake policy in
-    ../algorithm/placement.py (a 1-2 remainder joins an existing group; a 3-4
-    remainder becomes its own smaller group) — those 2 are what a real survey
-    respondent completes into a group.
+    ILP partition of the course's looking-for-group students into groups of
+    4-5 (see algorithm/grouping.py). Anyone the ILP can't place (only when the
+    headcount doesn't split into 4s and 5s) is left unassigned and gets
+    recommendations below, same as a live signup that finds no room.
     """
     pool = sorted(s for s in course_students if s in target_looking_ids)
-    random.shuffle(pool)
-    formed = []
-    while len(pool) >= 5:
-        formed.append(pool[:5])
-        pool = pool[5:]
-    return formed, set(pool)
+    groups, leftover, info = ilp_form_groups(pool, pair_score)
+    ilp_info.append((len(pool), groups, info))
+    return groups, leftover
 
 
-# Everyone looks for a group in this batch — the old "leave a few students not
-# looking" mechanic is superseded by the exactly-2-unassigned remainder above.
+ilp_info = []  # (pool size, groups, solver info) per course, for the summary print
+
+# Everyone looks for a group in this batch.
 cmpsc_groups, cmpsc_unassigned = form_groups(cmpsc_students, set(cmpsc_students))
 math_groups, math_unassigned = form_groups(math_students, set(math_students))
 
@@ -438,10 +400,6 @@ all_unassigned = cmpsc_unassigned | math_unassigned
 # ---------------------------------------------------------------------------
 # 7. Groups / group_membership output
 # ---------------------------------------------------------------------------
-
-GROUP_NAME_POOL = ["The Recursion Rangers", "Big-O Bandits", "Proof Squad", "Late Night Loopers",
-                   "Vector Vanguard", "Integral Insurgents", "The Greedy Algorithm", "Tree Traversers",
-                   "Study Captains United", "Async Study Crew"]
 
 groups_out, group_membership_out, match_data_out = [], [], []
 group_counter = 1
@@ -464,12 +422,11 @@ def role_for_member(member_id, group_members):
 
 def emit_groups(course, groups):
     global group_counter, match_counter
-    for g in groups:
+    for n, g in enumerate(groups, start=1):
         gscore = group_score(g)
         gid = f"grp_{group_counter:03d}"
         group_counter += 1
-        name = random.choice(GROUP_NAME_POOL)
-        GROUP_NAME_POOL.remove(name)
+        name = f"{course['course_code']} Group {n}"  # same scheme as algorithm/placement.group_name_for()
         groups_out.append({
             "group_id": gid,
             "course_id": course["course_id"],
@@ -502,9 +459,9 @@ def emit_groups(course, groups):
 emit_groups(cmpsc, cmpsc_groups)
 emit_groups(math230, math_groups)
 
-# students still looking for a group get "recruit me" style recommendations
-# into existing under-capacity groups — PLACEHOLDER: a random sample of up to
-# 3 eligible groups, not ranked by fit (individual -> group matching, section 14)
+# students still looking for a group get "recruit me" style recommendations:
+# the up-to-3 under-capacity groups in their course where their mean
+# compatibility with the members is highest (individual -> group matching, section 14)
 for sid in sorted(all_unassigned):
     course = cmpsc if sid in cmpsc_students else math230
     candidate_groups = [g for g in groups_out if g["course_id"] == course["course_id"]]
@@ -512,10 +469,8 @@ for sid in sorted(all_unassigned):
     for g in candidate_groups:
         members = [m["student_id"] for m in group_membership_out if m["group_id"] == g["group_id"]]
         if len(members) < 5:
-            eligible.append((g["group_id"], members))
-    picks = random.sample(eligible, k=min(3, len(eligible)))
-    for gid, members in picks:
-        score = round(mean([pair_score(sid, o) for o in members]), 1)
+            eligible.append((round(mean([pair_score(sid, o) for o in members]), 1), g["group_id"]))
+    for score, gid in sorted(eligible, key=lambda e: (-e[0], e[1]))[:3]:
         match_data_out.append({
             "match_id": f"match_{match_counter:04d}",
             "student_id": sid,
@@ -537,7 +492,7 @@ CHAT_TEMPLATES = [
     ("question", "Is the {topic} section going to be on the midterm?"),
     ("answer", "Yeah professor mentioned {topic} is fair game, review the slides from week 4."),
     ("social", "Anyone want to form a group for the final project? Still looking!"),
-    ("social", "Study Captains United is holding an open review session Thursday 7pm in the library if anyone wants to join."),
+    ("social", "{course} Group 1 is holding an open review session Thursday 7pm in the library if anyone wants to join."),
 ]
 
 chat_messages = []
@@ -553,7 +508,7 @@ for course in courses:
             "course_id": course["course_id"],
             "student_id": sender,
             "type": kind,
-            "text": template.format(topic=topic),
+            "text": template.format(topic=topic, course=course["course_code"]),
             "upvotes": random.randint(0, 12) if kind == "answer" else random.randint(0, 4),
             "timestamp": f"2026-09-{random.randint(1, 8):02d}T{random.randint(9, 23):02d}:{random.randint(0, 59):02d}:00Z",
         })
@@ -605,6 +560,7 @@ dump("course_membership.json", course_membership)
 dump("personality_profiles.json", personality_rows)
 dump("survey_responses.json", survey_response_rows)
 dump("archetypes.json", archetypes)
+dump("archetype_model.json", archetype_model_meta)
 dump("availability.json", availability_rows)
 dump("academic_profiles.json", academic_rows)
 dump("pairwise_compatibility.json", pairwise)
@@ -615,7 +571,18 @@ dump("course_chat_messages.json", chat_messages)
 dump("group_feedback.json", feedback_rows)
 
 print(f"Students: {len(students)} (CMPSC465={len(cmpsc_students)}, MATH230={len(math_students)})")
-print(f"Archetypes discovered: {[a['name'] for a in archetypes]}")
+print(f"Study types (model: {type_model['source']}"
+      f"{', ' + type_model['note'] if type_model['note'] else ''}): "
+      f"{[(a['name'], a['member_count']) for a in archetypes]}")
+print(f"Response flags: {[(r['student_id'], r['response_flag']) for r in personality_rows if r['response_flag']] or 'none'}")
+for n_pool, groups, info in ilp_info:
+    if not groups:
+        continue
+    ilp_total = total_score(groups, pair_score)
+    rand_total = random_baseline(groups, pair_score)
+    n_pairs = sum(len(g) * (len(g) - 1) // 2 for g in groups)
+    print(f"  ILP n={n_pool}: {info['status']}, total={ilp_total:.1f} (bound {info['bound']}), "
+          f"avg pair {ilp_total / n_pairs:.1f} vs random {rand_total / n_pairs:.1f}")
 print(f"Groups formed: {len(groups_out)}")
 for g in groups_out:
     mem = [m['student_id'] for m in group_membership_out if m['group_id'] == g['group_id']]

@@ -202,5 +202,17 @@
     "course_id": "psu-math230-002-fa26",
     "course_confidence": 3,
     "target_grade": "B+"
+  },
+  {
+    "student_id": "stu_0035",
+    "course_id": "psu-math230-002-fa26",
+    "course_confidence": 5,
+    "target_grade": "B+"
+  },
+  {
+    "student_id": "stu_0036",
+    "course_id": "psu-math230-002-fa26",
+    "course_confidence": 3,
+    "target_grade": "B"
   }
 ]

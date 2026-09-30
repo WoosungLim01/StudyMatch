@@ -8,6 +8,10 @@
 --     splitting those into a generic key/value table would be the EAV
 --     anti-pattern, not better normalization)
 --
+-- Matching: compatibility_score = weighted 6-axis similarity (0-100,
+-- algorithm/compatibility.py); groups of 4-5 are formed per course by an ILP
+-- maximizing within-group compatibility (algorithm/grouping.py).
+--
 -- Matching scope note: availability / availability_block and the
 -- study_style_score column on pairwise_compatibility are valid, fully-
 -- populated input data - they are simply not used to compute
@@ -78,14 +82,31 @@ CREATE TABLE course_membership (
     PRIMARY KEY (student_id, course_id)
 );
 
+-- The 4 theory-defined study types (algorithm/clustering.py TYPES: Study
+-- Captain, Focused Architect, Collaborative Explorer, Independent Sprinter),
+-- one row each, each row also holding its component of the Gaussian mixture
+-- that assigns students to types. Display layer only - never an input to
+-- compatibility or group formation.
 CREATE TABLE archetype (
     archetype_id                TEXT PRIMARY KEY,
     name                        TEXT NOT NULL,
     description                 TEXT,
     member_count                INTEGER,
-    -- centroid, 1-5 scale, one column per survey axis (mirrors personality_profile)
+    -- descriptive: members' average on each survey axis (1-5), refreshed on
+    -- every reclassification. Not part of the model.
     c_planning                  REAL, c_session_mode  REAL, c_reliability  REAL,
-    c_structure                 REAL, c_intensity     REAL, c_collaboration REAL
+    c_structure                 REAL, c_intensity     REAL, c_collaboration REAL,
+    -- the stored mixture component, so a new signup is classified without a re-fit
+    weight                      REAL,   -- mixing proportion
+    component                   TEXT    -- JSON {"mean": [2], "covariance": [[2x2]]} over the
+                                        -- (self-regulation, social mode) family scores
+);
+
+-- Key/value metadata about the stored type model: key 'archetype_model' holds
+-- JSON {source: theory|fitted, n_fit, covariance_type, loglik_threshold, note, fitted_at}.
+CREATE TABLE model_meta (
+    key     TEXT PRIMARY KEY,
+    value   TEXT NOT NULL
 );
 
 -- Six axis scores (1-5, averaged from the 24 raw Likert items in
@@ -102,6 +123,8 @@ CREATE TABLE personality_profile (
     collaboration                REAL CHECK (collaboration BETWEEN 1 AND 5),
     archetype_id                TEXT REFERENCES archetype(archetype_id),
     preferred_role              TEXT,
+    archetype_strength          REAL,   -- GMM posterior of archetype_id, 0-100 (display only)
+    response_flag               TEXT,   -- NULL | straight_line | inconsistent | atypical (algorithm/quality.py; admin only)
     PRIMARY KEY (student_id, course_id)
 );
 
@@ -154,7 +177,7 @@ CREATE TABLE pairwise_compatibility (
     student_a                 TEXT NOT NULL REFERENCES student(student_id),
     student_b                 TEXT NOT NULL REFERENCES student(student_id),
     course_id                 TEXT NOT NULL REFERENCES course(course_id),
-    compatibility_score       REAL NOT NULL,   -- == similarity_score; the only scored input right now
+    compatibility_score       REAL NOT NULL,   -- == similarity_score: weighted 6-axis similarity, 0-100
     similarity_score          REAL NOT NULL,
     schedule_compatible        INTEGER NOT NULL,   -- valid data, not used in compatibility_score
     weekly_overlap_minutes      INTEGER NOT NULL,   -- valid data, not used in compatibility_score

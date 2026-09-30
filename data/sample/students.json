@@ -338,5 +338,25 @@
     "course": "MATH 230",
     "course_section": "002",
     "looking_for_group": true
+  },
+  {
+    "student_id": "stu_0035",
+    "name": "Leo Lee",
+    "year": "Freshman",
+    "gender": "Man",
+    "major": "Statistics",
+    "course": "MATH 230",
+    "course_section": "002",
+    "looking_for_group": true
+  },
+  {
+    "student_id": "stu_0036",
+    "name": "Nina Wright",
+    "year": "Senior",
+    "gender": "Prefer not to say",
+    "major": "Computer Science",
+    "course": "MATH 230",
+    "course_section": "002",
+    "looking_for_group": true
   }
 ]

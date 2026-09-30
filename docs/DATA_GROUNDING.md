@@ -100,7 +100,7 @@ to eventually test against our own matching algorithm.
 1. Either (a) relabel/consolidate the 14 traits into an explicit Big Five
    structure, or (b) keep the current 14 but add a documented, defensible
    weighting scheme that gives conscientiousness-adjacent traits more
-   influence in `similarity_component()`, citing the academic-performance
+   influence in `weighted_similarity()`, citing the academic-performance
    research above as the justification.
 2. Calibrate `SUBPOPULATIONS`' trait-template numbers against a real
    published personality distribution instead of hand-picked values — even

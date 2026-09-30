@@ -1,72 +1,126 @@
 [
   {
-    "archetype_id": "arch_0",
-    "name": "Focused Architect",
-    "description": "Plans ahead and keeps things organized, but prefers working things out quietly over talking them through.",
-    "member_count": 3,
+    "archetype_id": "arch_captain",
+    "name": "Study Captain",
+    "description": "Comes prepared with a plan and keeps sessions on track - happy to lead and explain out loud.",
+    "member_count": 17,
     "centroid_traits_1to5": {
-      "planning": 4.5,
-      "session_mode": 2.67,
-      "reliability": 4.25,
-      "structure": 4.5,
-      "intensity": 3.42,
-      "collaboration": 2.67
+      "planning": 3.88,
+      "session_mode": 3.57,
+      "reliability": 4.31,
+      "structure": 3.79,
+      "intensity": 4.29,
+      "collaboration": 3.41
+    },
+    "weight": 0.25,
+    "component": {
+      "mean": [
+        4.0,
+        4.0
+      ],
+      "covariance": [
+        [
+          0.5625,
+          0.0
+        ],
+        [
+          0.0,
+          0.5625
+        ]
+      ]
     }
   },
   {
-    "archetype_id": "arch_1",
-    "name": "Independent Strategist",
-    "description": "Prefers working things out solo, even inside a group; contributes best async.",
+    "archetype_id": "arch_architect",
+    "name": "Focused Architect",
+    "description": "Organized and dependable, but prefers to work things out quietly and bring answers to the group.",
+    "member_count": 3,
+    "centroid_traits_1to5": {
+      "planning": 4.17,
+      "session_mode": 2.25,
+      "reliability": 4.08,
+      "structure": 3.58,
+      "intensity": 3.17,
+      "collaboration": 2.17
+    },
+    "weight": 0.25,
+    "component": {
+      "mean": [
+        4.0,
+        2.0
+      ],
+      "covariance": [
+        [
+          0.5625,
+          0.0
+        ],
+        [
+          0.0,
+          0.5625
+        ]
+      ]
+    }
+  },
+  {
+    "archetype_id": "arch_explorer",
+    "name": "Collaborative Explorer",
+    "description": "Goes with the flow and learns by talking problems through together, not by following a checklist.",
     "member_count": 8,
     "centroid_traits_1to5": {
-      "planning": 1.47,
-      "session_mode": 3.03,
-      "reliability": 2.38,
-      "structure": 1.56,
-      "intensity": 4.31,
-      "collaboration": 2.78
+      "planning": 2.06,
+      "session_mode": 3.84,
+      "reliability": 2.78,
+      "structure": 1.88,
+      "intensity": 3.97,
+      "collaboration": 3.91
+    },
+    "weight": 0.25,
+    "component": {
+      "mean": [
+        2.0,
+        4.0
+      ],
+      "covariance": [
+        [
+          0.5625,
+          0.0
+        ],
+        [
+          0.0,
+          0.5625
+        ]
+      ]
     }
   },
   {
-    "archetype_id": "arch_2",
-    "name": "Study Captain",
-    "description": "Shows up prepared, pushes through hard material, and keeps sessions on track.",
-    "member_count": 14,
+    "archetype_id": "arch_sprinter",
+    "name": "Independent Sprinter",
+    "description": "Works in focused solo bursts, often close to deadlines, rather than on a fixed schedule.",
+    "member_count": 8,
     "centroid_traits_1to5": {
-      "planning": 3.98,
-      "session_mode": 3.5,
-      "reliability": 4.48,
-      "structure": 3.86,
-      "intensity": 4.46,
-      "collaboration": 3.3
-    }
-  },
-  {
-    "archetype_id": "arch_3",
-    "name": "Balanced Collaborator",
-    "description": "A moderate, well-rounded study profile without an extreme trait signature.",
-    "member_count": 3,
-    "centroid_traits_1to5": {
-      "planning": 3.0,
-      "session_mode": 1.58,
-      "reliability": 2.83,
-      "structure": 2.58,
-      "intensity": 2.83,
-      "collaboration": 1.33
-    }
-  },
-  {
-    "archetype_id": "arch_4",
-    "name": "Collaborative Guide",
-    "description": "Learns by explaining and talking problems through out loud; keeps the group engaged.",
-    "member_count": 6,
-    "centroid_traits_1to5": {
-      "planning": 2.83,
-      "session_mode": 4.42,
-      "reliability": 3.25,
-      "structure": 2.5,
-      "intensity": 3.75,
-      "collaboration": 4.46
+      "planning": 2.12,
+      "session_mode": 2.44,
+      "reliability": 2.53,
+      "structure": 2.0,
+      "intensity": 3.81,
+      "collaboration": 2.06
+    },
+    "weight": 0.25,
+    "component": {
+      "mean": [
+        2.0,
+        2.0
+      ],
+      "covariance": [
+        [
+          0.5625,
+          0.0
+        ],
+        [
+          0.0,
+          0.5625
+        ]
+      ]
     }
   }
 ]

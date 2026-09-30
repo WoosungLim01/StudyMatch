@@ -13,10 +13,11 @@ is a real, live database that real people can be added to via the survey; see
 the [repo root README](../README.md#running-it).
 
 This exists to give the rest of the build (schema design, API contracts, UI mocks,
-matching-algorithm prototyping) real-shaped data to work against. The compatibility
-math and group-formation logic in the script are the heuristic placeholders from the
-spec, not a final algorithm — expect to replace both once real `group_feedback`
-accumulates (spec §16–17).
+matching-algorithm prototyping) real-shaped data to work against. The data is
+synthetic, but the pipeline it runs through is the real one: GMM archetypes
+([`algorithm/clustering.py`](../algorithm/clustering.py)), weighted-similarity
+compatibility ([`algorithm/compatibility.py`](../algorithm/compatibility.py)) and
+ILP group formation ([`algorithm/grouping.py`](../algorithm/grouping.py)).
 
 **Matching scope**: compatibility is **personality similarity only** — see
 ["How the pipeline was run"](#how-the-pipeline-was-run-mirrors-20) step 5.
@@ -80,29 +81,27 @@ admin page's delete button
 
 ## The group-size remainder policy ([`algorithm/placement.py`](../algorithm/placement.py))
 
-Groups target exactly 5. Batch generation ([`generate_sample_data.py`](generate_sample_data.py))
-only ever forms full 5-person groups and deliberately leaves a remainder
-unassigned — that's why the fake population per course is sized as
-**(a multiple of 5) + 2** (CMPSC 465 = 27, MATH 230 = 7): there are always
-exactly 2 people per course with no group yet, ready to be completed by a
-real survey respondent. Every time someone (real or, via `add_student.py`,
-scripted) joins a course, the whole unassigned pool for that course is
-re-evaluated fresh:
+Groups have **4-5 members** (`max_members` = 5). Batch generation
+([`generate_sample_data.py`](generate_sample_data.py)) runs the ILP over each
+course's whole cohort. The populations are sized so they split exactly
+(CMPSC 465 = 27 = 3x5 + 3x4, MATH 230 = 9 = 5 + 4), which leaves some
+4-person groups with an open seat for real survey respondents. Every time
+someone (real, or scripted via `add_student.py`) joins a course, that
+course's unassigned pool is re-evaluated fresh. Existing groups are never
+reshuffled:
 
-1. While **5 or more** are unassigned: peel off exactly-5 groups (best-pair
-   seed, then greedy growth — same algorithm as the batch generator).
-2. Whatever's left (0-4 people) is the remainder:
-   - **0** — nothing to do.
-   - **1 or 2** — each person individually joins whichever *existing*
-     under-capacity group in the course scores best for them. If literally no
-     group has room, they stay `pending` (a real edge case this doesn't try
-     to solve further — flagged rather than papered over).
-   - **3 or 4** — they become a brand-new (smaller) group together.
+1. **Pool of 4 or more** — the ILP splits it into new groups of 4-5,
+   maximizing total within-group compatibility.
+2. **Anyone the ILP can't place** (only when the pool is 1-3, 6, 7 or 11,
+   sizes that don't split into 4s and 5s) joins the *existing* group with
+   room where their average compatibility with the members is highest.
+3. If no group has room, they stay `pending` until enough people are
+   waiting to form a new group of 4.
 
-This is why the very first real survey respondent in a course typically gets
-grouped immediately with the 2 fake "leftovers" (remainder becomes 3 → new
-group), and the second respondent typically joins that same group (remainder
-becomes 1 → joins the now under-capacity group from step 1).
+So the first real respondents in a course fill the open seats one by one,
+each going to the group they fit best. Once every group is full, respondents
+wait until 4 of them are pending, and the 4th one's submission forms a new
+group.
 
 ## Viewing it as tables / rebuilding the browser yourself
 
@@ -167,28 +166,29 @@ them:
 |---|---|---|
 | `university.json` | 1 | §18 Students hierarchy |
 | `courses.json` | 2 courses (CMPSC 465, MATH 230) | §18 |
-| `students.json` | 34 | §3, §18 Students |
-| `course_membership.json` | 34 | §18 Course Membership |
-| `personality_profiles.json` | 34 | §5, §18 Personality Profile (6 axis scores + `archetype` + `preferred_role`) |
-| `survey_responses.json` | 816 | Raw 24-item Likert answers behind the axis scores above (34 students x 24 items) — see [`algorithm/scoring.py`](../algorithm/scoring.py) |
-| `archetypes.json` | 5 | §7 — **discovered by KMeans**, not hand-labeled (see below) |
-| `availability.json` | 34 | §4, §18 Availability |
-| `academic_profiles.json` | 34 | §6 — course confidence + target grade only (per-topic strong/weak/can-help/needs-help tracking was removed, see below) |
-| `pairwise_compatibility.json` | 372 | §9–11 — every within-course pair; `compatibility_score` is personality similarity only, `breakdown.study_style` is informational (not scored) |
-| `groups.json` | 6 | §12, §18 Groups (`group_score` == `avg_pairwise`; no diversity/balance term) — all exactly 5 members, see the remainder policy below |
-| `group_membership.json` | 30 | §18 Group Membership (includes a suggested `group_role`) |
-| `match_data.json` | 30 | §18 Match Data — the accepted matches that formed each group, plus recruiting recommendations for the 4 students left `looking_for_group` (2 per course, by design — see the remainder policy below) |
+| `students.json` | 36 | §3, §18 Students |
+| `course_membership.json` | 36 | §18 Course Membership |
+| `personality_profiles.json` | 36 | §5, §18 Personality Profile (6 axis scores + `archetype` + `archetype_strength` + `response_flag` + `preferred_role`) |
+| `survey_responses.json` | 864 | Raw 24-item Likert answers behind the axis scores above (36 students x 24 items) — see [`algorithm/scoring.py`](../algorithm/scoring.py) |
+| `archetypes.json` | 4 | §7 — the 4 fixed study types with their mixture component and members' average profile (see below) |
+| `archetype_model.json` | 1 | which type model is in use (theory / fitted) + the atypical-profile threshold |
+| `availability.json` | 36 | §4, §18 Availability |
+| `academic_profiles.json` | 36 | §6 — course confidence + target grade only (per-topic strong/weak/can-help/needs-help tracking was removed, see below) |
+| `pairwise_compatibility.json` | 387 | §9–11 — every within-course pair; `compatibility_score` is weighted personality similarity only, `breakdown.study_style` is informational (not scored) |
+| `groups.json` | 8 | §12, §18 Groups (`group_score` == `avg_pairwise`; no diversity/balance term) — ILP-formed, 4-5 members, see the remainder policy above |
+| `group_membership.json` | 36 | §18 Group Membership (includes a suggested `group_role`) |
+| `match_data.json` | 36 | §18 Match Data — the accepted matches that formed each group (plus top-3 recruiting recommendations for anyone the ILP leaves unplaced — none with the current cohort sizes) |
 | `course_chat_messages.json` | 55 | §15 Course Global Chat |
-| `group_feedback.json` | 30 | §16, §18 Group Feedback — outcome data correlated (with noise) to `group_score`, so a future model can recover whether the heuristic actually predicts satisfaction |
+| `group_feedback.json` | 36 | §16, §18 Group Feedback — outcome data correlated (with noise) to `group_score`, so a future model can recover whether the heuristic actually predicts satisfaction |
 
 `studymatch.db` (built from the above, see ["The actual database"](#the-actual-database))
-adds one junction table, `availability_block` (~126 rows), normalizing the one
+adds one junction table, `availability_block` (~133 rows), normalizing the one
 remaining list-valued field embedded in the JSON (`availability.blocks`).
 
 ## How the pipeline was run (mirrors §20)
 
-1. **Students & courses** — 27 students in CMPSC 465, 7 in MATH 230 (each a
-   multiple of 5, plus 2 — see the remainder policy above). Matching is
+1. **Students & courses** — 27 students in CMPSC 465, 9 in MATH 230 (both
+   split exactly into groups of 4-5 — see the remainder policy above). Matching is
    scoped per course throughout (Stage 1, §2).
 2. **Personality survey** — each student answers the same fixed 24-item, 5-point
    Likert survey a real respondent sees (`ui/survey.html`; item bank in
@@ -199,34 +199,39 @@ remaining list-valued field embedded in the JSON (`availability.blocks`).
    item, then run through the exact same `score_axes()` a real submission uses
    to get the 6 axis scores. Ground-truth subpop labels are **not** written to
    output — real onboarding data wouldn't have them either.
-3. **Archetypes** — `KMeans(k=5)` runs on the standardized 6-dim axis vectors in
-   `personality_profiles.json`. Each cluster centroid is matched against a small
-   rule bank (e.g. high reliability + high intensity + high structure →
-   "Study Captain") to name it — this is the §7 requirement that archetypes come
-   *from* the data, not from an a-priori typology. Raw axis scores (not the
-   archetype) drive all downstream matching.
+3. **Study types**: 4 types fixed by theory (see
+   [`algorithm/clustering.py`](../algorithm/clustering.py)). They're the 2x2 of
+   the self-regulation family (planning, structure, reliability) and the
+   social-mode family (session_mode, collaboration).
+   - Membership is a Gaussian mixture over the two family scores, anchored
+     at the theory centers. With fewer than 200 students the theory model is
+     used unchanged.
+   - `archetype_strength` is the membership probability.
+   - `response_flag` comes from
+     [`algorithm/quality.py`](../algorithm/quality.py).
+   - Types are **display only**: raw axis scores drive all downstream
+     matching. `archetype_model.json` records which model produced the types.
 4. **Availability** — each course has a shared "campus rhythm" of a handful of
    popular day/time windows (evenings after class, Sunday afternoon, etc.); each
    student draws 2–4 of those with small jitter, plus a 25% chance of one
    idiosyncratic block. This keeps schedules realistically clustered (so groups can
    actually form) while still leaving some students genuinely schedule-incompatible.
 5. **Pairwise compatibility** (§9–11) — for every in-course pair:
-   `compatibility_score = similarity`, scaled to 0–100, mean closeness across
-   **all 6 survey axes** — no differences-rewarding term. `study_style`
+   `compatibility_score = similarity`, scaled to 0–100: weighted mean closeness
+   across **all 6 survey axes**, with the motivation axes (reliability,
+   intensity) at 1.5x — no differences-rewarding term. `study_style`
    (schedule overlap, session length, location, online/in-person) is still
    computed and stored in `breakdown`, but carries zero weight — informational
    only. `schedule_compatible` / `weekly_overlap_minutes` are likewise still
    computed and stored per pair, but no longer exclude a pair from group
    formation (time isn't part of matching right now). There's no academic
    component anymore — see "Known simplifications."
-6. **Group formation** (§13) — greedy: seed each new group from the best remaining
-   compatible pair, grow to exactly 5 by adding whichever remaining student
-   maximizes the group's average pairwise score, then run a bounded
-   local-search pass that swaps members between groups whenever it raises
-   both groups' combined `group_score`. Batch generation only ever produces
-   full 5-person groups now — the 2-per-course remainder that's left over on
-   purpose is completed later, live, by the webapp's survey (see "The
-   group-size remainder policy" above).
+6. **Group formation** (§13) — an ILP (OR-Tools CP-SAT, `algorithm/grouping.py`)
+   partitions each course into groups of 4-5, maximizing the sum of within-group
+   pairwise compatibility. It's warm-started from greedy + swap local search,
+   runs on a deterministic work budget (same input → same groups), and
+   reports its optimality bound. The generator prints ILP vs a random
+   baseline with the same group sizes.
 7. **Group score** (§12): `group_score = avg_pairwise` (the group's mean pairwise
    similarity). `worst_pairwise` is still reported alongside it as a diagnostic,
    but no longer weighted in — no diversity/"balance" term either (that rewarded
@@ -251,7 +256,7 @@ remaining list-valued field embedded in the JSON (`availability.blocks`).
   `can_help_with`/`needs_help_with` values were generated as exact duplicates
   of `strong_topics`/`weak_topics` (not sampled independently), so the signal
   wasn't adding anything a future rebuild couldn't reintroduce properly.
-- Only 2 courses / 37 students — enough to exercise every stage of the pipeline, not
+- Only 2 courses / 36 students — enough to exercise every stage of the pipeline, not
   a load-test.
 - Gender is collected but genuinely unused in every scoring function, per §3.
 - The 24 survey items are pulled from validated MSLQ subscales where one

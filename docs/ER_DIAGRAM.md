@@ -42,8 +42,8 @@ https://claude.ai/code/artifact/ea7b2a43-c040-44fe-9049-af37e590cddc
 - **Provenance**: `student.source` (`'synthetic'` or `'real'`) lets fake and
   real people coexist in the same tables while staying distinguishable. See
   [`data/add_student.py`](../data/add_student.py) — it adds a real student's
-  raw data, assigns them an archetype by nearest *existing* centroid (no
-  re-clustering), computes their `pairwise_compatibility` against
+  raw data, assigns them a study type by soft membership against the *stored*
+  type model (no re-fit), computes their `pairwise_compatibility` against
   course-mates, and generates recruiting recommendations — all as pure
   inserts, never touching an existing `study_group`/`group_membership` row or
   another student's data. `build_database.py`'s destructive rebuild refuses
@@ -143,6 +143,12 @@ erDiagram
         float c_structure
         float c_intensity
         float c_collaboration
+        float weight
+        string component "JSON mean+covariance"
+    }
+    MODEL_META {
+        string key PK
+        string value "JSON"
     }
     PERSONALITY_PROFILE {
         string student_id PK "also FK"
@@ -155,6 +161,8 @@ erDiagram
         float collaboration
         string archetype_id FK
         string preferred_role
+        float archetype_strength
+        string response_flag
     }
     SURVEY_RESPONSE {
         string student_id PK "also FK"

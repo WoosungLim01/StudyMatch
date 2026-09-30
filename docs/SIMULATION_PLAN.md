@@ -102,7 +102,7 @@ by `workload_intensity`, and modulated by their `accountability` trait
 per member per week — reproducible, not hand-picked.
 
 **2. Effective group compatibility this week** (deterministic)
-Recompute `similarity_component()` (from `algorithm/compatibility.py`) over
+Recompute `weighted_similarity()` (from `algorithm/compatibility.py`) over
 only the members who actually showed up — a group where half the members
 skip a session effectively "meets" as a smaller, possibly differently-compatible
 subgroup that week.

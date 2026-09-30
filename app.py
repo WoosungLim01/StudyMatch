@@ -5,7 +5,8 @@ data/studymatch.db (no separate app database, no mock data). Ties the three
 other parts of the project together:
   ui/        - login/survey/home/admin pages, served straight off disk
   data/      - studymatch.db, add_student.py's insert logic, auth.py's hashing
-  algorithm/ - compatibility.py and placement.py, the actual matching math
+  algorithm/ - compatibility.py (pair scores), grouping.py (ILP groups),
+               placement.py (live remainder policy), clustering.py (GMM archetypes)
 
 Pages:
   GET  /login   -> combined login/signup: one email+password form. Unknown
@@ -17,8 +18,9 @@ Pages:
                     account. On submit, the respondent is inserted as a REAL
                     student (source='real'), scored against their
                     course-mates (algorithm/compatibility.py, same formula as
-                    everything else), immediately placed into a group per
-                    the remainder policy in algorithm/placement.py (never
+                    everything else), immediately placed into a group by
+                    algorithm/placement.py (ILP for a new group, else the
+                    best-fitting existing group with room; never
                     blocked on match quality), and their account is linked to
                     the new student_id so they never see the survey again.
   GET  /home    -> gated to a logged-in user who HAS completed the survey:
@@ -50,6 +52,7 @@ from fastapi import FastAPI, HTTPException, Request, Response
 from fastapi.responses import FileResponse, HTMLResponse, RedirectResponse
 from pydantic import BaseModel, Field
 
+from algorithm.clustering import motivation_badge
 from algorithm.placement import NOT_IDEAL_THRESHOLD, recompute_or_delete_group, run_placement
 from algorithm.scoring import SURVEY_ITEMS
 from data.add_student import add_one
@@ -384,8 +387,8 @@ def api_admin_students():
     con = db()
     rows = con.execute("""
         SELECT s.student_id, s.name, s.year, s.gender, s.major, s.source,
-               c.course_code, pp.archetype_id, a.name AS archetype_name,
-               gm.group_id, sg.group_name
+               c.course_code, pp.archetype_id, a.name AS archetype_name, pp.archetype_strength,
+               pp.intensity, pp.response_flag, gm.group_id, sg.group_name
         FROM student s
         JOIN course_membership cm ON cm.student_id = s.student_id
         JOIN course c ON c.course_id = cm.course_id
@@ -397,8 +400,15 @@ def api_admin_students():
     """).fetchall()
     con.close()
     cols = ["student_id", "name", "year", "gender", "major", "source", "course_code",
-            "archetype_id", "archetype_name", "group_id", "group_name"]
-    return [dict(zip(cols, r)) for r in rows]
+            "archetype_id", "archetype_name", "archetype_strength", "intensity", "response_flag",
+            "group_id", "group_name"]
+    out = []
+    for r in rows:
+        d = dict(zip(cols, r))
+        intensity = d.pop("intensity")
+        d["motivation_badge"] = motivation_badge(intensity) if intensity is not None else None
+        out.append(d)
+    return out
 
 
 @app.delete("/api/admin/students/{student_id}")
@@ -428,6 +438,7 @@ def api_admin_delete_student(student_id: str):
     cur.execute("DELETE FROM academic_profile WHERE student_id=?", (student_id,))
     cur.execute("DELETE FROM availability_block WHERE student_id=?", (student_id,))
     cur.execute("DELETE FROM availability WHERE student_id=?", (student_id,))
+    cur.execute("DELETE FROM survey_response WHERE student_id=?", (student_id,))
     cur.execute("DELETE FROM personality_profile WHERE student_id=?", (student_id,))
     cur.execute("DELETE FROM course_membership WHERE student_id=?", (student_id,))
     cur.execute("DELETE FROM student WHERE student_id=?", (student_id,))

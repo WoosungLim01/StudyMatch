@@ -8,8 +8,10 @@
     "structure": 3.5,
     "intensity": 4.25,
     "collaboration": 3.5,
+    "archetype_id": "arch_captain",
     "archetype": "Study Captain",
-    "archetype_id": "arch_2",
+    "archetype_strength": 87.7,
+    "response_flag": null,
     "preferred_role": "Problem Solver"
   },
   {
@@ -21,8 +23,10 @@
     "structure": 3.5,
     "intensity": 4.5,
     "collaboration": 3.25,
+    "archetype_id": "arch_captain",
     "archetype": "Study Captain",
-    "archetype_id": "arch_2",
+    "archetype_strength": 75.3,
+    "response_flag": null,
     "preferred_role": "Problem Solver"
   },
   {
@@ -34,9 +38,11 @@
     "structure": 3.5,
     "intensity": 4.75,
     "collaboration": 3.75,
+    "archetype_id": "arch_captain",
     "archetype": "Study Captain",
-    "archetype_id": "arch_2",
-    "preferred_role": "Problem Solver"
+    "archetype_strength": 90.0,
+    "response_flag": null,
+    "preferred_role": "Flexible/No Preference"
   },
   {
     "student_id": "stu_0004",
@@ -47,8 +53,10 @@
     "structure": 1.5,
     "intensity": 4.25,
     "collaboration": 2.75,
-    "archetype": "Independent Strategist",
-    "archetype_id": "arch_1",
+    "archetype_id": "arch_sprinter",
+    "archetype": "Independent Sprinter",
+    "archetype_strength": 69.4,
+    "response_flag": null,
     "preferred_role": "Problem Solver"
   },
   {
@@ -60,8 +68,10 @@
     "structure": 2.0,
     "intensity": 4.0,
     "collaboration": 4.5,
-    "archetype": "Collaborative Guide",
-    "archetype_id": "arch_4",
+    "archetype_id": "arch_explorer",
+    "archetype": "Collaborative Explorer",
+    "archetype_strength": 70.0,
+    "response_flag": null,
     "preferred_role": "Explainer"
   },
   {
@@ -73,8 +83,10 @@
     "structure": 3.75,
     "intensity": 4.25,
     "collaboration": 3.5,
+    "archetype_id": "arch_captain",
     "archetype": "Study Captain",
-    "archetype_id": "arch_2",
+    "archetype_strength": 87.7,
+    "response_flag": null,
     "preferred_role": "Problem Solver"
   },
   {
@@ -86,8 +98,10 @@
     "structure": 4.75,
     "intensity": 3.5,
     "collaboration": 3.25,
-    "archetype": "Focused Architect",
-    "archetype_id": "arch_0",
+    "archetype_id": "arch_captain",
+    "archetype": "Study Captain",
+    "archetype_strength": 60.5,
+    "response_flag": null,
     "preferred_role": "Organizer"
   },
   {
@@ -99,8 +113,10 @@
     "structure": 3.5,
     "intensity": 4.5,
     "collaboration": 3.25,
+    "archetype_id": "arch_captain",
     "archetype": "Study Captain",
-    "archetype_id": "arch_2",
+    "archetype_strength": 82.4,
+    "response_flag": null,
     "preferred_role": "Motivator"
   },
   {
@@ -112,8 +128,10 @@
     "structure": 2.5,
     "intensity": 4.25,
     "collaboration": 4.75,
-    "archetype": "Collaborative Guide",
-    "archetype_id": "arch_4",
+    "archetype_id": "arch_explorer",
+    "archetype": "Collaborative Explorer",
+    "archetype_strength": 57.2,
+    "response_flag": null,
     "preferred_role": "Explainer"
   },
   {
@@ -125,9 +143,11 @@
     "structure": 4.0,
     "intensity": 4.75,
     "collaboration": 3.25,
+    "archetype_id": "arch_captain",
     "archetype": "Study Captain",
-    "archetype_id": "arch_2",
-    "preferred_role": "Flexible/No Preference"
+    "archetype_strength": 69.4,
+    "response_flag": null,
+    "preferred_role": "Problem Solver"
   },
   {
     "student_id": "stu_0011",
@@ -138,8 +158,10 @@
     "structure": 1.75,
     "intensity": 4.5,
     "collaboration": 2.0,
-    "archetype": "Independent Strategist",
-    "archetype_id": "arch_1",
+    "archetype_id": "arch_sprinter",
+    "archetype": "Independent Sprinter",
+    "archetype_strength": 86.9,
+    "response_flag": null,
     "preferred_role": "Problem Solver"
   },
   {
@@ -151,8 +173,10 @@
     "structure": 2.5,
     "intensity": 4.0,
     "collaboration": 4.25,
-    "archetype": "Collaborative Guide",
-    "archetype_id": "arch_4",
+    "archetype_id": "arch_explorer",
+    "archetype": "Collaborative Explorer",
+    "archetype_strength": 70.3,
+    "response_flag": null,
     "preferred_role": "Explainer"
   },
   {
@@ -164,8 +188,10 @@
     "structure": 4.5,
     "intensity": 3.5,
     "collaboration": 2.5,
+    "archetype_id": "arch_architect",
     "archetype": "Focused Architect",
-    "archetype_id": "arch_0",
+    "archetype_strength": 85.0,
+    "response_flag": null,
     "preferred_role": "Motivator"
   },
   {
@@ -177,8 +203,10 @@
     "structure": 4.0,
     "intensity": 4.5,
     "collaboration": 3.5,
+    "archetype_id": "arch_captain",
     "archetype": "Study Captain",
-    "archetype_id": "arch_2",
+    "archetype_strength": 85.1,
+    "response_flag": null,
     "preferred_role": "Motivator"
   },
   {
@@ -190,8 +218,10 @@
     "structure": 4.25,
     "intensity": 4.25,
     "collaboration": 3.25,
+    "archetype_id": "arch_captain",
     "archetype": "Study Captain",
-    "archetype_id": "arch_2",
+    "archetype_strength": 77.5,
+    "response_flag": null,
     "preferred_role": "Problem Solver"
   },
   {
@@ -203,9 +233,11 @@
     "structure": 3.0,
     "intensity": 4.0,
     "collaboration": 3.75,
-    "archetype": "Collaborative Guide",
-    "archetype_id": "arch_4",
-    "preferred_role": "Flexible/No Preference"
+    "archetype_id": "arch_captain",
+    "archetype": "Study Captain",
+    "archetype_strength": 49.4,
+    "response_flag": null,
+    "preferred_role": "Problem Solver"
   },
   {
     "student_id": "stu_0017",
@@ -216,8 +248,10 @@
     "structure": 4.25,
     "intensity": 3.25,
     "collaboration": 2.25,
+    "archetype_id": "arch_architect",
     "archetype": "Focused Architect",
-    "archetype_id": "arch_0",
+    "archetype_strength": 89.6,
+    "response_flag": null,
     "preferred_role": "Organizer"
   },
   {
@@ -229,8 +263,10 @@
     "structure": 4.75,
     "intensity": 4.75,
     "collaboration": 2.75,
+    "archetype_id": "arch_captain",
     "archetype": "Study Captain",
-    "archetype_id": "arch_2",
+    "archetype_strength": 60.6,
+    "response_flag": null,
     "preferred_role": "Motivator"
   },
   {
@@ -242,8 +278,10 @@
     "structure": 2.5,
     "intensity": 3.0,
     "collaboration": 1.25,
-    "archetype": "Balanced Collaborator",
-    "archetype_id": "arch_3",
+    "archetype_id": "arch_sprinter",
+    "archetype": "Independent Sprinter",
+    "archetype_strength": 64.2,
+    "response_flag": null,
     "preferred_role": "Listener"
   },
   {
@@ -255,8 +293,10 @@
     "structure": 1.0,
     "intensity": 4.25,
     "collaboration": 3.75,
-    "archetype": "Independent Strategist",
-    "archetype_id": "arch_1",
+    "archetype_id": "arch_explorer",
+    "archetype": "Collaborative Explorer",
+    "archetype_strength": 85.1,
+    "response_flag": null,
     "preferred_role": "Problem Solver"
   },
   {
@@ -268,8 +308,10 @@
     "structure": 2.75,
     "intensity": 3.0,
     "collaboration": 4.75,
-    "archetype": "Collaborative Guide",
-    "archetype_id": "arch_4",
+    "archetype_id": "arch_captain",
+    "archetype": "Study Captain",
+    "archetype_strength": 49.6,
+    "response_flag": null,
     "preferred_role": "Explainer"
   },
   {
@@ -281,9 +323,11 @@
     "structure": 3.75,
     "intensity": 4.25,
     "collaboration": 2.75,
+    "archetype_id": "arch_captain",
     "archetype": "Study Captain",
-    "archetype_id": "arch_2",
-    "preferred_role": "Flexible/No Preference"
+    "archetype_strength": 58.7,
+    "response_flag": null,
+    "preferred_role": "Problem Solver"
   },
   {
     "student_id": "stu_0023",
@@ -294,9 +338,11 @@
     "structure": 2.75,
     "intensity": 2.25,
     "collaboration": 1.5,
-    "archetype": "Balanced Collaborator",
-    "archetype_id": "arch_3",
-    "preferred_role": "Flexible/No Preference"
+    "archetype_id": "arch_sprinter",
+    "archetype": "Independent Sprinter",
+    "archetype_strength": 70.6,
+    "response_flag": null,
+    "preferred_role": "Listener"
   },
   {
     "student_id": "stu_0024",
@@ -307,8 +353,10 @@
     "structure": 3.75,
     "intensity": 4.25,
     "collaboration": 3.25,
+    "archetype_id": "arch_captain",
     "archetype": "Study Captain",
-    "archetype_id": "arch_2",
+    "archetype_strength": 70.0,
+    "response_flag": null,
     "preferred_role": "Motivator"
   },
   {
@@ -320,8 +368,10 @@
     "structure": 2.5,
     "intensity": 3.25,
     "collaboration": 1.25,
-    "archetype": "Balanced Collaborator",
-    "archetype_id": "arch_3",
+    "archetype_id": "arch_sprinter",
+    "archetype": "Independent Sprinter",
+    "archetype_strength": 63.9,
+    "response_flag": null,
     "preferred_role": "Listener"
   },
   {
@@ -333,8 +383,10 @@
     "structure": 2.0,
     "intensity": 4.0,
     "collaboration": 3.25,
-    "archetype": "Independent Strategist",
-    "archetype_id": "arch_1",
+    "archetype_id": "arch_explorer",
+    "archetype": "Collaborative Explorer",
+    "archetype_strength": 48.6,
+    "response_flag": null,
     "preferred_role": "Problem Solver"
   },
   {
@@ -346,9 +398,11 @@
     "structure": 1.5,
     "intensity": 4.0,
     "collaboration": 2.5,
-    "archetype": "Independent Strategist",
-    "archetype_id": "arch_1",
-    "preferred_role": "Flexible/No Preference"
+    "archetype_id": "arch_sprinter",
+    "archetype": "Independent Sprinter",
+    "archetype_strength": 60.5,
+    "response_flag": null,
+    "preferred_role": "Problem Solver"
   },
   {
     "student_id": "stu_0028",
@@ -359,8 +413,10 @@
     "structure": 4.0,
     "intensity": 4.5,
     "collaboration": 3.0,
+    "archetype_id": "arch_captain",
     "archetype": "Study Captain",
-    "archetype_id": "arch_2",
+    "archetype_strength": 78.5,
+    "response_flag": null,
     "preferred_role": "Problem Solver"
   },
   {
@@ -372,8 +428,10 @@
     "structure": 1.25,
     "intensity": 4.25,
     "collaboration": 2.75,
-    "archetype": "Independent Strategist",
-    "archetype_id": "arch_1",
+    "archetype_id": "arch_explorer",
+    "archetype": "Collaborative Explorer",
+    "archetype_strength": 60.5,
+    "response_flag": null,
     "preferred_role": "Problem Solver"
   },
   {
@@ -385,8 +443,10 @@
     "structure": 4.0,
     "intensity": 4.5,
     "collaboration": 3.5,
+    "archetype_id": "arch_captain",
     "archetype": "Study Captain",
-    "archetype_id": "arch_2",
+    "archetype_strength": 77.5,
+    "response_flag": null,
     "preferred_role": "Problem Solver"
   },
   {
@@ -398,8 +458,10 @@
     "structure": 1.75,
     "intensity": 4.75,
     "collaboration": 2.5,
-    "archetype": "Independent Strategist",
-    "archetype_id": "arch_1",
+    "archetype_id": "arch_sprinter",
+    "archetype": "Independent Sprinter",
+    "archetype_strength": 69.8,
+    "response_flag": null,
     "preferred_role": "Problem Solver"
   },
   {
@@ -411,8 +473,10 @@
     "structure": 3.75,
     "intensity": 4.5,
     "collaboration": 3.75,
+    "archetype_id": "arch_captain",
     "archetype": "Study Captain",
-    "archetype_id": "arch_2",
+    "archetype_strength": 77.5,
+    "response_flag": null,
     "preferred_role": "Problem Solver"
   },
   {
@@ -424,8 +488,10 @@
     "structure": 1.75,
     "intensity": 4.5,
     "collaboration": 2.75,
-    "archetype": "Independent Strategist",
-    "archetype_id": "arch_1",
+    "archetype_id": "arch_sprinter",
+    "archetype": "Independent Sprinter",
+    "archetype_strength": 59.7,
+    "response_flag": null,
     "preferred_role": "Problem Solver"
   },
   {
@@ -437,8 +503,40 @@
     "structure": 2.25,
     "intensity": 3.25,
     "collaboration": 4.75,
-    "archetype": "Collaborative Guide",
-    "archetype_id": "arch_4",
-    "preferred_role": "Explainer"
+    "archetype_id": "arch_explorer",
+    "archetype": "Collaborative Explorer",
+    "archetype_strength": 70.7,
+    "response_flag": "atypical",
+    "preferred_role": "Flexible/No Preference"
+  },
+  {
+    "student_id": "stu_0035",
+    "course_id": "psu-math230-002-fa26",
+    "planning": 3.5,
+    "session_mode": 1.75,
+    "reliability": 3.5,
+    "structure": 2.0,
+    "intensity": 2.75,
+    "collaboration": 1.75,
+    "archetype_id": "arch_architect",
+    "archetype": "Focused Architect",
+    "archetype_strength": 49.4,
+    "response_flag": null,
+    "preferred_role": "Listener"
+  },
+  {
+    "student_id": "stu_0036",
+    "course_id": "psu-math230-002-fa26",
+    "planning": 1.5,
+    "session_mode": 3.5,
+    "reliability": 2.0,
+    "structure": 1.5,
+    "intensity": 3.75,
+    "collaboration": 3.25,
+    "archetype_id": "arch_explorer",
+    "archetype": "Collaborative Explorer",
+    "archetype_strength": 78.5,
+    "response_flag": null,
+    "preferred_role": "Problem Solver"
   }
 ]

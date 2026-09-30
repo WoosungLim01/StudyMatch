@@ -7,7 +7,8 @@ working login/survey/home flow, and an admin view, not just a demo script.
 
 ## Stack
 
-Python 3.10+, FastAPI, SQLite, scikit-learn (KMeans). No frontend framework —
+Python 3.10+, FastAPI, SQLite, scikit-learn (Gaussian mixture), OR-Tools
+(CP-SAT ILP). No frontend framework —
 plain HTML/CSS/JS served straight off disk.
 
 ## Project structure
@@ -16,10 +17,13 @@ plain HTML/CSS/JS served straight off disk.
 StudyMatch/
 ├── app.py                    the server — ties everything below together
 ├── requirements.txt
-├── algorithm/                the matching math (no I/O, no framework)
-│   ├── compatibility.py        personality-similarity scoring
-│   ├── placement.py            the group-size remainder policy
-│   └── scoring.py               the 24-item survey bank + Likert scoring
+├── algorithm/                the matching math (no framework)
+│   ├── scoring.py              the 24-item survey bank + Likert scoring
+│   ├── clustering.py           4 fixed study types, GMM soft membership (display only)
+│   ├── quality.py              survey response-quality flags (admin only)
+│   ├── compatibility.py        weighted 6-axis similarity between two students
+│   ├── grouping.py             ILP group formation (OR-Tools CP-SAT), groups of 4-5
+│   └── placement.py            live signups: ILP for new groups, best-fit for the rest
 ├── data/                      the schema, the synthetic dataset, the live DB
 │   ├── schema.sql
 │   ├── studymatch.db           ← the actual database
@@ -51,7 +55,7 @@ python app.py
 ```
 
 That's it — no separate database setup. `data/studymatch.db` ships in the
-repo, pre-populated with 34 synthetic students across 2 courses (CMPSC 465,
+repo, pre-populated with 36 synthetic students across 2 courses (CMPSC 465,
 MATH 230) and their study groups.
 
 ## How it works
@@ -69,22 +73,53 @@ MATH 230) and their study groups.
    study-behavior axes (`algorithm/scoring.py`); submitting links the account
    to the new student record, so it can never be seen (or re-taken) again
    from that account.
-3. **Scoring** (`algorithm/compatibility.py`) — **placeholder for now**:
-   `compatibility_score` is a random number, not computed from the survey
-   data. The real matching algorithm (built on the 6-axis scores above) is
-   being built separately — see [`docs/Woosung.md`](docs/Woosung.md).
-4. **Placement** (`algorithm/placement.py`) — groups target exactly 5.
-   Whoever's unassigned in a course gets peeled into full 5-groups; a 1-2
-   person remainder joins a random existing under-capacity group; a 3-4
-   person remainder becomes its own new group — **which group forms with
-   whom is currently random too**, same placeholder as the scoring above.
-   Never blocks signup — a below-threshold match still gets signed in, just
-   with a warning instead of a plain success message.
-5. **Home** (`ui/home.html`) — where a returning, already-matched account
+3. **Study type** (`algorithm/clustering.py`), a **display layer only**
+   (types never feed into who groups with whom).
+   - **Four types, fixed by theory**: the survey follows MSLQ's split, so
+     the axes form two style families. Self-regulation is planning +
+     structure + reliability; social mode is session_mode + collaboration.
+     Their 2x2 gives Study Captain (organized, collaborative), Focused
+     Architect (organized, independent), Collaborative Explorer (flexible,
+     collaborative) and Independent Sprinter (flexible, independent).
+   - **Motivation badge**: intensity is shown separately ("High Drive" /
+     "Steady Pace"), since it's a level, not a style.
+   - **Membership**: a Gaussian mixture over the two family scores,
+     anchored at the theory centers, gives a soft membership such as
+     "Study Captain 72%". Students near a boundary get split percentages
+     rather than flipping on a 0.02 difference.
+   - **Fitting**: below 200 students the theory model is used as-is.
+     Beyond that, `python data/refit_archetypes.py` fits the mixture on a
+     sample (≤20k) so the boundaries follow real (usually high-skewed)
+     answers. A fit that would change what a type means is rejected.
+   - **New signups** are classified against the stored model, with no
+     re-fit.
+   - **Response quality** (`algorithm/quality.py`): same answer everywhere,
+     contradictory answers to reverse-worded pairs, or a profile that fits
+     no type is flagged on the admin page. The flag never affects signup
+     or matching.
+4. **Compatibility** (`algorithm/compatibility.py`) — weighted similarity of
+   two students' raw 6-axis vectors, 0-100. The motivation axes
+   (reliability, intensity) weigh 1.5x the four study-style axes. Matching is
+   homogeneous on purpose: StudyMatch is opt-in, for people who want
+   classmates who study like them.
+5. **Group formation** (`algorithm/grouping.py`, `algorithm/placement.py`) —
+   an ILP (OR-Tools CP-SAT) splits a course's unassigned students into
+   groups of **4-5** that maximize total within-group compatibility (only
+   same-course students ever share a group). It's deterministic (same input,
+   same groups) and never worse than a greedy+local-search warm start; it
+   reports its optimality bound. Existing groups are never reshuffled when
+   someone signs up. Whoever can't be split into 4s and 5s (a pool of 1-3,
+   6, 7 or 11) joins the existing group with room where they fit best, or
+   waits on the list until enough people arrive. Signup is never blocked: a
+   below-65 match still gets signed in, just with a warning.
+   On the sample data the ILP gets an average pair compatibility of ~90
+   (CMPSC 465) vs ~75 for random groups of the same sizes;
+   `python data/generate_sample_data.py` prints the comparison.
+6. **Home** (`ui/home.html`) — where a returning, already-matched account
    lands: their group, its members, their course. Shows a plain "you're on
    the waiting list" message instead of a broken group section if they
    haven't been placed yet.
-6. **Persistence** (`data/studymatch.db`) — every submission is permanent.
+7. **Persistence** (`data/studymatch.db`) — every submission is permanent.
    Nothing is deleted automatically; the only way to remove someone (real or
    synthetic student, or a login account) is the admin page's delete button,
    which cascades cleanly across every table that references them. Deleting
@@ -112,6 +147,17 @@ What real research backs (and doesn't yet back) the synthetic data's design: [`d
   high performers). Tracked as a future outcome metric, not constrained away.
 - **Inter-group fairness** — matching only maximizes intra-group compatibility;
   no balancing across groups.
+- **No per-student axis importance yet** — axis weights are fixed
+  (motivation 1.5x); students can't mark an axis as more/less important or
+  as a dealbreaker.
+- **Response-quality flags are partial** — straight-lining and contradictory
+  answers are caught; genuinely random clicking mostly isn't (~3% flagged).
+  "Fits no type well" also fires for extreme-but-honest profiles.
+- **Study-type fit needs real data** — with the 38 current students the theory
+  model is used; the synthetic cohort is too artificially clustered to
+  calibrate a mixture on.
+- **Feedback loop not built** — `group_feedback` is collected but doesn't yet
+  update compatibility for the next matching round.
 - **Deploying with persistent storage**: `python app.py` writes directly to
   `data/studymatch.db` on local disk. Most PaaS platforms (Railway, Render,
   Heroku free tiers, etc.) use an *ephemeral* filesystem — every real

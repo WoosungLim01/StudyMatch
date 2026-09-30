@@ -28,6 +28,7 @@ from pathlib import Path
 HERE = Path(__file__).parent
 sys.path.insert(0, str(HERE.resolve().parent))  # repo root, for `algorithm`
 from algorithm.scoring import AXES
+from data.archetype_store import META_KEY
 
 SAMPLE_DIR = HERE / "sample"
 SCHEMA = HERE / "schema.sql"
@@ -76,6 +77,7 @@ def build(force=False):
     personality = load("personality_profiles")
     survey_responses = load("survey_responses")
     archetypes = load("archetypes")
+    archetype_model = load("archetype_model")
     availability = load("availability")
     academic = load("academic_profiles")
     pairwise = load("pairwise_compatibility")
@@ -118,17 +120,23 @@ def build(force=False):
     for a in archetypes:
         centroid = a["centroid_traits_1to5"]
         cur.execute(
-            f"INSERT INTO archetype VALUES (?,?,?,?,{','.join('?' * len(AXES))})",
-            (a["archetype_id"], a["name"], a["description"], a["member_count"], *[centroid[t] for t in AXES]),
+            f"INSERT INTO archetype VALUES (?,?,?,?,{','.join('?' * len(AXES))},?,?)",
+            (a["archetype_id"], a["name"], a["description"], a["member_count"], *[centroid[t] for t in AXES],
+             a["weight"], json.dumps(a["component"])),
         )
+    cur.execute(
+        "INSERT INTO model_meta VALUES (?,?)",
+        (META_KEY, json.dumps(archetype_model | {"fitted_at": "2026-08-25T13:50:00Z"})),
+    )
 
     # ── personality_profile ─────────────────────────────────────────────
     for p in personality:
         cur.execute(
-            f"INSERT INTO personality_profile VALUES (?,?,{','.join('?' * len(AXES))},?,?)",
+            f"INSERT INTO personality_profile VALUES (?,?,{','.join('?' * len(AXES))},?,?,?,?)",
             (
                 p["student_id"], p["course_id"], *[p[t] for t in AXES],
-                p.get("archetype_id"), p.get("preferred_role"),
+                p.get("archetype_id"), p.get("preferred_role"), p.get("archetype_strength"),
+                p.get("response_flag"),
             ),
         )
 

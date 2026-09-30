@@ -1,15 +1,20 @@
 """
-StudyMatch — shared matching math.
+StudyMatch — shared matching math (step 4b of the pipeline: raw vectors only).
 
-PLACEHOLDER NOTICE: pair_compatibility() (and therefore group formation in
-generate_sample_data.py / algorithm/placement.py) is currently RANDOM, not a
-real matching algorithm — see pair_compatibility()'s docstring. The real
-algorithm is being built separately (Woosung) on top of the 6-axis survey
-data in personality_profile; see docs/Woosung.md for the handoff.
+pair_compatibility() scores two students from their 6 continuous survey-axis
+values (algorithm/scoring.py) as a WEIGHTED SIMILARITY on a 0-100 scale:
+homogeneous matching on purpose — StudyMatch is opt-in, and students use it
+to find people who study the way they do and care as much as they do.
 
-similarity_component() (real personality-axis math) is kept and still used
-for nearest_archetype() — archetype labeling is descriptive/informational,
-not a matching decision, so it isn't randomized.
+The two "motivation" axes (reliability, intensity) are weighted above the
+four "style" axes (see AXIS_WEIGHTS): a gap in how seriously two people take
+the course hurts a study group more than a gap in, say, how structured they
+like sessions to be.
+
+ARCHITECTURE RULE — do not break: archetype labels / soft memberships from
+algorithm/clustering.py are a DISPLAY layer only and must never be passed
+into anything in this module. Collapsing a 6-dim vector into one discrete
+label throws away exactly the information matching needs.
 
 TRAITS is the 6 axes produced by the entry survey (planning, session_mode,
 reliability, structure, intensity, collaboration) — see
@@ -18,7 +23,6 @@ that produces them from raw survey answers. Sourced from there so the axis
 list has one owner.
 """
 
-import random
 from statistics import mean
 
 from algorithm.scoring import AXES as TRAITS
@@ -46,15 +50,28 @@ def weekly_overlap_minutes(avail_list):
     return total
 
 
-def similarity_component(pa, pb):
+# Motivation axes (reliability, intensity) count 1.5x; style axes 1x.
+AXIS_WEIGHTS = {
+    "planning": 1.0,
+    "session_mode": 1.0,
+    "reliability": 1.5,
+    "structure": 1.0,
+    "intensity": 1.5,
+    "collaboration": 1.0,
+}
+
+AXIS_RANGE = 4.0  # axis scores live on 1-5
+
+
+def weighted_similarity(pa, pb, weights=None):
     """
-    Mean closeness across all 6 survey axes (1-5 scale). Used by
-    nearest_archetype() for archetype labeling — NOT used by
-    pair_compatibility() right now, which is a random placeholder (see its
-    docstring).
+    Weighted mean closeness across the 6 survey axes, in [0, 1]:
+    1 = identical on every axis, 0 = opposite ends of every axis.
+    pa/pb are RAW continuous axis-score dicts - never archetype labels.
     """
-    sims = [1 - abs(pa[t] - pb[t]) / 4 for t in TRAITS]
-    return mean(sims)
+    weights = weights or AXIS_WEIGHTS
+    total_w = sum(weights[t] for t in TRAITS)
+    return sum(weights[t] * (1 - abs(pa[t] - pb[t]) / AXIS_RANGE) for t in TRAITS) / total_w
 
 
 def study_style_component(av_a, av_b, overlap_minutes):
@@ -70,19 +87,17 @@ def study_style_component(av_a, av_b, overlap_minutes):
 
 def pair_compatibility(pa, pb, av_a, av_b):
     """
-    PLACEHOLDER — compatibility_score is a random number for now, not
-    computed from personality. Group FORMATION doesn't even use this score to
-    decide anything (generate_sample_data.form_groups() and
-    placement.run_placement() both just shuffle-and-chunk) - it only exists so
-    pairwise_compatibility / group_score / match_data have *something* in
-    them until the real algorithm (Woosung, see docs/Woosung.md) replaces it.
+    compatibility_score = 100 * weighted_similarity() of the two students'
+    6-axis survey vectors. This is the number the ILP group former
+    (algorithm/grouping.py) maximizes within each group.
 
-    study_style is still computed for real from availability data and
-    reported in `breakdown` (kept for whenever real scoring comes back).
+    study_style (availability overlap, session length, location) is still
+    computed and reported in `breakdown`, but deliberately NOT part of the
+    score - schedule isn't a matching input right now.
     """
     overlap = weekly_overlap_minutes([av_a, av_b])
     style = study_style_component(av_a, av_b, overlap)
-    score = round(random.uniform(40, 95), 1)
+    score = round(weighted_similarity(pa, pb) * 100, 1)
     return score, overlap, {
         "similarity": score,
         "study_style": round(style * 100, 1),
@@ -112,22 +127,3 @@ def preferred_role_for(traits):
         "Motivator": traits["reliability"],
     }
     return max(scores, key=scores.get)
-
-
-def nearest_archetype(traits, archetypes):
-    """
-    Assign a NEW student to whichever existing archetype's centroid they're
-    most similar to (same similarity_component() used everywhere else) —
-    deliberately NOT a re-clustering. Re-fitting KMeans over fake+real people
-    together would reshuffle archetype_id for students who didn't change,
-    which is exactly what the incremental workflow is meant to avoid.
-
-    archetypes: list of dicts with "archetype_id" and "centroid_traits_1to5".
-    Returns the archetype_id of the closest centroid.
-    """
-    best_id, best_sim = None, -1.0
-    for a in archetypes:
-        sim = similarity_component(traits, a["centroid_traits_1to5"])
-        if sim > best_sim:
-            best_sim, best_id = sim, a["archetype_id"]
-    return best_id
