@@ -112,6 +112,47 @@
     font-weight:700;font-size:14px;box-shadow:0 12px 24px rgba(27,42,65,.25);display:none;
   }
 
+  /* ── Dashboard: study-type map ── */
+  .viz{
+    /* chart colors: validated all-pairs (scripts/validate_palette.js), cool hues per Design.md;
+       shape is the second identity channel, so color never carries a type alone */
+    --type-captain:#2a78d6; --type-architect:#4a3aa7; --type-explorer:#1baf7a; --type-sprinter:#008300;
+    --grid:#E3E8F0; --axis:#C3CCDA;
+  }
+  .section-sub{margin:-8px 0 18px;color:var(--muted-strong);max-width:760px;}
+  .dash{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:20px;align-items:start;}
+  .dash .panel{padding:20px;}
+  .chart-wrap{position:relative;}
+  .chart-wrap svg{display:block;width:100%;height:auto;touch-action:none;}
+  .chart-wrap svg text{font-family:var(--font-body);}
+  .tip{
+    position:absolute;pointer-events:none;z-index:5;min-width:220px;max-width:280px;
+    background:var(--surface);border:1px solid var(--line-strong);border-radius:16px;
+    box-shadow:0 12px 24px rgba(27,42,65,.16);padding:12px 14px;font-size:13px;line-height:1.45;display:none;
+  }
+  .tip b{color:var(--ink);font-size:14px;}
+  .tip .row{display:flex;justify-content:space-between;gap:12px;}
+  .tip .k{color:var(--muted);}
+  .tip .v{font-variant-numeric:tabular-nums;color:var(--ink);}
+  .legend{display:flex;flex-direction:column;gap:12px;}
+  .legend-item{display:grid;grid-template-columns:20px 1fr auto;gap:2px 10px;align-items:center;}
+  .legend-item svg{width:16px;height:16px;}
+  .legend-item .name{font-weight:700;color:var(--ink);}
+  .legend-item .count{font-variant-numeric:tabular-nums;color:var(--muted-strong);font-weight:700;}
+  .legend-item .desc{grid-column:2 / 4;font-size:13px;color:var(--muted-strong);line-height:1.4;}
+  .model-info{margin-top:18px;padding-top:16px;border-top:1px solid var(--line);font-size:13px;color:var(--muted-strong);}
+  .model-info b{color:var(--ink);}
+  .how{font-size:13px;color:var(--muted-strong);margin:14px 0 0;padding-left:18px;}
+  .how li{margin-bottom:4px;}
+  details.table-view{margin-top:14px;}
+  details.table-view summary{cursor:pointer;font-weight:700;color:var(--navy);font-size:14px;}
+  details.table-view .tbl-wrap{max-height:360px;margin-top:10px;border:1px solid var(--line);border-radius:16px;}
+  details.table-view td, details.table-view th{padding:9px 12px;}
+  details.table-view td:last-child, details.table-view th:last-child{text-align:left;}
+  .num{font-variant-numeric:tabular-nums;}
+
+  .dash > *{min-width:0;}
+  @media (max-width:980px){ .dash{grid-template-columns:minmax(0,1fr);} }
   @media (max-width:820px){ .stats{grid-template-columns:repeat(2,1fr);} }
   @media (max-width:560px){
     main{padding:32px 16px 64px;}
@@ -136,12 +177,60 @@
 
 <main>
   <div class="page-head">
-    <h1>People</h1>
-    <p>Every student (real and synthetic) and every login account.</p>
+    <h1>Admin</h1>
+    <p>Dashboard, every student (real and synthetic), and every login account.</p>
   </div>
 
   <div class="stats" id="stats"></div>
 
+  <!-- ── Dashboard ─────────────────────────────────────────────────────── -->
+  <h2 class="section-title">Dashboard</h2>
+  <p class="section-sub">
+    Study-type map. Each mark is a student, placed by their two family scores.
+    The shaded background shows which type the model assigns at each spot, and
+    it fades where the call is close. Rings are each type's spread (1σ and 2σ).
+    Types are display only: groups are formed from the full 6-axis scores.
+  </p>
+
+  <div class="toolbar">
+    <select id="dash-course" aria-label="Course"><option value="">All courses</option></select>
+    <select id="dash-source" aria-label="Source">
+      <option value="">All sources</option>
+      <option value="real">Real only</option>
+      <option value="synthetic">Synthetic only</option>
+    </select>
+  </div>
+
+  <div class="dash viz">
+    <div class="panel">
+      <div class="chart-wrap" id="chart-wrap">
+        <svg id="type-map" viewBox="0 0 640 540" role="img" aria-labelledby="type-map-title">
+          <title id="type-map-title">Study-type map: students by self-regulation and social-mode score</title>
+        </svg>
+        <div class="tip" id="tip"></div>
+      </div>
+      <details class="table-view">
+        <summary>Show as table</summary>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>Name</th><th>Course</th><th>Self-reg.</th><th>Social</th><th>Type</th><th>Runner-up</th></tr></thead>
+            <tbody id="dash-tbody"></tbody>
+          </table>
+        </div>
+      </details>
+    </div>
+    <div class="panel">
+      <div class="legend" id="legend"></div>
+      <div class="model-info" id="model-info"></div>
+      <ul class="how">
+        <li>Filled mark: clear type (≥ 60%).</li>
+        <li>Hollow mark: near a boundary (&lt; 60%).</li>
+        <li>Labeled marks are real students.</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2 class="section-title">People</h2>
   <div class="toolbar">
     <input type="text" id="search" placeholder="Search name or student_id…">
     <select id="filter-source">
@@ -252,6 +341,7 @@ async function del(id, name){
     ALL = ALL.filter(r => r.student_id !== id);
     renderStats(ALL);
     render();
+    loadTypeMap();
     toast(`Deleted ${name}.`);
   } catch (err) {
     toast('Delete failed: ' + err.message);
@@ -271,6 +361,254 @@ async function load(){
 ['search', 'filter-source', 'filter-course'].forEach(id =>
   document.getElementById(id).addEventListener('input', render));
 load();
+
+// ── Dashboard: study-type map ───────────────────────────────────────────
+// Plots the stored type model (algorithm/clustering.py) in its own 2-D space:
+// x = self-regulation family score, y = social-mode family score (both 1-5).
+const SVGNS = 'http://www.w3.org/2000/svg';
+const TYPE_STYLE = {           // color + shape per type: shape is the non-color identity channel
+  arch_captain:   {color: 'var(--type-captain)',   shape: 'circle'},
+  arch_architect: {color: 'var(--type-architect)', shape: 'square'},
+  arch_explorer:  {color: 'var(--type-explorer)',  shape: 'triangle'},
+  arch_sprinter:  {color: 'var(--type-sprinter)',  shape: 'diamond'},
+};
+const MAP = {W: 640, H: 540, ml: 64, mr: 20, mt: 20, mb: 64};
+MAP.iw = MAP.W - MAP.ml - MAP.mr;
+MAP.ih = MAP.H - MAP.mt - MAP.mb;
+const sx = v => MAP.ml + (v - 1) / 4 * MAP.iw;
+const sy = v => MAP.mt + (5 - v) / 4 * MAP.ih;
+let TYPEMAP = null;
+
+function el(tag, attrs = {}, parent){
+  const n = document.createElementNS(SVGNS, tag);
+  for (const [k, v] of Object.entries(attrs)) n.setAttribute(k, v);
+  if (parent) parent.appendChild(n);
+  return n;
+}
+
+function shapePath(shape, x, y, r){
+  if (shape === 'square')   return `M${x-r*.9},${y-r*.9}h${r*1.8}v${r*1.8}h${-r*1.8}z`;
+  if (shape === 'triangle') return `M${x},${y-r*1.15}L${x+r*1.05},${y+r*.75}L${x-r*1.05},${y+r*.75}z`;
+  if (shape === 'diamond')  return `M${x},${y-r*1.2}L${x+r*1.2},${y}L${x},${y+r*1.2}L${x-r*1.2},${y}z`;
+  return `M${x-r},${y}a${r},${r} 0 1,0 ${r*2},0a${r},${r} 0 1,0 ${-r*2},0`;
+}
+
+// log(weight * N(x; mean, cov)) for a 2-D Gaussian
+function logDensity(t, x, y){
+  const [[a, b], [, c]] = t.covariance;
+  const det = a * c - b * b;
+  const dx = x - t.mean[0], dy = y - t.mean[1];
+  const maha = (c * dx * dx - 2 * b * dx * dy + a * dy * dy) / det;
+  return Math.log(t.weight) - Math.log(2 * Math.PI) - 0.5 * Math.log(det) - 0.5 * maha;
+}
+
+function posteriorAt(x, y){
+  const lp = TYPEMAP.types.map(t => logDensity(t, x, y));
+  const m = Math.max(...lp);
+  const p = lp.map(v => Math.exp(v - m));
+  const s = p.reduce((u, v) => u + v, 0);
+  return p.map(v => v / s);
+}
+
+function ellipse(t, k){
+  // k-sigma contour of a 2-D Gaussian, in screen space
+  const [[a, b], [, c]] = t.covariance;
+  const half = (a + c) / 2, d = Math.sqrt(((a - c) / 2) ** 2 + b * b);
+  const l1 = half + d, l2 = Math.max(half - d, 1e-9);
+  const ang = 0.5 * Math.atan2(2 * b, a - c);   // data-space angle of the major axis
+  return {
+    cx: sx(t.mean[0]), cy: sy(t.mean[1]),
+    rx: k * Math.sqrt(l1) / 4 * MAP.iw, ry: k * Math.sqrt(l2) / 4 * MAP.ih,
+    rot: -ang * 180 / Math.PI,                     // screen y points down
+  };
+}
+
+function dashFiltered(){
+  const course = document.getElementById('dash-course').value;
+  const src = document.getElementById('dash-source').value;
+  return TYPEMAP.students.filter(s => (!course || s.course_code === course) && (!src || s.source === src));
+}
+
+function drawTypeMap(){
+  const svg = document.getElementById('type-map');
+  [...svg.querySelectorAll(':scope > g')].forEach(n => n.remove());
+  const students = dashFiltered();
+
+  // clip everything data-space to the plot area (2σ rings can reach past 1-5)
+  const defs = el('g', {}, svg);
+  const clip = el('clipPath', {id: 'plot-clip'}, el('defs', {}, defs));
+  el('rect', {x: MAP.ml, y: MAP.mt, width: MAP.iw, height: MAP.ih}, clip);
+
+  // 1. decision regions: shaded by winning type, fading as the call gets closer.
+  //    Painted once into a canvas so translucent cells don't leave seams.
+  const N = 160, cv = document.createElement('canvas');
+  cv.width = cv.height = N;
+  const ctx = cv.getContext('2d'), img = ctx.createImageData(N, N);
+  const css = getComputedStyle(document.querySelector('.viz'));
+  const rgb = TYPEMAP.types.map(t => {
+    const hex = css.getPropertyValue(TYPE_STYLE[t.archetype_id].color.slice(4, -1)).trim();
+    return [1, 3, 5].map(i => parseInt(hex.slice(i, i + 2), 16));
+  });
+  for (let j = 0; j < N; j++) for (let i = 0; i < N; i++){
+    const p = posteriorAt(1 + (i + .5) / N * 4, 5 - (j + .5) / N * 4);
+    const k = p.indexOf(Math.max(...p));
+    const certainty = (p[k] - 1 / p.length) / (1 - 1 / p.length);   // 0 at a 4-way tie, 1 when sure
+    const o = (j * N + i) * 4;
+    img.data.set([...rgb[k], Math.round(255 * (0.03 + 0.11 * certainty))], o);
+  }
+  ctx.putImageData(img, 0, 0);
+  el('image', {href: cv.toDataURL(), x: MAP.ml, y: MAP.mt, width: MAP.iw, height: MAP.ih,
+               preserveAspectRatio: 'none', 'image-rendering': 'optimizeQuality'}, el('g', {}, svg));
+
+  // 2. grid, theory boundaries at 3.0, axes
+  const axes = el('g', {}, svg);
+  for (let v = 1; v <= 5; v++){
+    el('line', {x1: sx(v), x2: sx(v), y1: MAP.mt, y2: MAP.mt + MAP.ih, stroke: 'var(--grid)', 'stroke-width': 1}, axes);
+    el('line', {x1: MAP.ml, x2: MAP.ml + MAP.iw, y1: sy(v), y2: sy(v), stroke: 'var(--grid)', 'stroke-width': 1}, axes);
+    el('text', {x: sx(v), y: MAP.mt + MAP.ih + 20, 'text-anchor': 'middle', 'font-size': 12, fill: 'var(--muted)'}, axes).textContent = v;
+    el('text', {x: MAP.ml - 12, y: sy(v) + 4, 'text-anchor': 'end', 'font-size': 12, fill: 'var(--muted)'}, axes).textContent = v;
+  }
+  el('line', {x1: sx(3), x2: sx(3), y1: MAP.mt, y2: MAP.mt + MAP.ih, stroke: 'var(--axis)', 'stroke-width': 1.5}, axes);
+  el('line', {x1: MAP.ml, x2: MAP.ml + MAP.iw, y1: sy(3), y2: sy(3), stroke: 'var(--axis)', 'stroke-width': 1.5}, axes);
+  el('text', {x: MAP.ml + MAP.iw / 2, y: MAP.H - 14, 'text-anchor': 'middle', 'font-size': 13, 'font-weight': 700, fill: 'var(--muted-strong)'}, axes)
+    .textContent = 'Self-regulation  (planning · structure · reliability)  →';
+  el('text', {x: 18, y: MAP.mt + MAP.ih / 2, 'text-anchor': 'middle', 'font-size': 13, 'font-weight': 700, fill: 'var(--muted-strong)',
+              transform: `rotate(-90 18 ${MAP.mt + MAP.ih / 2})`}, axes)
+    .textContent = 'Social mode  (session · collaboration)  →';
+
+  // quadrant names, in the corners (direct labels, text ink - never the series color)
+  const corner = {arch_captain: [5, 5, 'end', 1], arch_architect: [5, 1, 'end', -1],
+                  arch_explorer: [1, 5, 'start', 1], arch_sprinter: [1, 1, 'start', -1]};
+  TYPEMAP.types.forEach(t => {
+    const [cx, cy, anchor, up] = corner[t.archetype_id];
+    el('text', {x: sx(cx) + (anchor === 'end' ? -10 : 10), y: sy(cy) + (up > 0 ? 20 : -12), 'text-anchor': anchor,
+                'font-size': 13, 'font-weight': 700, fill: 'var(--muted-strong)'}, axes).textContent = t.name;
+  });
+
+  // 3. each type's spread: 2σ and 1σ rings + center cross
+  const rings = el('g', {fill: 'none', 'clip-path': 'url(#plot-clip)'}, svg);
+  TYPEMAP.types.forEach(t => {
+    const color = TYPE_STYLE[t.archetype_id].color;
+    [[2, .35], [1, .8]].forEach(([k, op]) => {
+      const e = ellipse(t, k);
+      el('ellipse', {cx: e.cx, cy: e.cy, rx: e.rx, ry: e.ry, transform: `rotate(${e.rot} ${e.cx} ${e.cy})`,
+                     stroke: color, 'stroke-opacity': op, 'stroke-width': 1.5}, rings);
+    });
+    const x = sx(t.mean[0]), y = sy(t.mean[1]);
+    el('path', {d: `M${x-6},${y}h12M${x},${y-6}v12`, stroke: color, 'stroke-width': 2, 'stroke-linecap': 'round'}, rings);
+  });
+
+  // 4. students (real ones last so they sit on top, with a direct name label)
+  const pts = el('g', {}, svg);
+  const ordered = [...students].sort((a, b) => (a.source === 'real') - (b.source === 'real'));
+  ordered.forEach(s => {
+    const st = TYPE_STYLE[s.archetype_id];
+    const x = sx(s.self_regulation), y = sy(s.social);
+    const r = s.source === 'real' ? 6.5 : 5;
+    const clear = s.strength >= 60;
+    el('path', {d: shapePath(st.shape, x, y, r + 2), fill: 'var(--surface)'}, pts);            // 2px surface ring
+    el('path', {d: shapePath(st.shape, x, y, r), fill: clear ? st.color : 'var(--surface)',
+                stroke: st.color, 'stroke-width': clear ? 0 : 2}, pts);
+    if (s.source === 'real'){
+      el('text', {x: x + 11, y: y + 4, 'font-size': 12, 'font-weight': 700, fill: 'var(--ink)',
+                  stroke: 'var(--surface)', 'stroke-width': 3, 'paint-order': 'stroke'}, pts).textContent = s.name;
+    }
+  });
+
+  renderLegend(students);
+  renderDashTable(students);
+}
+
+function typeName(id){ return TYPEMAP.types.find(t => t.archetype_id === id).name; }
+
+function runnerUp(s){
+  const [id, pct] = Object.entries(s.membership).filter(([k]) => k !== s.archetype_id).sort((a, b) => b[1] - a[1])[0];
+  return {name: typeName(id), pct};
+}
+
+function renderLegend(students){
+  const shapeSvg = id => {
+    const st = TYPE_STYLE[id];
+    return `<svg viewBox="0 0 16 16"><path d="${shapePath(st.shape, 8, 8, 5.5)}" fill="${st.color}"/></svg>`;
+  };
+  document.getElementById('legend').innerHTML = TYPEMAP.types.map(t => `
+    <div class="legend-item">
+      ${shapeSvg(t.archetype_id)}
+      <span class="name">${t.name}</span>
+      <span class="count">${students.filter(s => s.archetype_id === t.archetype_id).length}</span>
+      <span class="desc">${t.description}</span>
+    </div>`).join('');
+  const m = TYPEMAP.model;
+  document.getElementById('model-info').innerHTML = m.source === 'fitted'
+    ? `<b>Model: fitted</b> on ${m.n_fit} students${m.fitted_at ? ` · ${m.fitted_at.slice(0, 10)}` : ''}. Boundaries follow the real answer distribution.`
+    : `<b>Model: theory</b>, with type centers at 2 and 4 and boundaries at 3.0. With only ${TYPEMAP.students.length} students (fewer than 200), it isn't fitted to the data yet. Run <span class="mono">data/refit_archetypes.py</span> once there are 200+ students.`
+      + (m.note && m.note.startsWith('fit rejected') ? ` The last refit was rejected: ${m.note.replace(' - using theory model', '')}.` : '');
+}
+
+function renderDashTable(students){
+  document.getElementById('dash-tbody').innerHTML = students.map(s => {
+    const ru = runnerUp(s);
+    return `<tr><td><b>${s.name}</b>${s.source === 'real' ? ' <span class="badge real">real</span>' : ''}</td>
+      <td>${s.course_code}</td><td class="num">${s.self_regulation.toFixed(2)}</td><td class="num">${s.social.toFixed(2)}</td>
+      <td>${typeName(s.archetype_id)} <span class="muted num">${Math.round(s.strength)}%</span></td>
+      <td class="muted">${ru.name} <span class="num">${Math.round(ru.pct)}%</span></td></tr>`;
+  }).join('');
+}
+
+// hover: nearest student(s) within reach of the pointer - a bigger target than the mark,
+// and it lists everyone sitting on the same spot instead of hiding them under the top mark
+function onMapMove(ev){
+  const svg = document.getElementById('type-map');
+  const tip = document.getElementById('tip');
+  const pt = svg.createSVGPoint();
+  pt.x = ev.clientX; pt.y = ev.clientY;
+  const p = pt.matrixTransform(svg.getScreenCTM().inverse());
+  let best = null, bestD = 14;
+  for (const s of dashFiltered()){
+    const d = Math.hypot(sx(s.self_regulation) - p.x, sy(s.social) - p.y);
+    if (d < bestD){ best = s; bestD = d; }
+  }
+  if (!best){ tip.style.display = 'none'; return; }
+  const same = dashFiltered().filter(s => s !== best &&
+    Math.abs(s.self_regulation - best.self_regulation) < 1e-6 && Math.abs(s.social - best.social) < 1e-6);
+  const ru = runnerUp(best);
+  tip.innerHTML = `
+    <b>${best.name}</b>${best.source === 'real' ? ' <span class="badge real">real</span>' : ''}
+    <div class="k">${best.course_code} · ${best.group_name || 'unassigned'}</div>
+    <div class="row" style="margin-top:8px"><span>${typeName(best.archetype_id)}</span><span class="v">${Math.round(best.strength)}%</span></div>
+    <div class="row"><span class="k">${ru.name}</span><span class="v k">${Math.round(ru.pct)}%</span></div>
+    <div class="row" style="margin-top:6px"><span class="k">Self-regulation</span><span class="v">${best.self_regulation.toFixed(2)}</span></div>
+    <div class="row"><span class="k">Social mode</span><span class="v">${best.social.toFixed(2)}</span></div>
+    <div class="row"><span class="k">Motivation</span><span class="v">${best.motivation_badge}</span></div>
+    ${best.response_flag ? `<div style="margin-top:6px"><span class="flag" style="margin:0">${FLAG_LABELS[best.response_flag] || best.response_flag}</span></div>` : ''}
+    ${same.length ? `<div class="k" style="margin-top:6px">+ ${same.length} more here: ${same.map(s => s.name).join(', ')}</div>` : ''}`;
+  const wrap = document.getElementById('chart-wrap').getBoundingClientRect();
+  tip.style.display = 'block';
+  const left = Math.min(ev.clientX - wrap.left + 16, wrap.width - tip.offsetWidth - 4);
+  const top = ev.clientY - wrap.top + 16 + tip.offsetHeight > wrap.height
+    ? ev.clientY - wrap.top - tip.offsetHeight - 12 : ev.clientY - wrap.top + 16;
+  tip.style.left = Math.max(4, left) + 'px';
+  tip.style.top = Math.max(4, top) + 'px';
+}
+
+async function loadTypeMap(){
+  const res = await fetch(API + '/api/admin/type-map');
+  if (!res.ok){
+    document.getElementById('model-info').textContent = 'No study-type model stored yet - run data/refit_archetypes.py.';
+    return;
+  }
+  TYPEMAP = await res.json();
+  const sel = document.getElementById('dash-course');
+  const keep = sel.value;
+  const courses = [...new Set(TYPEMAP.students.map(s => s.course_code))].sort();
+  sel.innerHTML = '<option value="">All courses</option>' + courses.map(c => `<option>${c}</option>`).join('');
+  sel.value = courses.includes(keep) ? keep : '';
+  drawTypeMap();
+}
+['dash-course', 'dash-source'].forEach(id => document.getElementById(id).addEventListener('input', drawTypeMap));
+document.getElementById('type-map').addEventListener('pointermove', onMapMove);
+document.getElementById('type-map').addEventListener('pointerleave', () => { document.getElementById('tip').style.display = 'none'; });
+loadTypeMap();
 
 // ── Login accounts ──────────────────────────────────────────────────────
 let ACCOUNTS = [];

@@ -52,10 +52,11 @@ from fastapi import FastAPI, HTTPException, Request, Response
 from fastapi.responses import FileResponse, HTMLResponse, RedirectResponse
 from pydantic import BaseModel, Field
 
-from algorithm.clustering import motivation_badge
+from algorithm.clustering import classify, family_scores, motivation_badge
 from algorithm.placement import NOT_IDEAL_THRESHOLD, recompute_or_delete_group, run_placement
-from algorithm.scoring import SURVEY_ITEMS
+from algorithm.scoring import AXES, SURVEY_ITEMS
 from data.add_student import add_one
+from data.archetype_store import load_model
 from data.auth import hash_password, verify_password
 
 ROOT = Path(__file__).parent
@@ -153,6 +154,7 @@ def home_page(request: Request):
 @app.get("/admin", response_class=HTMLResponse, include_in_schema=False)
 def admin_page():
     return FileResponse(UI_DIR / "admin.html")
+
 
 
 # ─────────────────────────────────────────────────────────────
@@ -409,6 +411,56 @@ def api_admin_students():
         d["motivation_badge"] = motivation_badge(intensity) if intensity is not None else None
         out.append(d)
     return out
+
+
+@app.get("/api/admin/type-map")
+def api_admin_type_map():
+    """
+    Everything the study-type diagram needs: the stored type model (each
+    type's mixture component over the 2 family scores) and every student's
+    position + soft membership in that same space.
+    """
+    con = db()
+    model = load_model(con.cursor())
+    if model is None:
+        con.close()
+        raise HTTPException(503, "No study-type model stored yet - run data/refit_archetypes.py")
+    counts = dict(con.execute("SELECT archetype_id, COUNT(*) FROM personality_profile GROUP BY archetype_id").fetchall())
+    rows = con.execute(f"""
+        SELECT s.student_id, s.name, s.source, c.course_code, {','.join('pp.' + a for a in AXES)},
+               pp.response_flag, sg.group_name
+        FROM personality_profile pp
+        JOIN student s ON s.student_id = pp.student_id
+        JOIN course c ON c.course_id = pp.course_id
+        LEFT JOIN group_membership gm ON gm.student_id = s.student_id
+        LEFT JOIN study_group sg ON sg.group_id = gm.group_id AND sg.course_id = pp.course_id
+        ORDER BY s.source DESC, s.name
+    """).fetchall()
+    con.close()
+
+    students = []
+    for sid, name, source, course_code, *rest in rows:
+        traits = dict(zip(AXES, rest[:len(AXES)]))
+        flag, group_name = rest[len(AXES):]
+        result = classify(traits, model)
+        x, y = family_scores(traits)
+        students.append({
+            "student_id": sid, "name": name, "source": source, "course_code": course_code,
+            "self_regulation": round(float(x), 3), "social": round(float(y), 3),
+            "archetype_id": result["archetype_id"], "strength": result["strength"],
+            "membership": result["membership"], "motivation_badge": result["badge"],
+            "response_flag": flag, "group_name": group_name,
+        })
+    return {
+        "model": {k: model.get(k) for k in ("source", "n_fit", "note", "fitted_at")},
+        "types": [
+            {"archetype_id": c["archetype_id"], "name": c["name"], "description": c["description"],
+             "weight": c["weight"], "mean": c["mean"], "covariance": c["covariance"],
+             "member_count": counts.get(c["archetype_id"], 0)}
+            for c in model["components"]
+        ],
+        "students": students,
+    }
 
 
 @app.delete("/api/admin/students/{student_id}")
