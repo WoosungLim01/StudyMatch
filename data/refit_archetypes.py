@@ -16,7 +16,6 @@ theory model is used instead; the printout says so.
 Types are display-only, so this never touches groups or compatibility.
 """
 
-import sqlite3
 import sys
 from collections import Counter
 from datetime import datetime, timezone
@@ -29,12 +28,12 @@ sys.path.insert(0, str(HERE.resolve().parent))
 from algorithm.clustering import family_scores, fit_model
 from algorithm.scoring import AXES
 from data.archetype_store import load_model, reclassify_all, save_model
+from data.db import connect, write
 
 
 def main():
     dry = "--dry-run" in sys.argv
-    con = sqlite3.connect(HERE / "studymatch.db")
-    con.execute("PRAGMA foreign_keys = ON")
+    con = connect()
     cur = con.cursor()
 
     X = np.array([family_scores(dict(zip(AXES, r))) for r in
@@ -55,7 +54,7 @@ def main():
 
     save_model(cur, model, datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"))
     reclassify_all(cur, model)
-    con.commit()
+    write(con)
     after = Counter(r[0] for r in cur.execute("SELECT archetype_id FROM personality_profile"))
     flags = Counter(r[0] for r in cur.execute("SELECT response_flag FROM personality_profile") if r[0])
     print("type counts:", dict(after), "(before:", dict(before), ")")

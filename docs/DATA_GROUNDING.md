@@ -16,8 +16,14 @@ group-study-behavior subscale). See
 [`algorithm/scoring.py`](../algorithm/scoring.py) for the item bank and
 `references/` for the redesign doc. The analysis below (14 ad-hoc traits vs.
 Big Five) describes the *prior* instrument and is kept for historical
-context; item 2 (calibrating `SUBPOPULATIONS` against a published
-distribution) and item 3 (academic performance in matching) are still open.
+context.
+
+**Update 2:** item 2 below (calibrating the synthetic population against a
+published distribution instead of hand-picked numbers) has since been done
+too — see [`docs/SYNTHETIC_DATA.md`](SYNTHETIC_DATA.md) for the full
+derivation and the real datasets used (a published MSLQ validation study +
+the IPIP Big Five dataset). Item 3 (academic performance in matching) is
+still open.
 
 ## What's actually grounded in real research
 

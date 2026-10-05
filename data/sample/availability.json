@@ -9,9 +9,9 @@
         "end_time": "23:00"
       },
       {
-        "day": "Wed",
-        "start_time": "19:00",
-        "end_time": "21:00"
+        "day": "Mon",
+        "start_time": "18:00",
+        "end_time": "20:00"
       },
       {
         "day": "Sun",
@@ -67,24 +67,24 @@
     "blocks": [
       {
         "day": "Mon",
-        "start_time": "18:00",
-        "end_time": "20:00"
+        "start_time": "19:00",
+        "end_time": "22:00"
       },
       {
         "day": "Mon",
-        "start_time": "19:00",
+        "start_time": "17:00",
         "end_time": "21:00"
       },
       {
         "day": "Wed",
         "start_time": "18:00",
-        "end_time": "21:00"
+        "end_time": "22:00"
       }
     ],
     "preferred_study_period": "Evening",
-    "preferred_session_duration": 90,
-    "preferred_sessions_per_week": 1,
-    "preferred_location": "Study Lounge",
+    "preferred_session_duration": 120,
+    "preferred_sessions_per_week": 2,
+    "preferred_location": "Dorm/Apartment",
     "online_vs_in_person_preference": "online"
   },
   {
@@ -92,14 +92,14 @@
     "course_id": "psu-cmpsc465-001-fa26",
     "blocks": [
       {
-        "day": "Tue",
+        "day": "Thu",
         "start_time": "14:00",
         "end_time": "16:00"
       },
       {
-        "day": "Mon",
-        "start_time": "19:00",
-        "end_time": "21:00"
+        "day": "Tue",
+        "start_time": "14:00",
+        "end_time": "16:00"
       },
       {
         "day": "Sun",
@@ -128,30 +128,30 @@
     "course_id": "psu-cmpsc465-001-fa26",
     "blocks": [
       {
+        "day": "Sun",
+        "start_time": "16:00",
+        "end_time": "21:00"
+      },
+      {
+        "day": "Thu",
+        "start_time": "14:00",
+        "end_time": "16:00"
+      },
+      {
         "day": "Tue",
         "start_time": "13:00",
         "end_time": "16:00"
       },
       {
         "day": "Wed",
-        "start_time": "17:00",
+        "start_time": "18:00",
         "end_time": "21:00"
-      },
-      {
-        "day": "Mon",
-        "start_time": "19:00",
-        "end_time": "22:00"
-      },
-      {
-        "day": "Thu",
-        "start_time": "15:00",
-        "end_time": "16:00"
       }
     ],
     "preferred_study_period": "Evening",
-    "preferred_session_duration": 120,
-    "preferred_sessions_per_week": 2,
-    "preferred_location": "Online",
+    "preferred_session_duration": 90,
+    "preferred_sessions_per_week": 3,
+    "preferred_location": "Library",
     "online_vs_in_person_preference": "online"
   },
   {
@@ -159,25 +159,30 @@
     "course_id": "psu-cmpsc465-001-fa26",
     "blocks": [
       {
-        "day": "Thu",
-        "start_time": "15:00",
+        "day": "Wed",
+        "start_time": "19:00",
+        "end_time": "22:00"
+      },
+      {
+        "day": "Mon",
+        "start_time": "19:00",
+        "end_time": "22:00"
+      },
+      {
+        "day": "Tue",
+        "start_time": "13:00",
         "end_time": "17:00"
       },
       {
         "day": "Mon",
         "start_time": "19:00",
-        "end_time": "20:00"
-      },
-      {
-        "day": "Tue",
-        "start_time": "14:00",
-        "end_time": "18:00"
+        "end_time": "21:00"
       }
     ],
     "preferred_study_period": "Evening",
     "preferred_session_duration": 60,
-    "preferred_sessions_per_week": 2,
-    "preferred_location": "Dorm/Apartment",
+    "preferred_sessions_per_week": 3,
+    "preferred_location": "Study Lounge",
     "online_vs_in_person_preference": "hybrid"
   },
   {
@@ -185,14 +190,14 @@
     "course_id": "psu-cmpsc465-001-fa26",
     "blocks": [
       {
-        "day": "Wed",
-        "start_time": "17:00",
-        "end_time": "21:00"
+        "day": "Mon",
+        "start_time": "18:00",
+        "end_time": "20:00"
       },
       {
-        "day": "Sun",
-        "start_time": "15:00",
-        "end_time": "21:00"
+        "day": "Tue",
+        "start_time": "14:00",
+        "end_time": "18:00"
       },
       {
         "day": "Mon",
@@ -201,10 +206,10 @@
       }
     ],
     "preferred_study_period": "Evening",
-    "preferred_session_duration": 120,
-    "preferred_sessions_per_week": 1,
-    "preferred_location": "Study Lounge",
-    "online_vs_in_person_preference": "hybrid"
+    "preferred_session_duration": 60,
+    "preferred_sessions_per_week": 3,
+    "preferred_location": "Dorm/Apartment",
+    "online_vs_in_person_preference": "in_person"
   },
   {
     "student_id": "stu_0008",
@@ -212,70 +217,60 @@
     "blocks": [
       {
         "day": "Mon",
-        "start_time": "18:00",
-        "end_time": "20:00"
-      },
-      {
-        "day": "Wed",
         "start_time": "19:00",
         "end_time": "22:00"
       },
       {
-        "day": "Mon",
-        "start_time": "19:00",
-        "end_time": "23:00"
+        "day": "Tue",
+        "start_time": "15:00",
+        "end_time": "17:00"
+      },
+      {
+        "day": "Thu",
+        "start_time": "13:00",
+        "end_time": "17:00"
       },
       {
         "day": "Wed",
-        "start_time": "19:00",
-        "end_time": "21:00"
-      },
-      {
-        "day": "Sat",
         "start_time": "08:00",
         "end_time": "10:00"
       }
     ],
     "preferred_study_period": "Evening",
-    "preferred_session_duration": 60,
-    "preferred_sessions_per_week": 1,
-    "preferred_location": "Library",
-    "online_vs_in_person_preference": "online"
+    "preferred_session_duration": 120,
+    "preferred_sessions_per_week": 3,
+    "preferred_location": "Dorm/Apartment",
+    "online_vs_in_person_preference": "hybrid"
   },
   {
     "student_id": "stu_0009",
     "course_id": "psu-cmpsc465-001-fa26",
     "blocks": [
       {
-        "day": "Wed",
-        "start_time": "18:00",
-        "end_time": "22:00"
-      },
-      {
-        "day": "Thu",
-        "start_time": "14:00",
-        "end_time": "17:00"
-      },
-      {
-        "day": "Wed",
+        "day": "Mon",
         "start_time": "18:00",
         "end_time": "21:00"
       },
       {
-        "day": "Mon",
+        "day": "Sun",
         "start_time": "17:00",
         "end_time": "20:00"
       },
       {
-        "day": "Sat",
-        "start_time": "13:00",
-        "end_time": "15:00"
+        "day": "Wed",
+        "start_time": "19:00",
+        "end_time": "22:00"
+      },
+      {
+        "day": "Tue",
+        "start_time": "14:00",
+        "end_time": "17:00"
       }
     ],
     "preferred_study_period": "Evening",
-    "preferred_session_duration": 60,
+    "preferred_session_duration": 90,
     "preferred_sessions_per_week": 1,
-    "preferred_location": "Dorm/Apartment",
+    "preferred_location": "Library",
     "online_vs_in_person_preference": "in_person"
   },
   {
@@ -283,34 +278,29 @@
     "course_id": "psu-cmpsc465-001-fa26",
     "blocks": [
       {
-        "day": "Wed",
-        "start_time": "20:00",
-        "end_time": "21:00"
-      },
-      {
-        "day": "Sun",
-        "start_time": "15:00",
-        "end_time": "20:00"
-      },
-      {
         "day": "Mon",
-        "start_time": "18:00",
+        "start_time": "17:00",
         "end_time": "21:00"
-      },
-      {
-        "day": "Mon",
-        "start_time": "19:00",
-        "end_time": "22:00"
       },
       {
         "day": "Thu",
-        "start_time": "08:00",
-        "end_time": "10:00"
+        "start_time": "14:00",
+        "end_time": "17:00"
+      },
+      {
+        "day": "Tue",
+        "start_time": "15:00",
+        "end_time": "17:00"
+      },
+      {
+        "day": "Tue",
+        "start_time": "12:00",
+        "end_time": "14:00"
       }
     ],
     "preferred_study_period": "Evening",
-    "preferred_session_duration": 60,
-    "preferred_sessions_per_week": 2,
+    "preferred_session_duration": 90,
+    "preferred_sessions_per_week": 1,
     "preferred_location": "Library",
     "online_vs_in_person_preference": "online"
   },
@@ -319,35 +309,30 @@
     "course_id": "psu-cmpsc465-001-fa26",
     "blocks": [
       {
+        "day": "Thu",
+        "start_time": "13:00",
+        "end_time": "17:00"
+      },
+      {
+        "day": "Wed",
+        "start_time": "19:00",
+        "end_time": "21:00"
+      },
+      {
         "day": "Wed",
         "start_time": "18:00",
-        "end_time": "20:00"
-      },
-      {
-        "day": "Mon",
-        "start_time": "17:00",
-        "end_time": "22:00"
-      },
-      {
-        "day": "Sun",
-        "start_time": "16:00",
         "end_time": "21:00"
       },
       {
         "day": "Mon",
-        "start_time": "20:00",
+        "start_time": "19:00",
         "end_time": "22:00"
-      },
-      {
-        "day": "Fri",
-        "start_time": "09:00",
-        "end_time": "11:00"
       }
     ],
     "preferred_study_period": "Evening",
-    "preferred_session_duration": 60,
-    "preferred_sessions_per_week": 1,
-    "preferred_location": "Online",
+    "preferred_session_duration": 120,
+    "preferred_sessions_per_week": 3,
+    "preferred_location": "Coffee Shop",
     "online_vs_in_person_preference": "in_person"
   },
   {
@@ -355,34 +340,65 @@
     "course_id": "psu-cmpsc465-001-fa26",
     "blocks": [
       {
-        "day": "Tue",
-        "start_time": "14:00",
-        "end_time": "17:00"
+        "day": "Sun",
+        "start_time": "17:00",
+        "end_time": "20:00"
+      },
+      {
+        "day": "Thu",
+        "start_time": "13:00",
+        "end_time": "18:00"
       },
       {
         "day": "Wed",
         "start_time": "18:00",
-        "end_time": "21:00"
-      },
-      {
-        "day": "Wed",
-        "start_time": "19:00",
         "end_time": "22:00"
       },
       {
         "day": "Mon",
         "start_time": "18:00",
-        "end_time": "21:00"
+        "end_time": "20:00"
       }
     ],
     "preferred_study_period": "Evening",
-    "preferred_session_duration": 120,
-    "preferred_sessions_per_week": 1,
+    "preferred_session_duration": 60,
+    "preferred_sessions_per_week": 2,
     "preferred_location": "Library",
     "online_vs_in_person_preference": "hybrid"
   },
   {
     "student_id": "stu_0013",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "blocks": [
+      {
+        "day": "Wed",
+        "start_time": "18:00",
+        "end_time": "21:00"
+      },
+      {
+        "day": "Tue",
+        "start_time": "14:00",
+        "end_time": "16:00"
+      },
+      {
+        "day": "Thu",
+        "start_time": "13:00",
+        "end_time": "17:00"
+      },
+      {
+        "day": "Wed",
+        "start_time": "20:00",
+        "end_time": "23:00"
+      }
+    ],
+    "preferred_study_period": "Evening",
+    "preferred_session_duration": 60,
+    "preferred_sessions_per_week": 3,
+    "preferred_location": "Dorm/Apartment",
+    "online_vs_in_person_preference": "hybrid"
+  },
+  {
+    "student_id": "stu_0014",
     "course_id": "psu-cmpsc465-001-fa26",
     "blocks": [
       {
@@ -408,60 +424,39 @@
     "online_vs_in_person_preference": "in_person"
   },
   {
-    "student_id": "stu_0014",
-    "course_id": "psu-cmpsc465-001-fa26",
-    "blocks": [
-      {
-        "day": "Tue",
-        "start_time": "14:00",
-        "end_time": "16:00"
-      },
-      {
-        "day": "Mon",
-        "start_time": "17:00",
-        "end_time": "21:00"
-      },
-      {
-        "day": "Mon",
-        "start_time": "19:00",
-        "end_time": "22:00"
-      },
-      {
-        "day": "Thu",
-        "start_time": "14:00",
-        "end_time": "17:00"
-      }
-    ],
-    "preferred_study_period": "Evening",
-    "preferred_session_duration": 90,
-    "preferred_sessions_per_week": 3,
-    "preferred_location": "Library",
-    "online_vs_in_person_preference": "in_person"
-  },
-  {
     "student_id": "stu_0015",
     "course_id": "psu-cmpsc465-001-fa26",
     "blocks": [
       {
-        "day": "Tue",
-        "start_time": "14:00",
-        "end_time": "17:00"
+        "day": "Sun",
+        "start_time": "15:00",
+        "end_time": "20:00"
       },
       {
-        "day": "Wed",
-        "start_time": "19:00",
-        "end_time": "21:00"
+        "day": "Thu",
+        "start_time": "14:00",
+        "end_time": "16:00"
+      },
+      {
+        "day": "Tue",
+        "start_time": "13:00",
+        "end_time": "17:00"
       },
       {
         "day": "Mon",
         "start_time": "18:00",
-        "end_time": "22:00"
+        "end_time": "21:00"
+      },
+      {
+        "day": "Thu",
+        "start_time": "16:00",
+        "end_time": "18:00"
       }
     ],
     "preferred_study_period": "Evening",
-    "preferred_session_duration": 90,
-    "preferred_sessions_per_week": 3,
-    "preferred_location": "Dorm/Apartment",
+    "preferred_session_duration": 120,
+    "preferred_sessions_per_week": 2,
+    "preferred_location": "Online",
     "online_vs_in_person_preference": "in_person"
   },
   {
@@ -469,7 +464,38 @@
     "course_id": "psu-cmpsc465-001-fa26",
     "blocks": [
       {
-        "day": "Tue",
+        "day": "Thu",
+        "start_time": "14:00",
+        "end_time": "17:00"
+      },
+      {
+        "day": "Wed",
+        "start_time": "17:00",
+        "end_time": "21:00"
+      },
+      {
+        "day": "Mon",
+        "start_time": "18:00",
+        "end_time": "21:00"
+      }
+    ],
+    "preferred_study_period": "Evening",
+    "preferred_session_duration": 90,
+    "preferred_sessions_per_week": 3,
+    "preferred_location": "Coffee Shop",
+    "online_vs_in_person_preference": "hybrid"
+  },
+  {
+    "student_id": "stu_0017",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "blocks": [
+      {
+        "day": "Wed",
+        "start_time": "19:00",
+        "end_time": "21:00"
+      },
+      {
+        "day": "Thu",
         "start_time": "14:00",
         "end_time": "16:00"
       },
@@ -479,9 +505,9 @@
         "end_time": "21:00"
       },
       {
-        "day": "Mon",
-        "start_time": "18:00",
-        "end_time": "21:00"
+        "day": "Tue",
+        "start_time": "14:00",
+        "end_time": "17:00"
       }
     ],
     "preferred_study_period": "Evening",
@@ -491,7 +517,7 @@
     "online_vs_in_person_preference": "hybrid"
   },
   {
-    "student_id": "stu_0017",
+    "student_id": "stu_0018",
     "course_id": "psu-cmpsc465-001-fa26",
     "blocks": [
       {
@@ -517,32 +543,6 @@
     ],
     "preferred_study_period": "Evening",
     "preferred_session_duration": 120,
-    "preferred_sessions_per_week": 2,
-    "preferred_location": "Coffee Shop",
-    "online_vs_in_person_preference": "hybrid"
-  },
-  {
-    "student_id": "stu_0018",
-    "course_id": "psu-cmpsc465-001-fa26",
-    "blocks": [
-      {
-        "day": "Tue",
-        "start_time": "14:00",
-        "end_time": "18:00"
-      },
-      {
-        "day": "Thu",
-        "start_time": "14:00",
-        "end_time": "16:00"
-      },
-      {
-        "day": "Mon",
-        "start_time": "18:00",
-        "end_time": "22:00"
-      }
-    ],
-    "preferred_study_period": "Evening",
-    "preferred_session_duration": 90,
     "preferred_sessions_per_week": 2,
     "preferred_location": "Coffee Shop",
     "online_vs_in_person_preference": "hybrid"
@@ -552,19 +552,55 @@
     "course_id": "psu-cmpsc465-001-fa26",
     "blocks": [
       {
-        "day": "Tue",
-        "start_time": "14:00",
-        "end_time": "18:00"
+        "day": "Mon",
+        "start_time": "18:00",
+        "end_time": "21:00"
       },
       {
-        "day": "Wed",
+        "day": "Sun",
+        "start_time": "15:00",
+        "end_time": "20:00"
+      },
+      {
+        "day": "Mon",
         "start_time": "20:00",
         "end_time": "22:00"
       },
       {
         "day": "Wed",
-        "start_time": "18:00",
+        "start_time": "17:00",
         "end_time": "21:00"
+      }
+    ],
+    "preferred_study_period": "Evening",
+    "preferred_session_duration": 120,
+    "preferred_sessions_per_week": 2,
+    "preferred_location": "Study Lounge",
+    "online_vs_in_person_preference": "online"
+  },
+  {
+    "student_id": "stu_0020",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "blocks": [
+      {
+        "day": "Thu",
+        "start_time": "14:00",
+        "end_time": "17:00"
+      },
+      {
+        "day": "Sun",
+        "start_time": "16:00",
+        "end_time": "21:00"
+      },
+      {
+        "day": "Mon",
+        "start_time": "19:00",
+        "end_time": "21:00"
+      },
+      {
+        "day": "Tue",
+        "start_time": "14:00",
+        "end_time": "17:00"
       }
     ],
     "preferred_study_period": "Evening",
@@ -572,42 +608,6 @@
     "preferred_sessions_per_week": 3,
     "preferred_location": "Coffee Shop",
     "online_vs_in_person_preference": "hybrid"
-  },
-  {
-    "student_id": "stu_0020",
-    "course_id": "psu-cmpsc465-001-fa26",
-    "blocks": [
-      {
-        "day": "Wed",
-        "start_time": "17:00",
-        "end_time": "21:00"
-      },
-      {
-        "day": "Wed",
-        "start_time": "19:00",
-        "end_time": "23:00"
-      },
-      {
-        "day": "Mon",
-        "start_time": "18:00",
-        "end_time": "22:00"
-      },
-      {
-        "day": "Mon",
-        "start_time": "18:00",
-        "end_time": "22:00"
-      },
-      {
-        "day": "Sat",
-        "start_time": "14:00",
-        "end_time": "16:00"
-      }
-    ],
-    "preferred_study_period": "Evening",
-    "preferred_session_duration": 90,
-    "preferred_sessions_per_week": 2,
-    "preferred_location": "Dorm/Apartment",
-    "online_vs_in_person_preference": "in_person"
   },
   {
     "student_id": "stu_0021",
@@ -615,6 +615,42 @@
     "blocks": [
       {
         "day": "Wed",
+        "start_time": "17:00",
+        "end_time": "21:00"
+      },
+      {
+        "day": "Wed",
+        "start_time": "19:00",
+        "end_time": "23:00"
+      },
+      {
+        "day": "Mon",
+        "start_time": "18:00",
+        "end_time": "22:00"
+      },
+      {
+        "day": "Mon",
+        "start_time": "18:00",
+        "end_time": "22:00"
+      },
+      {
+        "day": "Sat",
+        "start_time": "14:00",
+        "end_time": "16:00"
+      }
+    ],
+    "preferred_study_period": "Evening",
+    "preferred_session_duration": 90,
+    "preferred_sessions_per_week": 2,
+    "preferred_location": "Dorm/Apartment",
+    "online_vs_in_person_preference": "in_person"
+  },
+  {
+    "student_id": "stu_0022",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "blocks": [
+      {
+        "day": "Wed",
         "start_time": "19:00",
         "end_time": "22:00"
       },
@@ -636,12 +672,48 @@
     "online_vs_in_person_preference": "online"
   },
   {
-    "student_id": "stu_0022",
+    "student_id": "stu_0023",
     "course_id": "psu-cmpsc465-001-fa26",
     "blocks": [
       {
-        "day": "Mon",
+        "day": "Wed",
+        "start_time": "19:00",
+        "end_time": "22:00"
+      },
+      {
+        "day": "Sun",
+        "start_time": "15:00",
+        "end_time": "20:00"
+      },
+      {
+        "day": "Thu",
+        "start_time": "14:00",
+        "end_time": "17:00"
+      },
+      {
+        "day": "Wed",
         "start_time": "18:00",
+        "end_time": "21:00"
+      }
+    ],
+    "preferred_study_period": "Evening",
+    "preferred_session_duration": 60,
+    "preferred_sessions_per_week": 1,
+    "preferred_location": "Dorm/Apartment",
+    "online_vs_in_person_preference": "in_person"
+  },
+  {
+    "student_id": "stu_0024",
+    "course_id": "psu-cmpsc465-001-fa26",
+    "blocks": [
+      {
+        "day": "Thu",
+        "start_time": "14:00",
+        "end_time": "18:00"
+      },
+      {
+        "day": "Mon",
+        "start_time": "17:00",
         "end_time": "22:00"
       },
       {
@@ -650,113 +722,46 @@
         "end_time": "21:00"
       },
       {
-        "day": "Tue",
-        "start_time": "14:00",
-        "end_time": "17:00"
-      },
-      {
-        "day": "Thu",
-        "start_time": "15:00",
-        "end_time": "16:00"
-      },
-      {
-        "day": "Tue",
-        "start_time": "14:00",
-        "end_time": "16:00"
-      }
-    ],
-    "preferred_study_period": "Evening",
-    "preferred_session_duration": 120,
-    "preferred_sessions_per_week": 1,
-    "preferred_location": "Dorm/Apartment",
-    "online_vs_in_person_preference": "in_person"
-  },
-  {
-    "student_id": "stu_0023",
-    "course_id": "psu-cmpsc465-001-fa26",
-    "blocks": [
-      {
-        "day": "Thu",
-        "start_time": "14:00",
-        "end_time": "16:00"
-      },
-      {
-        "day": "Sun",
-        "start_time": "16:00",
-        "end_time": "20:00"
-      },
-      {
-        "day": "Mon",
+        "day": "Wed",
         "start_time": "18:00",
-        "end_time": "21:00"
-      },
-      {
-        "day": "Wed",
-        "start_time": "20:00",
-        "end_time": "23:00"
+        "end_time": "22:00"
       }
     ],
     "preferred_study_period": "Evening",
-    "preferred_session_duration": 60,
+    "preferred_session_duration": 90,
     "preferred_sessions_per_week": 2,
-    "preferred_location": "Dorm/Apartment",
-    "online_vs_in_person_preference": "online"
-  },
-  {
-    "student_id": "stu_0024",
-    "course_id": "psu-cmpsc465-001-fa26",
-    "blocks": [
-      {
-        "day": "Sun",
-        "start_time": "16:00",
-        "end_time": "21:00"
-      },
-      {
-        "day": "Wed",
-        "start_time": "20:00",
-        "end_time": "21:00"
-      },
-      {
-        "day": "Mon",
-        "start_time": "17:00",
-        "end_time": "21:00"
-      },
-      {
-        "day": "Thu",
-        "start_time": "10:00",
-        "end_time": "12:00"
-      }
-    ],
-    "preferred_study_period": "Evening",
-    "preferred_session_duration": 60,
-    "preferred_sessions_per_week": 2,
-    "preferred_location": "Coffee Shop",
-    "online_vs_in_person_preference": "online"
+    "preferred_location": "Online",
+    "online_vs_in_person_preference": "hybrid"
   },
   {
     "student_id": "stu_0025",
     "course_id": "psu-cmpsc465-001-fa26",
     "blocks": [
       {
+        "day": "Tue",
+        "start_time": "14:00",
+        "end_time": "17:00"
+      },
+      {
+        "day": "Mon",
+        "start_time": "20:00",
+        "end_time": "23:00"
+      },
+      {
         "day": "Thu",
         "start_time": "13:00",
         "end_time": "17:00"
       },
       {
-        "day": "Mon",
-        "start_time": "18:00",
-        "end_time": "20:00"
-      },
-      {
-        "day": "Sun",
-        "start_time": "15:00",
-        "end_time": "19:00"
+        "day": "Wed",
+        "start_time": "19:00",
+        "end_time": "22:00"
       }
     ],
     "preferred_study_period": "Evening",
     "preferred_session_duration": 60,
-    "preferred_sessions_per_week": 1,
-    "preferred_location": "Online",
+    "preferred_sessions_per_week": 3,
+    "preferred_location": "Coffee Shop",
     "online_vs_in_person_preference": "in_person"
   },
   {
@@ -764,61 +769,61 @@
     "course_id": "psu-cmpsc465-001-fa26",
     "blocks": [
       {
+        "day": "Tue",
+        "start_time": "14:00",
+        "end_time": "17:00"
+      },
+      {
         "day": "Wed",
-        "start_time": "19:00",
+        "start_time": "18:00",
         "end_time": "22:00"
       },
       {
-        "day": "Tue",
+        "day": "Thu",
         "start_time": "13:00",
         "end_time": "18:00"
       },
       {
-        "day": "Wed",
-        "start_time": "17:00",
-        "end_time": "21:00"
+        "day": "Mon",
+        "start_time": "18:00",
+        "end_time": "22:00"
       },
       {
         "day": "Mon",
-        "start_time": "19:00",
-        "end_time": "21:00"
+        "start_time": "20:00",
+        "end_time": "22:00"
       }
     ],
     "preferred_study_period": "Evening",
     "preferred_session_duration": 120,
     "preferred_sessions_per_week": 1,
     "preferred_location": "Library",
-    "online_vs_in_person_preference": "hybrid"
+    "online_vs_in_person_preference": "in_person"
   },
   {
     "student_id": "stu_0027",
     "course_id": "psu-cmpsc465-001-fa26",
     "blocks": [
       {
-        "day": "Mon",
-        "start_time": "18:00",
-        "end_time": "22:00"
-      },
-      {
-        "day": "Tue",
-        "start_time": "14:00",
-        "end_time": "16:00"
-      },
-      {
-        "day": "Mon",
-        "start_time": "18:00",
-        "end_time": "21:00"
+        "day": "Sun",
+        "start_time": "16:00",
+        "end_time": "20:00"
       },
       {
         "day": "Wed",
-        "start_time": "19:00",
+        "start_time": "18:00",
         "end_time": "22:00"
+      },
+      {
+        "day": "Thu",
+        "start_time": "15:00",
+        "end_time": "16:00"
       }
     ],
     "preferred_study_period": "Evening",
-    "preferred_session_duration": 120,
-    "preferred_sessions_per_week": 3,
-    "preferred_location": "Study Lounge",
+    "preferred_session_duration": 60,
+    "preferred_sessions_per_week": 2,
+    "preferred_location": "Library",
     "online_vs_in_person_preference": "hybrid"
   },
   {
@@ -826,9 +831,50 @@
     "course_id": "psu-math230-002-fa26",
     "blocks": [
       {
-        "day": "Tue",
+        "day": "Wed",
+        "start_time": "20:00",
+        "end_time": "21:00"
+      },
+      {
+        "day": "Mon",
         "start_time": "19:00",
-        "end_time": "22:00"
+        "end_time": "23:00"
+      },
+      {
+        "day": "Tue",
+        "start_time": "18:00",
+        "end_time": "21:00"
+      },
+      {
+        "day": "Sat",
+        "start_time": "09:00",
+        "end_time": "15:00"
+      }
+    ],
+    "preferred_study_period": "Evening",
+    "preferred_session_duration": 60,
+    "preferred_sessions_per_week": 2,
+    "preferred_location": "Coffee Shop",
+    "online_vs_in_person_preference": "in_person"
+  },
+  {
+    "student_id": "stu_0029",
+    "course_id": "psu-math230-002-fa26",
+    "blocks": [
+      {
+        "day": "Sat",
+        "start_time": "10:00",
+        "end_time": "15:00"
+      },
+      {
+        "day": "Tue",
+        "start_time": "18:00",
+        "end_time": "21:00"
+      },
+      {
+        "day": "Wed",
+        "start_time": "19:00",
+        "end_time": "21:00"
       },
       {
         "day": "Mon",
@@ -836,37 +882,16 @@
         "end_time": "22:00"
       },
       {
-        "day": "Wed",
-        "start_time": "18:00",
-        "end_time": "22:00"
+        "day": "Thu",
+        "start_time": "17:00",
+        "end_time": "19:00"
       }
     ],
     "preferred_study_period": "Evening",
-    "preferred_session_duration": 60,
-    "preferred_sessions_per_week": 2,
-    "preferred_location": "Dorm/Apartment",
+    "preferred_session_duration": 120,
+    "preferred_sessions_per_week": 3,
+    "preferred_location": "Coffee Shop",
     "online_vs_in_person_preference": "online"
-  },
-  {
-    "student_id": "stu_0029",
-    "course_id": "psu-math230-002-fa26",
-    "blocks": [
-      {
-        "day": "Tue",
-        "start_time": "19:00",
-        "end_time": "21:00"
-      },
-      {
-        "day": "Wed",
-        "start_time": "19:00",
-        "end_time": "22:00"
-      }
-    ],
-    "preferred_study_period": "Evening",
-    "preferred_session_duration": 60,
-    "preferred_sessions_per_week": 1,
-    "preferred_location": "Study Lounge",
-    "online_vs_in_person_preference": "in_person"
   },
   {
     "student_id": "stu_0030",
@@ -874,30 +899,25 @@
     "blocks": [
       {
         "day": "Sat",
-        "start_time": "10:00",
-        "end_time": "14:00"
+        "start_time": "11:00",
+        "end_time": "13:00"
       },
       {
         "day": "Wed",
-        "start_time": "19:00",
-        "end_time": "21:00"
+        "start_time": "20:00",
+        "end_time": "22:00"
       },
       {
         "day": "Tue",
-        "start_time": "18:00",
+        "start_time": "17:00",
         "end_time": "21:00"
-      },
-      {
-        "day": "Mon",
-        "start_time": "18:00",
-        "end_time": "23:00"
       }
     ],
     "preferred_study_period": "Evening",
-    "preferred_session_duration": 120,
-    "preferred_sessions_per_week": 1,
+    "preferred_session_duration": 90,
+    "preferred_sessions_per_week": 3,
     "preferred_location": "Dorm/Apartment",
-    "online_vs_in_person_preference": "in_person"
+    "online_vs_in_person_preference": "hybrid"
   },
   {
     "student_id": "stu_0031",
@@ -906,7 +926,7 @@
       {
         "day": "Wed",
         "start_time": "19:00",
-        "end_time": "21:00"
+        "end_time": "23:00"
       },
       {
         "day": "Tue",
@@ -914,16 +934,16 @@
         "end_time": "21:00"
       },
       {
-        "day": "Mon",
-        "start_time": "19:00",
-        "end_time": "21:00"
+        "day": "Sat",
+        "start_time": "10:00",
+        "end_time": "15:00"
       }
     ],
     "preferred_study_period": "Evening",
     "preferred_session_duration": 120,
     "preferred_sessions_per_week": 2,
-    "preferred_location": "Dorm/Apartment",
-    "online_vs_in_person_preference": "hybrid"
+    "preferred_location": "Study Lounge",
+    "online_vs_in_person_preference": "online"
   },
   {
     "student_id": "stu_0032",
@@ -932,23 +952,33 @@
       {
         "day": "Wed",
         "start_time": "19:00",
-        "end_time": "21:00"
+        "end_time": "23:00"
       },
       {
         "day": "Mon",
-        "start_time": "18:00",
-        "end_time": "22:00"
+        "start_time": "20:00",
+        "end_time": "23:00"
+      },
+      {
+        "day": "Sat",
+        "start_time": "10:00",
+        "end_time": "13:00"
       },
       {
         "day": "Tue",
         "start_time": "18:00",
-        "end_time": "20:00"
+        "end_time": "21:00"
+      },
+      {
+        "day": "Tue",
+        "start_time": "12:00",
+        "end_time": "14:00"
       }
     ],
     "preferred_study_period": "Evening",
-    "preferred_session_duration": 120,
-    "preferred_sessions_per_week": 1,
-    "preferred_location": "Dorm/Apartment",
+    "preferred_session_duration": 60,
+    "preferred_sessions_per_week": 3,
+    "preferred_location": "Online",
     "online_vs_in_person_preference": "in_person"
   },
   {
@@ -956,52 +986,52 @@
     "course_id": "psu-math230-002-fa26",
     "blocks": [
       {
-        "day": "Tue",
+        "day": "Mon",
         "start_time": "19:00",
+        "end_time": "22:00"
+      },
+      {
+        "day": "Tue",
+        "start_time": "18:00",
         "end_time": "21:00"
       },
       {
         "day": "Wed",
         "start_time": "19:00",
-        "end_time": "23:00"
-      },
-      {
-        "day": "Sat",
-        "start_time": "11:00",
-        "end_time": "13:00"
+        "end_time": "21:00"
       }
     ],
     "preferred_study_period": "Evening",
-    "preferred_session_duration": 120,
+    "preferred_session_duration": 90,
     "preferred_sessions_per_week": 1,
-    "preferred_location": "Dorm/Apartment",
-    "online_vs_in_person_preference": "hybrid"
+    "preferred_location": "Library",
+    "online_vs_in_person_preference": "online"
   },
   {
     "student_id": "stu_0034",
     "course_id": "psu-math230-002-fa26",
     "blocks": [
       {
-        "day": "Tue",
-        "start_time": "19:00",
-        "end_time": "21:00"
+        "day": "Mon",
+        "start_time": "20:00",
+        "end_time": "22:00"
       },
       {
-        "day": "Wed",
+        "day": "Tue",
         "start_time": "19:00",
-        "end_time": "21:00"
+        "end_time": "22:00"
       },
       {
         "day": "Sat",
-        "start_time": "12:00",
+        "start_time": "11:00",
         "end_time": "14:00"
       }
     ],
     "preferred_study_period": "Evening",
-    "preferred_session_duration": 120,
+    "preferred_session_duration": 90,
     "preferred_sessions_per_week": 2,
-    "preferred_location": "Library",
-    "online_vs_in_person_preference": "hybrid"
+    "preferred_location": "Coffee Shop",
+    "online_vs_in_person_preference": "online"
   },
   {
     "student_id": "stu_0035",
@@ -1010,19 +1040,19 @@
       {
         "day": "Sat",
         "start_time": "09:00",
-        "end_time": "13:00"
+        "end_time": "14:00"
       },
       {
-        "day": "Mon",
-        "start_time": "19:00",
-        "end_time": "22:00"
+        "day": "Tue",
+        "start_time": "18:00",
+        "end_time": "21:00"
       }
     ],
     "preferred_study_period": "Evening",
-    "preferred_session_duration": 120,
-    "preferred_sessions_per_week": 2,
+    "preferred_session_duration": 60,
+    "preferred_sessions_per_week": 1,
     "preferred_location": "Coffee Shop",
-    "online_vs_in_person_preference": "in_person"
+    "online_vs_in_person_preference": "online"
   },
   {
     "student_id": "stu_0036",
@@ -1030,34 +1060,29 @@
     "blocks": [
       {
         "day": "Mon",
-        "start_time": "18:00",
-        "end_time": "21:00"
-      },
-      {
-        "day": "Wed",
         "start_time": "19:00",
         "end_time": "23:00"
       },
       {
         "day": "Sat",
-        "start_time": "11:00",
-        "end_time": "13:00"
+        "start_time": "10:00",
+        "end_time": "14:00"
       },
       {
         "day": "Tue",
-        "start_time": "18:00",
+        "start_time": "17:00",
         "end_time": "22:00"
       },
       {
-        "day": "Sun",
-        "start_time": "10:00",
-        "end_time": "12:00"
+        "day": "Tue",
+        "start_time": "12:00",
+        "end_time": "14:00"
       }
     ],
     "preferred_study_period": "Evening",
-    "preferred_session_duration": 90,
-    "preferred_sessions_per_week": 3,
-    "preferred_location": "Coffee Shop",
-    "online_vs_in_person_preference": "online"
+    "preferred_session_duration": 60,
+    "preferred_sessions_per_week": 1,
+    "preferred_location": "Library",
+    "online_vs_in_person_preference": "in_person"
   }
 ]

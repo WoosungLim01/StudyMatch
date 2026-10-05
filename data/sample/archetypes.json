@@ -3,14 +3,14 @@
     "archetype_id": "arch_captain",
     "name": "Study Captain",
     "description": "Comes prepared with a plan and keeps sessions on track - happy to lead and explain out loud.",
-    "member_count": 17,
+    "member_count": 26,
     "centroid_traits_1to5": {
-      "planning": 3.88,
-      "session_mode": 3.57,
-      "reliability": 4.31,
-      "structure": 3.79,
-      "intensity": 4.29,
-      "collaboration": 3.41
+      "planning": 3.59,
+      "session_mode": 3.2,
+      "reliability": 3.61,
+      "structure": 3.69,
+      "intensity": 3.78,
+      "collaboration": 4.07
     },
     "weight": 0.25,
     "component": {
@@ -34,14 +34,14 @@
     "archetype_id": "arch_architect",
     "name": "Focused Architect",
     "description": "Organized and dependable, but prefers to work things out quietly and bring answers to the group.",
-    "member_count": 3,
+    "member_count": 7,
     "centroid_traits_1to5": {
-      "planning": 4.17,
+      "planning": 3.5,
       "session_mode": 2.25,
-      "reliability": 4.08,
-      "structure": 3.58,
-      "intensity": 3.17,
-      "collaboration": 2.17
+      "reliability": 3.25,
+      "structure": 3.86,
+      "intensity": 3.54,
+      "collaboration": 3.18
     },
     "weight": 0.25,
     "component": {
@@ -65,14 +65,14 @@
     "archetype_id": "arch_explorer",
     "name": "Collaborative Explorer",
     "description": "Goes with the flow and learns by talking problems through together, not by following a checklist.",
-    "member_count": 8,
+    "member_count": 2,
     "centroid_traits_1to5": {
-      "planning": 2.06,
-      "session_mode": 3.84,
-      "reliability": 2.78,
-      "structure": 1.88,
-      "intensity": 3.97,
-      "collaboration": 3.91
+      "planning": 2.75,
+      "session_mode": 3.38,
+      "reliability": 2.5,
+      "structure": 3.0,
+      "intensity": 4.0,
+      "collaboration": 5.0
     },
     "weight": 0.25,
     "component": {
@@ -96,14 +96,14 @@
     "archetype_id": "arch_sprinter",
     "name": "Independent Sprinter",
     "description": "Works in focused solo bursts, often close to deadlines, rather than on a fixed schedule.",
-    "member_count": 8,
+    "member_count": 1,
     "centroid_traits_1to5": {
-      "planning": 2.12,
-      "session_mode": 2.44,
-      "reliability": 2.53,
-      "structure": 2.0,
-      "intensity": 3.81,
-      "collaboration": 2.06
+      "planning": 2.25,
+      "session_mode": 1.75,
+      "reliability": 2.25,
+      "structure": 3.0,
+      "intensity": 3.5,
+      "collaboration": 4.0
     },
     "weight": 0.25,
     "component": {

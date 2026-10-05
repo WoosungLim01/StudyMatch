@@ -43,7 +43,6 @@ Run (from the repo root):
 """
 
 import secrets
-import sqlite3
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Dict, Optional
@@ -58,19 +57,14 @@ from algorithm.scoring import AXES, SURVEY_ITEMS
 from data.add_student import add_one
 from data.archetype_store import load_model
 from data.auth import hash_password, verify_password
+from data.db import connect as db
+from data.db import write as db_write
 
 ROOT = Path(__file__).parent
-DB_PATH = ROOT / "data" / "studymatch.db"
 UI_DIR = ROOT / "ui"
 SESSION_COOKIE = "session_token"
 
 app = FastAPI(title="StudyMatch")
-
-
-def db():
-    con = sqlite3.connect(DB_PATH)
-    con.execute("PRAGMA foreign_keys = ON")
-    return con
 
 
 def now_iso():
@@ -196,7 +190,7 @@ def api_login(body: LoginIn, response: Response):
 
     token = secrets.token_urlsafe(32)
     cur.execute("INSERT INTO session VALUES (?,?,?)", (token, user_id, now_iso()))
-    con.commit()
+    db_write(con)
     con.close()
 
     response.set_cookie(SESSION_COOKIE, token, httponly=True, samesite="lax", max_age=60 * 60 * 24 * 30)
@@ -209,7 +203,7 @@ def api_logout(request: Request, response: Response):
     if token:
         con = db()
         con.execute("DELETE FROM session WHERE session_token = ?", (token,))
-        con.commit()
+        db_write(con)
         con.close()
     response.delete_cookie(SESSION_COOKIE)
     return {"ok": True}
@@ -297,7 +291,7 @@ def api_survey(body: SurveyIn, request: Request):
         sid = add_one(con, s, recommend=False)
         outcomes = run_placement(con, body.course_id, now_iso())
         con.execute("UPDATE user_account SET student_id = ? WHERE user_id = ?", (sid, user["user_id"]))
-        con.commit()
+        db_write(con)
     except Exception as e:
         con.rollback()
         con.close()
@@ -498,7 +492,7 @@ def api_admin_delete_student(student_id: str):
     for group_id, course_id in affected:
         recompute_or_delete_group(cur, group_id, course_id)
 
-    con.commit()
+    db_write(con)
     con.close()
     return {"deleted": student_id}
 
@@ -526,11 +520,17 @@ def api_admin_delete_account(user_id: str):
         raise HTTPException(404, "Account not found")
     con.execute("DELETE FROM session WHERE user_id=?", (user_id,))
     con.execute("DELETE FROM user_account WHERE user_id=?", (user_id,))
-    con.commit()
+    db_write(con)
     con.close()
     return {"deleted": user_id}
 
 
 if __name__ == "__main__":
+    import os
+
     import uvicorn
-    uvicorn.run("app:app", host="0.0.0.0", port=8010, reload=True)
+
+    port = int(os.environ.get("PORT", 8010))
+    # reload=True only locally - hosting platforms set PORT, so its absence
+    # is also the local-dev signal.
+    uvicorn.run("app:app", host="0.0.0.0", port=port, reload="PORT" not in os.environ)

@@ -18,10 +18,15 @@ Archetypes are never fed into matching - see algorithm/clustering.py.
 Personality survey: each synthetic student gets 24 raw Likert answers (the
 same "Version 3" instrument real respondents see in ui/survey.html — item
 bank + reverse-coding in ../algorithm/scoring.py), not hand-picked axis
-values directly. Raw answers are generated per-item around a hidden
-subpopulation's target axis value, then scored with the exact same
-score_axes() the live /api/survey endpoint uses, so synthetic and real
-students go through an identical pipeline.
+values directly. Each student's 6-axis target is one draw from a population
+distribution calibrated on real data (real means, spreads, and cross-axis
+correlations from a published MSLQ validation study and the IPIP Big Five
+dataset — see REAL_AXIS_STATS below and docs/SYNTHETIC_DATA.md for the full
+derivation and citations), not an invented archetype template. Raw item
+answers are then drawn around that target using each axis's own real
+item-noise SD, and scored with the exact same score_axes() the live
+/api/survey endpoint uses, so synthetic and real students go through an
+identical pipeline.
 
 Academic profiles now carry only course_confidence/target_grade —
 per-topic strong/weak/can_help/needs_help tracking (and the shared `topic`
@@ -126,28 +131,79 @@ MAJORS = ["Computer Science", "Data Science", "Computer Engineering", "Math", "I
 YEARS = ["Freshman", "Sophomore", "Junior", "Senior"]
 GENDERS = ["Woman", "Man", "Non-binary", "Prefer not to say"]
 
-# Hidden generative subpopulations used ONLY to make synthetic survey
-# answers internally consistent (correlated), the way real students'
-# answers would be. These are NOT exposed anywhere in the output — the
-# archetypes in archetypes.json are discovered later by clustering the
-# resulting personality_profiles, exactly as section 7 describes.
+# ---------------------------------------------------------------------------
+# Real-data-calibrated population model (replaces the old hand-picked
+# "5 hidden archetype templates" generator). Every synthetic student's 6-axis
+# target is one draw from a population distribution whose means, spreads, and
+# cross-axis correlations come from real published/measured data, not
+# invented numbers - see docs/SYNTHETIC_DATA.md for the full derivation and
+# the real datasets cited (MSLQ-CL validation study, IPIP Big Five).
 #
-# Target values are per AXIS (not per raw item) - sample_survey_responses()
-# below turns each into 4 noisy raw Likert answers per axis, reverse-encoding
-# the (R) items exactly like a real respondent's answer would be stored.
+# Two independent blocks (no real joint data links them - see
+# docs/SYNTHETIC_DATA.md's "Known limitations"):
 #
-# These axis-value templates are hand-picked, not derived from or validated
-# against any published personality distribution - see ../docs/DATA_GROUNDING.md
-# for what real research does and doesn't back in this design (the survey
-# ITEMS themselves are now MSLQ-grounded; these hidden subpop targets are not).
-SUBPOPULATIONS = {
-    "planner":   dict(zip(TRAITS, [4.5, 2.5, 4.0, 4.5, 3.5, 2.5])),
-    "connector": dict(zip(TRAITS, [3.0, 4.5, 3.0, 2.5, 3.5, 4.5])),
-    "captain":   dict(zip(TRAITS, [4.0, 3.5, 4.5, 4.0, 4.5, 3.5])),
-    "loner":     dict(zip(TRAITS, [3.0, 1.5, 3.0, 2.5, 3.0, 1.5])),
-    "sprinter":  dict(zip(TRAITS, [1.5, 3.0, 2.5, 1.5, 4.0, 3.0])),
+# Block 1 - planning/reliability/structure/intensity, calibrated from
+# Fatima, Pallath & Hong (2025) "Validation of the MSLQ among clinical
+# clerkship students in Malaysia," PLOS ONE (questionary_data/), N=349,
+# Tables 3-4: real subscale means/SDs (rescaled from the paper's 7-point
+# scale to our 5-point one) and real inter-subscale correlations.
+#   planning     <- Metacognitive Self-Regulation
+#   reliability  <- Effort Regulation
+#   structure    <- Organisation
+#   intensity    <- Self-Efficacy + Task Value (combined per their item split)
+#
+# Block 2 - session_mode/collaboration, calibrated from the IPIP Big Five
+# Factor Markers dataset (openpsychometrics.org/_rawdata/BIG5.zip), N=19,718,
+# already on a native 1-5 scale:
+#   session_mode  <- Extraversion (proxy - no MSLQ or other real dataset
+#                     measures "talks problems out loud / wants an agenda")
+#   collaboration <- Agreeableness (proxy - closest real measure of
+#                     group-helping orientation available)
+
+REAL_AXIS_STATS = {
+    # axis: (population mean, population SD, within-axis item-noise SD) - all on the 1-5 scale.
+    "planning":      (3.533, 0.613, 0.683),
+    "reliability":   (3.453, 0.700, 0.875),
+    "structure":     (3.673, 0.653, 0.679),
+    "intensity":     (3.764, 0.527, 0.500),
+    "session_mode":  (3.011, 0.922, 0.982),
+    "collaboration": (3.845, 0.715, 0.885),
 }
-SUBPOP_NOISE_SD = 0.65
+
+# Real correlations within each block (Pearson, from the sources above);
+# cross-block correlation is 0 - no real data links the two sources.
+MSLQ_AXES = ["planning", "reliability", "structure", "intensity"]
+MSLQ_CORR = np.array([
+    # planning  reliability structure  intensity
+    [1.000,     0.482,      0.679,     0.000],
+    [0.482,     1.000,      0.421,     0.000],
+    [0.679,     0.421,      1.000,     0.000],
+    [0.000,     0.000,      0.000,     1.000],
+])
+BIG5_AXES = ["session_mode", "collaboration"]
+BIG5_CORR = np.array([
+    [1.000, 0.334],
+    [0.334, 1.000],
+])
+
+
+def _cov_from_corr(axes, corr):
+    sds = np.array([REAL_AXIS_STATS[a][1] for a in axes])
+    return corr * np.outer(sds, sds)
+
+
+_MSLQ_MEAN = np.array([REAL_AXIS_STATS[a][0] for a in MSLQ_AXES])
+_MSLQ_COV = _cov_from_corr(MSLQ_AXES, MSLQ_CORR)
+_BIG5_MEAN = np.array([REAL_AXIS_STATS[a][0] for a in BIG5_AXES])
+_BIG5_COV = _cov_from_corr(BIG5_AXES, BIG5_CORR)
+
+
+def sample_axis_targets():
+    """One synthetic student's 6 'true' axis targets, drawn from the real-data-
+    calibrated population distribution (not a discrete archetype template)."""
+    mslq_draw = np.clip(np.random.multivariate_normal(_MSLQ_MEAN, _MSLQ_COV), 1.0, 5.0)
+    big5_draw = np.clip(np.random.multivariate_normal(_BIG5_MEAN, _BIG5_COV), 1.0, 5.0)
+    return dict(zip(MSLQ_AXES, mslq_draw)) | dict(zip(BIG5_AXES, big5_draw))
 
 DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
 PERIODS = ["Morning", "Afternoon", "Evening", "Night"]
@@ -165,19 +221,22 @@ def clip_round(v):
     return int(round(min(5, max(1, v))))
 
 
-def sample_survey_responses(subpop):
+def sample_survey_responses():
     """
-    24 raw 1-5 Likert answers for one synthetic student. Each item is drawn
-    centered on its axis's target value for this subpopulation, then stored
-    exactly as a real respondent's answer would be: reverse-worded items get
-    the mirrored value, so score_axes() run on this raw data recovers (up to
-    noise) the intended axis mean — same round-trip a real /api/survey
-    submission goes through.
+    24 raw 1-5 Likert answers for one synthetic student. The 6-axis target is
+    one draw from the real-data-calibrated population model above; each item
+    is then drawn around its axis's target using that axis's own real
+    item-noise SD (not one flat invented constant), and stored exactly as a
+    real respondent's answer would be: reverse-worded items get the mirrored
+    value, so score_axes() run on this raw data recovers (up to noise) the
+    intended axis mean — same round-trip a real /api/survey submission goes
+    through.
     """
-    target = SUBPOPULATIONS[subpop]
+    target = sample_axis_targets()
     responses = {}
     for item in SURVEY_ITEMS:
-        intended = clip_round(np.random.normal(target[item["axis"]], SUBPOP_NOISE_SD))
+        _, _, item_noise_sd = REAL_AXIS_STATS[item["axis"]]
+        intended = clip_round(np.random.normal(target[item["axis"]], item_noise_sd))
         responses[item["id"]] = reverse_code(intended) if item["reverse"] else intended
     return responses
 
@@ -228,7 +287,6 @@ def make_student(course, n_blocks_range, looking_for_group=True):
     sid = f"stu_{sid_counter:04d}"
     sid_counter += 1
     name = f"{random.choice(FIRST_NAMES)} {random.choice(LAST_NAMES)}"
-    subpop = random.choice(list(SUBPOPULATIONS.keys()))
     student = {
         "student_id": sid,
         "name": name,
@@ -244,7 +302,7 @@ def make_student(course, n_blocks_range, looking_for_group=True):
         "student_id": sid, "course_id": course["course_id"],
         "section": course["section"], "semester": course["semester"],
     })
-    responses = sample_survey_responses(subpop)
+    responses = sample_survey_responses()
     personality_rows.append({"student_id": sid, "course_id": course["course_id"], **score_axes(responses)})
     for item_id, val in responses.items():
         survey_response_rows.append({"student_id": sid, "course_id": course["course_id"], "item_number": item_id, "response": val})
