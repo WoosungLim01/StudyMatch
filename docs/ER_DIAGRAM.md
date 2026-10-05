@@ -59,6 +59,15 @@ https://claude.ai/code/artifact/ea7b2a43-c040-44fe-9049-af37e590cddc
   reference; deleting an account leaves their student/survey data alone.
   Passwords are hashed (stdlib PBKDF2, see
   [`data/auth.py`](../data/auth.py)) — never stored plain.
+- **Sessions expire server-side**: `session.expires_at` (30 days from login)
+  is checked on every request in `app.py`'s `current_user()`, not just left
+  to the cookie's client-side `max_age`. Expired rows are swept on each new
+  login rather than needing a separate cleanup job.
+- **`pairwise_compatibility` is keyed per course**: `course_id` is part of the
+  primary key (not just a column), because personality is scoped per course
+  and the same two students could in principle share more than one course —
+  without `course_id` in the key, a second shared course's row would collide
+  with the first instead of coexisting.
 
 ## Diagram
 
@@ -103,6 +112,7 @@ erDiagram
         string session_token PK
         string user_id FK
         string created_at
+        string expires_at
     }
     UNIVERSITY {
         string university_id PK
@@ -196,7 +206,7 @@ erDiagram
     PAIRWISE_COMPATIBILITY {
         string student_a PK "also FK"
         string student_b PK "also FK"
-        string course_id FK
+        string course_id PK "also FK"
         float compatibility_score
         float similarity_score
         int schedule_compatible

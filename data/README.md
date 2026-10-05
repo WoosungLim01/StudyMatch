@@ -192,13 +192,15 @@ remaining list-valued field embedded in the JSON (`availability.blocks`).
    scoped per course throughout (Stage 1, §2).
 2. **Personality survey** — each student answers the same fixed 24-item, 5-point
    Likert survey a real respondent sees (`ui/survey.html`; item bank in
-   [`algorithm/scoring.py`](../algorithm/scoring.py)). Raw per-item answers are
-   sampled from one of 5 *hidden* generative subpopulations (used only to make
-   the synthetic answers internally consistent, e.g. a "planner" type scores
-   high on planning/structure and low on session_mode) with Gaussian noise per
-   item, then run through the exact same `score_axes()` a real submission uses
-   to get the 6 axis scores. Ground-truth subpop labels are **not** written to
-   output — real onboarding data wouldn't have them either.
+   [`algorithm/scoring.py`](../algorithm/scoring.py)). Each student's 6-axis
+   target is one draw from a population distribution calibrated on **real
+   data** — real means, spreads, and cross-axis correlations from a published
+   MSLQ validation study and the IPIP Big Five dataset, not a hand-picked
+   archetype template — then raw per-item answers are drawn around that
+   target with each axis's own real item-noise SD and run through the exact
+   same `score_axes()` a real submission uses to get the 6 axis scores. Full
+   derivation and the real datasets cited:
+   [`docs/SYNTHETIC_DATA.md`](../docs/SYNTHETIC_DATA.md).
 3. **Study types**: 4 types fixed by theory (see
    [`algorithm/clustering.py`](../algorithm/clustering.py)). They're the 2x2 of
    the self-regulation family (planning, structure, reliability) and the
@@ -263,11 +265,14 @@ remaining list-valued field embedded in the JSON (`availability.blocks`).
   exists (metacognitive self-regulation, effort regulation, organization,
   self-efficacy, task value) and kept as original StudyMatch items where MSLQ
   has no equivalent (session_mode, collaboration) — see
-  [`references/`](../references) for the redesign doc. The `SUBPOPULATIONS`
-  hidden-archetype *targets* used to generate synthetic answers are still
-  hand-picked, not derived from a published population distribution — see
-  [`docs/DATA_GROUNDING.md`](../docs/DATA_GROUNDING.md) for what's grounded
-  and what isn't.
+  [`references/`](../references) for the redesign doc. The synthetic
+  population's means/spreads/correlations are now calibrated from real data
+  too (a published MSLQ validation study + the IPIP Big Five dataset) — see
+  [`docs/SYNTHETIC_DATA.md`](../docs/SYNTHETIC_DATA.md) for the full
+  derivation, and [`docs/DATA_GROUNDING.md`](../docs/DATA_GROUNDING.md) for
+  the survey-item grounding and what's still not grounded (`session_mode`/
+  `collaboration` are real-data-calibrated via a proxy dataset, not an exact
+  construct match — see SYNTHETIC_DATA.md's limitations).
 - Because generation draws from one seeded, sequential random stream, removing
   the topic-sampling calls shifted every random draw after them — this
   snapshot's exact group compositions/scores differ from earlier ones checked

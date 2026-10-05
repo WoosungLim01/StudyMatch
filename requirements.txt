@@ -3,9 +3,13 @@
 # app.py (the FastAPI server)      needs fastapi + uvicorn
 # algorithm/grouping.py            needs ortools (CP-SAT ILP for group formation)
 # algorithm/clustering.py          needs numpy + scikit-learn (GaussianMixture)
+# data/db.py                       needs libsql, but ONLY imported when
+#                                   TURSO_DATABASE_URL is set - local dev with
+#                                   no Turso env vars never touches it
 # everything else is stdlib only: json, sqlite3, statistics
 fastapi==0.115.0
 uvicorn[standard]==0.30.6
 numpy==1.26.4
 scikit-learn==1.5.2
 ortools==9.10.4067
+libsql==0.1.11

@@ -17,6 +17,14 @@ This script is DESTRUCTIVE — it deletes studymatch.db and rebuilds it from
 scratch every run. If you've added real students via add_student.py, running
 this without --force will refuse rather than silently wipe them; see
 add_student.py's docstring for the incremental (non-destructive) alternative.
+
+Deliberately NOT Turso-aware (unlike data/db.py, app.py, add_student.py): this
+script's whole job is destroying and recreating a LOCAL seed file, and that
+code path must never be able to reach a remote production database no matter
+what environment variables happen to be set. To seed a Turso database, run
+this locally as usual, then push the resulting studymatch.db with the Turso
+CLI (`turso db shell <db-name> < studymatch.db` or an embedded-replica sync) —
+a separate, deliberate step, not something this script does for you.
 """
 
 import json
