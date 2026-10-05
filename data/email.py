@@ -1,82 +1,66 @@
 """
 StudyMatch — outbound email (verification links, account-deletion notices).
 
-Gmail SMTP via stdlib smtplib, not a third-party email API: no new
-dependency, no new service account to create - reuses the same Google
-account from the OAuth setup. Config via env vars (same pattern as
-TURSO_*/GOOGLE_*, never committed):
+Resend's HTTP API (https://api.resend.com/emails), not SMTP: Render's free
+tier unconditionally firewall-blocks outbound traffic to every SMTP port
+(25, 465, 587) at the network level - confirmed via Render's own changelog
+after Gmail SMTP from data/email.py's first version produced "Network is
+unreachable", then (after forcing IPv4) a silent TimeoutError - both are
+exactly what a dropped-not-refused packet looks like. An HTTP API call on
+port 443 sidesteps this entirely (same reason Turso and Google OAuth above
+already work fine - both are HTTPS too), so this is implemented the same
+way as the Google OAuth token exchange: a plain stdlib urllib POST, no SDK.
 
-    SMTP_EMAIL          the Gmail address to send from
-    SMTP_APP_PASSWORD   a Gmail App Password (NOT the account password -
-                         generate one at myaccount.google.com/apppasswords;
-                         requires 2-Step Verification to be on)
+Config via env vars (same pattern as TURSO_*/GOOGLE_*, never committed):
 
-If either is unset, send_email() logs a warning and returns False instead
-of raising - local dev and not-yet-configured deployments keep working,
-same graceful-degradation pattern as Google sign-in's 501.
+    RESEND_API_KEY     from resend.com (free: 3,000 emails/month, 100/day)
+    RESEND_FROM_EMAIL  optional, defaults to onboarding@resend.dev (Resend's
+                        built-in test sender - works immediately, no domain
+                        verification needed; swap in a verified domain's
+                        address here once you have one, no code change)
+
+If RESEND_API_KEY is unset, send_email() logs a warning and returns False
+instead of raising - local dev and not-yet-configured deployments keep
+working, same graceful-degradation pattern as Google sign-in's 501.
 """
 
+import json
 import os
-import smtplib
-import socket
-from email.mime.text import MIMEText
+import urllib.error
+import urllib.request
 
-SMTP_EMAIL = os.environ.get("SMTP_EMAIL")
-SMTP_APP_PASSWORD = os.environ.get("SMTP_APP_PASSWORD")
-SMTP_HOST = "smtp.gmail.com"
-SMTP_PORT = 587
-
-_real_getaddrinfo = socket.getaddrinfo
-
-
-def _ipv4_only_getaddrinfo(host, port, family=0, type=0, proto=0, flags=0):
-    """Forces IPv4 resolution for the duration of the SMTP connection below.
-
-    Real failure hit on Render: OSError: [Errno 101] Network is unreachable
-    connecting to smtp.gmail.com:587 - the classic symptom of DNS handing
-    back an IPv6 address the host can't actually route to, when IPv4 would
-    work fine (this worked against the same code on my own machine, so it's
-    specifically a Render-network thing, not a bug in the SMTP logic
-    itself). Still resolves and connects by the real hostname (not a bare
-    IP), so Gmail's TLS certificate still validates correctly in
-    starttls() - only the address *family* DNS is allowed to return is
-    constrained, nothing else about the connection changes.
-    """
-    return _real_getaddrinfo(host, port, socket.AF_INET, type, proto, flags)
+RESEND_API_KEY = os.environ.get("RESEND_API_KEY")
+RESEND_FROM_EMAIL = os.environ.get("RESEND_FROM_EMAIL", "onboarding@resend.dev")
+RESEND_URL = "https://api.resend.com/emails"
 
 
 def send_email(to, subject, body):
     """Returns True if sent, False if email isn't configured or sending failed
     (logged, never raised - a notification email bouncing shouldn't break the
     request that triggered it, e.g. an account deletion)."""
-    if not (SMTP_EMAIL and SMTP_APP_PASSWORD):
+    if not RESEND_API_KEY:
         print(f"[email] not configured - would have sent to {to!r}: {subject!r}")
         return False
-    msg = MIMEText(body)
-    msg["Subject"] = subject
-    msg["From"] = SMTP_EMAIL
-    msg["To"] = to
-    socket.getaddrinfo = _ipv4_only_getaddrinfo
+    payload = json.dumps({
+        "from": RESEND_FROM_EMAIL,
+        "to": [to],
+        "subject": subject,
+        "text": body,
+    }).encode()
+    req = urllib.request.Request(
+        RESEND_URL, data=payload, method="POST",
+        headers={"Authorization": f"Bearer {RESEND_API_KEY}", "Content-Type": "application/json"},
+    )
     try:
-        with smtplib.SMTP(SMTP_HOST, SMTP_PORT, timeout=10) as server:
-            server.starttls()
-            server.login(SMTP_EMAIL, SMTP_APP_PASSWORD)
-            server.sendmail(SMTP_EMAIL, [to], msg.as_string())
+        with urllib.request.urlopen(req, timeout=10) as resp:
+            resp.read()
         return True
-    except (smtplib.SMTPException, OSError) as e:
-        # OSError (not just SMTPException) because a blocked/slow/refused/
-        # unreachable outbound connection - a real possibility on a hosting
-        # platform, not just a local network - raises socket.timeout/
-        # ConnectionRefusedError/OSError, none of which are SMTPException
-        # subclasses. Missing this crashed every signup with a 500 the
-        # first time this ran somewhere other than my own machine.
-        print(f"[email] send to {to!r} failed: {type(e).__name__}: {e}")
+    except urllib.error.HTTPError as e:
+        print(f"[email] send to {to!r} failed: HTTP {e.code} {e.read().decode(errors='replace')}")
         return False
-    finally:
-        # Scoped to just this connection attempt - restore immediately so
-        # nothing else in the app (Turso's libsql, Google OAuth's urllib
-        # calls) is affected by forcing IPv4.
-        socket.getaddrinfo = _real_getaddrinfo
+    except urllib.error.URLError as e:
+        print(f"[email] send to {to!r} failed: {e}")
+        return False
 
 
 def send_verification_email(to, verify_url):

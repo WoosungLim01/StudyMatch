@@ -14,10 +14,13 @@ throughout — this one is the "what's done, what's live, what's left" view.
 - **Known issue — auto-deploy not triggering**: Render's "Auto-Deploy" is
   on, but pushes to `main` haven't been triggering new deploys. Workaround:
   **Manual Deploy → Deploy latest commit** in Render's dashboard after each
-  push. Not yet root-caused — likely either the configured branch doesn't
-  match `main`, or the GitHub webhook connection is broken. Check Settings →
-  Build & Deploy → Branch, and the service's Events tab, next time this
-  comes up.
+  push, or hit the service's **Deploy Hook** URL (Settings tab) — a secret
+  link that triggers a deploy with a plain GET/POST, shareable with
+  teammates without giving them full dashboard access (Hobby plan allows
+  only one team member; Deploy Hooks sidestep that). Not yet root-caused —
+  likely either the configured branch doesn't match `main`, or the GitHub
+  webhook connection is broken. Check Settings → Build & Deploy → Branch,
+  and the service's Events tab, next time this comes up.
 - Verified live, end-to-end, against the real Turso database (not just
   local): signup → email verification → survey → ILP group placement →
   home page → account editing → admin student/account deletion. All
@@ -71,10 +74,18 @@ built — the data-layer parts are still accurate).
 - **Deletion notifications**: all three deletion paths (self-service, admin
   delete-student, admin delete-account) email the affected person a
   confirmation.
-- **Outbound email** (verification links + deletion notices): Gmail SMTP
-  via stdlib `smtplib`, config via `SMTP_EMAIL`/`SMTP_APP_PASSWORD`.
-  **Not yet configured** — until it is, these emails are logged
-  server-side instead of actually sent, which means **new password
+- **Outbound email** (verification links + deletion notices): **Resend's
+  HTTP API**, config via `RESEND_API_KEY` (+ optional `RESEND_FROM_EMAIL`,
+  defaults to Resend's test sender `onboarding@resend.dev` — no domain
+  needed). Originally built on Gmail SMTP, which turned out to be a dead
+  end: Render's free tier unconditionally firewall-blocks outbound traffic
+  to every SMTP port (25/465/587) — confirmed via Render's own changelog,
+  not a code bug (hit as "Network is unreachable," then, after forcing
+  IPv4, a silent `TimeoutError` — both are what a dropped-not-refused
+  packet looks like). Resend's API runs over plain HTTPS (443), which
+  isn't blocked, same reason Turso/Google OAuth already work fine.
+  **Not yet configured** — until `RESEND_API_KEY` is set, these emails are
+  logged server-side instead of actually sent, which means **new password
   signups currently cannot complete** (no way to receive the verification
   link). This is the most urgent of the pending setup items.
 - **Sessions**: 30-day expiry enforced server-side (not just the cookie's
@@ -82,11 +93,12 @@ built — the data-layer parts are still accurate).
 
 ## Pending — needs your action
 
-1. **Gmail SMTP** (`SMTP_EMAIL`, `SMTP_APP_PASSWORD` on Render) — urgent,
-   password signup is broken without it. Steps: turn on 2-Step
-   Verification on the sending Google account, generate an App Password at
-   myaccount.google.com/apppasswords (16 chars, no spaces when pasting),
-   set both env vars.
+1. **Resend API key** (`RESEND_API_KEY` on Render) — urgent, password
+   signup is broken without it. Sign up free at resend.com (3,000
+   emails/month, 100/day — plenty for this), grab the API key from the
+   dashboard, set it as the one env var. No domain verification needed to
+   start (uses Resend's built-in test sender); verify a real domain later
+   if you want mail to come from your own address instead.
 2. **Confirm Google OAuth env vars are set on Render**
    (`GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `GOOGLE_REDIRECT_URI` =
    `https://studymatch-8qih.onrender.com/api/auth/google/callback`) — the
