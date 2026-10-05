@@ -434,7 +434,12 @@ document.getElementById('survey-form').addEventListener('submit', async (e) => {
     }
     document.getElementById('survey-form').reset();
     middleInput.disabled = false; // .reset() unchecks the checkbox but doesn't refire its listener
-    btn.textContent = 'Submitted';
+    btn.textContent = 'Taking you to your home page…';
+    // Brief pause so the banner (group name/score, or waiting-list notice)
+    // is actually readable before leaving - this used to just sit here
+    // showing the banner forever with no way off the page except a manual
+    // URL change or reload.
+    setTimeout(() => { window.location.href = '/home'; }, 2500);
   } catch (err) {
     banner('bad', 'Something went wrong', err.message);
     btn.disabled = false;
