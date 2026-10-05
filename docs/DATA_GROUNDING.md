@@ -1,121 +1,28 @@
 # StudyMatch — Data Grounding
 
-What real, existing research backs our synthetic data design, and what's
-still just invented. Written to close the "data selection: create synthetic
-data using existing data (research)" gap honestly — some of our design
-choices turn out to have real support in the literature; others don't yet,
-and this says so plainly rather than overclaiming.
+What published research supports in our data design, and what is still a judgment call. This document says where the gaps are rather than hiding them.
 
-**Update:** the survey redesign below ("What would actually close this gap,"
-item 1) has since been done — the entry survey is now a fixed 24-item,
-5-point Likert instrument pulled from validated MSLQ subscales where one
-exists (metacognitive self-regulation, effort regulation, organization,
-self-efficacy, task value), keeping original StudyMatch items only where
-MSLQ has no equivalent (`session_mode`, `collaboration` — MSLQ has no
-group-study-behavior subscale). See
-[`algorithm/scoring.py`](../algorithm/scoring.py) for the item bank and
-`references/` for the redesign doc. The analysis below (14 ad-hoc traits vs.
-Big Five) describes the *prior* instrument and is kept for historical
-context.
+The earlier version of this document analyzed a 14-trait instrument that has since been replaced. That version is in git history.
 
-**Update 2:** item 2 below (calibrating the synthetic population against a
-published distribution instead of hand-picked numbers) has since been done
-too — see [`docs/SYNTHETIC_DATA.md`](SYNTHETIC_DATA.md) for the full
-derivation and the real datasets used (a published MSLQ validation study +
-the IPIP Big Five dataset). Item 3 (academic performance in matching) is
-still open.
+## The survey and its axes
 
-## What's actually grounded in real research
+The 24-item survey covers six axes, four items each. Four axes (`planning`, `reliability`, `structure`, `intensity`) use items drawn from validated MSLQ subscales. Two axes (`session_mode`, `collaboration`) are StudyMatch-specific, because MSLQ has no group-study subscale. The item bank and reverse-coding are in [`algorithm/scoring.py`](../algorithm/scoring.py). How the synthetic population was calibrated, and its limitations, are in [`SYNTHETIC_DATA.md`](SYNTHETIC_DATA.md).
 
-**Similarity, not complementarity, is the right call for compatibility.**
-A longitudinal study of a European fraternity found that similarity in
-neuroticism and conscientiousness predicted *group formation*, and that
-personality similarity predicted *group success* — even after controlling
-for each member's own personality. That's real evidence behind the decision
-already made in [`algorithm/compatibility.py`](../algorithm/compatibility.py):
-compatibility is personality similarity only, with no "opposites attract"
-complementarity term. See ["Homophily in Personality Enhances Group Success
-Among Real-Life Friends"](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7212830/).
+## What research supports
 
-**Conscientiousness is the strongest personality predictor of academic
-success in college students**, across multiple studies (e.g. [Frontiers in
-Psychology, 2025](https://www.frontiersin.org/journals/psychology/articles/10.3389/fpsyg.2025.1490427/full),
-[PMC12240771](https://pmc.ncbi.nlm.nih.gov/articles/PMC12240771/)). Several of
-our 14 traits (`structure`, `accountability`, `preparation`) sit in
-conscientiousness's territory — see the mapping table below — but nothing
-in the current formula weights them any higher than the rest. That's a real,
-specific gap, not just a vague "could be more realistic" — see "What's
-missing" below.
+- **Similarity over complementarity.** A longitudinal study of a European fraternity found that similarity in neuroticism and conscientiousness predicted group formation, and that personality similarity predicted group success even after controlling for each member's own personality. This supports the similarity-only compatibility score. See [Homophily in Personality Enhances Group Success Among Real-Life Friends](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7212830/).
+- **Conscientiousness predicts academic success.** Several studies find it to be the strongest personality predictor of college academic performance ([Frontiers in Psychology, 2025](https://www.frontiersin.org/journals/psychology/articles/10.3389/fpsyg.2025.1490427/full), [PMC12240771](https://pmc.ncbi.nlm.nih.gov/articles/PMC12240771/)). The `reliability` and `structure` axes are conscientiousness-adjacent. The research supports the importance of these traits, but not the specific 1.5× weight on `reliability` and `intensity` in compatibility, which is a design judgment.
+- **Algorithmic study-group formation has precedent.** ["Inclusive Study Group Formation At Scale"](https://arxiv.org/pdf/2202.07439) matched students in a 1000+ student engineering and CS course and found that students placed in high-comfort, high-quality groups had better learning outcomes. Its focus was demographic equity rather than personality, but it supports the hypothesis that algorithmic grouping beats chance.
 
-**Algorithmic study-group formation at scale has real precedent.**
-["Inclusive Study Group Formation At Scale"](https://arxiv.org/pdf/2202.07439)
-ran a matching program across a 1000+ student engineering/CS course and found
-that students placed in high-comfort, high-quality groups had measurably
-improved learning outcomes. Different focus than StudyMatch (their axis was
-demographic/equity, not personality), but it's a real, citable precedent for
-"algorithmically formed study groups produce better outcomes than chance" —
-exactly the hypothesis [`docs/SIMULATION_PLAN.md`](SIMULATION_PLAN.md) exists
-to eventually test against our own matching algorithm.
+## What is not grounded
 
-## Where our design diverges from the literature (honestly, not glossed over)
+- **`session_mode` and `collaboration`** are calibrated on Big Five Extraversion and Agreeableness as proxies. No available dataset measures "talks problems through out loud" or "learns by explaining" directly.
+- **Population mismatch.** The MSLQ calibration data comes from Malaysian medical clerkship students, and the Big Five data from self-selected online test-takers. Neither is Penn State undergraduates. The population's shape (spread, skew, how traits co-vary) is realistic, but its content may not represent StudyMatch's users.
+- **The 7-point to 5-point rescale** of the MSLQ means assumes the scales map linearly. That's a standard approach, not a measured equivalence.
+- **Academic performance is not used.** Matching research suggests grades and study frequency matter ([What kind of matching groups makes students benefit more?](https://www.sciencedirect.com/science/article/pii/S0001691825001386)). StudyMatch doesn't collect grades. `academic_profile` holds only course confidence and target grade. This is a deliberate simplification.
+- **No outcome data yet.** Nothing validates that similarity-based groups produce better outcomes for StudyMatch students. The planned simulation ([`SIMULATION_PLAN.md`](SIMULATION_PLAN.md)) and real feedback would close this gap.
+- **Openness is not measured.** Curiosity, creativity, and intellectual engagement have no axis. That's probably fine for study-group fit, but it's a real gap.
 
-- **Our 14-trait taxonomy isn't Big Five.** Big Five (OCEAN — openness,
-  conscientiousness, extraversion, agreeableness, neuroticism) is the
-  actual validated framework personality research uses. Our traits
-  (`seriousness`, `structure`, `talkativeness`, etc.) were invented for this
-  project, loosely inspired by what "matters for a study group" rather than
-  derived from or validated against Big Five. See the rough mapping below —
-  it's informal, not a validated psychometric crosswalk.
-- **The archetype trait templates are hand-picked, not calibrated.** The
-  `SUBPOPULATIONS` dict in
-  [`generate_sample_data.py`](../data/generate_sample_data.py) (the "planner,"
-  "connector," "captain," "loner," "sprinter" trait-value templates every
-  synthetic student is sampled around) are numbers I chose because they
-  seemed plausible — they aren't derived from any published personality
-  distribution.
-- **We don't use academic performance at all**, despite real matching-factor
-  research suggesting grades/academic performance and study frequency are
-  meaningful signals (see ["What kind of matching groups makes students
-  benefit more?"](https://www.sciencedirect.com/science/article/pii/S0001691825001386)).
-  `academic_profile` only carries `course_confidence`/`target_grade` — no
-  actual grade data is collected or used anywhere in matching.
-- **Openness has essentially no representative in our trait set.** Looking at
-  the mapping below, conscientiousness, extraversion, and agreeableness all
-  have multiple traits mapping onto them; openness (curiosity, creativity,
-  intellectual engagement) has none. Not something a study-group-fit survey
-  obviously needs, but worth naming as a real gap rather than a silent one.
+## Open decision
 
-## Rough Big Five mapping (informal — not a validated instrument)
-
-| Our trait | Closest Big Five facet |
-|---|---|
-| `seriousness`, `preparation` | Conscientiousness — dutifulness / achievement-striving |
-| `structure`, `accountability` | Conscientiousness — order / self-discipline |
-| `study_pace` | Conscientiousness — deliberation (inverse: fast pace ≈ low deliberation) |
-| `social_preference`, `talkativeness` | Extraversion — gregariousness |
-| `assertiveness`, `leadership` | Extraversion — assertiveness |
-| `communication_frequency` | Extraversion — warmth (partial) |
-| `competitiveness` | Low Agreeableness / Extraversion — achievement-striving (contested; could map either way) |
-| `helpfulness` | Agreeableness — altruism |
-| `collaboration` | Agreeableness — cooperation |
-| `patience` | Agreeableness — compliance / low Neuroticism |
-| *(none)* | Openness — no current trait maps here |
-
-## What would actually close this gap (not done here — scope call for later)
-
-1. Either (a) relabel/consolidate the 14 traits into an explicit Big Five
-   structure, or (b) keep the current 14 but add a documented, defensible
-   weighting scheme that gives conscientiousness-adjacent traits more
-   influence in `weighted_similarity()`, citing the academic-performance
-   research above as the justification.
-2. Calibrate `SUBPOPULATIONS`' trait-template numbers against a real
-   published personality distribution instead of hand-picked values — even
-   an approximate one (e.g., published Big Five college-population norms,
-   translated onto our 1-5 scale) would be a real improvement over "seemed
-   plausible."
-3. Decide, with citation, whether academic performance/grades should
-   actually factor into matching — currently a deliberate simplification,
-   not an oversight, but the research above is a real reason to revisit it.
-
-None of the three above are implemented — this document exists to make that
-an explicit, citeable decision rather than a silent gap.
+Whether academic performance should factor into matching. The research above is the reason to revisit it. Record the decision and its citation before the report is final.

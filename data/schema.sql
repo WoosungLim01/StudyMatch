@@ -65,8 +65,8 @@ CREATE TABLE student (
 -- two separate accounts just by choosing a different sign-in method.
 --
 -- Email verification: password accounts start unverified (verified_at
--- NULL) with a one-time verify_token mailed to them; login is refused
--- until they click it. Google accounts are auto-verified at creation -
+-- NULL) with a 6-digit verify_token emailed to them; login is refused
+-- until the code is entered together with the password (verify-code endpoint). Google accounts are auto-verified at creation -
 -- Google already confirmed the email on its end (userinfo's
 -- email_verified), asking again would be redundant.
 CREATE TABLE user_account (
@@ -77,7 +77,7 @@ CREATE TABLE user_account (
     created_at      TEXT NOT NULL,
     student_id      TEXT UNIQUE REFERENCES student(student_id),
     verified_at     TEXT,    -- NULL until the email is confirmed
-    verify_token    TEXT UNIQUE    -- one-time token mailed on signup; NULL once verified
+    verify_token    TEXT UNIQUE    -- 6-digit code emailed on signup; NULL once verified
 );
 
 CREATE TABLE session (

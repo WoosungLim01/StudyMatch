@@ -32,14 +32,14 @@ hint layer (IdeaLab's bounded `llm_hint` term) is a plausible v2 addition
 later, not part of this plan.
 
 **Target scope when built**: the existing population as-is — both courses,
-all 6+ existing groups (27 CMPSC 465 + 7 MATH 230 students), one simulated
+all 8 existing groups (27 CMPSC 465 + 9 MATH 230 students), one simulated
 semester (proposed: 14 weekly ticks, configurable).
 
 ## Concept mapping (IdeaLab → StudyMatch)
 
 | IdeaLab | StudyMatch simulation |
 |---|---|
-| NPC (30, 8 archetypes) | Student (`personality_profile`, 5 discovered archetypes — already exists) |
+| NPC (30, 8 archetypes) | Student (`personality_profile`, one of 4 study types — already exists) |
 | The product idea being tested | The assigned study group (`study_group`, `group_membership`) |
 | WorldContext | Course context: semester length, which weeks are exam weeks, workload intensity |
 | Tick | One week of the semester |
@@ -72,7 +72,7 @@ pattern as `add_student.py`/`build_database.py`) — no new database needed.
 
 ## Inputs (all already exist — nothing new to collect)
 
-- `personality_profile` — the 14 traits per student, per course
+- `personality_profile` — the 6 survey axis scores per student, per course
 - `pairwise_compatibility` — every pair's `compatibility_score` (already computed)
 - `study_group` / `group_membership` — the actual formed groups
 - `availability` / `availability_block` — used to derive attendance probability
@@ -96,8 +96,8 @@ other — this is the key simplification vs. IdeaLab):
 **1. Attendance** (deterministic)
 Per member, a probability derived from: their `preferred_sessions_per_week`
 vs. how often the group actually meets, modulated down during `exam_weeks`
-by `workload_intensity`, and modulated by their `accountability` trait
-(higher accountability = shows up even when it's inconvenient). Seeded RNG
+by `workload_intensity`, and modulated by their `reliability` axis
+(higher reliability = shows up even when it's inconvenient). Seeded RNG
 (same discipline as `generate_sample_data.py`) decides the actual outcome
 per member per week — reproducible, not hand-picked.
 
@@ -135,9 +135,9 @@ since the "peers" here are just the fixed 4-5 group members.
 left_group = running_satisfaction < archetype_tolerance_threshold
              AND weeks_elapsed >= min_weeks_before_leaving (e.g. 3)
 ```
-`archetype_tolerance_threshold` varies per discovered archetype (mirrors
+`archetype_tolerance_threshold` varies per study type (mirrors
 IdeaLab's per-archetype adoption thresholds, 0.55-0.70 there) — e.g. an
-"Independent Strategist" archetype might tolerate a mediocre group longer
+"Focused Architect" study type might tolerate a mediocre group longer
 than a "Study Captain" who came in expecting the group to actually perform.
 
 ## End of semester

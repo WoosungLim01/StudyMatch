@@ -1,166 +1,135 @@
 # StudyMatch — DS440 Capstone
 
-Penn State study-group matching. Students log in, take a personality survey
-once, and get placed into a 5-person study group by compatibility —
-synthetic data for now, but the pipeline is real: a live SQLite database, a
-working login/survey/home flow, and an admin view, not just a demo script.
+Penn State study-group matching. Students sign up with an email address (verified by a 6-digit code) or with Google, take a 24-item survey once, and get placed into a study group of 4–5 by compatibility. Live at https://studymatch-8qih.onrender.com.
+
+The pipeline is real: a live database, login, survey, matching, and an admin view. The synthetic data is calibrated on real datasets (see [`docs/SYNTHETIC_DATA.md`](docs/SYNTHETIC_DATA.md)).
 
 ## Stack
 
-Python 3.10+, FastAPI, SQLite, scikit-learn (Gaussian mixture), OR-Tools
-(CP-SAT ILP). No frontend framework —
-plain HTML/CSS/JS served straight off disk.
+- Python 3.10 (pinned in `.python-version`), FastAPI + uvicorn
+- SQLite for local development, Turso (hosted libSQL) in production
+- OR-Tools CP-SAT for group formation; scikit-learn for the display-only study types
+- Plain HTML/CSS/JS in `ui/`, no frontend framework
+- Resend's HTTP API for email; Google OAuth 2.0 for Google sign-in (both use stdlib `urllib`)
 
 ## Project structure
 
 ```
 StudyMatch/
-├── app.py                    the server — ties everything below together
+├── app.py                    FastAPI server: auth, survey, home, account, admin
 ├── requirements.txt
-├── algorithm/                the matching math (no framework)
-│   ├── scoring.py              the 24-item survey bank + Likert scoring
-│   ├── clustering.py           4 fixed study types, GMM soft membership (display only)
-│   ├── quality.py              survey response-quality flags (admin only)
+├── .python-version           3.10
+├── algorithm/                matching math (no web framework)
+│   ├── scoring.py              24-item bank, reverse-coding, score_axes()
 │   ├── compatibility.py        weighted 6-axis similarity between two students
 │   ├── grouping.py             ILP group formation (OR-Tools CP-SAT), groups of 4-5
-│   └── placement.py            live signups: ILP for new groups, best-fit for the rest
-├── data/                      the schema, the synthetic dataset, the live DB
-│   ├── schema.sql
-│   ├── studymatch.db           ← the actual database
-│   ├── auth.py                  password hashing (stdlib only)
-│   ├── generate_sample_data.py batch-generates the synthetic cohort
-│   ├── add_student.py          scripted/bulk real-student insert
+│   ├── placement.py            live signups: ILP for new groups, best fit for the rest
+│   ├── clustering.py           4 study types, GMM soft membership (display only)
+│   └── quality.py              response-quality flags (admin only)
+├── data/                     schema, synthetic data, database access, auth, email
+│   ├── schema.sql              full DDL
+│   ├── studymatch.db           local development database (production uses Turso)
+│   ├── db.py                   local SQLite vs Turso connection
+│   ├── auth.py                 password hashing (stdlib PBKDF2)
+│   ├── email.py                outbound email via Resend
+│   ├── archetype_store.py      loads the study-type model
+│   ├── generate_sample_data.py synthetic cohort generator
 │   ├── build_database.py       sample/*.json → studymatch.db
-│   └── README.md                data-layer detail
-├── ui/                        the four pages
-│   ├── login.html                combined login/signup
-│   ├── survey.html               entry survey (one-time per account)
-│   ├── home.html                 your group, once you've taken the survey
-│   └── admin.html                admin: view + delete anyone/any account
-└── docs/
-    └── ER_DIAGRAM.md          schema diagram + design decisions
+│   ├── add_student.py          scripted bulk insert of real students
+│   ├── refit_archetypes.py     optional refit of the study-type mixture
+│   ├── build_viewer.py         rebuilds studymatch-data-browser.html
+│   └── README.md               data-layer detail
+├── ui/                       five pages, served from disk
+│   ├── login.html              login, sign-up, and code entry
+│   ├── survey.html             entry survey (one time per account)
+│   ├── home.html               your group
+│   ├── account.html            name, log out, delete account
+│   └── admin.html              admin view (see Known limitations)
+├── docs/                     see Documentation below
+├── references/               survey redesign document
+└── questionary_data/         real datasets behind the synthetic data
 ```
 
-Each piece works standalone (you can regenerate `data/` without touching
-`algorithm/`, or read the schema without running anything), but `app.py` is
-what wires a real survey submission through `algorithm/` and into `data/`.
-
-## Running it
+## Running it locally
 
 ```bash
 pip install -r requirements.txt
 python app.py
 # -> http://localhost:8010/login    log in / sign up
-# -> http://localhost:8010/admin    admin view (search, filter, delete)
+# -> http://localhost:8010/admin    admin view
 ```
 
-That's it — no separate database setup. `data/studymatch.db` ships in the
-repo, pre-populated with 36 synthetic students across 2 courses (CMPSC 465,
-MATH 230) and their study groups.
+Local runs use `data/studymatch.db`, which ships in the repo with 36 synthetic students across CMPSC 465 and MATH 230. Without the Turso environment variables, the app never touches Turso.
+
+Without `RESEND_API_KEY`, no email is sent. The verification code is still stored, so for local sign-up read it from the `verify_token` column of `user_account` in `data/studymatch.db`. Local sign-ups write to that committed file, so don't commit the rows they add.
+
+## Deployment
+
+Production runs on Render (web service) with a Turso database.
+
+- **Build:** `pip install -r requirements.txt`. **Start:** `python app.py`. The app reads `PORT` from the environment and turns off auto-reload when it's set.
+- **Environment variables** (set in Render's Environment tab, never committed):
+
+| Variable | Purpose |
+|---|---|
+| `TURSO_DATABASE_URL` | Turso database URL (`libsql://...`). Set together with the token to use Turso |
+| `TURSO_AUTH_TOKEN` | Turso auth token (secret) |
+| `RESEND_API_KEY` | Resend API key (secret). Without it, email is logged, not sent |
+| `RESEND_FROM_EMAIL` | Sender address on a domain verified in Resend, e.g. `noreply@studymatch.us` |
+| `GOOGLE_CLIENT_ID` | Google OAuth client ID |
+| `GOOGLE_CLIENT_SECRET` | Google OAuth client secret (secret) |
+| `GOOGLE_REDIRECT_URI` | `https://studymatch-8qih.onrender.com/api/auth/google/callback`, matching the Google Cloud Console entry |
+
+Google sign-in returns 501 until all three Google variables are set.
+
+- **Deploying:** auto-deploy on push to `main` has not been triggering. Use **Manual Deploy → Deploy latest commit** in Render, or the service's Deploy Hook URL (Settings tab). Treat the Deploy Hook as a secret. The root cause is not yet confirmed.
+- **Turso:** `data/db.py` keeps a local replica at `data/.turso_replica.db` (gitignored), syncs before each connection, and pushes after each write.
+- **Python:** `.python-version` pins 3.10 because Render's default (3.14) has no prebuilt wheels for the pinned numpy, scikit-learn, and ortools versions.
 
 ## How it works
 
-1. **Login / signup** (`ui/login.html`) — one email+password form. Unknown
-   email creates an account; known email checks the password (wrong password
-   is rejected outright, never silently treated as a new signup). A
-   brand-new account is routed to the survey; an account that's already
-   completed it goes straight to the home page.
-2. **Survey** (`ui/survey.html`) — one-time per account. Name, course,
-   year/gender/major, and a fixed 24-item, 5-point Likert questionnaire
-   (Strongly Disagree - Strongly Agree, blank by default, no pre-selected
-   option), plus optional availability/academic sections (off by default —
-   nothing recorded unless switched on). The 24 raw answers score into 6
-   study-behavior axes (`algorithm/scoring.py`); submitting links the account
-   to the new student record, so it can never be seen (or re-taken) again
-   from that account.
-3. **Study type** (`algorithm/clustering.py`), a **display layer only**
-   (types never feed into who groups with whom).
-   - **Four types, fixed by theory**: the survey follows MSLQ's split, so
-     the axes form two style families. Self-regulation is planning +
-     structure + reliability; social mode is session_mode + collaboration.
-     Their 2x2 gives Study Captain (organized, collaborative), Focused
-     Architect (organized, independent), Collaborative Explorer (flexible,
-     collaborative) and Independent Sprinter (flexible, independent).
-   - **Motivation badge**: intensity is shown separately ("High Drive" /
-     "Steady Pace"), since it's a level, not a style.
-   - **Membership**: a Gaussian mixture over the two family scores,
-     anchored at the theory centers, gives a soft membership such as
-     "Study Captain 72%". Students near a boundary get split percentages
-     rather than flipping on a 0.02 difference.
-   - **Fitting**: below 200 students the theory model is used as-is.
-     Beyond that, `python data/refit_archetypes.py` fits the mixture on a
-     sample (≤20k) so the boundaries follow real (usually high-skewed)
-     answers. A fit that would change what a type means is rejected.
-   - **New signups** are classified against the stored model, with no
-     re-fit.
-   - **Response quality** (`algorithm/quality.py`): same answer everywhere,
-     contradictory answers to reverse-worded pairs, or a profile that fits
-     no type is flagged on the admin page. The flag never affects signup
-     or matching.
-4. **Compatibility** (`algorithm/compatibility.py`) — weighted similarity of
-   two students' raw 6-axis vectors, 0-100. The motivation axes
-   (reliability, intensity) weigh 1.5x the four study-style axes. Matching is
-   homogeneous on purpose: StudyMatch is opt-in, for people who want
-   classmates who study like them.
-5. **Group formation** (`algorithm/grouping.py`, `algorithm/placement.py`) —
-   an ILP (OR-Tools CP-SAT) splits a course's unassigned students into
-   groups of **4-5** that maximize total within-group compatibility (only
-   same-course students ever share a group). It's deterministic (same input,
-   same groups) and never worse than a greedy+local-search warm start; it
-   reports its optimality bound. Existing groups are never reshuffled when
-   someone signs up. Whoever can't be split into 4s and 5s (a pool of 1-3,
-   6, 7 or 11) joins the existing group with room where they fit best, or
-   waits on the list until enough people arrive. Signup is never blocked: a
-   below-65 match still gets signed in, just with a warning.
-   On the sample data the ILP gets an average pair compatibility of ~90
-   (CMPSC 465) vs ~75 for random groups of the same sizes;
-   `python data/generate_sample_data.py` prints the comparison.
-6. **Home** (`ui/home.html`) — where a returning, already-matched account
-   lands: their group, its members, their course. Shows a plain "you're on
-   the waiting list" message instead of a broken group section if they
-   haven't been placed yet.
-7. **Persistence** (`data/studymatch.db`) — every submission is permanent.
-   Nothing is deleted automatically; the only way to remove someone (real or
-   synthetic student, or a login account) is the admin page's delete button,
-   which cascades cleanly across every table that references them. Deleting
-   a student un-links any account pointing at them; deleting an account only
-   removes login access, leaving their student/survey data untouched.
+1. **Sign-up and login** (`ui/login.html`). One email and password form.
+   - New email: an unverified account is created and a 6-digit code is emailed.
+   - Known email, wrong password: rejected. It is never treated as a new sign-up.
+   - Verified account, right password: logged in.
+   - Unverified account, right password: a new code is emailed.
+   - The code is entered on the same page with the password (`POST /api/auth/verify-code`). Five wrong codes lock the account until a new code is requested. Success starts the session directly, so there's no second login.
+   - Google sign-in (`/api/auth/google/login`) creates a verified account, or links to an existing account with the same email.
+2. **Survey** (`ui/survey.html`). Name, course, year, gender, major, and 24 statements on a 5-point Likert scale with nothing pre-selected. Availability and academic sections are optional and off by default.
+   - Raw answers are stored exactly as clicked. Reverse-worded items are flipped with `6 − raw` only at scoring time, then the four items per axis are averaged. The six axes are `planning`, `session_mode`, `reliability`, `structure`, `intensity`, and `collaboration`. The item bank and reverse flags are in `algorithm/scoring.py`.
+   - Submitting places you in a group right away. The survey is one time per account.
+3. **Study type** (`algorithm/clustering.py`), display only. Four types from a 2×2 of self-regulation (planning, structure, reliability) and social mode (session_mode, collaboration): Study Captain, Focused Architect, Collaborative Explorer, and Independent Sprinter. Intensity is shown as a separate badge. Below 200 students the theory model is used as-is. Above that, `python data/refit_archetypes.py` fits the mixture on a sample so the boundaries follow real answers.
+   - Response-quality flags (`algorithm/quality.py`) appear on the admin page. They never affect sign-up or matching.
+4. **Compatibility** (`algorithm/compatibility.py`). `100 ×` the weighted mean of `1 − |a − b| / 4` across the six axes. Reliability and intensity weigh 1.5×. Matching is similarity-only on purpose: StudyMatch is for people who want classmates who study like them.
+5. **Groups** (`algorithm/grouping.py`, `algorithm/placement.py`). An OR-Tools CP-SAT model splits each course's unplaced students into groups of 4–5 to maximize within-group compatibility. It is deterministic and reports its optimality bound. Existing groups are never reshuffled. Leftover pools of 1–3, 6, 7, or 11 join the best-fitting group with room, or wait until enough people arrive. Sign-up is never blocked; a match below 65 signs in with a warning.
+6. **Home** (`ui/home.html`). Your group, its members, and your course. Students not yet placed see a waiting-list message.
+7. **Account** (`ui/account.html`). Change your display name, log out, or delete your account. Deleting removes login access and your survey and group data, and sends a confirmation email.
+8. **Admin** (`ui/admin.html`). Lists students and login accounts. Deleting a student removes them from every table and unlinks their account. Deleting an account removes login access only. Both send a notification email when the person has an address. The admin page has no login check; see Known limitations.
+9. **Email** (`data/email.py`). Verification codes and deletion notices go through Resend's HTTP API. The sender domain must be verified in Resend.
 
-Full schema + the normalization decisions behind it: [`docs/ER_DIAGRAM.md`](docs/ER_DIAGRAM.md).
-Data generation, reproducibility, and the remainder-policy math in detail: [`data/README.md`](data/README.md).
-A planned (not yet built) semester-length outcome simulation, for validating the
-matching algorithm without waiting on real semester-long feedback: [`docs/SIMULATION_PLAN.md`](docs/SIMULATION_PLAN.md).
-What real research backs (and doesn't yet back) the synthetic data's design: [`docs/DATA_GROUNDING.md`](docs/DATA_GROUNDING.md).
+## Documentation
 
-## Known limitations / out of scope (v1)
+| File | What it covers |
+|---|---|
+| `docs/STATUS.md` | Current state: what's live and what's pending |
+| `docs/ER_DIAGRAM.md` | Database schema and design decisions |
+| `docs/SYNTHETIC_DATA.md` | Real datasets behind the synthetic data, and how it was derived |
+| `docs/DATA_GROUNDING.md` | What's backed by research and what isn't |
+| `docs/SIMULATION_PLAN.md` | Planned, not built: a semester-length outcome simulation |
+| `Design.md` | UI design system. Every page in `ui/` follows it |
+| `data/README.md` | Data layer: sample data, reproducibility, group-size remainder policy |
+| `references/` | Survey redesign document |
 
-- **Authentication is real but minimal** — email+password with hashed storage
-  (stdlib PBKDF2, see `data/auth.py`) and proper session cookies, but no
-  email verification, no forgot-password flow, and no way to retake/edit
-  survey answers once submitted. There's also no way for a student to change
-  their own password.
-- **Admin has no auth of its own** — anyone who can reach `/admin` can view
-  and delete anyone. Fine for local development, not something to expose
-  publicly as-is.
-- **Homogeneous matching** — compatibility rewards similarity only, which can
-  create echo-chamber dynamics over time (high performers keep grouping with
-  high performers). Tracked as a future outcome metric, not constrained away.
-- **Inter-group fairness** — matching only maximizes intra-group compatibility;
-  no balancing across groups.
-- **No per-student axis importance yet** — axis weights are fixed
-  (motivation 1.5x); students can't mark an axis as more/less important or
-  as a dealbreaker.
-- **Response-quality flags are partial** — straight-lining and contradictory
-  answers are caught; genuinely random clicking mostly isn't (~3% flagged).
-  "Fits no type well" also fires for extreme-but-honest profiles.
-- **Study-type fit needs real data** — with the 38 current students the theory
-  model is used; the synthetic cohort is too artificially clustered to
-  calibrate a mixture on.
-- **Feedback loop not built** — `group_feedback` is collected but doesn't yet
-  update compatibility for the next matching round.
-- **Deploying with persistent storage**: `python app.py` writes directly to
-  `data/studymatch.db` on local disk. Most PaaS platforms (Railway, Render,
-  Heroku free tiers, etc.) use an *ephemeral* filesystem — every real
-  student added would be silently wiped on the next redeploy/restart unless
-  the database is moved to a persistent volume or an external Postgres/SQLite
-  host. Not solved here; flagging it before anyone actually deploys this.
+**Conventions:** the product name is **StudyMatch** everywhere. Don't use "StudyNest," which came from an early brief. Don't use Penn State's logo, wordmark, seal, or Nittany Lion marks.
+
+## Known limitations
+
+- **The admin page has no authentication.** `/admin` and the `/api/admin/*` endpoints, including delete, can be reached by anyone who knows the URL. That's acceptable for local development, but the site is public, so an admin login needs to be added before relying on it.
+- No forgot-password flow, and no way to change a password. The 6-character minimum is deliberate.
+- Survey answers can't be retaken or edited after submission.
+- Verification codes don't expire. A code stays valid until it's used or replaced. The wrong-code lockout is kept in memory and resets when the server restarts.
+- Matching is homogeneous by design, which can create echo-chamber effects over time. This is tracked as a future outcome metric rather than constrained away.
+- No balancing across groups, and no per-student axis weights or dealbreakers.
+- Response-quality flags catch straight-lining and contradictory answers, but not random clicking (about 3% of responses are flagged).
+- The feedback loop is not built. `group_feedback` is collected but doesn't change matching.
+- `session_mode` and `collaboration` are calibrated against Big Five proxies, not measures of those constructs. See [`docs/SYNTHETIC_DATA.md`](docs/SYNTHETIC_DATA.md).

@@ -59,6 +59,10 @@ https://claude.ai/code/artifact/ea7b2a43-c040-44fe-9049-af37e590cddc
   reference; deleting an account leaves their student/survey data alone.
   Passwords are hashed (stdlib PBKDF2, see
   [`data/auth.py`](../data/auth.py)) — never stored plain.
+- **Email verification**: password accounts start with `verified_at` NULL and a
+  6-digit `verify_token` emailed to them. Entering the code together with the
+  password sets `verified_at`, clears the code, and starts a session. Google
+  accounts are created already verified.
 - **Sessions expire server-side**: `session.expires_at` (30 days from login)
   is checked on every request in `app.py`'s `current_user()`, not just left
   to the cookie's client-side `max_age`. Expired rows are swept on each new
@@ -104,9 +108,12 @@ erDiagram
     USER_ACCOUNT {
         string user_id PK
         string email
-        string password_hash
+        string password_hash "NULL for Google-only"
+        string google_sub "unique, NULL for password-only"
         string created_at
         string student_id FK "unique, nullable"
+        string verified_at "NULL until verified"
+        string verify_token "6-digit code while unverified, then NULL"
     }
     SESSION {
         string session_token PK
