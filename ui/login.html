@@ -100,6 +100,10 @@
     background:var(--danger-soft);color:var(--danger);border:1px solid rgba(138,59,66,.22);border-radius:14px;
     padding:12px 16px;font-size:14px;font-weight:600;margin-bottom:18px;display:none;
   }
+  .info{
+    background:var(--tint);color:var(--navy);border:1px solid var(--line-strong);border-radius:14px;
+    padding:12px 16px;font-size:14px;font-weight:600;margin-bottom:18px;display:none;
+  }
 
   .divider{display:flex;align-items:center;gap:14px;margin:20px 0;color:var(--muted);font-size:13px;font-weight:700;}
   .divider::before,.divider::after{content:"";flex:1;height:1px;background:var(--line-strong);}
@@ -158,6 +162,7 @@
     <p class="sub">One form does both. A new email creates your account, and an email that's already registered logs you in.</p>
 
     <div class="error" id="error"></div>
+    <div class="info" id="info"></div>
     <form id="login-form">
       <div class="row">
         <label for="f-email">Email</label>
@@ -196,7 +201,9 @@ if (urlError) {
 document.getElementById('login-form').addEventListener('submit', async (e) => {
   e.preventDefault();
   const errorEl = document.getElementById('error');
+  const infoEl = document.getElementById('info');
   errorEl.style.display = 'none';
+  infoEl.style.display = 'none';
 
   const btn = document.getElementById('submit-btn');
   btn.disabled = true;
@@ -216,6 +223,12 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
       throw new Error(body.detail || res.statusText);
     }
     const data = await res.json();
+    if (data.status === 'verify_sent') {
+      infoEl.textContent = data.message;
+      infoEl.style.display = 'block';
+      btn.textContent = 'Check your email';
+      return;
+    }
     window.location.href = data.redirect;
   } catch (err) {
     errorEl.textContent = err.message;

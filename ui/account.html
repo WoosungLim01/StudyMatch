@@ -141,6 +141,15 @@
     <p style="margin:0 0 18px;color:var(--muted-strong);">Signed in as this account on this device.</p>
     <button class="btn-ghost" id="logout-btn-2">Log out</button>
   </section>
+
+  <section class="card danger-zone">
+    <span class="card-label">Delete account</span>
+    <p style="margin:0 0 18px;color:var(--muted-strong);">
+      Permanently deletes your account and, if you've taken the survey, your group membership and
+      survey data. This can't be undone. A confirmation email is sent once it's done.
+    </p>
+    <button class="btn-ghost" id="delete-btn">Delete my account</button>
+  </section>
 </main>
 
 <script>
@@ -220,6 +229,22 @@ async function logout(){
 }
 document.getElementById('logout-btn').addEventListener('click', logout);
 document.getElementById('logout-btn-2').addEventListener('click', logout);
+
+document.getElementById('delete-btn').addEventListener('click', async () => {
+  if (!confirm('Delete your account and all your survey/group data? This cannot be undone.')) return;
+  const btn = document.getElementById('delete-btn');
+  btn.disabled = true;
+  btn.textContent = 'Deleting…';
+  try {
+    const res = await fetch(API + '/api/account', { method: 'DELETE' });
+    if (!res.ok) throw new Error((await res.json()).detail || res.statusText);
+    window.location.href = '/login';
+  } catch (err) {
+    alert('Something went wrong: ' + err.message);
+    btn.disabled = false;
+    btn.textContent = 'Delete my account';
+  }
+});
 </script>
 </body>
 </html>

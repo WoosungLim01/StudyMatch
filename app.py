@@ -9,10 +9,19 @@ other parts of the project together:
                placement.py (live remainder policy), clustering.py (GMM archetypes)
 
 Pages:
-  GET  /login   -> combined login/signup: one email+password form. Unknown
-                    email creates an account; known email checks the
-                    password (wrong password is rejected, never silently
-                    treated as a new signup).
+  GET  /login   -> combined login/signup, two methods:
+                    - email+password: unknown email creates an account but
+                      does NOT log in yet - a verification email is sent
+                      (data/email.py) and login is refused until that link
+                      is clicked (GET /api/auth/verify). Known email checks
+                      the password (wrong password rejected, never silently
+                      treated as a new signup; a Google-only account's NULL
+                      password_hash is rejected the same clear way).
+                    - Google sign-in (GET /api/auth/google/login ->
+                      consent screen -> /api/auth/google/callback):
+                      auto-verified (Google already confirmed the email),
+                      matched/linked to an existing account by email if one
+                      exists. Both methods create the same session row.
   GET  /survey  -> entry survey (personality + basic info), gated to a
                     logged-in user who hasn't completed it yet - one-time per
                     account. On submit, the respondent is inserted as a REAL
@@ -25,18 +34,24 @@ Pages:
                     the new student_id so they never see the survey again.
   GET  /home    -> gated to a logged-in user who HAS completed the survey:
                     their group, its members, and their course.
-  GET  /account -> same gating as /home. Edit your display name, log out.
+  GET  /account -> same gating as /home. Edit your display name, log out,
+                    or delete your own account (DELETE /api/account - removes
+                    your student/survey data AND login access in one action,
+                    unlike the two separate admin delete endpoints below;
+                    sends a confirmation email either way).
   GET  /admin   -> lists every student (fake and real) AND every login
                     account, each with a delete button. Deleting a student
                     removes them everywhere (personality, pairwise scores,
                     group membership, chat, feedback, ...) and un-links any
                     account pointing at them; fake people can be deleted too,
                     same mechanism. Deleting an account only removes login
-                    access, not their student/survey data.
+                    access, not their student/survey data. Both send the
+                    affected person a notification email if they have one.
 
 Once someone is signed in via the survey, they're permanent - only an admin
-delete removes them. data/build_database.py's destructive rebuild already
-refuses to run over real (source='real') students or any login account.
+delete (or their own self-service delete) removes them. data/build_database.py's
+destructive rebuild already refuses to run over real (source='real')
+students or any login account.
 
 Run (from the repo root):
     python app.py
@@ -65,6 +80,7 @@ from data.archetype_store import load_model
 from data.auth import hash_password, verify_password
 from data.db import connect as db
 from data.db import write as db_write
+from data.email import send_account_deleted_email, send_verification_email
 
 ROOT = Path(__file__).parent
 UI_DIR = ROOT / "ui"
@@ -201,7 +217,7 @@ def _set_session_cookie(response, token):
 
 
 @app.post("/api/auth/login")
-def api_login(body: LoginIn, response: Response):
+def api_login(body: LoginIn, request: Request, response: Response):
     email = body.email.strip()
     if not email or not body.password:
         raise HTTPException(400, "Email and password are both required.")
@@ -209,34 +225,64 @@ def api_login(body: LoginIn, response: Response):
     con = db()
     cur = con.cursor()
     row = cur.execute(
-        "SELECT user_id, password_hash, student_id FROM user_account WHERE email = ?", (email,)
+        "SELECT user_id, password_hash, student_id, verified_at FROM user_account WHERE email = ?", (email,)
     ).fetchone()
 
     if row is None:
-        # Unknown email -> sign up.
+        # Unknown email -> sign up, but NOT logged in yet - unverified until
+        # they click the link we're about to email them.
         user_id = next_user_id(cur)
+        verify_token = secrets.token_urlsafe(32)
         cur.execute(
-            "INSERT INTO user_account VALUES (?,?,?,?,?,?)",
-            (user_id, email, hash_password(body.password), None, now_iso(), None),
+            "INSERT INTO user_account VALUES (?,?,?,?,?,?,?,?)",
+            (user_id, email, hash_password(body.password), None, now_iso(), None, None, verify_token),
         )
-        student_id = None
-        is_new_account = True
-    else:
-        user_id, password_hash, student_id = row
-        if password_hash is None:
-            con.close()
-            raise HTTPException(401, "This email uses Google sign-in - use the Google button instead.")
-        if not verify_password(body.password, password_hash):
-            con.close()
-            raise HTTPException(401, "Incorrect password for this email.")
-        is_new_account = False
+        db_write(con)
+        con.close()
+        verify_url = str(request.base_url) + f"api/auth/verify?token={verify_token}"
+        send_verification_email(email, verify_url)
+        return {
+            "is_new_account": True, "status": "verify_sent",
+            "message": "Check your email for a verification link to finish signing up.",
+        }
+
+    user_id, password_hash, student_id, verified_at = row
+    if password_hash is None:
+        con.close()
+        raise HTTPException(401, "This email uses Google sign-in - use the Google button instead.")
+    if not verify_password(body.password, password_hash):
+        con.close()
+        raise HTTPException(401, "Incorrect password for this email.")
+    if verified_at is None:
+        con.close()
+        raise HTTPException(403, "Please verify your email first - check your inbox for the verification link.")
 
     token = _create_session(cur, user_id)
     db_write(con)
     con.close()
 
     _set_session_cookie(response, token)
-    return {"is_new_account": is_new_account, "redirect": "/survey" if student_id is None else "/home"}
+    return {"is_new_account": False, "redirect": "/survey" if student_id is None else "/home"}
+
+
+@app.get("/api/auth/verify", include_in_schema=False)
+def api_verify_email(token: str):
+    con = db()
+    cur = con.cursor()
+    row = cur.execute("SELECT user_id, student_id FROM user_account WHERE verify_token = ?", (token,)).fetchone()
+    if row is None:
+        con.close()
+        return RedirectResponse("/login?error=" + urllib.parse.quote("That verification link is invalid or already used."))
+
+    user_id, student_id = row
+    cur.execute("UPDATE user_account SET verified_at = ?, verify_token = NULL WHERE user_id = ?", (now_iso(), user_id))
+    session_token = _create_session(cur, user_id)
+    db_write(con)
+    con.close()
+
+    redirect = RedirectResponse("/survey" if student_id is None else "/home")
+    _set_session_cookie(redirect, session_token)
+    return redirect
 
 
 @app.get("/api/auth/google/login", include_in_schema=False)
@@ -303,18 +349,27 @@ def api_google_callback(request: Request, code: Optional[str] = None, state: Opt
         "SELECT user_id, student_id FROM user_account WHERE email = ? OR google_sub = ?", (email, google_sub)
     ).fetchone()
     if row is None:
+        # Google already confirmed this email (checked above via
+        # email_verified) - auto-verified, no separate email needed.
         user_id = next_user_id(cur)
         cur.execute(
-            "INSERT INTO user_account VALUES (?,?,?,?,?,?)",
-            (user_id, email, None, google_sub, now_iso(), None),
+            "INSERT INTO user_account VALUES (?,?,?,?,?,?,?,?)",
+            (user_id, email, None, google_sub, now_iso(), None, now_iso(), None),
         )
         student_id = None
     else:
         # Covers both a returning Google user and a password account signing
         # in with Google for the first time under the same email - either
-        # way it's one person, one account, matched by email.
+        # way it's one person, one account, matched by email. Signing in
+        # with Google also verifies the account if it wasn't already
+        # (Google re-proves ownership of the email regardless of how the
+        # account started).
         user_id, student_id = row
-        cur.execute("UPDATE user_account SET google_sub = ? WHERE user_id = ?", (google_sub, user_id))
+        cur.execute(
+            "UPDATE user_account SET google_sub = ?, verified_at = COALESCE(verified_at, ?), verify_token = NULL "
+            "WHERE user_id = ?",
+            (google_sub, now_iso(), user_id),
+        )
 
     token = _create_session(cur, user_id)
     db_write(con)
@@ -620,25 +675,17 @@ def api_admin_type_map():
     }
 
 
-@app.delete("/api/admin/students/{student_id}")
-def api_admin_delete_student(student_id: str):
-    con = db()
-    if not con.execute("SELECT 1 FROM student WHERE student_id=?", (student_id,)).fetchone():
-        con.close()
-        raise HTTPException(404, "Student not found")
-
-    cur = con.cursor()
+def _delete_student_cascade(cur, student_id):
+    """Removes a student and everywhere they're referenced (personality,
+    pairwise scores, group membership, chat, feedback, ...), recomputing any
+    group they were in. Shared by the admin delete and self-service account
+    deletion - un-linking user_account is the one caller's job, not this
+    helper's, since the two callers want different follow-up behavior."""
     affected = [(r[0], r[1]) for r in cur.execute(
         """SELECT gm.group_id, sg.course_id FROM group_membership gm
            JOIN study_group sg ON sg.group_id = gm.group_id WHERE gm.student_id=?""",
         (student_id,),
     ).fetchall()]
-
-    # Un-link any account pointing at this student - deleting the student
-    # shouldn't leave a login account permanently stuck thinking it already
-    # completed the survey with a student_id that no longer exists.
-    cur.execute("UPDATE user_account SET student_id = NULL WHERE student_id=?", (student_id,))
-
     cur.execute("DELETE FROM group_feedback WHERE student_id=?", (student_id,))
     cur.execute("DELETE FROM match_data WHERE student_id=?", (student_id,))
     cur.execute("DELETE FROM group_membership WHERE student_id=?", (student_id,))
@@ -651,12 +698,60 @@ def api_admin_delete_student(student_id: str):
     cur.execute("DELETE FROM personality_profile WHERE student_id=?", (student_id,))
     cur.execute("DELETE FROM course_membership WHERE student_id=?", (student_id,))
     cur.execute("DELETE FROM student WHERE student_id=?", (student_id,))
-
     for group_id, course_id in affected:
         recompute_or_delete_group(cur, group_id, course_id)
 
+
+@app.delete("/api/account")
+def api_account_delete(request: Request, response: Response):
+    """Self-service: a logged-in user deletes their own account AND their
+    student/survey data (if any) in one action, unlike the admin endpoints
+    below which separate the two. Sends a confirmation email and clears the
+    session so the response is also effectively a logout."""
+    user = require_user(request)
+    con = db()
+    cur = con.cursor()
+    # user_account.student_id references student - must be cleared (deleting
+    # the account row does this) before the student row itself can be
+    # deleted, same ordering constraint the admin path handles with an
+    # explicit UPDATE ... SET student_id = NULL first.
+    cur.execute("DELETE FROM session WHERE user_id=?", (user["user_id"],))
+    cur.execute("DELETE FROM user_account WHERE user_id=?", (user["user_id"],))
+    if user["student_id"] is not None:
+        _delete_student_cascade(cur, user["student_id"])
     db_write(con)
     con.close()
+
+    send_account_deleted_email(user["email"], deleted_by="self")
+    response.delete_cookie(SESSION_COOKIE)
+    return {"deleted": user["user_id"]}
+
+
+@app.delete("/api/admin/students/{student_id}")
+def api_admin_delete_student(student_id: str):
+    con = db()
+    if not con.execute("SELECT 1 FROM student WHERE student_id=?", (student_id,)).fetchone():
+        con.close()
+        raise HTTPException(404, "Student not found")
+
+    cur = con.cursor()
+    # Look up the linked account's email (if any) before un-linking it - the
+    # notification needs it, and the un-link below would lose the trail.
+    notify_email = cur.execute(
+        "SELECT email FROM user_account WHERE student_id=?", (student_id,)
+    ).fetchone()
+
+    # Un-link any account pointing at this student - deleting the student
+    # shouldn't leave a login account permanently stuck thinking it already
+    # completed the survey with a student_id that no longer exists.
+    cur.execute("UPDATE user_account SET student_id = NULL WHERE student_id=?", (student_id,))
+    _delete_student_cascade(cur, student_id)
+
+    db_write(con)
+    con.close()
+
+    if notify_email:
+        send_account_deleted_email(notify_email[0], deleted_by="admin")
     return {"deleted": student_id}
 
 
@@ -678,13 +773,15 @@ def api_admin_delete_account(user_id: str):
     """Removes login access only - does NOT touch their student/survey data,
     which (if any) stays exactly as it was, just no longer reachable via login."""
     con = db()
-    if not con.execute("SELECT 1 FROM user_account WHERE user_id=?", (user_id,)).fetchone():
+    row = con.execute("SELECT email FROM user_account WHERE user_id=?", (user_id,)).fetchone()
+    if not row:
         con.close()
         raise HTTPException(404, "Account not found")
     con.execute("DELETE FROM session WHERE user_id=?", (user_id,))
     con.execute("DELETE FROM user_account WHERE user_id=?", (user_id,))
     db_write(con)
     con.close()
+    send_account_deleted_email(row[0], deleted_by="admin")
     return {"deleted": user_id}
 
 

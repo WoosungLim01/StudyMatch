@@ -63,13 +63,21 @@ CREATE TABLE student (
 -- password_hash set and google_sub NULL; Google accounts have the reverse.
 -- Matched by email on Google sign-in, so the same person can't end up with
 -- two separate accounts just by choosing a different sign-in method.
+--
+-- Email verification: password accounts start unverified (verified_at
+-- NULL) with a one-time verify_token mailed to them; login is refused
+-- until they click it. Google accounts are auto-verified at creation -
+-- Google already confirmed the email on its end (userinfo's
+-- email_verified), asking again would be redundant.
 CREATE TABLE user_account (
     user_id         TEXT PRIMARY KEY,
     email           TEXT NOT NULL UNIQUE COLLATE NOCASE,
     password_hash   TEXT,    -- NULL for Google-only accounts (no password set)
     google_sub      TEXT UNIQUE,    -- Google's stable per-user ID; NULL for password-only accounts
     created_at      TEXT NOT NULL,
-    student_id      TEXT UNIQUE REFERENCES student(student_id)
+    student_id      TEXT UNIQUE REFERENCES student(student_id),
+    verified_at     TEXT,    -- NULL until the email is confirmed
+    verify_token    TEXT UNIQUE    -- one-time token mailed on signup; NULL once verified
 );
 
 CREATE TABLE session (
