@@ -70,7 +70,9 @@ CREATE TABLE user_account (
 CREATE TABLE session (
     session_token   TEXT PRIMARY KEY,
     user_id         TEXT NOT NULL REFERENCES user_account(user_id),
-    created_at      TEXT NOT NULL
+    created_at      TEXT NOT NULL,
+    -- same ISO-8601 UTC format as created_at, so plain string comparison orders correctly
+    expires_at      TEXT NOT NULL
 );
 
 CREATE TABLE course_membership (
@@ -182,7 +184,9 @@ CREATE TABLE pairwise_compatibility (
     schedule_compatible        INTEGER NOT NULL,   -- valid data, not used in compatibility_score
     weekly_overlap_minutes      INTEGER NOT NULL,   -- valid data, not used in compatibility_score
     study_style_score           REAL NOT NULL,       -- informational only, not used in compatibility_score
-    PRIMARY KEY (student_a, student_b)
+    -- course_id is part of the key: personality is per-course, so the same pair
+    -- can have a different score in each course they share
+    PRIMARY KEY (student_a, student_b, course_id)
 );
 
 CREATE TABLE study_group (

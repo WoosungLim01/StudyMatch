@@ -43,7 +43,7 @@ Run (from the repo root):
 """
 
 import secrets
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Dict, Optional
 
@@ -63,12 +63,13 @@ from data.db import write as db_write
 ROOT = Path(__file__).parent
 UI_DIR = ROOT / "ui"
 SESSION_COOKIE = "session_token"
+SESSION_TTL = timedelta(days=30)
 
 app = FastAPI(title="StudyMatch")
 
 
-def now_iso():
-    return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+def now_iso(offset=timedelta(0)):
+    return (datetime.now(timezone.utc) + offset).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
 # ─────────────────────────────────────────────────────────────
@@ -89,8 +90,9 @@ def current_user(request: Request):
     con = db()
     row = con.execute(
         """SELECT u.user_id, u.email, u.student_id FROM session s
-           JOIN user_account u ON u.user_id = s.user_id WHERE s.session_token = ?""",
-        (token,),
+           JOIN user_account u ON u.user_id = s.user_id
+           WHERE s.session_token = ? AND s.expires_at > ?""",
+        (token, now_iso()),
     ).fetchone()
     con.close()
     if row is None:
@@ -189,11 +191,13 @@ def api_login(body: LoginIn, response: Response):
         is_new_account = False
 
     token = secrets.token_urlsafe(32)
-    cur.execute("INSERT INTO session VALUES (?,?,?)", (token, user_id, now_iso()))
+    cur.execute("DELETE FROM session WHERE expires_at <= ?", (now_iso(),))
+    cur.execute("INSERT INTO session VALUES (?,?,?,?)", (token, user_id, now_iso(), now_iso(SESSION_TTL)))
     db_write(con)
     con.close()
 
-    response.set_cookie(SESSION_COOKIE, token, httponly=True, samesite="lax", max_age=60 * 60 * 24 * 30)
+    response.set_cookie(SESSION_COOKIE, token, httponly=True, samesite="lax",
+                         max_age=int(SESSION_TTL.total_seconds()))
     return {"is_new_account": is_new_account, "redirect": "/survey" if student_id is None else "/home"}
 
 
