@@ -34,6 +34,11 @@ Pages:
                     the new student_id so they never see the survey again.
   GET  /home    -> gated to a logged-in user who HAS completed the survey:
                     their group, its members, and their course.
+  GET  /chat?group=<group_id>
+                -> same gating as /home, plus group membership (enforced
+                    by the /api/groups/* endpoints). Text-only group chat,
+                    polled every few seconds; reached by clicking your
+                    group card on /home.
   GET  /account -> same gating as /home. Edit your display name, log out,
                     or delete your own account (DELETE /api/account - removes
                     your student/survey data AND login access in one action,
@@ -64,11 +69,12 @@ import secrets
 import urllib.error
 import urllib.parse
 import urllib.request
+from contextlib import asynccontextmanager
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Dict, Optional
 
-from fastapi import FastAPI, HTTPException, Request, Response
+from fastapi import FastAPI, HTTPException, Query, Request, Response
 from fastapi.responses import FileResponse, HTMLResponse, RedirectResponse
 from pydantic import BaseModel, Field
 
@@ -96,7 +102,32 @@ GOOGLE_CLIENT_SECRET = os.environ.get("GOOGLE_CLIENT_SECRET")
 GOOGLE_REDIRECT_URI = os.environ.get("GOOGLE_REDIRECT_URI")
 OAUTH_STATE_COOKIE = "google_oauth_state"
 
-app = FastAPI(title="StudyMatch")
+
+def _migrate():
+    """Additive, idempotent schema changes for databases built before a table
+    existed - the live Turso DB is never rebuilt from schema.sql, so this is
+    how it picks up new tables on deploy. Mirror any change here in
+    data/schema.sql (what fresh builds use)."""
+    con = db()
+    con.execute("""CREATE TABLE IF NOT EXISTS group_chat_message (
+        message_id   INTEGER PRIMARY KEY AUTOINCREMENT,
+        group_id     TEXT NOT NULL REFERENCES study_group(group_id),
+        student_id   TEXT NOT NULL REFERENCES student(student_id),
+        text         TEXT NOT NULL,
+        created_at   TEXT NOT NULL
+    )""")
+    con.execute("CREATE INDEX IF NOT EXISTS idx_group_chat_message_group ON group_chat_message(group_id, message_id)")
+    db_write(con)
+    con.close()
+
+
+@asynccontextmanager
+async def lifespan(_app):
+    _migrate()
+    yield
+
+
+app = FastAPI(title="StudyMatch", lifespan=lifespan)
 
 
 def now_iso(offset=timedelta(0)):
@@ -186,6 +217,18 @@ def account_page(request: Request):
     if user["student_id"] is None:
         return RedirectResponse("/survey")
     return FileResponse(UI_DIR / "account.html")
+
+
+@app.get("/chat", response_class=HTMLResponse, include_in_schema=False)
+def chat_page(request: Request):
+    # Same gating as /home; group membership is checked by the chat API
+    # itself, which the page calls first and bounces home on a 403/404.
+    user = current_user(request)
+    if user is None:
+        return RedirectResponse("/login")
+    if user["student_id"] is None:
+        return RedirectResponse("/survey")
+    return FileResponse(UI_DIR / "chat.html")
 
 
 @app.get("/admin", response_class=HTMLResponse, include_in_schema=False)
@@ -578,12 +621,116 @@ def api_home(request: Request):
                WHERE gm.group_id = ? AND gm.student_id != ? ORDER BY s.name""",
             (group_id, sid),
         ).fetchall()]
-        result.update({"status": "grouped", "group_name": group_name, "group_score": group_score, "members": members})
+        result.update({"status": "grouped", "group_id": group_id, "group_name": group_name, "group_score": group_score, "members": members})
     else:
         result["status"] = "pending"
 
     con.close()
     return result
+
+
+# ─────────────────────────────────────────────────────────────
+#  Group chat - text only, polled (ui/chat.html asks for messages
+#  after the last id it has every few seconds; no websockets, so it
+#  survives Render's free-tier sleep/redeploys with nothing to reconnect)
+# ─────────────────────────────────────────────────────────────
+
+CHAT_MAX_LENGTH = 1000
+CHAT_PAGE_SIZE = 200
+SQLITE_INT_MAX = 2**63 - 1   # bigger ids overflow sqlite's INTEGER binding (500, not 422)
+
+
+class ChatMessageIn(BaseModel):
+    text: str
+
+
+def _require_group_member(request: Request, con, group_id):
+    """The logged-in user's student_id, or 401/403/404 - only a group's own
+    members can read or post in its chat."""
+    user = require_user(request)
+    if not con.execute("SELECT 1 FROM study_group WHERE group_id = ?", (group_id,)).fetchone():
+        raise HTTPException(404, "Group not found")
+    if user["student_id"] is None or not con.execute(
+        "SELECT 1 FROM group_membership WHERE group_id = ? AND student_id = ?",
+        (group_id, user["student_id"]),
+    ).fetchone():
+        raise HTTPException(403, "You're not a member of this group.")
+    return user["student_id"]
+
+
+def _chat_message(row, sid):
+    message_id, student_id, name, text, created_at = row
+    # sender_id lets the page tell apart two members who share a display name.
+    return {"message_id": message_id, "sender_id": student_id, "name": name, "text": text,
+            "created_at": created_at, "is_me": student_id == sid}
+
+
+@app.get("/api/groups/{group_id}")
+def api_group(group_id: str, request: Request):
+    """Chat page header: group name, course, and every member."""
+    con = db()
+    try:
+        sid = _require_group_member(request, con, group_id)
+        group_name, course_code, course_title = con.execute(
+            """SELECT sg.group_name, c.course_code, c.course_title FROM study_group sg
+               JOIN course c ON c.course_id = sg.course_id WHERE sg.group_id = ?""",
+            (group_id,),
+        ).fetchone()
+        members = [{"student_id": member_id, "name": name, "is_me": member_id == sid}
+                   for member_id, name in con.execute(
+            """SELECT s.student_id, s.name FROM group_membership gm
+               JOIN student s ON s.student_id = gm.student_id
+               WHERE gm.group_id = ? ORDER BY s.name""",
+            (group_id,),
+        ).fetchall()]
+    finally:
+        con.close()
+    return {"group_id": group_id, "group_name": group_name, "course_code": course_code,
+            "course_title": course_title, "members": members}
+
+
+@app.get("/api/groups/{group_id}/messages")
+def api_group_messages(group_id: str, request: Request,
+                       after: int = Query(0, ge=0, le=SQLITE_INT_MAX)):
+    """after=0: the latest CHAT_PAGE_SIZE messages (first load). after=<id>:
+    everything newer than that id, oldest first (each poll)."""
+    con = db()
+    try:
+        sid = _require_group_member(request, con, group_id)
+        select = """SELECT m.message_id, m.student_id, s.name, m.text, m.created_at
+                    FROM group_chat_message m JOIN student s ON s.student_id = m.student_id
+                    WHERE m.group_id = ?"""
+        if after == 0:
+            rows = con.execute(select + " ORDER BY m.message_id DESC LIMIT ?",
+                               (group_id, CHAT_PAGE_SIZE)).fetchall()[::-1]
+        else:
+            rows = con.execute(select + " AND m.message_id > ? ORDER BY m.message_id LIMIT ?",
+                               (group_id, after, CHAT_PAGE_SIZE)).fetchall()
+    finally:
+        con.close()
+    return {"messages": [_chat_message(r, sid) for r in rows]}
+
+
+@app.post("/api/groups/{group_id}/messages")
+def api_group_post_message(group_id: str, body: ChatMessageIn, request: Request):
+    text = body.text.strip()
+    if not text:
+        raise HTTPException(400, "Message can't be empty.")
+    if len(text) > CHAT_MAX_LENGTH:
+        raise HTTPException(400, f"Messages are limited to {CHAT_MAX_LENGTH} characters.")
+    con = db()
+    try:
+        sid = _require_group_member(request, con, group_id)
+        con.execute(
+            "INSERT INTO group_chat_message (group_id, student_id, text, created_at) VALUES (?,?,?,?)",
+            (group_id, sid, text, now_iso()),
+        )
+        db_write(con)
+    finally:
+        con.close()
+    # No message body returned (libsql's embedded replica doesn't reliably
+    # report lastrowid) - the page polls right after sending to pick it up.
+    return {"sent": True}
 
 
 # ─────────────────────────────────────────────────────────────
@@ -718,6 +865,7 @@ def _delete_student_cascade(cur, student_id):
     cur.execute("DELETE FROM match_data WHERE student_id=?", (student_id,))
     cur.execute("DELETE FROM group_membership WHERE student_id=?", (student_id,))
     cur.execute("DELETE FROM course_chat_message WHERE student_id=?", (student_id,))
+    cur.execute("DELETE FROM group_chat_message WHERE student_id=?", (student_id,))
     cur.execute("DELETE FROM pairwise_compatibility WHERE student_a=? OR student_b=?", (student_id, student_id))
     cur.execute("DELETE FROM academic_profile WHERE student_id=?", (student_id,))
     cur.execute("DELETE FROM availability_block WHERE student_id=?", (student_id,))

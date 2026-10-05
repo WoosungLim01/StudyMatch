@@ -91,6 +91,17 @@
   }
   .member-list li.empty{background:none;padding:0;font-weight:400;color:var(--muted);}
 
+  .card.clickable{cursor:pointer;transition:box-shadow .15s,transform .15s;}
+  .card.clickable:hover{box-shadow:0 12px 32px rgba(27,42,65,.14);transform:translateY(-2px);}
+  .card.clickable:focus-visible{outline:3px solid var(--blue-3);outline-offset:3px;}
+  .btn-primary{
+    display:inline-flex;align-items:center;gap:8px;margin-top:24px;
+    background:var(--navy);color:#fff;border:none;border-radius:999px;text-decoration:none;
+    padding:12px 22px;font:700 15px/1 var(--font-body);
+  }
+  .btn-primary svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+  .card.clickable:hover .btn-primary{background:var(--navy-mid);}
+
   .pending{display:flex;gap:18px;align-items:flex-start;}
   .pending h3{font-size:22px;margin-bottom:6px;}
   .pending p{margin:0;color:var(--muted-strong);}
@@ -162,7 +173,13 @@
 const API = '';
 
 const AVATAR_COLORS = ['', 'c2', 'c3'];
-function initial(name){ return (name || '?').trim().charAt(0).toUpperCase(); }
+function initial(name){ return esc((name || '?').trim().charAt(0).toUpperCase()); }
+// Names, emails and group names are user-controlled (anyone can set their
+// display name on /account) - escape before they go into innerHTML, or a
+// name like <img onerror=...> runs script in every groupmate's browser.
+function esc(s){
+  return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
 
 async function load(){
   const res = await fetch(API + '/api/home');
@@ -174,8 +191,8 @@ async function load(){
   const data = await res.json();
 
   document.getElementById('greeting-card').innerHTML = `
-    <h1 class="greeting">Hey, ${data.name.split(' ')[0]}.</h1>
-    <p class="greeting-sub">${data.email}</p>
+    <h1 class="greeting">Hey, ${esc(data.name.split(' ')[0])}.</h1>
+    <p class="greeting-sub">${esc(data.email)}</p>
   `;
 
   const groupCard = document.getElementById('group-card');
@@ -186,17 +203,28 @@ async function load(){
     groupContent.innerHTML = `
       <div class="group-top">
         <div>
-          <h2 class="group-name">${data.group_name}</h2>
-          <span class="badge">Compatibility ${data.group_score}</span>
+          <h2 class="group-name">${esc(data.group_name)}</h2>
+          <span class="badge">Compatibility ${esc(data.group_score)}</span>
         </div>
         <div class="stack" aria-hidden="true">
           ${members.slice(0, 5).map((m, i) => `<div class="avatar ${AVATAR_COLORS[i % 3]}">${initial(m)}</div>`).join('')}
         </div>
       </div>
       <ul class="member-list">
-        ${members.map((m, i) => `<li><div class="avatar ${AVATAR_COLORS[i % 3]}">${initial(m)}</div>${m}</li>`).join('') || '<li class="empty">No other members yet</li>'}
+        ${members.map((m, i) => `<li><div class="avatar ${AVATAR_COLORS[i % 3]}">${initial(m)}</div>${esc(m)}</li>`).join('') || '<li class="empty">No other members yet</li>'}
       </ul>
+      <a class="btn-primary" href="/chat?group=${encodeURIComponent(data.group_id)}">
+        <svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 0 1-11.6 7.1L4 20l.9-4.4A8 8 0 1 1 20 12z"/></svg>
+        Open group chat
+      </a>
     `;
+    // The whole card opens the chat, not just the button.
+    const chatUrl = '/chat?group=' + encodeURIComponent(data.group_id);
+    groupCard.classList.add('clickable');
+    groupCard.tabIndex = 0;
+    groupCard.setAttribute('role', 'link');
+    groupCard.addEventListener('click', e => { if (!e.target.closest('a')) window.location.href = chatUrl; });
+    groupCard.addEventListener('keydown', e => { if (e.key === 'Enter') window.location.href = chatUrl; });
   } else {
     groupContent.innerHTML = `
       <div class="pending">
@@ -215,8 +243,8 @@ async function load(){
     document.getElementById('course-content').innerHTML = `
       <div class="icon-box"><svg viewBox="0 0 24 24"><path d="M4 19.5V5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M8 7h7M8 11h5"/></svg></div>
       <div>
-        <span class="badge course-code">${data.course_code}</span>
-        <div class="course-title">${data.course_title}</div>
+        <span class="badge course-code">${esc(data.course_code)}</span>
+        <div class="course-title">${esc(data.course_title)}</div>
       </div>
     `;
   }

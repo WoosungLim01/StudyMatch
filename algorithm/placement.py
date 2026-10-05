@@ -153,6 +153,7 @@ def recompute_or_delete_group(cur, group_id, course_id):
         "SELECT student_id FROM group_membership WHERE group_id=?", (group_id,)
     ).fetchall()]
     if not remaining:
+        cur.execute("DELETE FROM group_chat_message WHERE group_id=?", (group_id,))
         cur.execute("DELETE FROM study_group WHERE group_id=?", (group_id,))
         return
     if len(remaining) == 1:
