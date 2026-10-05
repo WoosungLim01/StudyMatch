@@ -18,12 +18,31 @@ same graceful-degradation pattern as Google sign-in's 501.
 
 import os
 import smtplib
+import socket
 from email.mime.text import MIMEText
 
 SMTP_EMAIL = os.environ.get("SMTP_EMAIL")
 SMTP_APP_PASSWORD = os.environ.get("SMTP_APP_PASSWORD")
 SMTP_HOST = "smtp.gmail.com"
 SMTP_PORT = 587
+
+_real_getaddrinfo = socket.getaddrinfo
+
+
+def _ipv4_only_getaddrinfo(host, port, family=0, type=0, proto=0, flags=0):
+    """Forces IPv4 resolution for the duration of the SMTP connection below.
+
+    Real failure hit on Render: OSError: [Errno 101] Network is unreachable
+    connecting to smtp.gmail.com:587 - the classic symptom of DNS handing
+    back an IPv6 address the host can't actually route to, when IPv4 would
+    work fine (this worked against the same code on my own machine, so it's
+    specifically a Render-network thing, not a bug in the SMTP logic
+    itself). Still resolves and connects by the real hostname (not a bare
+    IP), so Gmail's TLS certificate still validates correctly in
+    starttls() - only the address *family* DNS is allowed to return is
+    constrained, nothing else about the connection changes.
+    """
+    return _real_getaddrinfo(host, port, socket.AF_INET, type, proto, flags)
 
 
 def send_email(to, subject, body):
@@ -37,6 +56,7 @@ def send_email(to, subject, body):
     msg["Subject"] = subject
     msg["From"] = SMTP_EMAIL
     msg["To"] = to
+    socket.getaddrinfo = _ipv4_only_getaddrinfo
     try:
         with smtplib.SMTP(SMTP_HOST, SMTP_PORT, timeout=10) as server:
             server.starttls()
@@ -44,14 +64,19 @@ def send_email(to, subject, body):
             server.sendmail(SMTP_EMAIL, [to], msg.as_string())
         return True
     except (smtplib.SMTPException, OSError) as e:
-        # OSError (not just SMTPException) because a blocked/slow/refused
-        # outbound connection - a real possibility on a hosting platform,
-        # not just a local network - raises socket.timeout/
-        # ConnectionRefusedError/etc., none of which are SMTPException
+        # OSError (not just SMTPException) because a blocked/slow/refused/
+        # unreachable outbound connection - a real possibility on a hosting
+        # platform, not just a local network - raises socket.timeout/
+        # ConnectionRefusedError/OSError, none of which are SMTPException
         # subclasses. Missing this crashed every signup with a 500 the
         # first time this ran somewhere other than my own machine.
         print(f"[email] send to {to!r} failed: {type(e).__name__}: {e}")
         return False
+    finally:
+        # Scoped to just this connection attempt - restore immediately so
+        # nothing else in the app (Turso's libsql, Google OAuth's urllib
+        # calls) is affected by forcing IPv4.
+        socket.getaddrinfo = _real_getaddrinfo
 
 
 def send_verification_email(to, verify_url):
