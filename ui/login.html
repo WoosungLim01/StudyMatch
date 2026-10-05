@@ -105,6 +105,9 @@
     padding:12px 16px;font-size:14px;font-weight:600;margin-bottom:18px;display:none;
   }
 
+  .link{background:none;border:none;padding:0;color:var(--navy);font:700 14px/1 var(--font-body);text-decoration:underline;cursor:pointer;}
+  .link:focus-visible{outline:3px solid var(--blue-3);outline-offset:3px;}
+
   .divider{display:flex;align-items:center;gap:14px;margin:20px 0;color:var(--muted);font-size:13px;font-weight:700;}
   .divider::before,.divider::after{content:"";flex:1;height:1px;background:var(--line-strong);}
 
@@ -172,7 +175,12 @@
         <label for="f-password">Password</label>
         <input type="password" id="f-password" required autocomplete="current-password" minlength="6" placeholder="At least 6 characters">
       </div>
+      <div class="row" id="code-row" hidden>
+        <label for="f-code">Verification code</label>
+        <input type="text" id="f-code" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="6-digit code">
+      </div>
       <button type="submit" class="btn" id="submit-btn">Continue</button>
+      <p class="hint" id="resend-hint" hidden>Didn't get it? <button type="button" class="link" id="resend-btn">Send a new code</button></p>
     </form>
 
     <div class="divider">or</div>
@@ -198,35 +206,54 @@ if (urlError) {
   window.history.replaceState({}, '', window.location.pathname);
 }
 
+const codeRow = document.getElementById('code-row');
+const resendHint = document.getElementById('resend-hint');
+let awaitingCode = false;
+
+function showCodeStep(message) {
+  awaitingCode = true;
+  codeRow.hidden = false;
+  resendHint.hidden = false;
+  const infoEl = document.getElementById('info');
+  infoEl.textContent = message;
+  infoEl.style.display = 'block';
+  document.getElementById('f-code').value = '';
+  document.getElementById('f-code').focus();
+}
+
 document.getElementById('login-form').addEventListener('submit', async (e) => {
   e.preventDefault();
   const errorEl = document.getElementById('error');
   const infoEl = document.getElementById('info');
   errorEl.style.display = 'none';
-  infoEl.style.display = 'none';
+  if (!awaitingCode) infoEl.style.display = 'none';
 
   const btn = document.getElementById('submit-btn');
   btn.disabled = true;
   btn.textContent = 'Checking…';
 
+  const payload = {
+    email: document.getElementById('f-email').value.trim(),
+    password: document.getElementById('f-password').value,
+  };
+  const url = awaitingCode ? '/api/auth/verify-code' : '/api/auth/login';
+  if (awaitingCode) payload.code = document.getElementById('f-code').value.trim();
+
   try {
-    const res = await fetch(API + '/api/auth/login', {
+    const res = await fetch(API + url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        email: document.getElementById('f-email').value.trim(),
-        password: document.getElementById('f-password').value,
-      }),
+      body: JSON.stringify(payload),
     });
     if (!res.ok) {
       const body = await res.json().catch(() => ({}));
       throw new Error(body.detail || res.statusText);
     }
     const data = await res.json();
-    if (data.status === 'verify_sent') {
-      infoEl.textContent = data.message;
-      infoEl.style.display = 'block';
-      btn.textContent = 'Check your email';
+    if (data.status === 'code_sent') {
+      showCodeStep(data.message);
+      btn.disabled = false;
+      btn.textContent = 'Verify code';
       return;
     }
     window.location.href = data.redirect;
@@ -234,8 +261,15 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
     errorEl.textContent = err.message;
     errorEl.style.display = 'block';
     btn.disabled = false;
-    btn.textContent = 'Continue';
+    btn.textContent = awaitingCode ? 'Verify code' : 'Continue';
   }
+});
+
+document.getElementById('resend-btn').addEventListener('click', () => {
+  awaitingCode = false;
+  codeRow.hidden = true;
+  resendHint.hidden = true;
+  document.getElementById('login-form').requestSubmit();
 });
 </script>
 </body>

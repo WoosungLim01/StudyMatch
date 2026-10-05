@@ -1,5 +1,5 @@
 """
-StudyMatch — outbound email (verification links, account-deletion notices).
+StudyMatch — outbound email (verification codes, account-deletion notices).
 
 Resend's HTTP API (https://api.resend.com/emails), not SMTP: Render's free
 tier unconditionally firewall-blocks outbound traffic to every SMTP port
@@ -70,13 +70,14 @@ def send_email(to, subject, body):
         return False
 
 
-def send_verification_email(to, verify_url):
+def send_verification_code(to, code):
     send_email(
         to,
-        "Verify your StudyMatch account",
+        "Your StudyMatch verification code",
         f"Welcome to StudyMatch!\n\n"
-        f"Click the link below to verify your email and finish signing in:\n\n"
-        f"{verify_url}\n\n"
+        f"Your verification code is:\n\n"
+        f"    {code}\n\n"
+        f"Enter it on the StudyMatch sign-up page to finish creating your account.\n\n"
         f"If you didn't sign up for StudyMatch, you can ignore this email.",
     )
 

@@ -53,9 +53,11 @@ built — the data-layer parts are still accurate).
 
 ## Auth & account features
 
-- **Email + password**: sign up requires clicking a mailed verification
-  link before the account can log in (enforced server-side, not just a
-  nudge). Password reset/complexity rules are minimal on purpose (6-char
+- **Email + password**: sign up requires entering a 6-digit code emailed to
+  the address before the account can log in (enforced server-side, not just
+  a nudge). The code is entered on the login page together with the password,
+  and 5 wrong codes lock it until a new one is requested. A link was used
+  first, but mail providers were flagging or hiding it. Password reset/complexity rules are minimal on purpose (6-char
   minimum, deferred for later).
 - **Google sign-in**: OAuth2 authorization-code flow, implemented with
   stdlib `urllib` (no OAuth framework dependency). Auto-verified on

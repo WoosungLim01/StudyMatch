@@ -11,9 +11,9 @@ other parts of the project together:
 Pages:
   GET  /login   -> combined login/signup, two methods:
                     - email+password: unknown email creates an account but
-                      does NOT log in yet - a verification email is sent
-                      (data/email.py) and login is refused until that link
-                      is clicked (GET /api/auth/verify). Known email checks
+                      does NOT log in yet - a 6-digit code is emailed
+                      (data/email.py) and entered on the same page, with the
+                      password, via POST /api/auth/verify-code. Known email checks
                       the password (wrong password rejected, never silently
                       treated as a new signup; a Google-only account's NULL
                       password_hash is rejected the same clear way).
@@ -80,7 +80,7 @@ from data.archetype_store import load_model
 from data.auth import hash_password, verify_password
 from data.db import connect as db
 from data.db import write as db_write
-from data.email import send_account_deleted_email, send_verification_email
+from data.email import send_account_deleted_email, send_verification_code
 
 ROOT = Path(__file__).parent
 UI_DIR = ROOT / "ui"
@@ -216,8 +216,23 @@ def _set_session_cookie(response, token):
                          max_age=int(SESSION_TTL.total_seconds()))
 
 
+CODE_SENT_MESSAGE = "We emailed you a 6-digit code. Enter it below to finish signing up."
+CODE_MAX_WRONG_ATTEMPTS = 5
+_wrong_code_attempts: Dict[str, int] = {}
+
+
+def _new_verify_code():
+    return f"{secrets.randbelow(10**6):06d}"
+
+
+class VerifyCodeIn(BaseModel):
+    email: str
+    password: str
+    code: str
+
+
 @app.post("/api/auth/login")
-def api_login(body: LoginIn, request: Request, response: Response):
+def api_login(body: LoginIn, response: Response):
     email = body.email.strip()
     if not email or not body.password:
         raise HTTPException(400, "Email and password are both required.")
@@ -229,22 +244,17 @@ def api_login(body: LoginIn, request: Request, response: Response):
     ).fetchone()
 
     if row is None:
-        # Unknown email -> sign up, but NOT logged in yet - unverified until
-        # they click the link we're about to email them.
         user_id = next_user_id(cur)
-        verify_token = secrets.token_urlsafe(32)
+        code = _new_verify_code()
         cur.execute(
             "INSERT INTO user_account VALUES (?,?,?,?,?,?,?,?)",
-            (user_id, email, hash_password(body.password), None, now_iso(), None, None, verify_token),
+            (user_id, email, hash_password(body.password), None, now_iso(), None, None, code),
         )
         db_write(con)
         con.close()
-        verify_url = str(request.base_url) + f"api/auth/verify?token={verify_token}"
-        send_verification_email(email, verify_url)
-        return {
-            "is_new_account": True, "status": "verify_sent",
-            "message": "Check your email for a verification link to finish signing up.",
-        }
+        _wrong_code_attempts.pop(email, None)
+        send_verification_code(email, code)
+        return {"status": "code_sent", "message": CODE_SENT_MESSAGE}
 
     user_id, password_hash, student_id, verified_at = row
     if password_hash is None:
@@ -254,8 +264,13 @@ def api_login(body: LoginIn, request: Request, response: Response):
         con.close()
         raise HTTPException(401, "Incorrect password for this email.")
     if verified_at is None:
+        code = _new_verify_code()
+        cur.execute("UPDATE user_account SET verify_token = ? WHERE user_id = ?", (code, user_id))
+        db_write(con)
         con.close()
-        raise HTTPException(403, "Please verify your email first - check your inbox for the verification link.")
+        _wrong_code_attempts.pop(email, None)
+        send_verification_code(email, code)
+        return {"status": "code_sent", "message": CODE_SENT_MESSAGE}
 
     token = _create_session(cur, user_id)
     db_write(con)
@@ -265,24 +280,37 @@ def api_login(body: LoginIn, request: Request, response: Response):
     return {"is_new_account": False, "redirect": "/survey" if student_id is None else "/home"}
 
 
-@app.get("/api/auth/verify", include_in_schema=False)
-def api_verify_email(token: str):
+@app.post("/api/auth/verify-code")
+def api_verify_code(body: VerifyCodeIn, response: Response):
+    email = body.email.strip()
     con = db()
     cur = con.cursor()
-    row = cur.execute("SELECT user_id, student_id FROM user_account WHERE verify_token = ?", (token,)).fetchone()
-    if row is None:
+    row = cur.execute(
+        "SELECT user_id, password_hash, student_id, verify_token FROM user_account "
+        "WHERE email = ? AND verified_at IS NULL",
+        (email,),
+    ).fetchone()
+    if row is None or row[1] is None or not verify_password(body.password, row[1]):
         con.close()
-        return RedirectResponse("/login?error=" + urllib.parse.quote("That verification link is invalid or already used."))
+        raise HTTPException(401, "Incorrect email or password.")
 
-    user_id, student_id = row
+    user_id, _, student_id, stored_code = row
+    if _wrong_code_attempts.get(email, 0) >= CODE_MAX_WRONG_ATTEMPTS:
+        con.close()
+        raise HTTPException(429, "Too many wrong codes. Log in again to get a new one.")
+    if stored_code is None or body.code.strip() != stored_code:
+        _wrong_code_attempts[email] = _wrong_code_attempts.get(email, 0) + 1
+        con.close()
+        raise HTTPException(400, "That code isn't right. Check the email and try again.")
+
+    _wrong_code_attempts.pop(email, None)
     cur.execute("UPDATE user_account SET verified_at = ?, verify_token = NULL WHERE user_id = ?", (now_iso(), user_id))
-    session_token = _create_session(cur, user_id)
+    token = _create_session(cur, user_id)
     db_write(con)
     con.close()
 
-    redirect = RedirectResponse("/survey" if student_id is None else "/home")
-    _set_session_cookie(redirect, session_token)
-    return redirect
+    _set_session_cookie(response, token)
+    return {"redirect": "/survey" if student_id is None else "/home"}
 
 
 @app.get("/api/auth/google/login", include_in_schema=False)
