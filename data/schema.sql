@@ -59,10 +59,15 @@ CREATE TABLE student (
 -- so student_id starts NULL and is set once - that's also how login knows
 -- whether to route someone to /survey or /home. Named user_account (not
 -- `user`) to dodge the reserved-word gotcha that bites plenty of SQL engines.
+-- Two sign-in paths share this one row shape: password accounts have
+-- password_hash set and google_sub NULL; Google accounts have the reverse.
+-- Matched by email on Google sign-in, so the same person can't end up with
+-- two separate accounts just by choosing a different sign-in method.
 CREATE TABLE user_account (
     user_id         TEXT PRIMARY KEY,
     email           TEXT NOT NULL UNIQUE COLLATE NOCASE,
-    password_hash   TEXT NOT NULL,
+    password_hash   TEXT,    -- NULL for Google-only accounts (no password set)
+    google_sub      TEXT UNIQUE,    -- Google's stable per-user ID; NULL for password-only accounts
     created_at      TEXT NOT NULL,
     student_id      TEXT UNIQUE REFERENCES student(student_id)
 );

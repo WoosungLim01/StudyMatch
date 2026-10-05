@@ -43,7 +43,12 @@ Run (from the repo root):
     # -> open http://localhost:8010/login
 """
 
+import json
+import os
 import secrets
+import urllib.error
+import urllib.parse
+import urllib.request
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Dict, Optional
@@ -65,6 +70,15 @@ ROOT = Path(__file__).parent
 UI_DIR = ROOT / "ui"
 SESSION_COOKIE = "session_token"
 SESSION_TTL = timedelta(days=30)
+
+# Google sign-in - unset until GOOGLE_CLIENT_ID/SECRET/REDIRECT_URI are
+# configured (Google Cloud Console credentials, set as env vars, never
+# committed - same pattern as TURSO_DATABASE_URL/TURSO_AUTH_TOKEN).
+# /api/auth/google/login 501s with a clear message until all three are set.
+GOOGLE_CLIENT_ID = os.environ.get("GOOGLE_CLIENT_ID")
+GOOGLE_CLIENT_SECRET = os.environ.get("GOOGLE_CLIENT_SECRET")
+GOOGLE_REDIRECT_URI = os.environ.get("GOOGLE_REDIRECT_URI")
+OAUTH_STATE_COOKIE = "google_oauth_state"
 
 app = FastAPI(title="StudyMatch")
 
@@ -173,6 +187,19 @@ class LoginIn(BaseModel):
     password: str
 
 
+def _create_session(cur, user_id):
+    """Shared by password login and Google sign-in - same session row either way."""
+    token = secrets.token_urlsafe(32)
+    cur.execute("DELETE FROM session WHERE expires_at <= ?", (now_iso(),))
+    cur.execute("INSERT INTO session VALUES (?,?,?,?)", (token, user_id, now_iso(), now_iso(SESSION_TTL)))
+    return token
+
+
+def _set_session_cookie(response, token):
+    response.set_cookie(SESSION_COOKIE, token, httponly=True, samesite="lax",
+                         max_age=int(SESSION_TTL.total_seconds()))
+
+
 @app.post("/api/auth/login")
 def api_login(body: LoginIn, response: Response):
     email = body.email.strip()
@@ -189,27 +216,114 @@ def api_login(body: LoginIn, response: Response):
         # Unknown email -> sign up.
         user_id = next_user_id(cur)
         cur.execute(
-            "INSERT INTO user_account VALUES (?,?,?,?,?)",
-            (user_id, email, hash_password(body.password), now_iso(), None),
+            "INSERT INTO user_account VALUES (?,?,?,?,?,?)",
+            (user_id, email, hash_password(body.password), None, now_iso(), None),
         )
         student_id = None
         is_new_account = True
     else:
         user_id, password_hash, student_id = row
+        if password_hash is None:
+            con.close()
+            raise HTTPException(401, "This email uses Google sign-in - use the Google button instead.")
         if not verify_password(body.password, password_hash):
             con.close()
             raise HTTPException(401, "Incorrect password for this email.")
         is_new_account = False
 
-    token = secrets.token_urlsafe(32)
-    cur.execute("DELETE FROM session WHERE expires_at <= ?", (now_iso(),))
-    cur.execute("INSERT INTO session VALUES (?,?,?,?)", (token, user_id, now_iso(), now_iso(SESSION_TTL)))
+    token = _create_session(cur, user_id)
     db_write(con)
     con.close()
 
-    response.set_cookie(SESSION_COOKIE, token, httponly=True, samesite="lax",
-                         max_age=int(SESSION_TTL.total_seconds()))
+    _set_session_cookie(response, token)
     return {"is_new_account": is_new_account, "redirect": "/survey" if student_id is None else "/home"}
+
+
+@app.get("/api/auth/google/login", include_in_schema=False)
+def api_google_login():
+    if not (GOOGLE_CLIENT_ID and GOOGLE_REDIRECT_URI):
+        raise HTTPException(501, "Google sign-in isn't configured yet.")
+    state = secrets.token_urlsafe(24)
+    params = {
+        "client_id": GOOGLE_CLIENT_ID,
+        "redirect_uri": GOOGLE_REDIRECT_URI,
+        "response_type": "code",
+        "scope": "openid email profile",
+        "state": state,
+        "prompt": "select_account",
+    }
+    redirect = RedirectResponse("https://accounts.google.com/o/oauth2/v2/auth?" + urllib.parse.urlencode(params))
+    redirect.set_cookie(OAUTH_STATE_COOKIE, state, httponly=True, samesite="lax", max_age=600)
+    return redirect
+
+
+@app.get("/api/auth/google/callback", include_in_schema=False)
+def api_google_callback(request: Request, code: Optional[str] = None, state: Optional[str] = None,
+                         error: Optional[str] = None):
+    def failure(message):
+        return RedirectResponse("/login?error=" + urllib.parse.quote(message))
+
+    if error:
+        return failure("Google sign-in was cancelled.")
+    cookie_state = request.cookies.get(OAUTH_STATE_COOKIE)
+    if not code or not state or not cookie_state or state != cookie_state:
+        return failure("Google sign-in failed - please try again.")
+
+    token_body = urllib.parse.urlencode({
+        "code": code, "client_id": GOOGLE_CLIENT_ID, "client_secret": GOOGLE_CLIENT_SECRET,
+        "redirect_uri": GOOGLE_REDIRECT_URI, "grant_type": "authorization_code",
+    }).encode()
+    try:
+        with urllib.request.urlopen(
+            urllib.request.Request("https://oauth2.googleapis.com/token", data=token_body, method="POST"),
+            timeout=10,
+        ) as resp:
+            access_token = json.loads(resp.read()).get("access_token")
+        if not access_token:
+            raise ValueError("no access_token in Google's response")
+        with urllib.request.urlopen(
+            urllib.request.Request(
+                "https://openidconnect.googleapis.com/v1/userinfo",
+                headers={"Authorization": f"Bearer {access_token}"},
+            ),
+            timeout=10,
+        ) as resp:
+            info = json.loads(resp.read())
+    except (urllib.error.URLError, ValueError):
+        return failure("Could not reach Google - please try again.")
+
+    if not info.get("email_verified"):
+        return failure("Your Google email is not verified.")
+    email = info["email"].strip()
+    google_sub = info["sub"]
+
+    con = db()
+    cur = con.cursor()
+    row = cur.execute(
+        "SELECT user_id, student_id FROM user_account WHERE email = ? OR google_sub = ?", (email, google_sub)
+    ).fetchone()
+    if row is None:
+        user_id = next_user_id(cur)
+        cur.execute(
+            "INSERT INTO user_account VALUES (?,?,?,?,?,?)",
+            (user_id, email, None, google_sub, now_iso(), None),
+        )
+        student_id = None
+    else:
+        # Covers both a returning Google user and a password account signing
+        # in with Google for the first time under the same email - either
+        # way it's one person, one account, matched by email.
+        user_id, student_id = row
+        cur.execute("UPDATE user_account SET google_sub = ? WHERE user_id = ?", (google_sub, user_id))
+
+    token = _create_session(cur, user_id)
+    db_write(con)
+    con.close()
+
+    redirect = RedirectResponse("/survey" if student_id is None else "/home")
+    redirect.delete_cookie(OAUTH_STATE_COOKIE)
+    _set_session_cookie(redirect, token)
+    return redirect
 
 
 @app.post("/api/auth/logout")
