@@ -242,6 +242,13 @@ def build(force=False):
         )
 
     con.commit()
+    # WAL mode + a full checkpoint, so the single .db file is always ready to
+    # upload to Turso as-is (its "upload a SQLite file" path requires
+    # journal_mode=WAL; a plain commit() alone leaves the default rollback
+    # journal mode, which Turso rejects with "Protocol error: upload works
+    # only for DBs with journal_mode=WAL").
+    con.execute("PRAGMA journal_mode=WAL")
+    con.execute("PRAGMA wal_checkpoint(TRUNCATE)")
 
     print(f"Wrote {DB_PATH} ({DB_PATH.stat().st_size / 1024:.0f} KB)")
     table_names = [row[0] for row in cur.execute(

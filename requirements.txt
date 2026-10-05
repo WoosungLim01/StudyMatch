@@ -1,5 +1,11 @@
 # StudyMatch - one requirements file for the whole project.
 #
+# Python version is pinned in .python-version (3.10, matching local dev) -
+# numpy 1.26.4 / scikit-learn 1.5.2 / ortools 9.10.4067 below have no
+# prebuilt wheels for newer Pythons (e.g. Render's current default, 3.14),
+# which forces a slow from-source build and, for ortools specifically, fails
+# outright since no 9.10.4067 build exists for it at all.
+#
 # app.py (the FastAPI server)      needs fastapi + uvicorn
 # algorithm/grouping.py            needs ortools (CP-SAT ILP for group formation)
 # algorithm/clustering.py          needs numpy + scikit-learn (GaussianMixture)

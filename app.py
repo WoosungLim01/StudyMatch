@@ -25,6 +25,7 @@ Pages:
                     the new student_id so they never see the survey again.
   GET  /home    -> gated to a logged-in user who HAS completed the survey:
                     their group, its members, and their course.
+  GET  /account -> same gating as /home. Edit your display name, log out.
   GET  /admin   -> lists every student (fake and real) AND every login
                     account, each with a delete button. Deleting a student
                     removes them everywhere (personality, pairwise scores,
@@ -145,6 +146,16 @@ def home_page(request: Request):
     if user["student_id"] is None:
         return RedirectResponse("/survey")
     return FileResponse(UI_DIR / "home.html")
+
+
+@app.get("/account", response_class=HTMLResponse, include_in_schema=False)
+def account_page(request: Request):
+    user = current_user(request)
+    if user is None:
+        return RedirectResponse("/login")
+    if user["student_id"] is None:
+        return RedirectResponse("/survey")
+    return FileResponse(UI_DIR / "account.html")
 
 
 @app.get("/admin", response_class=HTMLResponse, include_in_schema=False)
@@ -376,6 +387,40 @@ def api_home(request: Request):
 
     con.close()
     return result
+
+
+# ─────────────────────────────────────────────────────────────
+#  Account
+# ─────────────────────────────────────────────────────────────
+
+class AccountIn(BaseModel):
+    name: str
+
+
+@app.get("/api/account")
+def api_account(request: Request):
+    user = require_user(request)
+    if user["student_id"] is None:
+        raise HTTPException(400, "Survey not completed yet.")
+    con = db()
+    name = con.execute("SELECT name FROM student WHERE student_id = ?", (user["student_id"],)).fetchone()[0]
+    con.close()
+    return {"name": name, "email": user["email"]}
+
+
+@app.post("/api/account")
+def api_account_update(body: AccountIn, request: Request):
+    user = require_user(request)
+    if user["student_id"] is None:
+        raise HTTPException(400, "Survey not completed yet.")
+    name = body.name.strip()
+    if not name:
+        raise HTTPException(400, "Name cannot be empty.")
+    con = db()
+    con.execute("UPDATE student SET name = ? WHERE student_id = ?", (name, user["student_id"]))
+    db_write(con)
+    con.close()
+    return {"name": name}
 
 
 # ─────────────────────────────────────────────────────────────

@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>StudyMatch · Account</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  /* StudyMatch tokens — see Design.md */
+  :root{
+    --bg:#EEF2F8; --surface:#FFFFFF;
+    --navy:#14213D; --navy-deep:#0A1B33; --navy-mid:#1B2A4A;
+    --blue-2:#2C4770; --blue-3:#5C7EA6; --band:#DCE6F5;
+    --ink:#1B2A41; --muted-strong:rgba(27,42,65,.72); --muted:rgba(27,42,65,.55);
+    --line-soft:rgba(27,42,65,.06); --line:rgba(27,42,65,.08); --line-strong:rgba(27,42,65,.12);
+    --tint:rgba(20,33,61,.10);
+    --danger:#8A3B42; --danger-soft:#F6EBEC;
+    --good:#2F6F4E; --good-soft:#EAF5EE;
+    --font-display:"Fraunces",Georgia,"Times New Roman",serif;
+    --font-body:"Nunito",system-ui,-apple-system,"Segoe UI",sans-serif;
+    --shadow-card:0 8px 24px rgba(27,42,65,.08);
+    color-scheme:light;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;min-height:100vh;background:var(--bg);color:var(--ink);
+    font-family:var(--font-body);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;
+    padding-bottom:env(safe-area-inset-bottom);
+  }
+  h1,h2,h3{font-family:var(--font-display);color:var(--navy);margin:0;line-height:1.15;letter-spacing:-.01em;}
+
+  .topbar{
+    position:sticky;top:0;z-index:10;background:rgba(255,255,255,.9);backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top);
+  }
+  .topbar-inner{max-width:1040px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;}
+  .brand{display:flex;align-items:center;gap:10px;font:700 22px/1 var(--font-display);color:var(--navy);}
+  .brand-mark{width:36px;height:36px;border-radius:12px;background:var(--navy);display:grid;place-items:center;}
+  .brand-mark svg{width:20px;height:20px;fill:none;stroke:#fff;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+
+  .btn-ghost{
+    background:transparent;color:var(--navy);border:2px solid var(--navy);border-radius:999px;
+    padding:8px 20px;font:700 14px/1 var(--font-body);cursor:pointer;transition:background .15s;
+    text-decoration:none;display:inline-flex;align-items:center;
+  }
+  .btn-ghost:hover{background:var(--tint);}
+  .btn-ghost:focus-visible{outline:3px solid var(--blue-3);outline-offset:3px;}
+
+  main{max-width:640px;margin:0 auto;padding:56px 24px 96px;}
+
+  .hero{margin-bottom:36px;}
+  .hero h1{font-size:40px;margin:0 0 8px;}
+  .hero p{margin:0;color:var(--muted-strong);font-size:16px;}
+
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow-card);padding:32px;margin-bottom:24px;}
+  .card-label{display:block;font:700 13px/1 var(--font-body);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:16px;}
+
+  .row{margin-bottom:18px;}
+  .row:last-child{margin-bottom:0;}
+  label{display:block;font:700 14px/1.4 var(--font-body);color:var(--ink);margin-bottom:6px;}
+  input[type=text]{
+    width:100%;padding:12px 16px;border-radius:14px;border:1.5px solid var(--line-strong);
+    background-color:var(--surface);color:var(--ink);font:400 16px/1.4 var(--font-body);
+    transition:border-color .15s, box-shadow .15s;
+  }
+  input[type=text]:focus{outline:none;border-color:var(--navy);box-shadow:0 0 0 4px var(--tint);}
+  input:disabled{background-color:var(--bg);color:var(--muted);cursor:not-allowed;}
+
+  .email-line{
+    padding:12px 16px;border-radius:14px;background:var(--bg);color:var(--muted-strong);font-weight:600;
+  }
+
+  .btn{
+    padding:13px 28px;border-radius:999px;cursor:pointer;
+    background:var(--navy);color:#fff;border:2px solid var(--navy);
+    font:700 15px/1 var(--font-body);transition:background .15s, border-color .15s, transform .1s;
+  }
+  .btn:hover{background:var(--navy-deep);border-color:var(--navy-deep);}
+  .btn:active{transform:translateY(1px);}
+  .btn:focus-visible{outline:3px solid var(--blue-3);outline-offset:3px;}
+  .btn:disabled{opacity:.6;cursor:not-allowed;transform:none;}
+
+  .save-row{display:flex;align-items:center;gap:14px;margin-top:22px;}
+  .save-msg{font-size:14px;font-weight:700;display:none;}
+  .save-msg.good{color:var(--good);display:inline;}
+  .save-msg.bad{color:var(--danger);display:inline;}
+
+  .danger-zone{border-color:rgba(138,59,66,.2);}
+  .danger-zone .btn-ghost{border-color:var(--danger);color:var(--danger);}
+  .danger-zone .btn-ghost:hover{background:var(--danger-soft);}
+
+  @media (max-width:560px){
+    main{padding:36px 16px 64px;}
+    .card{padding:24px 20px;}
+    .hero h1{font-size:32px;}
+    .topbar-inner{padding:12px 16px;}
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <span class="brand-mark"><svg viewBox="0 0 24 24"><path d="M12 6.5C10.5 5 8.2 4.5 4 4.5v13c4.2 0 6.5.5 8 2 1.5-1.5 3.8-2 8-2v-13c-4.2 0-6.5.5-8 2z"/><path d="M12 6.5v13"/></svg></span>
+      StudyMatch
+    </div>
+    <div style="display:flex;gap:10px;">
+      <a class="btn-ghost" href="/home">Back to home</a>
+      <button class="btn-ghost" id="logout-btn">Log out</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="hero">
+    <h1>Your account</h1>
+    <p>Update your name or sign out below.</p>
+  </div>
+
+  <section class="card">
+    <span class="card-label">Profile</span>
+    <div class="row">
+      <label for="f-email">Email</label>
+      <div class="email-line" id="f-email">Loading…</div>
+    </div>
+    <div class="row">
+      <label for="f-name">Name</label>
+      <input type="text" id="f-name" disabled placeholder="Loading…">
+    </div>
+    <div class="save-row">
+      <button class="btn" id="save-btn" disabled>Save changes</button>
+      <span class="save-msg" id="save-msg"></span>
+    </div>
+  </section>
+
+  <section class="card danger-zone">
+    <span class="card-label">Session</span>
+    <p style="margin:0 0 18px;color:var(--muted-strong);">Signed in as this account on this device.</p>
+    <button class="btn-ghost" id="logout-btn-2">Log out</button>
+  </section>
+</main>
+
+<script>
+const API = '';
+
+// Same sanitize-as-you-type rule as the survey's name fields: strip all
+// whitespace, force the first letter to caps.
+function sanitizeNamePart(v){
+  v = v.replace(/\s+/g, '');
+  return v ? v.charAt(0).toUpperCase() + v.slice(1) : v;
+}
+
+let originalName = '';
+
+async function load(){
+  const res = await fetch(API + '/api/account');
+  if (res.status === 401) { window.location.href = '/login'; return; }
+  if (res.status === 400) { window.location.href = '/survey'; return; }
+  if (!res.ok) {
+    document.getElementById('f-email').textContent = 'Something went wrong loading your account.';
+    return;
+  }
+  const data = await res.json();
+  document.getElementById('f-email').textContent = data.email;
+  const nameInput = document.getElementById('f-name');
+  nameInput.value = data.name;
+  nameInput.disabled = false;
+  nameInput.placeholder = '';
+  originalName = data.name;
+  document.getElementById('save-btn').disabled = false;
+}
+load();
+
+const nameInput = document.getElementById('f-name');
+nameInput.addEventListener('input', () => {
+  const pos = nameInput.selectionStart;
+  const before = nameInput.value.length;
+  // Sanitize each space-separated part independently so a full "First Last"
+  // name keeps its internal space instead of being treated as one word.
+  nameInput.value = nameInput.value.split(' ').map(sanitizeNamePart).join(' ');
+  nameInput.setSelectionRange(Math.max(0, pos - (before - nameInput.value.length)), Math.max(0, pos - (before - nameInput.value.length)));
+});
+
+document.getElementById('save-btn').addEventListener('click', async () => {
+  const msg = document.getElementById('save-msg');
+  const name = nameInput.value.trim();
+  if (!name) {
+    msg.textContent = 'Name cannot be empty.';
+    msg.className = 'save-msg bad';
+    return;
+  }
+  const btn = document.getElementById('save-btn');
+  btn.disabled = true;
+  msg.className = 'save-msg';
+  try {
+    const res = await fetch(API + '/api/account', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name }),
+    });
+    if (res.status === 401) { window.location.href = '/login'; return; }
+    if (!res.ok) throw new Error((await res.json()).detail || res.statusText);
+    originalName = name;
+    msg.textContent = 'Saved.';
+    msg.className = 'save-msg good';
+  } catch (err) {
+    msg.textContent = err.message;
+    msg.className = 'save-msg bad';
+  } finally {
+    btn.disabled = false;
+  }
+});
+
+async function logout(){
+  await fetch(API + '/api/auth/logout', { method: 'POST' });
+  window.location.href = '/login';
+}
+document.getElementById('logout-btn').addEventListener('click', logout);
+document.getElementById('logout-btn-2').addEventListener('click', logout);
+</script>
+</body>
+</html>
