@@ -49,7 +49,14 @@ def send_email(to, subject, body):
     }).encode()
     req = urllib.request.Request(
         RESEND_URL, data=payload, method="POST",
-        headers={"Authorization": f"Bearer {RESEND_API_KEY}", "Content-Type": "application/json"},
+        # Explicit User-Agent: Resend sits behind Cloudflare, which blocks
+        # urllib's default "Python-urllib/x.y" with a 403 (error 1010) before
+        # the API key is even checked.
+        headers={
+            "Authorization": f"Bearer {RESEND_API_KEY}",
+            "Content-Type": "application/json",
+            "User-Agent": "StudyMatch/1.0",
+        },
     )
     try:
         with urllib.request.urlopen(req, timeout=10) as resp:
