@@ -29,7 +29,7 @@ entirely (not just excluded from scoring) — see "Known simplifications" below.
 ## The actual database
 
 `schema.sql` + `build_database.py` turn `sample/*.json` into a real, normalized
-SQLite database at `studymatch.db` (19 tables, about 1,750 rows, zero FK violations).
+SQLite database at `studymatch.db` (20 tables, about 1,750 rows, zero FK violations).
 Rebuild it anytime with:
 
 ```
@@ -37,12 +37,14 @@ python build_database.py            # regenerates sample/*.json, then builds stu
 python build_database.py --no-regen # builds studymatch.db from whatever's already in sample/
 ```
 
-Two of those 19 tables aren't loaded from `sample/*.json` at all —
+Three of those 20 tables aren't loaded from `sample/*.json` at all —
 `user_account` and `session` (login accounts and their session tokens, see
 [`auth.py`](auth.py) and the [repo root README](../README.md#how-it-works))
-start empty and are only ever populated by real logins through
-[`../app.py`](../app.py). The rebuild guard below accounts for both: it
-refuses to run if either real students *or* any login account exist.
+and `group_chat_message` (the members-only group chat behind `/chat`) start
+empty and are only ever populated by real use through
+[`../app.py`](../app.py). The rebuild guard below accounts for them: it
+refuses to run if either real students *or* any login account exist, and a
+chat message can only come from a logged-in, real student.
 
 Open `studymatch.db` in [DB Browser for SQLite](https://sqlitebrowser.org/) or any
 SQLite client. The ER diagram for this schema — plus the normalization decisions

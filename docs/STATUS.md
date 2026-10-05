@@ -9,6 +9,7 @@ Snapshot of where the project stands on `main`. For setup and how the system wor
 - **Auto-deploy is not triggering.** Pushes to `main` don't start a deploy. Workaround: **Manual Deploy → Deploy latest commit** in Render, or the service's **Deploy Hook** URL (Settings tab), which works with a plain GET or POST and can be shared without giving dashboard access. Root cause not yet confirmed. Next time, check Settings → Build & Deploy → Branch and the Events tab.
 - **Latest change on `main`**: `883b316`, which replaces the emailed verification link with a 6-digit code. Tested locally; not yet tested on the live site.
 - Verified live end-to-end (before the code change): sign-up, email verification, survey, ILP group placement, home, account editing, admin deletion.
+- **Group chat is on `dev_woojoo`, not `main` yet** (commit `e953396`), so it isn't live. See Group chat below and Pending.
 
 ## Data collection layer
 
@@ -31,6 +32,17 @@ Full detail: [`README.md`](../README.md#how-it-works) and the code in `algorithm
 - **Deletion notifications**: all three deletion paths email the affected person a confirmation.
 - **Sessions**: 30-day expiry, enforced server-side and swept on each login.
 
+## Group chat
+
+On `dev_woojoo`; not merged or deployed yet.
+
+- **What it does**: clicking your group card on `/home` opens `/chat?group=<group_id>`, a private text-only chat for that group's members. Messages show sender, time, and day separators, and consecutive messages from one person are grouped.
+- **How it updates**: the page polls for messages newer than the last one it has every 3 seconds and pauses while the tab is hidden. No websockets, so Render's free-tier sleep and redeploys don't break anything.
+- **Access control**: every chat endpoint (`/api/groups/{id}`, `/api/groups/{id}/messages`) checks group membership on each request. Non-members get 403, logged-out users 401.
+- **Database**: new `group_chat_message` table. `app.py` creates it on startup if it's missing, so the live Turso database needs no manual migration; deploying is enough. A deleted student's messages, and a deleted group's chat, are removed with them.
+- **Security fix shipped with it**: `ui/home.html` now HTML-escapes names, emails, and group names. Display names are editable on `/account`, and before this fix a name containing HTML ran as script in every groupmate's browser.
+- **Tested locally** against a copy of the database: sending and polling, member-only access (403/401/404), input limits, the startup migration on an old database, deletion cleanup, escaping of HTML in names, and a double Enter or an IME-composition Enter not producing extra messages. **Not yet tested on the live site.**
+
 ## Outbound email
 
 - Sent through **Resend's HTTP API** over HTTPS (port 443). Gmail SMTP was dropped because Render's free tier blocks SMTP ports 25, 465, and 587.
@@ -45,11 +57,14 @@ Full detail: [`README.md`](../README.md#how-it-works) and the code in `algorithm
 3. **Confirm the Google environment variables** are set on Render.
 4. **Add authentication to the admin page** and to `/api/admin/*`. Both are currently public.
 5. **Diagnose auto-deploy** (see Live deployment).
+6. **Merge group chat into `main` and deploy** (`dev_woojoo`, commit `e953396`), then test it live with two accounts in the same group. Turso must be reachable when the app starts, because startup creates the chat table.
+7. **Escape names on the admin page.** `ui/admin.html` still inserts names as raw HTML (see Known limitations). Do it together with item 4.
 
 ## Known limitations and deliberately deferred
 
 - Password rules: 6-character minimum, deliberately minimal.
-- Admin page: no authentication (see Pending).
+- Admin page: no authentication, and it renders student names as raw HTML, so a display name containing HTML runs as script there (see Pending).
+- Group chat: text only. No read receipts, attachments, notifications, or editing or deleting messages. No per-user send rate limit. Each 3-second poll syncs with Turso, which is fine at the current scale but worth revisiting (a longer interval or a lighter read path) with many concurrent users.
 - Verification codes don't expire, and the wrong-code lockout is kept in memory. Codes are stored in a column with a UNIQUE constraint, so if two unverified accounts ever receive the same code (about 1 in a million per pair), the second sign-up fails with a server error.
 - The synthetic population (36 students) is too small to validate its correlations statistically. Means check out; correlations are noisy at this sample size. See `SYNTHETIC_DATA.md`.
 - `session_mode` and `collaboration` are calibrated against Big Five proxies, not exact constructs. See `SYNTHETIC_DATA.md`.

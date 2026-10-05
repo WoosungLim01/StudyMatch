@@ -72,6 +72,17 @@ https://claude.ai/code/artifact/ea7b2a43-c040-44fe-9049-af37e590cddc
   and the same two students could in principle share more than one course —
   without `course_id` in the key, a second shared course's row would collide
   with the first instead of coexisting.
+- **Two chat tables, two purposes**: `course_chat_message` is the course-wide
+  Q&A board (typed posts, upvotes), synthetic sample data only.
+  `group_chat_message` is the private chat behind `/chat`, readable and
+  writable only by that group's members (checked on every request in
+  `app.py`). Its `message_id` is an `AUTOINCREMENT` integer rather than a
+  `msg_0001`-style string so the page can poll for "everything after the last
+  id I have". It starts empty and is never loaded from `sample/`. `app.py`
+  also creates it on startup (`CREATE TABLE IF NOT EXISTS`), which is how the
+  live Turso database, never rebuilt from `schema.sql`, picks it up. Deleting
+  a student deletes their messages; deleting a group's last member deletes
+  the group's chat with it.
 
 ## Diagram
 
@@ -102,6 +113,8 @@ erDiagram
     STUDENT ||--o{ MATCH_DATA : receives
     COURSE ||--o{ COURSE_CHAT_MESSAGE : hosts
     STUDENT ||--o{ COURSE_CHAT_MESSAGE : posts
+    STUDY_GROUP ||--o{ GROUP_CHAT_MESSAGE : "chats in"
+    STUDENT ||--o{ GROUP_CHAT_MESSAGE : sends
     STUDY_GROUP ||--o{ GROUP_FEEDBACK : receives
     STUDENT ||--o{ GROUP_FEEDBACK : gives
 
@@ -254,6 +267,13 @@ erDiagram
         string text
         int upvotes
         string timestamp
+    }
+    GROUP_CHAT_MESSAGE {
+        int message_id PK
+        string group_id FK
+        string student_id FK
+        string text
+        string created_at
     }
     GROUP_FEEDBACK {
         int feedback_id PK
