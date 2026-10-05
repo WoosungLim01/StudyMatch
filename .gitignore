@@ -9,3 +9,8 @@ venv/
 
 # presentation decks - generated artifacts, not source
 *.pptx
+
+# Turso embedded-replica local cache (data/db.py) - rebuilt from the remote
+# on every connect, never the source of truth, must never collide with the
+# committed data/studymatch.db plain file
+data/.turso_replica.db*
