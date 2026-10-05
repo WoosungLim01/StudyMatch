@@ -14,3 +14,8 @@ venv/
 # on every connect, never the source of truth, must never collide with the
 # committed data/studymatch.db plain file
 data/.turso_replica.db*
+
+# Google OAuth client credentials downloaded from Cloud Console - real
+# secrets (client ID + secret), configured on the host as GOOGLE_CLIENT_ID/
+# GOOGLE_CLIENT_SECRET env vars instead, never committed
+client_secret_*.json
