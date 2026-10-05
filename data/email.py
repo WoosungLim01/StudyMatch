@@ -43,8 +43,14 @@ def send_email(to, subject, body):
             server.login(SMTP_EMAIL, SMTP_APP_PASSWORD)
             server.sendmail(SMTP_EMAIL, [to], msg.as_string())
         return True
-    except smtplib.SMTPException as e:
-        print(f"[email] send to {to!r} failed: {e}")
+    except (smtplib.SMTPException, OSError) as e:
+        # OSError (not just SMTPException) because a blocked/slow/refused
+        # outbound connection - a real possibility on a hosting platform,
+        # not just a local network - raises socket.timeout/
+        # ConnectionRefusedError/etc., none of which are SMTPException
+        # subclasses. Missing this crashed every signup with a 500 the
+        # first time this ran somewhere other than my own machine.
+        print(f"[email] send to {to!r} failed: {type(e).__name__}: {e}")
         return False
 
 
