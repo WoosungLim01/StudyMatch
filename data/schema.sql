@@ -242,6 +242,20 @@ CREATE TABLE course_chat_message (
     timestamp    TEXT
 );
 
+-- Private chat for one study group's members (ui/chat.html). Separate from
+-- course_chat_message, which is the course-wide Q&A board. message_id is
+-- monotonically increasing so clients poll with "?after=<last id seen>".
+-- app.py also creates this table on startup (IF NOT EXISTS), so databases
+-- built before it existed - including the live Turso one - pick it up on deploy.
+CREATE TABLE IF NOT EXISTS group_chat_message (
+    message_id   INTEGER PRIMARY KEY AUTOINCREMENT,
+    group_id     TEXT NOT NULL REFERENCES study_group(group_id),
+    student_id   TEXT NOT NULL REFERENCES student(student_id),
+    text         TEXT NOT NULL,
+    created_at   TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_group_chat_message_group ON group_chat_message(group_id, message_id);
+
 CREATE TABLE group_feedback (
     feedback_id                  INTEGER PRIMARY KEY AUTOINCREMENT,
     group_id                     TEXT NOT NULL REFERENCES study_group(group_id),
