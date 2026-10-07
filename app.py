@@ -123,7 +123,12 @@ def _migrate():
 
 @asynccontextmanager
 async def lifespan(_app):
-    _migrate()
+    # Never let a failed migration keep the whole site down: everything except
+    # group chat works without the new table, and the next restart retries.
+    try:
+        _migrate()
+    except Exception as e:
+        print(f"[migrate] failed, starting anyway (group chat unavailable until fixed): {e!r}", flush=True)
     yield
 
 
