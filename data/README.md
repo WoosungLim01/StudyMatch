@@ -29,7 +29,7 @@ entirely (not just excluded from scoring) — see "Known simplifications" below.
 ## The actual database
 
 `schema.sql` + `build_database.py` turn `sample/*.json` into a real, normalized
-SQLite database at `studymatch.db` (20 tables, about 1,750 rows, zero FK violations).
+SQLite database at `studymatch.db` (22 tables, about 1,750 rows, zero FK violations).
 Rebuild it anytime with:
 
 ```
@@ -37,14 +37,19 @@ python build_database.py            # regenerates sample/*.json, then builds stu
 python build_database.py --no-regen # builds studymatch.db from whatever's already in sample/
 ```
 
-Three of those 20 tables aren't loaded from `sample/*.json` at all —
+Five of those 22 tables aren't loaded from `sample/*.json` at all —
 `user_account` and `session` (login accounts and their session tokens, see
-[`auth.py`](auth.py) and the [repo root README](../README.md#how-it-works))
-and `group_chat_message` (the members-only group chat behind `/chat`) start
-empty and are only ever populated by real use through
+[`auth.py`](auth.py) and the [repo root README](../README.md#how-it-works)),
+`group_chat_message` (the members-only group chat behind `/chat`), and
+`group_chat_attachment` / `group_chat_attachment_chunk` (files sent in that
+chat) start empty and are only ever populated by real use through
 [`../app.py`](../app.py). The rebuild guard below accounts for them: it
 refuses to run if either real students *or* any login account exist, and a
-chat message can only come from a logged-in, real student.
+chat message or upload can only come from a logged-in, real student.
+
+The committed `studymatch.db` predates the chat tables. Running the app
+locally adds them (see [`migrations.py`](migrations.py)), which changes that
+file, so don't commit it after a local run.
 
 Open `studymatch.db` in [DB Browser for SQLite](https://sqlitebrowser.org/) or any
 SQLite client. The ER diagram for this schema — plus the normalization decisions

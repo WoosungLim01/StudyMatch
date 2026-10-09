@@ -72,7 +72,7 @@
   .row.last .avatar{visibility:visible;}
   .row.me{flex-direction:row-reverse;}
   .row.me .avatar{display:none;}
-  .body{display:flex;flex-direction:column;max-width:min(560px,78%);}
+  .body{display:flex;flex-direction:column;align-items:flex-start;max-width:min(560px,78%);}
   .row.me .body{align-items:flex-end;}
   .sender{font:700 13px/1.2 var(--font-body);color:var(--muted-strong);margin:0 0 4px 12px;}
   .bubble{
@@ -85,6 +85,26 @@
   .row.me:not(.last) .bubble{border-bottom-right-radius:6px;}
   .row.me:not(.first) .bubble{border-top-right-radius:6px;}
   .time{font-size:11px;color:var(--muted);margin:4px 8px 0;}
+
+  /* ── Attachments in messages ── */
+  .body > * + .bubble{margin-top:4px;}
+  a.media{display:block;max-width:100%;border-radius:14px;overflow:hidden;border:1px solid var(--line);background:var(--surface);}
+  a.media img{display:block;max-width:100%;max-height:320px;}
+  a.media:focus-visible{outline:3px solid var(--blue-3);outline-offset:2px;}
+  video.media{display:block;width:320px;max-width:100%;max-height:360px;border-radius:14px;background:#000;}
+  .file{
+    display:flex;align-items:center;gap:12px;padding:10px 14px;max-width:100%;
+    border-radius:18px;background:var(--surface);border:1px solid var(--line);color:var(--ink);text-decoration:none;
+  }
+  .row.me .file{background:var(--navy);border-color:var(--navy);color:#fff;}
+  .file:hover .file-name{text-decoration:underline;}
+  .file:focus-visible{outline:3px solid var(--blue-3);outline-offset:2px;}
+  .file-icon{width:36px;height:36px;flex:none;border-radius:10px;background:var(--tint);color:var(--navy);display:grid;place-items:center;}
+  .row.me .file-icon{background:rgba(255,255,255,.14);color:#fff;}
+  .file-icon svg,.pending-thumb svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+  .file-info{display:flex;flex-direction:column;min-width:0;}
+  .file-name{font-weight:700;font-size:14px;overflow-wrap:anywhere;}
+  .file-size{font-size:12px;opacity:.72;}
 
   /* ── Composer ── */
   .composer{flex:none;background:var(--surface);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom);}
@@ -106,11 +126,42 @@
   .error{max-width:820px;margin:0 auto;padding:0 24px 8px;color:#B42318;font-size:13px;}
   .error:empty{display:none;}
 
+  .attach{
+    width:46px;height:46px;flex:none;border:none;border-radius:50%;cursor:pointer;
+    background:transparent;color:var(--navy);display:grid;place-items:center;transition:background .15s,opacity .15s;
+  }
+  .attach:hover{background:var(--tint);}
+  .attach:disabled{opacity:.4;cursor:default;background:transparent;}
+  .attach:focus-visible{outline:3px solid var(--blue-3);outline-offset:2px;}
+  .attach svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+
+  /* ── File picked but not sent yet ── */
+  .pending{max-width:820px;margin:0 auto;padding:12px 24px 0;}
+  .pending[hidden]{display:none;}
+  .pending-card{
+    display:flex;align-items:center;gap:12px;padding:8px 8px 8px 10px;
+    border-radius:16px;background:var(--bg);border:1px solid var(--line-strong);
+  }
+  .pending-thumb{width:44px;height:44px;flex:none;border-radius:10px;overflow:hidden;background:var(--tint);color:var(--navy);display:grid;place-items:center;}
+  .pending-thumb img{width:100%;height:100%;object-fit:cover;}
+  .pending-info{flex:1;min-width:0;}
+  .pending-name{font-weight:700;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .pending-meta{font-size:12px;color:var(--muted);}
+  .pending-remove{
+    width:36px;height:36px;flex:none;border:none;border-radius:50%;cursor:pointer;
+    background:transparent;color:var(--muted-strong);display:grid;place-items:center;
+  }
+  .pending-remove:hover{background:var(--tint);}
+  .pending-remove:disabled{opacity:.4;cursor:default;background:transparent;}
+  .pending-remove:focus-visible{outline:3px solid var(--blue-3);outline-offset:2px;}
+  .pending-remove svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;}
+
   @media (max-width:560px){
     .topbar-inner{padding:10px 16px;gap:10px;}
     .stack{display:none;}
     .messages{padding:16px 16px 8px;}
-    .composer form{padding:10px 16px;}
+    .composer form{padding:10px 16px;gap:6px;}
+    .pending{padding:10px 16px 0;}
     .error{padding:0 16px 8px;}
     .body{max-width:85%;}
   }
@@ -139,7 +190,23 @@
 
 <div class="composer">
   <div class="error" id="error" role="alert"></div>
+  <div class="pending" id="pending" hidden>
+    <div class="pending-card">
+      <div class="pending-thumb" id="pending-thumb"></div>
+      <div class="pending-info">
+        <div class="pending-name" id="pending-name"></div>
+        <div class="pending-meta" id="pending-meta"></div>
+      </div>
+      <button class="pending-remove" id="pending-remove" type="button" aria-label="Remove attachment">
+        <svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+  </div>
   <form id="composer">
+    <input type="file" id="file" hidden>
+    <button class="attach" id="attach" type="button" aria-label="Attach a photo, video or file" disabled>
+      <svg viewBox="0 0 24 24"><path d="M21.4 11.1l-8.5 8.5a5.5 5.5 0 0 1-7.8-7.8l8.5-8.5a3.7 3.7 0 0 1 5.2 5.2l-8.5 8.5a1.8 1.8 0 0 1-2.6-2.6l7.8-7.8"/></svg>
+    </button>
     <textarea id="input" rows="1" maxlength="1000" placeholder="Message your group" aria-label="Message" disabled></textarea>
     <button class="send" id="send" type="submit" aria-label="Send" disabled>
       <svg viewBox="0 0 24 24"><path d="M4 12l16-8-6 16-2.5-6.5z"/><path d="M11.5 13.5L20 4"/></svg>
@@ -162,6 +229,23 @@ const listEl = document.getElementById('messages');
 const input = document.getElementById('input');
 const sendBtn = document.getElementById('send');
 const errorEl = document.getElementById('error');
+const fileInput = document.getElementById('file');
+const attachBtn = document.getElementById('attach');
+const pendingEl = document.getElementById('pending');
+const pendingThumb = document.getElementById('pending-thumb');
+const pendingName = document.getElementById('pending-name');
+const pendingMeta = document.getElementById('pending-meta');
+const pendingRemove = document.getElementById('pending-remove');
+
+// Static icon markup only - never user input.
+const FILE_SVG = '<svg viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></svg>';
+const VIDEO_SVG = '<svg viewBox="0 0 24 24"><rect x="3" y="6" width="13" height="12" rx="2"/><path d="M16 10.5l5-3v9l-5-3z"/></svg>';
+const PREVIEW_TYPES = /^image\/(png|jpeg|gif|webp)$/;
+
+let maxBytes = 10 * 1024 * 1024;   // replaced by the server's limit once the group loads
+let pendingFile = null;
+let previewUrl = null;
+let pinned = true;       // user is at the bottom, so media that finishes loading keeps them there
 
 let lastId = 0;
 let lastMsg = null;      // previous rendered message, for grouping consecutive bubbles
@@ -202,6 +286,41 @@ function el(tag, cls, text){
 
 function nearBottom(){ return scrollEl.scrollHeight - scrollEl.scrollTop - scrollEl.clientHeight < 120; }
 function toBottom(){ scrollEl.scrollTop = scrollEl.scrollHeight; }
+scrollEl.addEventListener('scroll', () => { pinned = nearBottom(); });
+function keepPinned(){ if (pinned) toBottom(); }
+
+function formatSize(n){
+  if (n < 1024) return n + ' B';
+  if (n < 1024 * 1024) return Math.round(n / 1024) + ' KB';
+  return (n / (1024 * 1024)).toFixed(1) + ' MB';
+}
+
+function attachmentEl(a){
+  const url = `${BASE}/attachments/${encodeURIComponent(a.id)}`;
+  if (a.kind === 'image') {
+    const link = el('a', 'media');
+    link.href = url; link.target = '_blank'; link.rel = 'noopener';
+    const img = el('img');
+    img.src = url; img.alt = a.filename; img.loading = 'lazy';
+    img.addEventListener('load', keepPinned);
+    link.appendChild(img);
+    return link;
+  }
+  if (a.kind === 'video') {
+    const video = el('video', 'media');
+    video.src = url; video.controls = true; video.preload = 'metadata'; video.playsInline = true;
+    video.addEventListener('loadedmetadata', keepPinned);
+    return video;
+  }
+  const link = el('a', 'file');
+  link.href = url; link.download = a.filename;
+  const icon = el('span', 'file-icon');
+  icon.innerHTML = FILE_SVG;
+  const info = el('span', 'file-info');
+  info.append(el('span', 'file-name', a.filename), el('span', 'file-size', formatSize(a.size_bytes)));
+  link.append(icon, info);
+  return link;
+}
 
 function render(messages){
   if (!messages.length) return;
@@ -224,7 +343,8 @@ function render(messages){
     row.appendChild(el('div', 'avatar ' + color(m.sender_id), initial(m.name)));
     const body = el('div', 'body');
     if (!continues && !m.is_me) body.appendChild(el('div', 'sender', m.name));
-    body.appendChild(el('div', 'bubble', m.text));
+    if (m.attachment) body.appendChild(attachmentEl(m.attachment));
+    if (m.text) body.appendChild(el('div', 'bubble', m.text));
     body.appendChild(el('div', 'time', timeLabel(at)));
     row.appendChild(body);
     listEl.appendChild(row);
@@ -269,6 +389,7 @@ async function loadGroup(){
   if (bounce(res)) return false;
   if (!res.ok) { document.getElementById('group-sub').textContent = 'Something went wrong loading this group.'; return false; }
   const g = await res.json();
+  if (g.attachment_max_bytes) maxBytes = g.attachment_max_bytes;
   document.getElementById('group-name').textContent = g.group_name;
   document.title = `StudyMatch · ${g.group_name}`;
   const names = g.members.map(m => m.is_me ? 'You' : m.name.split(' ')[0]);
@@ -282,7 +403,71 @@ async function loadGroup(){
 
 // ── Composer ──
 function autosize(){ input.style.height = 'auto'; input.style.height = input.scrollHeight + 'px'; }
-function updateSend(){ sendBtn.disabled = sending || !input.value.trim(); }
+function updateSend(){
+  sendBtn.disabled = sending || (!input.value.trim() && !pendingFile);
+  attachBtn.disabled = sending || input.disabled;
+  pendingRemove.disabled = sending;
+}
+
+function clearPending(){
+  pendingFile = null;
+  if (previewUrl) URL.revokeObjectURL(previewUrl);
+  previewUrl = null;
+  pendingEl.hidden = true;
+  fileInput.value = '';
+  updateSend();
+}
+
+function setPending(file){
+  clearPending();
+  if (!file) return;
+  if (!file.size) { setError(`${file.name} is empty.`); return; }
+  if (file.size > maxBytes) {
+    setError(`Files are limited to ${formatSize(maxBytes)}, and ${file.name} is ${formatSize(file.size)}.`);
+    return;
+  }
+  setError('');
+  pendingFile = file;
+  pendingThumb.textContent = '';
+  if (PREVIEW_TYPES.test(file.type)) {
+    previewUrl = URL.createObjectURL(file);
+    const img = el('img');
+    img.src = previewUrl; img.alt = '';
+    pendingThumb.appendChild(img);
+  } else {
+    pendingThumb.innerHTML = file.type.startsWith('video/') ? VIDEO_SVG : FILE_SVG;
+  }
+  pendingName.textContent = file.name;
+  pendingMeta.textContent = formatSize(file.size);
+  pendingEl.hidden = false;
+  updateSend();
+  input.focus();
+}
+
+attachBtn.addEventListener('click', () => fileInput.click());
+fileInput.addEventListener('change', () => setPending(fileInput.files[0]));
+pendingRemove.addEventListener('click', () => { clearPending(); input.focus(); });
+
+// XMLHttpRequest rather than fetch: fetch can't report upload progress.
+function uploadFile(file, text){
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', `${BASE}/attachments`);
+    xhr.upload.onprogress = e => {
+      if (e.lengthComputable) pendingMeta.textContent = `Uploading… ${Math.round(e.loaded / e.total * 100)}%`;
+    };
+    xhr.onload = () => {
+      let body = {};
+      try { body = JSON.parse(xhr.responseText); } catch {}
+      resolve({ status: xhr.status, ok: xhr.status >= 200 && xhr.status < 300, body });
+    };
+    xhr.onerror = () => reject(new Error('network'));
+    const form = new FormData();
+    form.append('file', file);
+    if (text) form.append('text', text);
+    xhr.send(form);
+  });
+}
 input.addEventListener('input', () => { autosize(); updateSend(); });
 // Enter sends, Shift+Enter is a newline. Skip while an IME is composing (e.g. Korean
 // input): isComposing covers Chrome/Firefox; Safari instead reports the Enter that
@@ -294,25 +479,35 @@ input.addEventListener('keydown', e => {
 document.getElementById('composer').addEventListener('submit', async e => {
   e.preventDefault();
   const text = input.value.trim();
-  if (!text || sending) return;
+  const file = pendingFile;
+  if ((!text && !file) || sending) return;
   sending = true;
   updateSend();
   try {
-    const res = await fetch(`${BASE}/messages`, {
-      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text }),
-    });
+    let res, err = {};
+    if (file) {
+      res = await uploadFile(file, text);
+      err = res.body;
+    } else {
+      res = await fetch(`${BASE}/messages`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text }),
+      });
+      if (!res.ok) err = await res.json().catch(() => ({}));
+    }
     if (bounce(res)) return;
     if (!res.ok) {
-      const err = await res.json().catch(() => ({}));
       setError(typeof err.detail === 'string' ? err.detail : "Couldn't send. Try again.");
+      if (file) pendingMeta.textContent = formatSize(file.size);
       return;
     }
     setError('');
     input.value = ''; autosize();
+    if (file) clearPending();
     await poll();
     toBottom();
   } catch {
     setError("Couldn't send. Try again.");
+    if (file) pendingMeta.textContent = formatSize(file.size);
   } finally {
     sending = false;
     updateSend();
@@ -325,6 +520,7 @@ document.getElementById('composer').addEventListener('submit', async e => {
   if (!await loadGroup()) return;
   await poll();
   input.disabled = false;
+  updateSend();
   input.focus();
   schedule();
 })();

@@ -7,9 +7,8 @@ Snapshot of where the project stands on `main`. For setup and how the system wor
 - **App**: https://studymatch-8qih.onrender.com (Render, Python 3.10)
 - **Database**: Turso (hosted libSQL). `data/db.py` uses it when `TURSO_DATABASE_URL` and `TURSO_AUTH_TOKEN` are set. Local runs use `data/studymatch.db` when they aren't.
 - **Auto-deploy is not triggering.** Pushes to `main` don't start a deploy. Workaround: **Manual Deploy → Deploy latest commit** in Render, or the service's **Deploy Hook** URL (Settings tab), which works with a plain GET or POST and can be shared without giving dashboard access. Root cause not yet confirmed. Next time, check Settings → Build & Deploy → Branch and the Events tab.
-- **Latest change on `main`**: `883b316`, which replaces the emailed verification link with a 6-digit code. Tested locally; not yet tested on the live site.
+- **Recent changes on `main`**: the 6-digit verification code (`883b316`), group chat (`3a8aeeb`), the fix for the survey 500 when a course's unplaced pool reached 4 (`ecfe135`), and chat attachments. Attachments are tested locally only; the others need a Manual Deploy to be live.
 - Verified live end-to-end (before the code change): sign-up, email verification, survey, ILP group placement, home, account editing, admin deletion.
-- **Group chat is on `dev_woojoo`, not `main` yet** (commit `e953396`), so it isn't live. See Group chat below and Pending.
 
 ## Data collection layer
 
@@ -34,14 +33,15 @@ Full detail: [`README.md`](../README.md#how-it-works) and the code in `algorithm
 
 ## Group chat
 
-On `dev_woojoo`; not merged or deployed yet.
-
-- **What it does**: clicking your group card on `/home` opens `/chat?group=<group_id>`, a private text-only chat for that group's members. Messages show sender, time, and day separators, and consecutive messages from one person are grouped.
+- **What it does**: clicking your group card on `/home` opens `/chat?group=<group_id>`, a private chat for that group's members. Messages show sender, time, and day separators, and consecutive messages from one person are grouped.
+- **Attachments**: one photo, video or file per message, with an optional caption, up to 10 MB. Images and videos display in the chat; other files appear as download cards. Files are stored in Turso as 512 KB chunks, because Render's disk doesn't survive redeploys. Video downloads support byte ranges, so they play and seek on iPhone Safari. SVG, HTML and every other non-media type is only ever served as a download, never rendered.
 - **How it updates**: the page polls for messages newer than the last one it has every 3 seconds and pauses while the tab is hidden. No websockets, so Render's free-tier sleep and redeploys don't break anything.
-- **Access control**: every chat endpoint (`/api/groups/{id}`, `/api/groups/{id}/messages`) checks group membership on each request. Non-members get 403, logged-out users 401.
-- **Database**: new `group_chat_message` table. `app.py` creates it on startup if it's missing, so the live Turso database needs no manual migration; deploying is enough. A deleted student's messages, and a deleted group's chat, are removed with them.
-- **Security fix shipped with it**: `ui/home.html` now HTML-escapes names, emails, and group names. Display names are editable on `/account`, and before this fix a name containing HTML ran as script in every groupmate's browser.
-- **Tested locally** against a copy of the database: sending and polling, member-only access (403/401/404), input limits, the startup migration on an old database, deletion cleanup, escaping of HTML in names, and a double Enter or an IME-composition Enter not producing extra messages. **Not yet tested on the live site.**
+- **Access control**: every chat endpoint (`/api/groups/{id}`, its messages, uploads and downloads) checks group membership on each request. Non-members get 403, logged-out users 401, and an attachment can't be fetched through another group's URL.
+- **Database**: `group_chat_message` (now with an `attachment_id` column), `group_chat_attachment` and `group_chat_attachment_chunk`. `data/migrations.py` creates or extends them on startup, so the live Turso database needs no manual migration; deploying is enough. A deleted student's messages and uploads, and a deleted group's chat and files, are removed with them.
+- **Requires `python-multipart`**, now pinned in `requirements.txt`. Render installs it on the next deploy.
+- **Security fix shipped with chat**: `ui/home.html` HTML-escapes names, emails, and group names. Display names are editable on `/account`, and before that fix a name containing HTML ran as script in every groupmate's browser.
+- **Tested locally**: the text chat as before, plus 55 attachment checks run against both `sqlite3` and the `libsql` driver (uploads of each kind, captions, byte ranges, size limits, access control, deletion cleanup, migration of an old chat table), and a real headless Chrome session (image and video render, video plays and seeks, attach/remove/send, oversized file stopped in the browser, phone width). **Not yet tested against live Turso**: the remote write path for large chunked uploads is the main thing to check after deploying.
+- **Admin test group**: `data/make_group.py` moves chosen students into one new group, for example to test chat with your own accounts. All of them must be in the same course, at most 5. It prints a dry run and writes only with `--apply`. Run it locally with the Turso variables set to change the live database.
 
 ## Outbound email
 
@@ -57,14 +57,15 @@ On `dev_woojoo`; not merged or deployed yet.
 3. **Confirm the Google environment variables** are set on Render.
 4. **Add authentication to the admin page** and to `/api/admin/*`. Both are currently public.
 5. **Diagnose auto-deploy** (see Live deployment).
-6. **Merge group chat into `main` and deploy** (`dev_woojoo`, commit `e953396`), then test it live with two accounts in the same group. Turso must be reachable when the app starts, because startup creates the chat table.
+6. **Deploy, then test chat attachments live** in the admin test group: a photo, a short video (including on an iPhone), and a document. Turso must be reachable when the app starts, because startup creates and extends the chat tables.
 7. **Escape names on the admin page.** `ui/admin.html` still inserts names as raw HTML (see Known limitations). Do it together with item 4.
 
 ## Known limitations and deliberately deferred
 
 - Password rules: 6-character minimum, deliberately minimal.
 - Admin page: no authentication, and it renders student names as raw HTML, so a display name containing HTML runs as script there (see Pending).
-- Group chat: text only. No read receipts, attachments, notifications, or editing or deleting messages. No per-user send rate limit. Each 3-second poll syncs with Turso, which is fine at the current scale but worth revisiting (a longer interval or a lighter read path) with many concurrent users.
+- Group chat: no read receipts, notifications, or editing or deleting messages. No per-user send or upload rate limit. Each 3-second poll syncs with Turso, which is fine at the current scale but worth revisiting (a longer interval or a lighter read path) with many concurrent users.
+- Attachments: 10 MB per file, one file per message, no drag-and-drop or paste. Most phone videos are bigger than 10 MB; supporting them would mean moving files to object storage such as Cloudflare R2. Uploads count against Turso's storage.
 - Verification codes don't expire, and the wrong-code lockout is kept in memory. Codes are stored in a column with a UNIQUE constraint, so if two unverified accounts ever receive the same code (about 1 in a million per pair), the second sign-up fails with a server error.
 - The synthetic population (36 students) is too small to validate its correlations statistically. Means check out; correlations are noisy at this sample size. See `SYNTHETIC_DATA.md`.
 - `session_mode` and `collaboration` are calibrated against Big Five proxies, not exact constructs. See `SYNTHETIC_DATA.md`.

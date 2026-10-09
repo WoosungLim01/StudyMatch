@@ -36,9 +36,9 @@ Pages:
                     their group, its members, and their course.
   GET  /chat?group=<group_id>
                 -> same gating as /home, plus group membership (enforced
-                    by the /api/groups/* endpoints). Text-only group chat,
-                    polled every few seconds; reached by clicking your
-                    group card on /home.
+                    by the /api/groups/* endpoints). Group chat with text
+                    and image/video/file attachments, polled every few
+                    seconds; reached by clicking your group card on /home.
   GET  /account -> same gating as /home. Edit your display name, log out,
                     or delete your own account (DELETE /api/account - removes
                     your student/survey data AND login access in one action,
@@ -76,6 +76,8 @@ from typing import Dict, Optional
 
 from fastapi import FastAPI, HTTPException, Query, Request, Response
 from fastapi.responses import FileResponse, HTMLResponse, RedirectResponse
+from starlette.concurrency import run_in_threadpool
+from starlette.datastructures import UploadFile
 from pydantic import BaseModel, Field
 
 from algorithm.clustering import classify, family_scores, motivation_badge
@@ -87,6 +89,7 @@ from data.auth import hash_password, verify_password
 from data.db import connect as db
 from data.db import write as db_write
 from data.email import send_account_deleted_email, send_verification_code
+from data.migrations import migrate
 
 ROOT = Path(__file__).parent
 UI_DIR = ROOT / "ui"
@@ -104,19 +107,8 @@ OAUTH_STATE_COOKIE = "google_oauth_state"
 
 
 def _migrate():
-    """Additive, idempotent schema changes for databases built before a table
-    existed - the live Turso DB is never rebuilt from schema.sql, so this is
-    how it picks up new tables on deploy. Mirror any change here in
-    data/schema.sql (what fresh builds use)."""
     con = db()
-    con.execute("""CREATE TABLE IF NOT EXISTS group_chat_message (
-        message_id   INTEGER PRIMARY KEY AUTOINCREMENT,
-        group_id     TEXT NOT NULL REFERENCES study_group(group_id),
-        student_id   TEXT NOT NULL REFERENCES student(student_id),
-        text         TEXT NOT NULL,
-        created_at   TEXT NOT NULL
-    )""")
-    con.execute("CREATE INDEX IF NOT EXISTS idx_group_chat_message_group ON group_chat_message(group_id, message_id)")
+    migrate(con)
     db_write(con)
     con.close()
 
@@ -635,14 +627,26 @@ def api_home(request: Request):
 
 
 # ─────────────────────────────────────────────────────────────
-#  Group chat - text only, polled (ui/chat.html asks for messages
-#  after the last id it has every few seconds; no websockets, so it
-#  survives Render's free-tier sleep/redeploys with nothing to reconnect)
+#  Group chat - polled (ui/chat.html asks for messages after the last
+#  id it has every few seconds; no websockets, so it survives Render's
+#  free-tier sleep/redeploys with nothing to reconnect)
 # ─────────────────────────────────────────────────────────────
 
 CHAT_MAX_LENGTH = 1000
 CHAT_PAGE_SIZE = 200
 SQLITE_INT_MAX = 2**63 - 1   # bigger ids overflow sqlite's INTEGER binding (500, not 422)
+
+# Attachments live in the database (Render's disk is wiped on redeploy), split
+# into chunks so no single statement sent to Turso carries a large blob.
+ATTACHMENT_MAX_BYTES = 10 * 1024 * 1024
+ATTACHMENT_CHUNK_BYTES = 512 * 1024
+ATTACHMENT_FORM_OVERHEAD = 64 * 1024
+# Only these are ever served inline; everything else (SVG and HTML included,
+# since they can carry script) is downloaded as application/octet-stream.
+INLINE_KINDS = {
+    "image/png": "image", "image/jpeg": "image", "image/gif": "image", "image/webp": "image",
+    "video/mp4": "video", "video/webm": "video", "video/quicktime": "video",
+}
 
 
 class ChatMessageIn(BaseModel):
@@ -664,10 +668,14 @@ def _require_group_member(request: Request, con, group_id):
 
 
 def _chat_message(row, sid):
-    message_id, student_id, name, text, created_at = row
+    message_id, student_id, name, text, created_at, attachment_id, filename, content_type, kind, size = row
+    attachment = None
+    if attachment_id is not None:
+        attachment = {"id": attachment_id, "filename": filename, "content_type": content_type,
+                      "kind": kind, "size_bytes": size}
     # sender_id lets the page tell apart two members who share a display name.
     return {"message_id": message_id, "sender_id": student_id, "name": name, "text": text,
-            "created_at": created_at, "is_me": student_id == sid}
+            "created_at": created_at, "is_me": student_id == sid, "attachment": attachment}
 
 
 @app.get("/api/groups/{group_id}")
@@ -691,7 +699,8 @@ def api_group(group_id: str, request: Request):
     finally:
         con.close()
     return {"group_id": group_id, "group_name": group_name, "course_code": course_code,
-            "course_title": course_title, "members": members}
+            "course_title": course_title, "members": members,
+            "attachment_max_bytes": ATTACHMENT_MAX_BYTES}
 
 
 @app.get("/api/groups/{group_id}/messages")
@@ -702,8 +711,10 @@ def api_group_messages(group_id: str, request: Request,
     con = db()
     try:
         sid = _require_group_member(request, con, group_id)
-        select = """SELECT m.message_id, m.student_id, s.name, m.text, m.created_at
+        select = """SELECT m.message_id, m.student_id, s.name, m.text, m.created_at,
+                           a.attachment_id, a.filename, a.content_type, a.kind, a.size_bytes
                     FROM group_chat_message m JOIN student s ON s.student_id = m.student_id
+                    LEFT JOIN group_chat_attachment a ON a.attachment_id = m.attachment_id
                     WHERE m.group_id = ?"""
         if after == 0:
             rows = con.execute(select + " ORDER BY m.message_id DESC LIMIT ?",
@@ -736,6 +747,148 @@ def api_group_post_message(group_id: str, body: ChatMessageIn, request: Request)
     # No message body returned (libsql's embedded replica doesn't reliably
     # report lastrowid) - the page polls right after sending to pick it up.
     return {"sent": True}
+
+
+def _check_group_member(request: Request, group_id):
+    con = db()
+    try:
+        _require_group_member(request, con, group_id)
+    finally:
+        con.close()
+
+
+def _clean_filename(name):
+    # Browsers send '"' as %22 (and CR/LF as %0D/%0A) inside multipart filenames.
+    name = (name or "").replace("%22", '"').replace("%0D", "").replace("%0A", "")
+    name = name.replace("\\", "/").rsplit("/", 1)[-1]
+    name = "".join(ch for ch in name if ch.isprintable()).strip()
+    return name[:200] or "file"
+
+
+def _content_disposition(disposition, filename):
+    ascii_name = "".join(ch if 32 <= ord(ch) < 127 and ch not in '"\\' else "_" for ch in filename)
+    return f"{disposition}; filename=\"{ascii_name}\"; filename*=UTF-8''{urllib.parse.quote(filename, safe='')}"
+
+
+def _store_attachment(request, group_id, text, filename, content_type, kind, data):
+    con = db()
+    try:
+        sid = _require_group_member(request, con, group_id)
+        attachment_id = secrets.token_urlsafe(16)
+        created_at = now_iso()
+        con.execute(
+            "INSERT INTO group_chat_attachment VALUES (?,?,?,?,?,?,?,?)",
+            (attachment_id, group_id, sid, filename, content_type, kind, len(data), created_at),
+        )
+        for seq, start in enumerate(range(0, len(data), ATTACHMENT_CHUNK_BYTES)):
+            con.execute(
+                "INSERT INTO group_chat_attachment_chunk VALUES (?,?,?)",
+                (attachment_id, seq, data[start:start + ATTACHMENT_CHUNK_BYTES]),
+            )
+        con.execute(
+            "INSERT INTO group_chat_message (group_id, student_id, text, created_at, attachment_id) VALUES (?,?,?,?,?)",
+            (group_id, sid, text, created_at, attachment_id),
+        )
+        db_write(con)
+    finally:
+        con.close()
+
+
+@app.post("/api/groups/{group_id}/attachments")
+async def api_group_post_attachment(group_id: str, request: Request):
+    """Multipart form: `file` (required) and `text` (optional caption).
+    Membership and size are checked before the body is read."""
+    too_big = f"Files are limited to {ATTACHMENT_MAX_BYTES // (1024 * 1024)} MB."
+    length = request.headers.get("content-length", "")
+    if not length.isdigit():
+        raise HTTPException(411, "Upload size unknown.")
+    if int(length) > ATTACHMENT_MAX_BYTES + ATTACHMENT_FORM_OVERHEAD:
+        raise HTTPException(413, too_big)
+    await run_in_threadpool(_check_group_member, request, group_id)
+
+    form = await request.form(max_files=1, max_fields=1)
+    try:
+        upload = form.get("file")
+        if not isinstance(upload, UploadFile):
+            raise HTTPException(400, "No file attached.")
+        data = await upload.read(ATTACHMENT_MAX_BYTES + 1)
+        if not data:
+            raise HTTPException(400, "That file is empty.")
+        if len(data) > ATTACHMENT_MAX_BYTES:
+            raise HTTPException(413, too_big)
+        text = form.get("text")
+        text = text.strip() if isinstance(text, str) else ""
+        if len(text) > CHAT_MAX_LENGTH:
+            raise HTTPException(400, f"Messages are limited to {CHAT_MAX_LENGTH} characters.")
+        content_type = (upload.content_type or "").split(";")[0].strip().lower()
+        kind = INLINE_KINDS.get(content_type, "file")
+        if kind == "file":
+            content_type = "application/octet-stream"
+        await run_in_threadpool(_store_attachment, request, group_id, text,
+                                _clean_filename(upload.filename), content_type, kind, data)
+    finally:
+        await form.close()
+    return {"sent": True}
+
+
+def _parse_range(header, size):
+    """(start, end) inclusive for a single `bytes=` range, None to serve the
+    whole file (no/malformed/multi-range header), or "unsatisfiable"."""
+    if not header or not header.startswith("bytes=") or "," in header:
+        return None
+    first, _, last = header[len("bytes="):].strip().partition("-")
+    try:
+        if first == "":
+            if last == "" or int(last) <= 0:
+                return None
+            return max(size - int(last), 0), size - 1
+        start = int(first)
+        end = int(last) if last else size - 1
+    except ValueError:
+        return None
+    if start >= size or end < start:
+        return "unsatisfiable"
+    return start, min(end, size - 1)
+
+
+@app.get("/api/groups/{group_id}/attachments/{attachment_id}")
+def api_group_attachment(group_id: str, attachment_id: str, request: Request):
+    con = db()
+    try:
+        _require_group_member(request, con, group_id)
+        row = con.execute(
+            "SELECT filename, content_type, kind, size_bytes FROM group_chat_attachment "
+            "WHERE attachment_id = ? AND group_id = ?",
+            (attachment_id, group_id),
+        ).fetchone()
+        if row is None:
+            raise HTTPException(404, "Attachment not found")
+        filename, content_type, kind, size = row
+
+        span = _parse_range(request.headers.get("range"), size)
+        if span == "unsatisfiable":
+            return Response(status_code=416, headers={"Content-Range": f"bytes */{size}"})
+        start, end = span or (0, size - 1)
+        first, last = start // ATTACHMENT_CHUNK_BYTES, end // ATTACHMENT_CHUNK_BYTES
+        chunks = con.execute(
+            "SELECT data FROM group_chat_attachment_chunk WHERE attachment_id = ? AND seq BETWEEN ? AND ? ORDER BY seq",
+            (attachment_id, first, last),
+        ).fetchall()
+    finally:
+        con.close()
+
+    offset = first * ATTACHMENT_CHUNK_BYTES
+    body = b"".join(bytes(c[0]) for c in chunks)[start - offset:end - offset + 1]
+    headers = {
+        "Accept-Ranges": "bytes",
+        "Content-Disposition": _content_disposition("attachment" if kind == "file" else "inline", filename),
+        "X-Content-Type-Options": "nosniff",
+        "Content-Security-Policy": "default-src 'none'; img-src 'self'; media-src 'self'; style-src 'unsafe-inline'",
+        "Cache-Control": "private, max-age=86400",
+    }
+    if span:
+        headers["Content-Range"] = f"bytes {start}-{end}/{size}"
+    return Response(content=body, status_code=206 if span else 200, media_type=content_type, headers=headers)
 
 
 # ─────────────────────────────────────────────────────────────
@@ -871,6 +1024,12 @@ def _delete_student_cascade(cur, student_id):
     cur.execute("DELETE FROM group_membership WHERE student_id=?", (student_id,))
     cur.execute("DELETE FROM course_chat_message WHERE student_id=?", (student_id,))
     cur.execute("DELETE FROM group_chat_message WHERE student_id=?", (student_id,))
+    cur.execute(
+        "DELETE FROM group_chat_attachment_chunk WHERE attachment_id IN "
+        "(SELECT attachment_id FROM group_chat_attachment WHERE student_id=?)",
+        (student_id,),
+    )
+    cur.execute("DELETE FROM group_chat_attachment WHERE student_id=?", (student_id,))
     cur.execute("DELETE FROM pairwise_compatibility WHERE student_a=? OR student_b=?", (student_id, student_id))
     cur.execute("DELETE FROM academic_profile WHERE student_id=?", (student_id,))
     cur.execute("DELETE FROM availability_block WHERE student_id=?", (student_id,))
