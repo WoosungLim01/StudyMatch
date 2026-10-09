@@ -83,6 +83,15 @@ https://claude.ai/code/artifact/ea7b2a43-c040-44fe-9049-af37e590cddc
   EXISTS`), which is how the live Turso database, never rebuilt from
   `schema.sql`, picks it up. Deleting a student deletes their messages;
   deleting a group's last member deletes the group's chat with it.
+- **Admin groups are marked in their own table**: `admin_group` lists
+  hand-made groups (`data/make_group.py`), such as the team's chat test
+  group, that matching must ignore. Placement never offers seats in them, and
+  membership in one doesn't count as being placed, so their members keep
+  their matched groups. They may mix courses; `study_group.course_id` is just
+  the members' most common course because the column is required, and their
+  scores stay NULL. It's a separate table rather than a `study_group` column
+  because existing code inserts into `study_group` by position, and adding a
+  column would break those inserts on the live database mid-deploy.
 - **Chat attachments live in the database, in chunks**: a message with a file
   points at one `group_chat_attachment` row (`attachment_id`, NULL for plain
   text). That row holds the metadata, and the bytes are split across
@@ -120,6 +129,7 @@ erDiagram
     STUDENT ||--o{ PAIRWISE_COMPATIBILITY : "scored as B"
     COURSE ||--o{ PAIRWISE_COMPATIBILITY : scopes
     COURSE ||--o{ STUDY_GROUP : hosts
+    STUDY_GROUP ||--o| ADMIN_GROUP : "marked as"
     STUDY_GROUP ||--o{ GROUP_MEMBERSHIP : has
     STUDENT ||--o{ GROUP_MEMBERSHIP : joins
     STUDY_GROUP ||--o{ MATCH_DATA : "recommended in"
@@ -260,6 +270,10 @@ erDiagram
         float group_score
         float avg_pairwise
         float worst_pairwise
+    }
+    ADMIN_GROUP {
+        string group_id PK "also FK"
+        string created_at
     }
     GROUP_MEMBERSHIP {
         string group_id PK "also FK"

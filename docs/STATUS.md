@@ -41,7 +41,7 @@ Full detail: [`README.md`](../README.md#how-it-works) and the code in `algorithm
 - **Requires `python-multipart`**, now pinned in `requirements.txt`. Render installs it on the next deploy.
 - **Security fix shipped with chat**: `ui/home.html` HTML-escapes names, emails, and group names. Display names are editable on `/account`, and before that fix a name containing HTML ran as script in every groupmate's browser.
 - **Tested locally**: the text chat as before, plus 55 attachment checks run against both `sqlite3` and the `libsql` driver (uploads of each kind, captions, byte ranges, size limits, access control, deletion cleanup, migration of an old chat table), and a real headless Chrome session (image and video render, video plays and seeks, attach/remove/send, oversized file stopped in the browser, phone width). **Not yet tested against live Turso**: the remote write path for large chunked uploads is the main thing to check after deploying.
-- **Admin test group**: `data/make_group.py` moves chosen students into one new group, for example to test chat with your own accounts. All of them must be in the same course, at most 5. It prints a dry run and writes only with `--apply`. Run it locally with the Turso variables set to change the live database.
+- **Admin groups**: `data/make_group.py` creates an extra group for chosen students, for example the team's own accounts for testing chat. Nobody leaves their matched group, members can be from different courses, and matching ignores admin groups entirely (no seats offered, membership doesn't count as being placed, no scores). Each member's `/home` keeps their matched group and adds an "Admin groups" card, and the chat header says "Admin group" instead of a course. The script dry-runs by default, writes with `--apply`, and `--remove <group_id>` deletes an admin group and its chat. Run it locally with the Turso variables set, after deploying, since the deployed app creates the `admin_group` table.
 
 ## Outbound email
 
@@ -57,7 +57,7 @@ Full detail: [`README.md`](../README.md#how-it-works) and the code in `algorithm
 3. **Confirm the Google environment variables** are set on Render.
 4. **Add authentication to the admin page** and to `/api/admin/*`. Both are currently public.
 5. **Diagnose auto-deploy** (see Live deployment).
-6. **Deploy, then test chat attachments live** in the admin test group: a photo, a short video (including on an iPhone), and a document. Turso must be reachable when the app starts, because startup creates and extends the chat tables.
+6. **Deploy, create the team's admin group, then test chat attachments live** in it: a photo, a short video (including on an iPhone), and a document. Members: `stu_0037` Li Zhu, `stu_0039` Woojoo Song, `stu_0044` Taegwon Lee, `stu_0045` Woosung Lim (CMPSC 465) and `stu_0041` Anoop Ibrampur (MATH 230). Turso must be reachable when the app starts, because startup creates and extends the tables.
 7. **Escape names on the admin page.** `ui/admin.html` still inserts names as raw HTML (see Known limitations). Do it together with item 4.
 
 ## Known limitations and deliberately deferred

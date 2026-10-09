@@ -17,6 +17,10 @@ unassigned pool is placed:
     with the current members is highest. If no group has room, they stay
     pending until enough people arrive to form a new group.
 
+Admin groups (the admin_group table, made by data/make_group.py) sit outside
+all of this: they never get offered seats, being in one doesn't count as
+being placed, and their scores are never recomputed.
+
 NOT_IDEAL_THRESHOLD reuses the same 65 used elsewhere in this project
 (generate_sample_data.py's group_feedback "left_group" cutoff) as the bar for
 "this is a compatibility score worth warning about" - see ../app.py's popup.
@@ -40,6 +44,7 @@ def _unassigned_pool(cur, course_id):
                      SELECT gm.student_id FROM group_membership gm
                      JOIN study_group sg ON sg.group_id = gm.group_id
                      WHERE sg.course_id = ?
+                       AND sg.group_id NOT IN (SELECT group_id FROM admin_group)
                  )""",
             (course_id, course_id),
         ).fetchall()
@@ -50,7 +55,8 @@ def _best_open_group(cur, course_id, sid, pair_score):
     """Existing group with room where sid's mean compatibility with the members is highest."""
     best = None
     for (gid,) in cur.execute(
-        "SELECT group_id FROM study_group WHERE course_id=? AND current_members < max_members ORDER BY group_id",
+        "SELECT group_id FROM study_group WHERE course_id=? AND current_members < max_members "
+        "AND group_id NOT IN (SELECT group_id FROM admin_group) ORDER BY group_id",
         (course_id,),
     ).fetchall():
         members = [r[0] for r in cur.execute(
@@ -160,7 +166,12 @@ def recompute_or_delete_group(cur, group_id, course_id):
             (group_id,),
         )
         cur.execute("DELETE FROM group_chat_attachment WHERE group_id=?", (group_id,))
+        cur.execute("DELETE FROM admin_group WHERE group_id=?", (group_id,))
         cur.execute("DELETE FROM study_group WHERE group_id=?", (group_id,))
+        return
+    # Admin groups can mix courses, so there are no pair scores to recompute.
+    if cur.execute("SELECT 1 FROM admin_group WHERE group_id=?", (group_id,)).fetchone():
+        cur.execute("UPDATE study_group SET current_members=? WHERE group_id=?", (len(remaining), group_id))
         return
     if len(remaining) == 1:
         cur.execute(

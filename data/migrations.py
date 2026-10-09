@@ -8,6 +8,11 @@ Mirror every change here in data/schema.sql, which fresh builds use.
 
 
 def migrate(con):
+    con.execute("""CREATE TABLE IF NOT EXISTS admin_group (
+        group_id      TEXT PRIMARY KEY REFERENCES study_group(group_id),
+        created_at    TEXT NOT NULL
+    )""")
+
     con.execute("""CREATE TABLE IF NOT EXISTS group_chat_message (
         message_id    INTEGER PRIMARY KEY AUTOINCREMENT,
         group_id      TEXT NOT NULL REFERENCES study_group(group_id),

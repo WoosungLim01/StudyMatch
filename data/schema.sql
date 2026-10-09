@@ -214,6 +214,18 @@ CREATE TABLE study_group (
     worst_pairwise    REAL
 );
 
+-- Hand-made groups (data/make_group.py), e.g. a test group for the team.
+-- Matching ignores them: no seats are offered in them, membership in one
+-- doesn't count as being placed, and they have no compatibility score. They
+-- may mix courses; study_group.course_id is just the members' most common
+-- course, because the column is required. A separate table rather than a
+-- study_group column, so existing positional INSERTs into study_group keep
+-- working. data/migrations.py creates it on startup too.
+CREATE TABLE IF NOT EXISTS admin_group (
+    group_id     TEXT PRIMARY KEY REFERENCES study_group(group_id),
+    created_at   TEXT NOT NULL
+);
+
 CREATE TABLE group_membership (
     group_id     TEXT NOT NULL REFERENCES study_group(group_id),
     student_id   TEXT NOT NULL REFERENCES student(student_id),

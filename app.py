@@ -33,7 +33,8 @@ Pages:
                     blocked on match quality), and their account is linked to
                     the new student_id so they never see the survey again.
   GET  /home    -> gated to a logged-in user who HAS completed the survey:
-                    their group, its members, and their course.
+                    their matched group, its members, and their course, plus
+                    links to any admin groups they're in (data/make_group.py).
   GET  /chat?group=<group_id>
                 -> same gating as /home, plus group membership (enforced
                     by the /api/groups/* endpoints). Group chat with text
@@ -600,15 +601,28 @@ def api_home(request: Request):
 
     group = con.execute(
         """SELECT sg.group_id, sg.group_name, sg.group_score FROM group_membership gm
-           JOIN study_group sg ON sg.group_id = gm.group_id WHERE gm.student_id = ?""",
+           JOIN study_group sg ON sg.group_id = gm.group_id
+           WHERE gm.student_id = ? AND sg.group_id NOT IN (SELECT group_id FROM admin_group)
+           ORDER BY sg.group_id""",
         (sid,),
     ).fetchone()
+    admin_groups = [
+        {"group_id": gid, "group_name": gname, "member_count": count}
+        for gid, gname, count in con.execute(
+            """SELECT sg.group_id, sg.group_name, sg.current_members FROM group_membership gm
+               JOIN study_group sg ON sg.group_id = gm.group_id
+               JOIN admin_group ag ON ag.group_id = sg.group_id
+               WHERE gm.student_id = ? ORDER BY sg.group_id""",
+            (sid,),
+        ).fetchall()
+    ]
 
     result = {
         "name": name,
         "email": user["email"],
         "course_code": course[0] if course else None,
         "course_title": course[1] if course else None,
+        "admin_groups": admin_groups,
     }
 
     if group:
@@ -696,10 +710,11 @@ def api_group(group_id: str, request: Request):
                WHERE gm.group_id = ? ORDER BY s.name""",
             (group_id,),
         ).fetchall()]
+        is_admin = con.execute("SELECT 1 FROM admin_group WHERE group_id = ?", (group_id,)).fetchone() is not None
     finally:
         con.close()
     return {"group_id": group_id, "group_name": group_name, "course_code": course_code,
-            "course_title": course_title, "members": members,
+            "course_title": course_title, "members": members, "is_admin": is_admin,
             "attachment_max_bytes": ATTACHMENT_MAX_BYTES}
 
 
@@ -942,6 +957,7 @@ def api_admin_students():
         LEFT JOIN personality_profile pp ON pp.student_id = s.student_id AND pp.course_id = cm.course_id
         LEFT JOIN archetype a ON a.archetype_id = pp.archetype_id
         LEFT JOIN group_membership gm ON gm.student_id = s.student_id
+             AND gm.group_id NOT IN (SELECT group_id FROM admin_group)
         LEFT JOIN study_group sg ON sg.group_id = gm.group_id AND sg.course_id = cm.course_id
         ORDER BY s.source DESC, c.course_code, s.name
     """).fetchall()
@@ -978,6 +994,7 @@ def api_admin_type_map():
         JOIN student s ON s.student_id = pp.student_id
         JOIN course c ON c.course_id = pp.course_id
         LEFT JOIN group_membership gm ON gm.student_id = s.student_id
+             AND gm.group_id NOT IN (SELECT group_id FROM admin_group)
         LEFT JOIN study_group sg ON sg.group_id = gm.group_id AND sg.course_id = pp.course_id
         ORDER BY s.source DESC, s.name
     """).fetchall()

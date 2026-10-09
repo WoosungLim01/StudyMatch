@@ -111,6 +111,19 @@
   .course-code{margin-bottom:8px;}
   .course-title{font:600 20px/1.3 var(--font-display);color:var(--navy);}
 
+  /* ── Admin groups ── */
+  .group-links{list-style:none;margin:0;padding:0;display:grid;gap:10px;}
+  .group-link{
+    display:flex;align-items:center;gap:14px;padding:12px 14px;border-radius:18px;
+    background:var(--bg);color:var(--ink);text-decoration:none;transition:background .15s;
+  }
+  .group-link:hover{background:var(--band);}
+  .group-link:focus-visible{outline:3px solid var(--blue-3);outline-offset:2px;}
+  .group-link .icon-box{width:40px;height:40px;border-radius:12px;}
+  .group-link .icon-box svg{width:20px;height:20px;}
+  .group-link-name{display:block;font-weight:700;overflow-wrap:anywhere;}
+  .group-link-meta{display:block;font-size:13px;color:var(--muted);}
+
   /* ── Tip band ── */
   .tip{background:var(--band);border-radius:24px;padding:28px;}
   .tip h3{font-size:20px;margin-bottom:6px;}
@@ -125,7 +138,10 @@
     .card{padding:24px;}
     .member-list{grid-template-columns:1fr;}
     .group-name{font-size:26px;}
-    .topbar-inner{padding:12px 16px;}
+    .topbar-inner{padding:12px 16px;gap:10px;}
+    .brand{font-size:19px;gap:8px;}
+    .brand-mark{width:32px;height:32px;border-radius:10px;}
+    .btn-ghost{padding:8px 12px;white-space:nowrap;}
   }
 </style>
 </head>
@@ -156,6 +172,11 @@
     </section>
 
     <div class="side">
+      <section class="card" id="admin-groups-card" style="display:none;">
+        <span class="card-label">Admin groups</span>
+        <ul class="group-links" id="admin-groups"></ul>
+      </section>
+
       <section class="card" id="course-card" style="display:none;">
         <span class="card-label">Course</span>
         <div class="course-line" id="course-content"></div>
@@ -247,6 +268,22 @@ async function load(){
         <div class="course-title">${esc(data.course_title)}</div>
       </div>
     `;
+  }
+
+  const adminGroups = data.admin_groups || [];
+  if (adminGroups.length) {
+    document.getElementById('admin-groups-card').style.display = 'block';
+    document.getElementById('admin-groups').innerHTML = adminGroups.map(g => `
+      <li>
+        <a class="group-link" href="/chat?group=${encodeURIComponent(g.group_id)}">
+          <span class="icon-box"><svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 0 1-11.6 7.1L4 20l.9-4.4A8 8 0 1 1 20 12z"/></svg></span>
+          <span>
+            <span class="group-link-name">${esc(g.group_name)}</span>
+            <span class="group-link-meta">${esc(g.member_count)} members · open chat</span>
+          </span>
+        </a>
+      </li>
+    `).join('');
   }
 }
 load();

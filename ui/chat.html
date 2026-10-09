@@ -393,7 +393,7 @@ async function loadGroup(){
   document.getElementById('group-name').textContent = g.group_name;
   document.title = `StudyMatch · ${g.group_name}`;
   const names = g.members.map(m => m.is_me ? 'You' : m.name.split(' ')[0]);
-  document.getElementById('group-sub').textContent = `${g.course_code} · ${names.join(', ')}`;
+  document.getElementById('group-sub').textContent = `${g.is_admin ? 'Admin group' : g.course_code} · ${names.join(', ')}`;
   const stack = document.getElementById('member-stack');
   g.members.filter(m => !m.is_me).forEach(m => {
     stack.appendChild(el('div', 'avatar ' + color(m.student_id), initial(m.name)));

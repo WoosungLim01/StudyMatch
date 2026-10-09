@@ -31,7 +31,7 @@ StudyMatch/
 │   ├── studymatch.db           local development database (production uses Turso)
 │   ├── db.py                   local SQLite vs Turso connection
 │   ├── migrations.py           additive schema changes, run at app startup
-│   ├── make_group.py           put chosen students into one group (e.g. a test group)
+│   ├── make_group.py           create/remove an admin group outside matching (e.g. a team test group)
 │   ├── auth.py                 password hashing (stdlib PBKDF2)
 │   ├── email.py                outbound email via Resend
 │   ├── archetype_store.py      loads the study-type model
@@ -114,7 +114,7 @@ Google sign-in returns 501 until all three Google variables are set.
    - Every chat endpoint, downloads included, checks that you belong to the group: non-members get 403. Messages are 1–1000 characters. Enter sends, Shift+Enter adds a line, and Enter while a Korean (or other IME) composition is in progress does not send.
    - `data/migrations.py` creates the chat tables, and adds the attachment column to existing ones, on startup, so deploying is all the live database needs. Deleting a student deletes their messages and uploads, and a group's chat and files are deleted with the group.
    - Message text, names and filenames are rendered as text, never as HTML.
-   - To put specific students into one group for testing, run `python data/make_group.py 0037 0045 ...`. It prints a dry run first and only writes with `--apply`; see the script's docstring.
+   - **Admin groups** are extra, hand-made groups, such as one for the team to test chat. `python data/make_group.py 0037 0045 ...` creates one. Members keep their matched groups, can come from different courses, and see the admin group in a separate card on `/home`. Matching ignores admin groups: nobody is placed into one, and being in one doesn't count as being placed. They're listed in the `admin_group` table. The script prints a dry run first, writes only with `--apply`, and `--remove <group_id>` deletes an admin group with its chat. It needs the deployed app's `admin_group` table, so deploy before running it against Turso.
 8. **Account** (`ui/account.html`). Change your display name, log out, or delete your account. Deleting removes login access and your survey and group data, and sends a confirmation email.
 9. **Admin** (`ui/admin.html`). Lists students and login accounts. Deleting a student removes them from every table and unlinks their account. Deleting an account removes login access only. Both send a notification email when the person has an address. The admin page has no login check; see Known limitations.
 10. **Email** (`data/email.py`). Verification codes and deletion notices go through Resend's HTTP API. The sender domain must be verified in Resend.
