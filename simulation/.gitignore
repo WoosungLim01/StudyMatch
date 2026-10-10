@@ -1,0 +1,7 @@
+# Everything the simulation generates or needs locally stays in this folder.
+# Rebuilt from a fixed seed: python -m simulation.cohort / python -m simulation.run
+data/
+output/
+__pycache__/
+# Local secrets (ANTHROPIC_API_KEY). Never commit.
+.env
