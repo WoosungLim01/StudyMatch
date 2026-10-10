@@ -1,8 +1,12 @@
-# StudyMatch — Outcome Simulation Pipeline (planned, not built)
+# StudyMatch — Outcome Simulation Pipeline
 
-**Status: design only.** Nothing in this document is implemented. Intended to
-be built at a late stage, after the core product (login, survey, matching,
-placement, admin) is otherwise done — see the [repo root README](../README.md).
+**Status: built on the `simulation` branch, which is never merged into
+`main`.** The built version in `simulation/` goes further than the plan
+below. It runs several rounds (meet for 4 weeks, collect feedback, learn,
+reassign the unhappy, repeat) on a separate 1000-student cohort, and gives
+each simulated student a hidden true profile that differs from their survey.
+Start at `simulation/run.py` and `simulation/checks.py`; each module's
+docstring describes its part. The original design notes follow for history.
 
 ## Why this exists
 

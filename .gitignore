@@ -19,3 +19,8 @@ data/.turso_replica.db*
 # secrets (client ID + secret), configured on the host as GOOGLE_CLIENT_ID/
 # GOOGLE_CLIENT_SECRET env vars instead, never committed
 client_secret_*.json
+
+# simulation cohort and run output, both rebuilt from a fixed seed
+# (python -m simulation.cohort / python -m simulation.run)
+simulation/data/
+simulation/output/
