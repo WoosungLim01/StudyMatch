@@ -3,6 +3,25 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<script>
+  /* Theme: saved choice ("light"/"dark") or the OS setting. Runs before the
+     styles paint so a dark-mode visitor never sees a white flash. */
+  (function(){
+    var saved; try { saved = localStorage.getItem('theme'); } catch (e) {}
+    var media = matchMedia('(prefers-color-scheme: dark)');
+    function apply(){
+      document.documentElement.dataset.theme = saved === 'light' || saved === 'dark' ? saved : (media.matches ? 'dark' : 'light');
+    }
+    apply();
+    media.addEventListener('change', apply);
+    window.setTheme = function(choice){
+      saved = choice;
+      try { choice === 'system' ? localStorage.removeItem('theme') : localStorage.setItem('theme', choice); } catch (e) {}
+      apply();
+    };
+    window.getTheme = function(){ return saved === 'light' || saved === 'dark' ? saved : 'system'; };
+  })();
+</script>
 <title>StudyMatch · Account</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -32,7 +51,21 @@
     --radius-panel:20px;
     --shadow-soft:0 1px 2px rgba(31,30,29,.04), 0 6px 24px rgba(31,30,29,.05);
     --sidebar-w:248px;
+    --on-accent:#FFFFFF; --bg-glass:rgba(241,243,249,.85); --row-hover:rgba(241,243,249,.7);
     color-scheme:light;
+  }
+  :root[data-theme="dark"]{
+    --surface:#262521; --bg:#14161D; --accent:#A9C1E8;
+    --accent-deep:#C7D7F1; --accent-mid:#8FA9D6; --blue-2:#86A2CF;
+    --blue-3:#6E8CBD; --band:#232836; --ink:#E6E8F0;
+    --muted-strong:rgba(230,232,240,.72); --muted:#8C91A3; --line-soft:#262833;
+    --line:#2E313C; --line-strong:#3B3F4C; --tint:#283041;
+    --danger:#E9A0A8; --danger-soft:#3A2327; --good:#86CFA6;
+    --good-soft:#1E3329; --page-editorial:#1A1917; --sidebar-bg:#201F1C;
+    --well:#2B2A26; --well-strong:#36342F; --ink-editorial:#EDEBE6;
+    --text-soft:#B8B5AD; --muted-aa:#9A978F; --shadow-soft:0 1px 2px rgba(0,0,0,.3), 0 6px 24px rgba(0,0,0,.28);
+    --on-accent:#101A2E; --bg-glass:rgba(20,22,29,.85); --row-hover:rgba(255,255,255,.04);
+    color-scheme:dark;
   }
   *{box-sizing:border-box;}
   [hidden]{display:none !important;}
@@ -78,7 +111,7 @@
   .room-course{color:var(--text-soft);font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
   .avatar{
     width:40px;height:40px;border-radius:50%;display:grid;place-items:center;flex:none;
-    color:#fff;font:700 16px/1 var(--font-display);background:var(--accent);
+    color:var(--on-accent);font:700 16px/1 var(--font-display);background:var(--accent);
   }
   .avatar.c2{background:var(--blue-2);}
   .avatar.c3{background:var(--blue-3);}
@@ -124,7 +157,7 @@
 
   .btn{
     height:44px;padding:0 22px;border-radius:var(--radius-control);cursor:pointer;
-    background:var(--accent);color:#fff;border:none;
+    background:var(--accent);color:var(--on-accent);border:none;
     font:700 15px/1 var(--font-body);transition:background .15s;
   }
   .btn:hover{background:var(--accent-deep);}
@@ -143,8 +176,20 @@
   .save-msg.good{color:var(--good);display:inline;}
   .save-msg.bad{color:var(--danger);display:inline;}
 
+  /* ── Appearance: System / Light / Dark segmented control ── */
+  .theme-hint{margin:0 0 14px;color:var(--text-soft);font-size:14px;}
+  .segmented{display:inline-flex;gap:4px;padding:4px;border:none;margin:0;border-radius:calc(var(--radius-control) + 4px);background:var(--well);}
+  .segmented label{margin:0;cursor:pointer;}
+  .segmented input{position:absolute;opacity:0;pointer-events:none;}
+  .segmented span{
+    display:block;padding:8px 16px;border-radius:var(--radius-control);
+    font:700 14px/1.2 var(--font-body);color:var(--text-soft);transition:background .15s, color .15s;
+  }
+  .segmented label:hover span{color:var(--ink-editorial);}
+  .segmented input:checked + span{background:var(--accent);color:var(--on-accent);}
+  .segmented input:focus-visible + span{outline:2px solid var(--accent);outline-offset:2px;}
   .danger-zone .btn-ghost{background:var(--danger-soft);color:var(--danger);}
-  .danger-zone .btn-ghost:hover{background:#EFDDDF;}
+  .danger-zone .btn-ghost:hover{background:color-mix(in srgb, var(--danger) 14%, var(--surface));}
 
   @media (max-width:1023px){ .page{padding:44px 32px 64px;} }
   @media (max-width:767px){
@@ -194,6 +239,16 @@
           <button class="btn" id="save-btn" disabled>Save changes</button>
           <span class="save-msg" id="save-msg"></span>
         </div>
+      </section>
+
+      <section class="card">
+        <span class="card-label">Appearance</span>
+        <p class="theme-hint">System follows your device's light or dark setting.</p>
+        <fieldset class="segmented" aria-label="Theme">
+          <label><input type="radio" name="theme" value="system"><span>System</span></label>
+          <label><input type="radio" name="theme" value="light"><span>Light</span></label>
+          <label><input type="radio" name="theme" value="dark"><span>Dark</span></label>
+        </fieldset>
       </section>
 
       <section class="card danger-zone">
@@ -315,6 +370,12 @@ function setChatNav(groupId, groupName){
 document.getElementById('logout-btn').addEventListener('click', async () => {
   await fetch('/api/auth/logout', { method: 'POST' });
   window.location.href = '/login';
+});
+
+// ── Appearance ── (setTheme/getTheme come from the theme script in <head>)
+document.querySelectorAll('input[name="theme"]').forEach(radio => {
+  radio.checked = radio.value === getTheme();
+  radio.addEventListener('change', () => setTheme(radio.value));
 });
 </script>
 </body>

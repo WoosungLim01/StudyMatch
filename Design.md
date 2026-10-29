@@ -43,8 +43,36 @@ background + `--danger` text. Toasts are navy pills with white text.
 **Rules**
 - Navy (`--accent`) is the only accent. Don't introduce warm colors (orange, amber, coral, red-pink) for decoration.
 - Avatars rotate through `--accent` → `--blue-2` → `--blue-3`.
-- Text on `--accent` or `--ink` backgrounds is white (muted: `rgba(255,255,255,0.72)`).
+- Text and icons on an `--accent` fill use `--on-accent` (white in light mode), never a hardcoded `#fff` — in dark mode the accent turns light and `--on-accent` turns navy. Muted: `color-mix(in srgb, var(--on-accent) 80%, transparent)`.
 - Error/success states, if needed, should be muted and used only for status text — never as brand accents.
+
+### Dark mode
+
+Every page follows the OS setting unless the viewer picks Light or Dark under
+Account → Appearance (saved in `localStorage` as `theme`). A small script at the
+top of each page's `<head>` sets `<html data-theme="light|dark">` before the
+styles paint, so there's no white flash; it also exposes `setTheme()` /
+`getTheme()`. Each page's `:root` has a matching `:root[data-theme="dark"]`
+block that redefines the same tokens — components never branch on the theme.
+
+| Token | Dark value | Note |
+|---|---|---|
+| `--bg` / `--surface` | `#14161D` / `#1E2029` | Cool pages (survey, admin) |
+| `--page-editorial` / `--surface` | `#1A1917` / `#262521` | Warm pages (login, home, chat, account): cards sit one step lighter than the page |
+| `--sidebar-bg` / `--well` / `--well-strong` | `#201F1C` / `#2B2A26` / `#36342F` | Tonal fills, as in light |
+| `--accent` / `--accent-deep` | `#A9C1E8` / `#C7D7F1` | Light periwinkle; hover gets lighter, not darker |
+| `--on-accent` | `#101A2E` | 9.5:1 on `--accent` |
+| `--ink` / `--ink-editorial` | `#E6E8F0` / `#EDEBE6` | Body text |
+| `--text-soft` / `--muted-aa` / `--muted` | `#B8B5AD` / `#9A978F` / `#8C91A3` | All ≥ 5:1 on their surface |
+| `--tint` / `--band` | `#283041` / `#232836` | Badge and band fills |
+| `--danger` / `--danger-soft` | `#E9A0A8` / `#3A2327` | |
+| `--good` / `--good-soft` | `#86CFA6` / `#1E3329` | |
+
+Rules: new colors go in as tokens with both a light and a dark value; translucent
+tints are `color-mix()` of a token, not a literal `rgba()`; a data-URI SVG icon
+can't read tokens, so it needs its own `:root[data-theme="dark"]` override (see
+the admin toolbar). The admin chart's type colors have dark variants that keep
+≥ 3:1 on the dark surface.
 
 ## 2. Typography
 
@@ -452,3 +480,4 @@ Survey scale options (1–5) use pill-shaped toggles: `.btn-ghost` at rest,
 - [ ] Generous spacing (80–96px section padding on desktop)
 - [ ] Copy sounds like a friendly upperclassman, not a SaaS landing page
 - [ ] Works at ~400px wide (grids collapse, section padding shrinks)
+- [ ] Has the theme script in `<head>` and a `:root[data-theme="dark"]` block; checked in both themes

@@ -3,6 +3,25 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<script>
+  /* Theme: saved choice ("light"/"dark") or the OS setting. Runs before the
+     styles paint so a dark-mode visitor never sees a white flash. */
+  (function(){
+    var saved; try { saved = localStorage.getItem('theme'); } catch (e) {}
+    var media = matchMedia('(prefers-color-scheme: dark)');
+    function apply(){
+      document.documentElement.dataset.theme = saved === 'light' || saved === 'dark' ? saved : (media.matches ? 'dark' : 'light');
+    }
+    apply();
+    media.addEventListener('change', apply);
+    window.setTheme = function(choice){
+      saved = choice;
+      try { choice === 'system' ? localStorage.removeItem('theme') : localStorage.setItem('theme', choice); } catch (e) {}
+      apply();
+    };
+    window.getTheme = function(){ return saved === 'light' || saved === 'dark' ? saved : 'system'; };
+  })();
+</script>
 <title>StudyMatch · Log In</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -33,7 +52,21 @@
     --radius-panel:20px;
     --shadow-soft:0 1px 2px rgba(31,30,29,.04), 0 6px 24px rgba(31,30,29,.05);
     --hero-gap:32px;
+    --on-accent:#FFFFFF; --bg-glass:rgba(241,243,249,.85); --row-hover:rgba(241,243,249,.7);
     color-scheme:light;
+  }
+  :root[data-theme="dark"]{
+    --surface:#262521; --bg:#14161D; --accent:#A9C1E8;
+    --accent-deep:#C7D7F1; --accent-mid:#8FA9D6; --blue-2:#86A2CF;
+    --blue-3:#6E8CBD; --band:#232836; --ink:#E6E8F0;
+    --muted-strong:rgba(230,232,240,.72); --muted:#8C91A3; --line-soft:#262833;
+    --line:#2E313C; --line-strong:#3B3F4C; --tint:#283041;
+    --danger:#E9A0A8; --danger-soft:#3A2327; --shadow-card:0 12px 40px rgba(0,0,0,.35);
+    --page-editorial:#1A1917; --sidebar-bg:#201F1C; --well:#2B2A26;
+    --well-strong:#36342F; --ink-editorial:#EDEBE6; --text-soft:#B8B5AD;
+    --muted-aa:#9A978F; --shadow-soft:0 1px 2px rgba(0,0,0,.3), 0 6px 24px rgba(0,0,0,.28);
+    --on-accent:#101A2E; --bg-glass:rgba(20,22,29,.85); --row-hover:rgba(255,255,255,.04);
+    color-scheme:dark;
   }
   *{box-sizing:border-box;}
   body{
@@ -88,7 +121,7 @@
 
   .btn{
     position:relative;width:100%;height:44px;margin-top:4px;border-radius:var(--radius-control);cursor:pointer;
-    background:var(--accent);color:#fff;border:none;
+    background:var(--accent);color:var(--on-accent);border:none;
     font:700 15px/1 var(--font-body);display:flex;align-items:center;justify-content:center;gap:10px;
     transition:background .15s;
   }
@@ -98,7 +131,7 @@
   /* The button is only disabled while a request is in flight, so that's when the spinner shows. */
   .btn:disabled::before{
     content:"";width:14px;height:14px;border-radius:50%;
-    border:2px solid rgba(255,255,255,.35);border-top-color:#fff;animation:spin .7s linear infinite;
+    border:2px solid color-mix(in srgb, var(--on-accent) 35%, transparent);border-top-color:var(--on-accent);animation:spin .7s linear infinite;
   }
   @keyframes spin{to{transform:rotate(360deg);}}
 

@@ -3,6 +3,25 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<script>
+  /* Theme: saved choice ("light"/"dark") or the OS setting. Runs before the
+     styles paint so a dark-mode visitor never sees a white flash. */
+  (function(){
+    var saved; try { saved = localStorage.getItem('theme'); } catch (e) {}
+    var media = matchMedia('(prefers-color-scheme: dark)');
+    function apply(){
+      document.documentElement.dataset.theme = saved === 'light' || saved === 'dark' ? saved : (media.matches ? 'dark' : 'light');
+    }
+    apply();
+    media.addEventListener('change', apply);
+    window.setTheme = function(choice){
+      saved = choice;
+      try { choice === 'system' ? localStorage.removeItem('theme') : localStorage.setItem('theme', choice); } catch (e) {}
+      apply();
+    };
+    window.getTheme = function(){ return saved === 'light' || saved === 'dark' ? saved : 'system'; };
+  })();
+</script>
 <title>StudyMatch · Entry Survey</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,7 +39,18 @@
     --font-display:"Nunito Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
     --font-body:"Nunito Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
     --shadow-card:0 12px 40px rgba(76,86,150,.08);
+    --on-accent:#FFFFFF; --bg-glass:rgba(241,243,249,.85); --row-hover:rgba(241,243,249,.7);
     color-scheme:light;
+  }
+  :root[data-theme="dark"]{
+    --surface:#1E2029; --bg:#14161D; --accent:#A9C1E8;
+    --accent-deep:#C7D7F1; --accent-mid:#8FA9D6; --blue-2:#86A2CF;
+    --blue-3:#6E8CBD; --band:#232836; --ink:#E6E8F0;
+    --muted-strong:rgba(230,232,240,.72); --muted:#8C91A3; --line-soft:#262833;
+    --line:#2E313C; --line-strong:#3B3F4C; --tint:#283041;
+    --danger:#E9A0A8; --danger-soft:#3A2327; --shadow-card:0 12px 40px rgba(0,0,0,.35);
+    --on-accent:#101A2E; --bg-glass:rgba(20,22,29,.85); --row-hover:rgba(255,255,255,.04);
+    color-scheme:dark;
   }
   *{box-sizing:border-box;}
   body{
@@ -32,7 +62,7 @@
 
   /* ── Top bar ── */
   .topbar{
-    position:sticky;top:0;z-index:10;background:rgba(241,243,249,.85);backdrop-filter:blur(10px);
+    position:sticky;top:0;z-index:10;background:var(--bg-glass);backdrop-filter:blur(10px);
     border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top);
   }
   .topbar-inner{max-width:1040px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;}
@@ -61,7 +91,7 @@
   .card-head .grow{flex:1;min-width:0;}
   .step-dot{
     width:40px;height:40px;border-radius:50%;flex:none;display:grid;place-items:center;
-    background:var(--accent);color:#fff;font:700 17px/1 var(--font-display);
+    background:var(--accent);color:var(--on-accent);font:700 17px/1 var(--font-display);
   }
   .card-head h2{font-size:24px;}
   .card-head .card-sub{margin:2px 0 0;font-size:14px;color:var(--muted);}
@@ -109,7 +139,7 @@
     white-space:nowrap;transition:background .12s, border-color .12s, color .12s;
   }
   .likert-options label:hover span{border-color:var(--accent);}
-  .likert-options input:checked + span{background:var(--accent);border-color:var(--accent);color:#fff;}
+  .likert-options input:checked + span{background:var(--accent);border-color:var(--accent);color:var(--on-accent);}
   .likert-options input:focus-visible + span{outline:3px solid var(--blue-3);outline-offset:2px;}
   .likert-item.missing .likert-q{color:var(--danger);}
   .likert-item.missing .likert-options span{border-color:var(--danger);}
@@ -137,7 +167,7 @@
   /* ── Submit ── */
   .btn{
     width:100%;padding:17px 26px;border-radius:999px;cursor:pointer;
-    background:var(--accent);color:#fff;border:2px solid var(--accent);box-shadow:0 8px 20px rgba(20,33,61,.22);
+    background:var(--accent);color:var(--on-accent);border:2px solid var(--accent);box-shadow:0 8px 20px rgba(20,33,61,.22);
     font:700 17px/1 var(--font-body);transition:background .15s, border-color .15s, transform .1s;
   }
   .btn:hover{background:var(--accent-deep);border-color:var(--accent-deep);}
@@ -148,11 +178,11 @@
   /* ── Result banner ── */
   .banner{border-radius:24px;padding:24px 28px;margin-bottom:24px;display:none;font-size:15px;}
   .banner b{display:block;font:700 22px/1.25 var(--font-display);margin-bottom:6px;}
-  .banner.good{background:var(--accent);color:rgba(255,255,255,.8);}
-  .banner.good b{color:#fff;}
+  .banner.good{background:var(--accent);color:color-mix(in srgb, var(--on-accent) 80%, transparent);}
+  .banner.good b{color:var(--on-accent);}
   .banner.warn{background:var(--band);color:var(--muted-strong);}
   .banner.warn b{color:var(--accent);}
-  .banner.bad{background:var(--danger-soft);color:var(--danger);border:1px solid rgba(138,59,66,.22);}
+  .banner.bad{background:var(--danger-soft);color:var(--danger);border:1px solid color-mix(in srgb, var(--danger) 22%, transparent);}
   .banner.bad b{color:var(--danger);}
 
   .field-err{color:var(--danger);font-size:14px;font-weight:600;margin-top:12px;text-align:center;display:none;}

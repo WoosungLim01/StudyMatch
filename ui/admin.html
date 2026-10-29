@@ -3,6 +3,25 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<script>
+  /* Theme: saved choice ("light"/"dark") or the OS setting. Runs before the
+     styles paint so a dark-mode visitor never sees a white flash. */
+  (function(){
+    var saved; try { saved = localStorage.getItem('theme'); } catch (e) {}
+    var media = matchMedia('(prefers-color-scheme: dark)');
+    function apply(){
+      document.documentElement.dataset.theme = saved === 'light' || saved === 'dark' ? saved : (media.matches ? 'dark' : 'light');
+    }
+    apply();
+    media.addEventListener('change', apply);
+    window.setTheme = function(choice){
+      saved = choice;
+      try { choice === 'system' ? localStorage.removeItem('theme') : localStorage.setItem('theme', choice); } catch (e) {}
+      apply();
+    };
+    window.getTheme = function(){ return saved === 'light' || saved === 'dark' ? saved : 'system'; };
+  })();
+</script>
 <title>StudyMatch · Admin</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,7 +39,18 @@
     --font-display:"Nunito Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
     --font-body:"Nunito Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
     --shadow-card:0 12px 40px rgba(76,86,150,.08);
+    --on-accent:#FFFFFF; --bg-glass:rgba(241,243,249,.85); --row-hover:rgba(241,243,249,.7);
     color-scheme:light;
+  }
+  :root[data-theme="dark"]{
+    --surface:#1E2029; --bg:#14161D; --accent:#A9C1E8;
+    --accent-deep:#C7D7F1; --accent-mid:#8FA9D6; --blue-2:#86A2CF;
+    --blue-3:#6E8CBD; --band:#232836; --ink:#E6E8F0;
+    --muted-strong:rgba(230,232,240,.72); --muted:#8C91A3; --line-soft:#262833;
+    --line:#2E313C; --line-strong:#3B3F4C; --tint:#283041;
+    --danger:#E9A0A8; --danger-soft:#3A2327; --shadow-card:0 12px 40px rgba(0,0,0,.35);
+    --on-accent:#101A2E; --bg-glass:rgba(20,22,29,.85); --row-hover:rgba(255,255,255,.04);
+    color-scheme:dark;
   }
   *{box-sizing:border-box;}
   body{
@@ -34,7 +64,7 @@
 
   /* ── Top bar ── */
   .topbar{
-    position:sticky;top:0;z-index:10;background:rgba(241,243,249,.85);backdrop-filter:blur(10px);
+    position:sticky;top:0;z-index:10;background:var(--bg-glass);backdrop-filter:blur(10px);
     border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top);
   }
   .topbar-inner{max-width:1120px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;gap:14px;}
@@ -45,7 +75,7 @@
     background:var(--tint);color:var(--accent);font:700 12px/1 var(--font-body);letter-spacing:.02em;
   }
   .badge.synthetic{background:var(--line-soft);color:var(--muted-strong);}
-  .badge.real{background:var(--accent);color:#fff;}
+  .badge.real{background:var(--accent);color:var(--on-accent);}
   .flag{display:inline-block;margin-left:6px;padding:2px 8px;border-radius:999px;
         background:var(--danger-soft);color:var(--danger);font:700 11px/1.4 var(--font-body);}
 
@@ -93,10 +123,10 @@
   td{padding:12px 16px;border-bottom:1px solid var(--line-soft);vertical-align:middle;}
   td:last-child, th:last-child{text-align:right;}
   tr:last-child td{border-bottom:none;}
-  tbody tr:hover td{background:rgba(241,243,249,.7);}
+  tbody tr:hover td{background:var(--row-hover);}
 
   .btn-del{
-    background:transparent;color:var(--danger);border:1.5px solid rgba(138,59,66,.35);border-radius:999px;
+    background:transparent;color:var(--danger);border:1.5px solid color-mix(in srgb, var(--danger) 35%, transparent);border-radius:999px;
     padding:6px 14px;font:700 13px/1 var(--font-body);cursor:pointer;transition:background .15s, border-color .15s;
   }
   .btn-del:hover{background:var(--danger-soft);border-color:var(--danger);}
@@ -106,7 +136,7 @@
   .empty{padding:48px;text-align:center;color:var(--muted);}
   .toast{
     position:fixed;bottom:calc(24px + env(safe-area-inset-bottom));right:24px;z-index:20;
-    background:var(--accent);color:#fff;border-radius:999px;padding:12px 22px;
+    background:var(--accent);color:var(--on-accent);border-radius:999px;padding:12px 22px;
     font-weight:700;font-size:14px;box-shadow:0 12px 24px rgba(76,86,150,.25);display:none;
   }
 
@@ -116,6 +146,18 @@
        shape is the second identity channel, so color never carries a type alone */
     --type-captain:#2a78d6; --type-architect:#4a3aa7; --type-explorer:#1baf7a; --type-sprinter:#008300;
     --grid:#E8EAF4; --axis:#C9CDDF;
+  }
+  /* Dark: lighter hues that keep >=3:1 on the dark surface (#4a3aa7 is only 1.9:1 there) */
+  :root[data-theme="dark"] .viz{
+    --type-captain:#5B9BEA; --type-architect:#8C7CE8; --type-explorer:#2CC48E; --type-sprinter:#7DBE3C;
+    --grid:#2A2D38; --axis:#454A5A;
+  }
+  /* The toolbar icons are data-URI SVGs, so their navy stroke can't follow --accent */
+  :root[data-theme="dark"] .toolbar input{
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23A9C1E8' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='6.5'/%3E%3Cpath d='m20 20-4.2-4.2'/%3E%3C/svg%3E");
+  }
+  :root[data-theme="dark"] .toolbar select{
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23A9C1E8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
   }
   .section-sub{margin:-8px 0 18px;color:var(--muted-strong);max-width:760px;}
   .dash{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:20px;align-items:start;}
