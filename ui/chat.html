@@ -132,6 +132,7 @@
     width:300px;flex:none;overflow-y:auto;background:var(--surface);border-radius:16px;box-shadow:var(--shadow-soft);
     margin:0 20px 20px 0;padding:20px 22px 24px;animation:panel-in .18s ease-out;
   }
+  .info-panel.wide{width:360px;}
   @keyframes panel-in{from{opacity:0;transform:translateX(12px);}to{opacity:1;transform:none;}}
   @media (prefers-reduced-motion:reduce){ .info-panel{animation:none;} }
   .info-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:20px;}
@@ -151,6 +152,68 @@
   .info-members .avatar{width:32px;height:32px;font-size:13px;}
   .info-members .name{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
   .you{flex:none;padding:2px 8px;border-radius:999px;background:var(--tint);color:var(--accent);font:700 11px/1.4 var(--font-body);}
+
+  /* ── Meeting polls: pinned bar above the messages + the polls panel ── */
+  .meet-bar{
+    flex:none;display:flex;align-items:center;gap:10px;width:calc(100% - 48px);max-width:772px;margin:4px auto 0;
+    padding:10px 14px;border:none;border-radius:12px;background:var(--surface);box-shadow:var(--shadow-soft);
+    color:var(--ink-editorial);font:600 14px/1.35 var(--font-body);text-align:left;cursor:pointer;
+  }
+  .meet-bar:hover{background:var(--well);}
+  .meet-bar:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+  .meet-bar svg{width:18px;height:18px;flex:none;fill:none;stroke:var(--accent);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+  .meet-bar .meet-text{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .meet-bar .meet-meta{flex:none;color:var(--muted-aa);font-size:13px;}
+
+  .poll{padding:16px 0;border-top:1px solid var(--line-soft);}
+  .poll:first-of-type{border-top:none;padding-top:0;}
+  .poll-title{margin:0;font:700 16px/1.3 var(--font-body);color:var(--ink-editorial);overflow-wrap:anywhere;}
+  .poll-meta{margin:2px 0 12px;font-size:12px;color:var(--muted-aa);}
+  .poll-options{list-style:none;margin:0;padding:0;display:grid;gap:6px;}
+  .opt{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:var(--radius-control);background:var(--well);}
+  .opt.top{box-shadow:inset 0 0 0 1.5px var(--accent);}
+  .opt.final{background:var(--good-soft);box-shadow:inset 0 0 0 1.5px var(--good);}
+  .opt.dim{opacity:.5;}
+  .opt input{width:18px;height:18px;margin:0;flex:none;accent-color:var(--accent);cursor:pointer;}
+  .opt-main{flex:1;min-width:0;display:flex;flex-direction:column;}
+  .opt-when{font-weight:700;font-size:14px;color:var(--ink-editorial);cursor:pointer;}
+  .opt-who{font-size:12px;color:var(--text-soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .opt-count{flex:none;font:800 14px/1 var(--font-body);color:var(--accent);}
+  .opt-final{flex:none;font:700 12px/1 var(--font-body);color:var(--good);}
+  .link-btn{
+    flex:none;padding:4px 8px;border:none;border-radius:6px;background:none;cursor:pointer;
+    color:var(--accent);font:700 12px/1.2 var(--font-body);
+  }
+  .link-btn:hover{background:var(--well-strong);}
+  .link-btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+  .link-btn.danger{color:var(--danger);}
+  .poll-actions{display:flex;justify-content:flex-end;gap:4px;margin-top:8px;}
+  .poll-empty{margin:0 0 16px;font-size:14px;color:var(--text-soft);}
+
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:40px;padding:0 16px;
+    border:none;border-radius:var(--radius-control);cursor:pointer;font:700 14px/1 var(--font-body);
+    background:var(--accent);color:#fff;transition:background .15s, opacity .15s;
+  }
+  .btn:hover{background:var(--accent-deep);}
+  .btn:disabled{opacity:.4;cursor:default;}
+  .btn.quiet{background:var(--well);color:var(--ink-editorial);}
+  .btn.quiet:hover{background:var(--well-strong);}
+  .btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+  .poll-form{display:grid;gap:10px;padding:16px;border-radius:12px;background:var(--well);}
+  .poll-form label{font:700 12px/1 var(--font-body);color:var(--text-soft);}
+  .poll-form input{
+    width:100%;min-height:40px;padding:8px 10px;border:none;border-radius:var(--radius-control);
+    background:var(--surface);color:var(--ink-editorial);font:400 14px/1.3 var(--font-body);
+  }
+  .poll-form input:focus{outline:2px solid var(--accent);outline-offset:0;}
+  .time-row{display:flex;gap:6px;align-items:center;}
+  .time-row input{flex:1;min-width:0;}
+  .poll-times{display:grid;gap:6px;}
+  .poll-form-buttons{display:flex;gap:8px;}
+  .poll-form-actions{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;}
+  .poll-error{margin:0;color:var(--danger);font-size:13px;font-weight:600;}
+  .poll-error:empty{display:none;}
 
   /* ── Messages ── */
   .scroll{flex:1;overflow-y:auto;overscroll-behavior:contain;}
@@ -210,7 +273,9 @@
     .title h1{font-size:22px;}
     .room-head .stack{display:none;}
     .info-panel{position:absolute;inset:0;width:auto;margin:0;border-radius:0;box-shadow:none;z-index:2;}
+    .info-panel.wide{width:auto;}
     .messages{padding:16px 16px 8px;}
+    .meet-bar{width:calc(100% - 32px);}
     .composer form{padding:8px 16px;padding-bottom:max(12px, env(safe-area-inset-bottom));}
     .error{padding:8px 16px 0;}
     .body{max-width:85%;}
@@ -244,6 +309,9 @@
           <p id="group-sub">Loading…</p>
         </div>
         <div class="stack" id="member-stack" aria-hidden="true"></div>
+        <button class="info-btn" id="poll-btn" type="button" aria-label="Meeting time polls" aria-expanded="false" aria-controls="poll-panel">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/><path d="M9 15l2 2 4-4"/></svg>
+        </button>
         <button class="info-btn" id="info-btn" type="button" aria-label="Room info" aria-expanded="false" aria-controls="info-panel">
           <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5"/><path d="M12 7.6v.1"/></svg>
         </button>
@@ -251,6 +319,12 @@
 
       <div class="room-body">
       <div class="room-main">
+
+      <button class="meet-bar" id="meet-bar" type="button" hidden>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>
+        <span class="meet-text" id="meet-text"></span>
+        <span class="meet-meta" id="meet-meta"></span>
+      </button>
 
       <div class="scroll" id="scroll">
         <div class="messages" id="messages" aria-live="polite">
@@ -286,6 +360,36 @@
           <ul class="info-members" id="info-members"></ul>
         </section>
       </aside>
+
+      <aside class="info-panel wide" id="poll-panel" aria-label="Meeting time polls" hidden>
+        <div class="info-head">
+          <h2>Meeting time</h2>
+          <button class="info-close" id="poll-close" type="button" aria-label="Close meeting time polls">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+          </button>
+        </div>
+        <section class="info-section">
+          <button class="btn" id="poll-new" type="button">New poll</button>
+          <form class="poll-form" id="poll-form" hidden>
+            <label for="poll-title">Title</label>
+            <input id="poll-title" maxlength="100" placeholder="Meeting time">
+            <label>Times to vote on</label>
+            <div class="poll-times" id="poll-times"></div>
+            <p class="poll-error" id="poll-form-error" role="alert"></p>
+            <div class="poll-form-actions">
+              <button class="btn quiet" id="poll-add-time" type="button">+ Add time</button>
+              <span class="poll-form-buttons">
+                <button class="btn quiet" id="poll-cancel" type="button">Cancel</button>
+                <button class="btn" id="poll-create" type="submit">Create</button>
+              </span>
+            </div>
+          </form>
+        </section>
+        <section class="info-section">
+          <p class="poll-error" id="poll-error" role="alert"></p>
+          <div id="poll-list"><p class="poll-empty">Loading…</p></div>
+        </section>
+      </aside>
       </div>
     </section>
   </main>
@@ -314,6 +418,7 @@ let polling = false;
 let repoll = false;      // a poll was requested while one was in flight
 let timer = null;
 let sending = false;     // guards against a double Enter re-sending the same text
+const members = {};      // student id -> { name, is_me }, filled by loadGroup()
 
 const CONN_ERROR = "Couldn't reach the server. Retrying…";
 // Only the poller's own error is cleared by a successful poll - a send error
@@ -404,15 +509,16 @@ async function poll(){
 // Poll only while the tab is visible; catch up immediately on return.
 function schedule(){
   clearInterval(timer);
-  timer = document.hidden ? null : setInterval(poll, POLL_MS);
+  timer = document.hidden ? null : setInterval(() => { poll(); loadPolls(); }, POLL_MS);
 }
-document.addEventListener('visibilitychange', () => { if (!document.hidden) poll(); schedule(); });
+document.addEventListener('visibilitychange', () => { if (!document.hidden) { poll(); loadPolls(); } schedule(); });
 
 async function loadGroup(){
   const res = await fetch(BASE);
   if (bounce(res)) return false;
   if (!res.ok) { document.getElementById('group-sub').textContent = 'Something went wrong loading this group.'; return false; }
   const g = await res.json();
+  g.members.forEach(m => { members[m.student_id] = m; });
   document.getElementById('group-name').textContent = g.group_name;
   document.title = `StudyMatch · ${g.group_name}`;
   setChatNav(GROUP_ID, g.group_name);
@@ -437,18 +543,247 @@ async function loadGroup(){
   return true;
 }
 
-// ── Room info panel ──
-const infoBtn = document.getElementById('info-btn');
-const infoPanel = document.getElementById('info-panel');
-function setInfo(open){
-  infoPanel.hidden = !open;
-  infoBtn.setAttribute('aria-expanded', String(open));
-  if (open) document.getElementById('info-close').focus();
-  else infoBtn.focus();
+// ── Side panels (room info, meeting polls) - at most one open at a time ──
+const PANELS = {
+  info: { btn: document.getElementById('info-btn'), panel: document.getElementById('info-panel'), close: document.getElementById('info-close') },
+  poll: { btn: document.getElementById('poll-btn'), panel: document.getElementById('poll-panel'), close: document.getElementById('poll-close') },
+};
+function setPanel(name, open){
+  for (const [key, p] of Object.entries(PANELS)) {
+    const show = open && key === name;
+    p.panel.hidden = !show;
+    p.btn.setAttribute('aria-expanded', String(show));
+  }
+  if (open) PANELS[name].close.focus();
+  else PANELS[name].btn.focus();
 }
-infoBtn.addEventListener('click', () => setInfo(infoPanel.hidden));
-document.getElementById('info-close').addEventListener('click', () => setInfo(false));
-document.addEventListener('keydown', e => { if (e.key === 'Escape' && !infoPanel.hidden) setInfo(false); });
+for (const [name, p] of Object.entries(PANELS)) {
+  p.btn.addEventListener('click', () => setPanel(name, p.panel.hidden));
+  p.close.addEventListener('click', () => setPanel(name, false));
+}
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Escape') return;
+  const open = Object.keys(PANELS).find(k => !PANELS[k].panel.hidden);
+  if (open) setPanel(open, false);
+});
+
+// ── Meeting-time polls ──
+const pollListEl = document.getElementById('poll-list');
+const pollErrorEl = document.getElementById('poll-error');
+const pollForm = document.getElementById('poll-form');
+const pollTimes = document.getElementById('poll-times');
+const pollFormError = document.getElementById('poll-form-error');
+const meetBar = document.getElementById('meet-bar');
+let polls = [];
+let pollsJson = '';
+let loadingPolls = false;
+let reloadPolls = false;   // a forced reload was asked for while one was in flight
+
+const whenLabel = iso => new Date(iso).toLocaleString(undefined,
+  { weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
+function voterName(id){
+  const m = members[id];
+  return !m ? 'Former member' : m.is_me ? 'You' : m.name.split(' ')[0];
+}
+
+async function loadPolls(force){
+  if (loadingPolls) { if (force) reloadPolls = true; return; }
+  loadingPolls = true;
+  try {
+    const res = await fetch(`${BASE}/polls`);
+    if (bounce(res)) return;
+    if (!res.ok) throw new Error();
+    const text = await res.text();
+    if (force || text !== pollsJson) {   // skip re-rendering (and stealing focus) when nothing changed
+      pollsJson = text;
+      polls = JSON.parse(text).polls;
+      renderPolls();
+    }
+  } catch {
+    // The chat poller already reports connection trouble; keep the last good render.
+  } finally {
+    loadingPolls = false;
+    if (reloadPolls) { reloadPolls = false; loadPolls(true); }
+  }
+}
+
+function renderMeetBar(){
+  const now = new Date().toISOString();
+  const confirmed = polls.map(p => ({ p, o: p.options.find(o => o.option_id === p.final_option_id) }))
+                         .filter(x => x.o && x.o.starts_at > now)
+                         .sort((a, b) => a.o.starts_at.localeCompare(b.o.starts_at))[0];
+  const open = polls.find(p => p.final_option_id == null);
+  const memberCount = Object.keys(members).length;
+  if (confirmed) {
+    document.getElementById('meet-text').textContent = `${confirmed.p.title}: ${whenLabel(confirmed.o.starts_at)}`;
+    document.getElementById('meet-meta').textContent = 'Confirmed';
+  } else if (open) {
+    document.getElementById('meet-text').textContent = `Vote on a time: ${open.title}`;
+    document.getElementById('meet-meta').textContent = `${open.voter_count} of ${memberCount} voted`;
+  }
+  meetBar.hidden = !confirmed && !open;
+}
+
+function renderPolls(){
+  renderMeetBar();
+  const focusKey = document.activeElement?.dataset?.key;
+  pollListEl.innerHTML = '';
+  if (!polls.length) {
+    pollListEl.appendChild(el('p', 'poll-empty', 'No polls yet. Start one to pick a time everyone can make.'));
+    return;
+  }
+  for (const p of polls) {
+    const decided = p.final_option_id != null;
+    const sec = el('div', 'poll');
+    sec.appendChild(el('h3', 'poll-title', p.title));
+    sec.appendChild(el('p', 'poll-meta',
+      `By ${p.is_mine ? 'you' : p.created_by_name} · ${p.voter_count} voted` + (decided ? ' · Decided' : '')));
+    const best = Math.max(0, ...p.options.map(o => o.voters.length));
+    const list = el('ul', 'poll-options');
+    for (const o of p.options) {
+      const isFinal = o.option_id === p.final_option_id;
+      const li = el('li', 'opt' + (isFinal ? ' final' : decided ? ' dim' : best && o.voters.length === best ? ' top' : ''));
+      const boxId = `opt-${o.option_id}`;
+      if (!decided) {
+        const box = el('input');
+        box.type = 'checkbox'; box.id = boxId; box.checked = o.voted_by_me;
+        box.dataset.key = boxId;
+        box.addEventListener('change', () => vote(p, list));
+        box.dataset.optionId = o.option_id;
+        li.appendChild(box);
+      }
+      const main = el('div', 'opt-main');
+      const when = el(decided ? 'span' : 'label', 'opt-when', whenLabel(o.starts_at));
+      if (!decided) when.htmlFor = boxId;
+      main.appendChild(when);
+      main.appendChild(el('span', 'opt-who', o.voters.length ? o.voters.map(voterName).join(', ') : 'No votes yet'));
+      li.appendChild(main);
+      if (isFinal) li.appendChild(el('span', 'opt-final', 'Confirmed'));
+      else if (p.is_mine) {
+        const pick = el('button', 'link-btn', decided ? 'Change to this' : 'Confirm');
+        pick.type = 'button'; pick.dataset.key = `pick-${o.option_id}`;
+        pick.addEventListener('click', () => pollAction(`${BASE}/polls/${p.poll_id}/finalize`, 'POST', { option_id: o.option_id }));
+        li.appendChild(pick);
+      }
+      li.appendChild(el('span', 'opt-count', String(o.voters.length)));
+      list.appendChild(li);
+    }
+    sec.appendChild(list);
+    if (p.is_mine) {
+      const actions = el('div', 'poll-actions');
+      const del = el('button', 'link-btn danger', 'Delete poll');
+      del.type = 'button';
+      del.addEventListener('click', () => {
+        if (confirm(`Delete "${p.title}"? Everyone's votes on it are removed too.`)) {
+          pollAction(`${BASE}/polls/${p.poll_id}`, 'DELETE');
+        }
+      });
+      actions.appendChild(del);
+      sec.appendChild(actions);
+    }
+    pollListEl.appendChild(sec);
+  }
+  if (focusKey) pollListEl.querySelector(`[data-key="${focusKey}"]`)?.focus();
+}
+
+async function pollAction(url, method, body){
+  pollErrorEl.textContent = '';
+  try {
+    const res = await fetch(url, {
+      method, headers: body ? { 'Content-Type': 'application/json' } : undefined,
+      body: body ? JSON.stringify(body) : undefined,
+    });
+    if (bounce(res)) return false;
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      pollErrorEl.textContent = typeof err.detail === 'string' ? err.detail : "Couldn't save that. Try again.";
+      return false;
+    }
+    return true;
+  } catch {
+    pollErrorEl.textContent = "Couldn't reach the server. Try again.";
+    return false;
+  } finally {
+    await loadPolls(true);
+  }
+}
+
+function vote(p, list){
+  const option_ids = [...list.querySelectorAll('input[type=checkbox]:checked')].map(b => Number(b.dataset.optionId));
+  pollAction(`${BASE}/polls/${p.poll_id}/votes`, 'POST', { option_ids });
+}
+
+meetBar.addEventListener('click', () => setPanel('poll', true));
+
+// New-poll form: a list of datetime-local inputs, at least two.
+const MAX_TIMES = 10;
+function localNow(){
+  const d = new Date(); d.setSeconds(0, 0);
+  return new Date(d - d.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+}
+function addTimeRow(){
+  if (pollTimes.children.length >= MAX_TIMES) return;
+  const row = el('div', 'time-row');
+  const input = el('input');
+  input.type = 'datetime-local'; input.min = localNow(); input.required = true;
+  input.setAttribute('aria-label', `Time ${pollTimes.children.length + 1}`);
+  const remove = el('button', 'link-btn danger', 'Remove');
+  remove.type = 'button';
+  remove.addEventListener('click', () => { row.remove(); syncTimeRows(); });
+  row.append(input, remove);
+  pollTimes.appendChild(row);
+  syncTimeRows();
+  return input;
+}
+function syncTimeRows(){
+  const rows = [...pollTimes.children];
+  rows.forEach(r => { r.querySelector('button').hidden = rows.length <= 2; });
+  document.getElementById('poll-add-time').disabled = rows.length >= MAX_TIMES;
+}
+function openPollForm(open){
+  pollForm.hidden = !open;
+  document.getElementById('poll-new').hidden = open;
+  pollFormError.textContent = '';
+  if (open) {
+    document.getElementById('poll-title').value = '';
+    pollTimes.innerHTML = '';
+    addTimeRow(); addTimeRow();
+    document.getElementById('poll-title').focus();
+  } else {
+    document.getElementById('poll-new').focus();
+  }
+}
+document.getElementById('poll-new').addEventListener('click', () => openPollForm(true));
+document.getElementById('poll-cancel').addEventListener('click', () => openPollForm(false));
+document.getElementById('poll-add-time').addEventListener('click', () => addTimeRow()?.focus());
+
+pollForm.addEventListener('submit', async e => {
+  e.preventDefault();
+  // datetime-local has no zone: new Date() reads it as the viewer's local time, toISOString() sends UTC.
+  const options = [...pollTimes.querySelectorAll('input')].map(i => i.value).filter(Boolean)
+                    .map(v => new Date(v).toISOString());
+  if (new Set(options).size < 2) { pollFormError.textContent = 'Add at least two different times.'; return; }
+  const createBtn = document.getElementById('poll-create');
+  createBtn.disabled = true;
+  try {
+    const res = await fetch(`${BASE}/polls`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ title: document.getElementById('poll-title').value, options }),
+    });
+    if (bounce(res)) return;
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      pollFormError.textContent = typeof err.detail === 'string' ? err.detail : "Couldn't create the poll. Try again.";
+      return;
+    }
+    openPollForm(false);
+    await loadPolls(true);
+  } catch {
+    pollFormError.textContent = "Couldn't reach the server. Try again.";
+  } finally {
+    createBtn.disabled = false;
+  }
+});
 
 // ── Composer ──
 function autosize(){ input.style.height = 'auto'; input.style.height = input.scrollHeight + 'px'; }
@@ -493,7 +828,7 @@ document.getElementById('composer').addEventListener('submit', async e => {
 (async () => {
   if (!GROUP_ID) { location.href = '/home'; return; }
   if (!await loadGroup()) return;
-  await poll();
+  await Promise.all([poll(), loadPolls()]);
   input.disabled = false;
   input.focus();
   schedule();

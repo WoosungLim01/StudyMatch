@@ -256,6 +256,34 @@ CREATE TABLE IF NOT EXISTS group_chat_message (
 );
 CREATE INDEX IF NOT EXISTS idx_group_chat_message_group ON group_chat_message(group_id, message_id);
 
+-- Meeting-time polls inside a group's chat room (ui/chat.html). A member
+-- proposes candidate start times, everyone ticks every time that works for
+-- them, and the poll's creator confirms one (final_option_id). poll_id is
+-- app-generated text (libsql's replica doesn't reliably report lastrowid,
+-- and the options need it right after the insert). starts_at is UTC ISO
+-- ("2026-10-30T23:00:00Z"); the page shows it in the viewer's local time.
+-- Created on startup by app.py too, same as group_chat_message.
+CREATE TABLE IF NOT EXISTS meeting_poll (
+    poll_id          TEXT PRIMARY KEY,
+    group_id         TEXT NOT NULL REFERENCES study_group(group_id),
+    created_by       TEXT NOT NULL REFERENCES student(student_id),
+    title            TEXT NOT NULL,
+    created_at       TEXT NOT NULL,
+    final_option_id  INTEGER    -- NULL while voting is open
+);
+CREATE INDEX IF NOT EXISTS idx_meeting_poll_group ON meeting_poll(group_id);
+CREATE TABLE IF NOT EXISTS meeting_poll_option (
+    option_id   INTEGER PRIMARY KEY AUTOINCREMENT,
+    poll_id     TEXT NOT NULL REFERENCES meeting_poll(poll_id),
+    starts_at   TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_meeting_poll_option_poll ON meeting_poll_option(poll_id);
+CREATE TABLE IF NOT EXISTS meeting_poll_vote (
+    option_id   INTEGER NOT NULL REFERENCES meeting_poll_option(option_id),
+    student_id  TEXT NOT NULL REFERENCES student(student_id),
+    PRIMARY KEY (option_id, student_id)
+);
+
 CREATE TABLE group_feedback (
     feedback_id                  INTEGER PRIMARY KEY AUTOINCREMENT,
     group_id                     TEXT NOT NULL REFERENCES study_group(group_id),
