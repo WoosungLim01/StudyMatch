@@ -6,168 +6,183 @@
 <title>StudyMatch · Home</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500&family=Nunito+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
-  /* StudyMatch tokens — see Design.md */
+  /* StudyMatch tokens — see Design.md (same editorial tone as the login page) */
   :root{
-    --bg:#EEF2F8; --surface:#FFFFFF;
-    --navy:#14213D; --navy-deep:#0A1B33; --navy-mid:#1B2A4A;
-    --blue-2:#2C4770; --blue-3:#5C7EA6; --band:#DCE6F5;
-    --ink:#1B2A41; --muted-strong:rgba(27,42,65,.72); --muted:rgba(27,42,65,.55);
-    --line-soft:rgba(27,42,65,.06); --line:rgba(27,42,65,.08); --line-strong:rgba(27,42,65,.12);
-    --tint:rgba(20,33,61,.10);
-    --font-display:"Fraunces",Georgia,"Times New Roman",serif;
-    --font-body:"Nunito",system-ui,-apple-system,"Segoe UI",sans-serif;
-    --shadow-card:0 8px 24px rgba(27,42,65,.08);
+    --bg:#F1F3F9; --surface:#FFFFFF;
+    --accent:#14213D; --accent-deep:#0A1B33; --accent-mid:#1B2A4A;
+    --blue-2:#2C4770; --blue-3:#5C7EA6; --band:#E3E9F3;
+    --ink:#1F2547; --muted-strong:rgba(31,37,71,.72); --muted:#8A90A8;
+    --line-soft:#EEF0F6; --line:#E4E7F2; --line-strong:#D9DDEB;
+    --tint:#E3E9F3;
+    --danger:#8A3B42; --danger-soft:#F6EBEC;
+    --good:#2F6F4E; --good-soft:#EAF5EE;
+    --font-display:"Nunito Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+    --font-body:"Nunito Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+    --font-serif:"Fraunces",Georgia,"Times New Roman",serif;
+    --page-editorial:#FAF9F5;   /* warm cream, Claude-like */
+    --sidebar-bg:#F3F1EA;       /* areas are told apart by tone, not borders */
+    --well:#F0EEE6;             /* tonal fill: bubbles, chips, quiet buttons */
+    --well-strong:#E7E4DA;      /* hover / active fill */
+    --ink-editorial:#1F1E1D;
+    --text-soft:#5E5D59;
+    --muted-aa:#6B6A64;
+    --radius-control:8px;
+    --radius-panel:20px;
+    --shadow-soft:0 1px 2px rgba(31,30,29,.04), 0 6px 24px rgba(31,30,29,.05);
+    --sidebar-w:248px;
     color-scheme:light;
   }
   *{box-sizing:border-box;}
+  [hidden]{display:none !important;}
   body{
-    margin:0;min-height:100vh;background:var(--bg);color:var(--ink);
+    margin:0;min-height:100vh;background:var(--page-editorial);color:var(--ink);
     font-family:var(--font-body);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;
-    padding-bottom:env(safe-area-inset-bottom);
   }
-  h1,h2,h3{font-family:var(--font-display);color:var(--navy);margin:0;line-height:1.15;letter-spacing:-.01em;}
+  h1,h2,h3{font-family:var(--font-serif);font-weight:500;color:var(--ink-editorial);margin:0;line-height:1.1;letter-spacing:-.02em;}
 
-  /* ── Top bar ── */
-  .topbar{
-    position:sticky;top:0;z-index:10;background:rgba(255,255,255,.9);backdrop-filter:blur(10px);
-    border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top);
+  /* ── App shell: sidebar + content ── */
+  .app{display:grid;grid-template-columns:var(--sidebar-w) 1fr;min-height:100vh;}
+  .sidebar{
+    position:sticky;top:0;height:100vh;display:flex;flex-direction:column;gap:28px;
+    padding:28px 16px 20px;background:var(--sidebar-bg);
   }
-  .topbar-inner{max-width:1040px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;}
-  .brand{display:flex;align-items:center;gap:10px;font:700 22px/1 var(--font-display);color:var(--navy);}
-  .brand-mark{width:36px;height:36px;border-radius:12px;background:var(--navy);display:grid;place-items:center;}
-  .brand-mark svg{width:20px;height:20px;fill:none;stroke:#fff;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
-
-  .btn-ghost{
-    background:transparent;color:var(--navy);border:2px solid var(--navy);border-radius:999px;
-    padding:8px 20px;font:700 14px/1 var(--font-body);cursor:pointer;transition:background .15s;
+  .brand{padding:4px 12px;font:800 22px/1 var(--font-display);color:var(--ink);letter-spacing:-.02em;text-decoration:none;}
+  .nav{display:grid;grid-template-columns:minmax(0,1fr);gap:4px;}
+  .nav-item{
+    display:flex;align-items:center;gap:12px;width:100%;padding:10px 12px;
+    border:none;border-radius:var(--radius-control);background:none;cursor:pointer;text-align:left;
+    color:var(--text-soft);font:700 15px/1.25 var(--font-body);text-decoration:none;
+    transition:background .15s, color .15s;
   }
-  .btn-ghost:hover{background:var(--tint);}
-  .btn-ghost:focus-visible{outline:3px solid var(--blue-3);outline-offset:3px;}
+  .nav-item svg{width:20px;height:20px;flex:none;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+  .nav-item:hover{background:var(--well-strong);color:var(--ink-editorial);}
+  .nav-item.active{background:var(--well-strong);color:var(--ink-editorial);}
+  .nav-item:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+  .nav-item[aria-disabled="true"]{opacity:.55;cursor:default;pointer-events:none;}
+  .nav-label{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .nav-heading{display:block;padding:0 12px 6px;font:700 11px/1 var(--font-body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted-aa);}
+  .nav-empty{display:block;padding:6px 12px;font-size:13px;color:var(--muted-aa);}
+  .nav-logout{margin-top:auto;}
+  .content{min-width:0;}
 
-  main{max-width:1040px;margin:0 auto;padding:56px 24px 96px;}
-
-  /* ── Greeting ── */
-  .hero{margin-bottom:36px;}
-  .greeting{font-size:48px;font-weight:700;}
-  .greeting-sub{color:var(--muted);margin:8px 0 0;font-size:16px;}
-  .skeleton{color:var(--muted);margin:0;}
-
-  /* ── Layout ── */
-  .grid{display:grid;grid-template-columns:1.6fr 1fr;gap:24px;align-items:start;}
-  .side{display:grid;gap:24px;}
-  .card{background:var(--surface);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow-card);padding:32px;}
-
+  /* ── Shared: cards, badges, the course + chat room header ── */
+  .card{background:var(--surface);border-radius:var(--radius-panel);box-shadow:var(--shadow-soft);padding:28px;}
+  .card-label{display:block;font:700 12px/1 var(--font-body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted-aa);margin-bottom:16px;}
   .badge{
-    display:inline-block;padding:6px 12px;border-radius:999px;
-    background:var(--tint);color:var(--navy);font:700 13px/1 var(--font-body);letter-spacing:.02em;
+    display:inline-block;flex:none;white-space:nowrap;padding:5px 10px;border-radius:999px;
+    background:var(--tint);color:var(--accent);font:700 12px/1 var(--font-body);letter-spacing:.03em;
   }
-  .card-label{display:block;font:700 13px/1 var(--font-body);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:16px;}
-
-  .icon-box{
-    width:56px;height:56px;flex:none;display:grid;place-items:center;
-    border-radius:16px;background:var(--tint);color:var(--navy);
-  }
-  .icon-box svg{width:28px;height:28px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
-
-  /* ── Group ── */
-  .group-top{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;flex-wrap:wrap;margin-bottom:28px;}
-  .group-name{font-size:32px;margin-bottom:12px;}
-  .stack{display:flex;padding-left:12px;}
-  .stack .avatar{margin-left:-12px;border:3px solid var(--surface);}
-
+  .room-id{display:flex;align-items:center;gap:10px;min-width:0;}
+  .room-course{color:var(--text-soft);font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
   .avatar{
-    width:48px;height:48px;border-radius:50%;display:grid;place-items:center;flex:none;
-    color:#fff;font:700 19px/1 var(--font-display);background:var(--navy);
+    width:40px;height:40px;border-radius:50%;display:grid;place-items:center;flex:none;
+    color:#fff;font:700 16px/1 var(--font-display);background:var(--accent);
   }
   .avatar.c2{background:var(--blue-2);}
   .avatar.c3{background:var(--blue-3);}
+  .stack{display:flex;padding-left:10px;flex:none;}
+  .stack .avatar{margin-left:-10px;border:2px solid var(--page-editorial);}
 
-  .member-list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:12px;}
-  .member-list li{
-    display:flex;align-items:center;gap:14px;padding:12px 14px;border-radius:18px;
-    background:var(--bg);font-weight:700;color:var(--ink);
+  @media (max-width:767px){
+    .app{grid-template-columns:1fr;grid-template-rows:auto 1fr;}
+    .sidebar{
+      position:sticky;top:0;z-index:10;height:auto;flex-direction:row;align-items:center;gap:4px;
+      padding:10px 12px;padding-top:max(10px, env(safe-area-inset-top));
+    }
+    .brand{margin-right:auto;padding:4px;font-size:19px;}
+    .nav{display:flex;gap:2px;}
+    .nav-item{width:auto;padding:10px;}
+    .nav-label{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;}
+    .nav-heading, .nav-empty{display:none;}
+    .rooms{display:flex;}
+    .nav-logout{margin-top:0;}
   }
-  .member-list li.empty{background:none;padding:0;font-weight:400;color:var(--muted);}
 
-  .card.clickable{cursor:pointer;transition:box-shadow .15s,transform .15s;}
-  .card.clickable:hover{box-shadow:0 12px 32px rgba(27,42,65,.14);transform:translateY(-2px);}
-  .card.clickable:focus-visible{outline:3px solid var(--blue-3);outline-offset:3px;}
+  .page{max-width:880px;margin:0 auto;padding:48px 40px 64px;}
+  .hero{margin-bottom:28px;}
+  .greeting{font-size:42px;}
+  .greeting-sub{color:var(--text-soft);margin:6px 0 0;font-size:16px;}
+  .skeleton{color:var(--muted-aa);margin:0;}
+
+  /* ── Group card: title + open button on one row, members as chips ── */
+  .room-top{display:flex;justify-content:space-between;align-items:center;gap:20px;}
+  .room-top > div{min-width:0;}
+  .group-name{font-size:28px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .meta{display:block;margin-top:4px;color:var(--muted-aa);font-size:14px;font-weight:600;}
+
+  .member-list{list-style:none;margin:22px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:8px;}
+  .member-list li{
+    display:inline-flex;align-items:center;gap:8px;padding:4px 12px 4px 4px;border-radius:999px;
+    background:var(--well);font-weight:600;font-size:14px;color:var(--ink-editorial);
+  }
+  .member-list .avatar{width:28px;height:28px;font-size:12px;}
+  .member-list li.empty{background:none;border:none;padding:0;font-weight:400;color:var(--muted-aa);}
+
   .btn-primary{
-    display:inline-flex;align-items:center;gap:8px;margin-top:24px;
-    background:var(--navy);color:#fff;border:none;border-radius:999px;text-decoration:none;
-    padding:12px 22px;font:700 15px/1 var(--font-body);
+    flex:none;display:inline-flex;align-items:center;gap:8px;height:44px;padding:0 18px;
+    background:var(--accent);color:#fff;border-radius:var(--radius-control);text-decoration:none;
+    font:700 15px/1 var(--font-body);transition:background .15s;
   }
   .btn-primary svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
-  .card.clickable:hover .btn-primary{background:var(--navy-mid);}
+  .btn-primary:hover{background:var(--accent-deep);}
+  .btn-primary:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
 
-  .pending{display:flex;gap:18px;align-items:flex-start;}
-  .pending h3{font-size:22px;margin-bottom:6px;}
-  .pending p{margin:0;color:var(--muted-strong);}
-
-  /* ── Course ── */
-  .course-line{display:flex;gap:16px;align-items:center;}
-  .course-code{margin-bottom:8px;}
-  .course-title{font:600 20px/1.3 var(--font-display);color:var(--navy);}
-
-  /* ── Tip band ── */
-  .tip{background:var(--band);border-radius:24px;padding:28px;}
-  .tip h3{font-size:20px;margin-bottom:6px;}
-  .tip p{margin:0;color:var(--muted-strong);font-size:15px;}
-
-  @media (max-width:860px){
-    .grid{grid-template-columns:1fr;}
-    .greeting{font-size:36px;}
+  .pending{display:flex;gap:16px;align-items:flex-start;}
+  .pending h2{font-size:24px;margin-bottom:4px;}
+  .pending p{margin:0;color:var(--text-soft);font-size:15px;}
+  .icon-box{
+    width:44px;height:44px;flex:none;display:grid;place-items:center;
+    border-radius:10px;background:var(--tint);color:var(--accent);
   }
-  @media (max-width:560px){
-    main{padding:36px 16px 64px;}
-    .card{padding:24px;}
-    .member-list{grid-template-columns:1fr;}
-    .group-name{font-size:26px;}
-    .topbar-inner{padding:12px 16px;}
+  .icon-box svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+
+  @media (max-width:1023px){
+    .page{padding:40px 28px 56px;}
+  }
+  @media (max-width:767px){
+    .page{padding:24px 16px 48px;}
+    .greeting{font-size:34px;}
+    .card{padding:20px 18px;}
+    .room-top{flex-direction:column;align-items:stretch;}
+    .group-name{font-size:24px;white-space:normal;}
+    .btn-primary{justify-content:center;}
   }
 </style>
 </head>
 <body>
 
-<header class="topbar">
-  <div class="topbar-inner">
-    <div class="brand">
-      <span class="brand-mark"><svg viewBox="0 0 24 24"><path d="M12 6.5C10.5 5 8.2 4.5 4 4.5v13c4.2 0 6.5.5 8 2 1.5-1.5 3.8-2 8-2v-13c-4.2 0-6.5.5-8 2z"/><path d="M12 6.5v13"/></svg></span>
-      StudyMatch
+<div class="app">
+  <aside class="sidebar">
+    <a class="brand" href="/home">StudyMatch</a>
+    <nav class="nav" aria-label="Main">
+      <a class="nav-item active" aria-current="page" href="/home"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-4.5v-6h-5v6H5a1 1 0 0 1-1-1z"/></svg><span class="nav-label">Home</span></a>
+      <a class="nav-item" href="/account"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="3.5"/><path d="M5 20c1.2-3.6 3.8-5.5 7-5.5s5.8 1.9 7 5.5"/></svg><span class="nav-label">Account</span></a>
+    </nav>
+    <div class="rooms">
+      <span class="nav-heading">Chat rooms</span>
+      <nav class="nav" aria-label="Chat rooms">
+        <a class="nav-item" id="nav-chat" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 0 1-11.6 7.1L4 20l.9-4.4A8 8 0 1 1 20 12z"/></svg><span class="nav-label" id="nav-chat-name"></span></a>
+        <span class="nav-empty" id="nav-chat-empty">Loading…</span>
+      </nav>
     </div>
-    <div style="display:flex;gap:10px;">
-      <a class="btn-ghost" href="/account" style="text-decoration:none;display:inline-flex;align-items:center;">Account</a>
-      <button class="btn-ghost" id="logout-btn">Log out</button>
-    </div>
-  </div>
-</header>
+    <button class="nav-item nav-logout" id="logout-btn" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 20H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h3"/><path d="M14 16l4-4-4-4"/><path d="M18 12H9"/></svg><span class="nav-label">Log out</span></button>
+  </aside>
 
-<main>
-  <div class="hero" id="greeting-card">
-    <p class="skeleton">Loading…</p>
-  </div>
+  <main class="content">
+    <div class="page">
+      <div class="hero" id="greeting-card">
+        <p class="skeleton">Loading…</p>
+      </div>
 
-  <div class="grid">
-    <section class="card" id="group-card" style="display:none;">
-      <span class="card-label">Your study group</span>
-      <div id="group-content"></div>
-    </section>
-
-    <div class="side">
-      <section class="card" id="course-card" style="display:none;">
-        <span class="card-label">Course</span>
-        <div class="course-line" id="course-content"></div>
-      </section>
-
-      <section class="tip">
-        <h3>Break the ice</h3>
-        <p>Say hi to your group and pick a spot, whether that's Pattee, the HUB, or a Zoom link. The first session is the hardest one to schedule.</p>
+      <section class="card" id="group-card" style="display:none;">
+        <span class="card-label">Your chat room</span>
+        <div id="group-content"></div>
       </section>
     </div>
-  </div>
-</main>
+  </main>
+</div>
 
 <script>
 const API = '';
@@ -186,9 +201,11 @@ async function load(){
   if (res.status === 401) { window.location.href = '/login'; return; }
   if (!res.ok) {
     document.getElementById('greeting-card').innerHTML = '<p class="skeleton">Something went wrong loading your info.</p>';
+    setChatNav(null);
     return;
   }
   const data = await res.json();
+  setChatNav(data.status === 'grouped' ? data.group_id : null, data.group_name);
 
   document.getElementById('greeting-card').innerHTML = `
     <h1 class="greeting">Hey, ${esc(data.name.split(' ')[0])}.</h1>
@@ -200,59 +217,49 @@ async function load(){
   groupCard.style.display = 'block';
   if (data.status === 'grouped') {
     const members = data.members || [];
+    const course = data.course_title ? `${esc(data.course_title)} · ` : '';
     groupContent.innerHTML = `
-      <div class="group-top">
+      <div class="room-top">
         <div>
           <h2 class="group-name">${esc(data.group_name)}</h2>
-          <span class="badge">Compatibility ${esc(data.group_score)}</span>
+          <span class="meta">${course}${members.length + 1} members · Compatibility ${esc(data.group_score)}</span>
         </div>
-        <div class="stack" aria-hidden="true">
-          ${members.slice(0, 5).map((m, i) => `<div class="avatar ${AVATAR_COLORS[i % 3]}">${initial(m)}</div>`).join('')}
-        </div>
+        <a class="btn-primary" href="/chat?group=${encodeURIComponent(data.group_id)}">
+          <svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 0 1-11.6 7.1L4 20l.9-4.4A8 8 0 1 1 20 12z"/></svg>
+          Open chat room
+        </a>
       </div>
       <ul class="member-list">
         ${members.map((m, i) => `<li><div class="avatar ${AVATAR_COLORS[i % 3]}">${initial(m)}</div>${esc(m)}</li>`).join('') || '<li class="empty">No other members yet</li>'}
       </ul>
-      <a class="btn-primary" href="/chat?group=${encodeURIComponent(data.group_id)}">
-        <svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 0 1-11.6 7.1L4 20l.9-4.4A8 8 0 1 1 20 12z"/></svg>
-        Open group chat
-      </a>
     `;
-    // The whole card opens the chat, not just the button.
-    const chatUrl = '/chat?group=' + encodeURIComponent(data.group_id);
-    groupCard.classList.add('clickable');
-    groupCard.tabIndex = 0;
-    groupCard.setAttribute('role', 'link');
-    groupCard.addEventListener('click', e => { if (!e.target.closest('a')) window.location.href = chatUrl; });
-    groupCard.addEventListener('keydown', e => { if (e.key === 'Enter') window.location.href = chatUrl; });
   } else {
     groupContent.innerHTML = `
       <div class="pending">
         <div class="icon-box"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg></div>
         <div>
-          <h3>You're on the waiting list</h3>
-          <p>No group had room right now. As more students join, you'll be matched automatically, so there's nothing else you need to do.</p>
+          <h2>You're on the waiting list</h2>
+          <p>No group had room right now. As more students join, you'll be matched automatically and your chat room shows up here.</p>
         </div>
-      </div>
-    `;
-  }
-
-  if (data.course_code) {
-    const courseCard = document.getElementById('course-card');
-    courseCard.style.display = 'block';
-    document.getElementById('course-content').innerHTML = `
-      <div class="icon-box"><svg viewBox="0 0 24 24"><path d="M4 19.5V5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M8 7h7M8 11h5"/></svg></div>
-      <div>
-        <span class="badge course-code">${esc(data.course_code)}</span>
-        <div class="course-title">${esc(data.course_title)}</div>
       </div>
     `;
   }
 }
 load();
 
+// ── Sidebar ──
+function setChatNav(groupId, groupName){
+  const link = document.getElementById('nav-chat');
+  const empty = document.getElementById('nav-chat-empty');
+  if (!groupId) { empty.textContent = 'None yet'; return; }
+  link.href = '/chat?group=' + encodeURIComponent(groupId);
+  link.title = groupName;
+  document.getElementById('nav-chat-name').textContent = groupName;
+  link.hidden = false;
+  empty.hidden = true;
+}
 document.getElementById('logout-btn').addEventListener('click', async () => {
-  await fetch(API + '/api/auth/logout', { method: 'POST' });
+  await fetch('/api/auth/logout', { method: 'POST' });
   window.location.href = '/login';
 });
 </script>

@@ -76,6 +76,7 @@ from typing import Dict, Optional
 
 from fastapi import FastAPI, HTTPException, Query, Request, Response
 from fastapi.responses import FileResponse, HTMLResponse, RedirectResponse
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
 from algorithm.clustering import classify, family_scores, motivation_badge
@@ -133,6 +134,9 @@ async def lifespan(_app):
 
 
 app = FastAPI(title="StudyMatch", lifespan=lifespan)
+# Page images from assets/ (e.g. the login hero). check_dir=False so a missing
+# folder 404s per request instead of stopping the app from starting.
+app.mount("/assets", StaticFiles(directory=ROOT / "assets", check_dir=False), name="assets")
 
 
 def now_iso(offset=timedelta(0)):

@@ -6,20 +6,20 @@
 <title>StudyMatch · Admin</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
   /* StudyMatch tokens — see Design.md */
   :root{
-    --bg:#EEF2F8; --surface:#FFFFFF;
-    --navy:#14213D; --navy-deep:#0A1B33; --navy-mid:#1B2A4A;
-    --blue-2:#2C4770; --blue-3:#5C7EA6; --band:#DCE6F5;
-    --ink:#1B2A41; --muted-strong:rgba(27,42,65,.72); --muted:rgba(27,42,65,.55);
-    --line-soft:rgba(27,42,65,.06); --line:rgba(27,42,65,.08); --line-strong:rgba(27,42,65,.12);
-    --tint:rgba(20,33,61,.10);
+    --bg:#F1F3F9; --surface:#FFFFFF;
+    --accent:#14213D; --accent-deep:#0A1B33; --accent-mid:#1B2A4A;
+    --blue-2:#2C4770; --blue-3:#5C7EA6; --band:#E3E9F3;
+    --ink:#1F2547; --muted-strong:rgba(31,37,71,.72); --muted:#8A90A8;
+    --line-soft:#EEF0F6; --line:#E4E7F2; --line-strong:#D9DDEB;
+    --tint:#E3E9F3;
     --danger:#8A3B42; --danger-soft:#F6EBEC;
-    --font-display:"Fraunces",Georgia,"Times New Roman",serif;
-    --font-body:"Nunito",system-ui,-apple-system,"Segoe UI",sans-serif;
-    --shadow-card:0 8px 24px rgba(27,42,65,.08);
+    --font-display:"Nunito Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+    --font-body:"Nunito Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+    --shadow-card:0 12px 40px rgba(76,86,150,.08);
     color-scheme:light;
   }
   *{box-sizing:border-box;}
@@ -28,26 +28,24 @@
     font-family:var(--font-body);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased;
     padding-bottom:env(safe-area-inset-bottom);
   }
-  h1,h2,h3{font-family:var(--font-display);color:var(--navy);margin:0;line-height:1.15;letter-spacing:-.01em;}
+  h1,h2,h3{font-family:var(--font-display);font-weight:800;color:var(--ink);margin:0;line-height:1.15;letter-spacing:-.02em;}
   .mono{font-variant-numeric:tabular-nums;font-size:13px;letter-spacing:.01em;}
   .muted{color:var(--muted);}
 
   /* ── Top bar ── */
   .topbar{
-    position:sticky;top:0;z-index:10;background:rgba(255,255,255,.9);backdrop-filter:blur(10px);
+    position:sticky;top:0;z-index:10;background:rgba(241,243,249,.85);backdrop-filter:blur(10px);
     border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top);
   }
   .topbar-inner{max-width:1120px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;gap:14px;}
-  .brand{display:flex;align-items:center;gap:10px;font:700 22px/1 var(--font-display);color:var(--navy);}
-  .brand-mark{width:36px;height:36px;border-radius:12px;background:var(--navy);display:grid;place-items:center;}
-  .brand-mark svg{width:20px;height:20px;fill:none;stroke:#fff;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+  .brand{display:flex;align-items:center;gap:10px;font:800 22px/1 var(--font-display);color:var(--ink);letter-spacing:-.02em;}
 
   .badge{
     display:inline-block;padding:5px 11px;border-radius:999px;
-    background:var(--tint);color:var(--navy);font:700 12px/1 var(--font-body);letter-spacing:.02em;
+    background:var(--tint);color:var(--accent);font:700 12px/1 var(--font-body);letter-spacing:.02em;
   }
   .badge.synthetic{background:var(--line-soft);color:var(--muted-strong);}
-  .badge.real{background:var(--navy);color:#fff;}
+  .badge.real{background:var(--accent);color:#fff;}
   .flag{display:inline-block;margin-left:6px;padding:2px 8px;border-radius:999px;
         background:var(--danger-soft);color:var(--danger);font:700 11px/1.4 var(--font-body);}
 
@@ -58,8 +56,8 @@
 
   /* ── Stats ── */
   .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px;}
-  .stat{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:20px 22px;box-shadow:var(--shadow-card);}
-  .stat .n{font:700 34px/1.1 var(--font-display);color:var(--navy);font-variant-numeric:tabular-nums;}
+  .stat{background:var(--surface);border:1px solid transparent;border-radius:20px;padding:20px 22px;box-shadow:var(--shadow-card);}
+  .stat .n{font:700 34px/1.1 var(--font-display);color:var(--accent);font-variant-numeric:tabular-nums;}
   .stat .l{font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-top:4px;}
 
   /* ── Toolbar ── */
@@ -80,11 +78,11 @@
     background-repeat:no-repeat;background-position:right 16px center;background-size:16px;
   }
   .toolbar input::placeholder{color:var(--muted);}
-  .toolbar input:focus, .toolbar select:focus{outline:none;border-color:var(--navy);box-shadow:0 0 0 4px var(--tint);}
+  .toolbar input:focus, .toolbar select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 4px var(--tint);}
 
   /* ── Tables ── */
   .section-title{font-size:26px;margin:48px 0 16px;}
-  .panel{background:var(--surface);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow-card);overflow:hidden;}
+  .panel{background:var(--surface);border:1px solid transparent;border-radius:24px;box-shadow:var(--shadow-card);overflow:hidden;}
   .tbl-wrap{overflow-x:auto;max-height:640px;overflow-y:auto;}
   table{width:100%;border-collapse:collapse;font-size:14px;}
   th{
@@ -95,7 +93,7 @@
   td{padding:12px 16px;border-bottom:1px solid var(--line-soft);vertical-align:middle;}
   td:last-child, th:last-child{text-align:right;}
   tr:last-child td{border-bottom:none;}
-  tbody tr:hover td{background:rgba(238,242,248,.6);}
+  tbody tr:hover td{background:rgba(241,243,249,.7);}
 
   .btn-del{
     background:transparent;color:var(--danger);border:1.5px solid rgba(138,59,66,.35);border-radius:999px;
@@ -108,8 +106,8 @@
   .empty{padding:48px;text-align:center;color:var(--muted);}
   .toast{
     position:fixed;bottom:calc(24px + env(safe-area-inset-bottom));right:24px;z-index:20;
-    background:var(--navy);color:#fff;border-radius:999px;padding:12px 22px;
-    font-weight:700;font-size:14px;box-shadow:0 12px 24px rgba(27,42,65,.25);display:none;
+    background:var(--accent);color:#fff;border-radius:999px;padding:12px 22px;
+    font-weight:700;font-size:14px;box-shadow:0 12px 24px rgba(76,86,150,.25);display:none;
   }
 
   /* ── Dashboard: study-type map ── */
@@ -117,7 +115,7 @@
     /* chart colors: validated all-pairs (scripts/validate_palette.js), cool hues per Design.md;
        shape is the second identity channel, so color never carries a type alone */
     --type-captain:#2a78d6; --type-architect:#4a3aa7; --type-explorer:#1baf7a; --type-sprinter:#008300;
-    --grid:#E3E8F0; --axis:#C3CCDA;
+    --grid:#E8EAF4; --axis:#C9CDDF;
   }
   .section-sub{margin:-8px 0 18px;color:var(--muted-strong);max-width:760px;}
   .dash{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:20px;align-items:start;}
@@ -128,7 +126,7 @@
   .tip{
     position:absolute;pointer-events:none;z-index:5;min-width:220px;max-width:280px;
     background:var(--surface);border:1px solid var(--line-strong);border-radius:16px;
-    box-shadow:0 12px 24px rgba(27,42,65,.16);padding:12px 14px;font-size:13px;line-height:1.45;display:none;
+    box-shadow:0 12px 24px rgba(76,86,150,.16);padding:12px 14px;font-size:13px;line-height:1.45;display:none;
   }
   .tip b{color:var(--ink);font-size:14px;}
   .tip .row{display:flex;justify-content:space-between;gap:12px;}
@@ -145,7 +143,7 @@
   .how{font-size:13px;color:var(--muted-strong);margin:14px 0 0;padding-left:18px;}
   .how li{margin-bottom:4px;}
   details.table-view{margin-top:14px;}
-  details.table-view summary{cursor:pointer;font-weight:700;color:var(--navy);font-size:14px;}
+  details.table-view summary{cursor:pointer;font-weight:700;color:var(--accent);font-size:14px;}
   details.table-view .tbl-wrap{max-height:360px;margin-top:10px;border:1px solid var(--line);border-radius:16px;}
   details.table-view td, details.table-view th{padding:9px 12px;}
   details.table-view td:last-child, details.table-view th:last-child{text-align:left;}
@@ -168,7 +166,6 @@
 <header class="topbar">
   <div class="topbar-inner">
     <div class="brand">
-      <span class="brand-mark"><svg viewBox="0 0 24 24"><path d="M12 6.5C10.5 5 8.2 4.5 4 4.5v13c4.2 0 6.5.5 8 2 1.5-1.5 3.8-2 8-2v-13c-4.2 0-6.5.5-8 2z"/><path d="M12 6.5v13"/></svg></span>
       StudyMatch
     </div>
     <span class="badge">Admin</span>
