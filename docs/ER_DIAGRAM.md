@@ -78,11 +78,33 @@ https://claude.ai/code/artifact/ea7b2a43-c040-44fe-9049-af37e590cddc
   writable only by that group's members (checked on every request in
   `app.py`). Its `message_id` is an `AUTOINCREMENT` integer rather than a
   `msg_0001`-style string so the page can poll for "everything after the last
-  id I have". It starts empty and is never loaded from `sample/`. `app.py`
-  also creates it on startup (`CREATE TABLE IF NOT EXISTS`), which is how the
-  live Turso database, never rebuilt from `schema.sql`, picks it up. Deleting
-  a student deletes their messages; deleting a group's last member deletes
-  the group's chat with it.
+  id I have". It starts empty and is never loaded from `sample/`.
+  `data/migrations.py` also creates it on startup (`CREATE TABLE IF NOT
+  EXISTS`), which is how the live Turso database, never rebuilt from
+  `schema.sql`, picks it up. Deleting a student deletes their messages;
+  deleting a group's last member deletes the group's chat with it.
+- **Admin groups are marked in their own table**: `admin_group` lists
+  hand-made groups (`data/make_group.py`), such as the team's chat test
+  group, that matching must ignore. Placement never offers seats in them, and
+  membership in one doesn't count as being placed, so their members keep
+  their matched groups. They may mix courses; `study_group.course_id` is just
+  the members' most common course because the column is required, and their
+  scores stay NULL. It's a separate table rather than a `study_group` column
+  because existing code inserts into `study_group` by position, and adding a
+  column would break those inserts on the live database mid-deploy.
+- **Chat attachments live in the database, in chunks**: a message with a file
+  points at one `group_chat_attachment` row (`attachment_id`, NULL for plain
+  text). That row holds the metadata, and the bytes are split across
+  `group_chat_attachment_chunk` rows of 512 KB each. Render's disk is wiped on
+  redeploy, so files can't live there, and small rows keep every statement
+  sent to Turso small while letting a byte-range request read only the
+  chunks it covers. The link runs from message to attachment, not the other
+  way, because the embedded Turso replica doesn't reliably report a new
+  message's id; the attachment id is a random token generated before the
+  insert. `kind` (`image`, `video`, `file`) decides how a download is
+  served: only whitelisted image and video types inline, everything else as
+  `application/octet-stream`. `attachment.group_id` is checked on every
+  download, so an id can't be read through another group.
 
 ## Diagram
 
@@ -107,6 +129,7 @@ erDiagram
     STUDENT ||--o{ PAIRWISE_COMPATIBILITY : "scored as B"
     COURSE ||--o{ PAIRWISE_COMPATIBILITY : scopes
     COURSE ||--o{ STUDY_GROUP : hosts
+    STUDY_GROUP ||--o| ADMIN_GROUP : "marked as"
     STUDY_GROUP ||--o{ GROUP_MEMBERSHIP : has
     STUDENT ||--o{ GROUP_MEMBERSHIP : joins
     STUDY_GROUP ||--o{ MATCH_DATA : "recommended in"
@@ -115,6 +138,10 @@ erDiagram
     STUDENT ||--o{ COURSE_CHAT_MESSAGE : posts
     STUDY_GROUP ||--o{ GROUP_CHAT_MESSAGE : "chats in"
     STUDENT ||--o{ GROUP_CHAT_MESSAGE : sends
+    GROUP_CHAT_ATTACHMENT |o--o| GROUP_CHAT_MESSAGE : "attached to"
+    STUDY_GROUP ||--o{ GROUP_CHAT_ATTACHMENT : holds
+    STUDENT ||--o{ GROUP_CHAT_ATTACHMENT : uploads
+    GROUP_CHAT_ATTACHMENT ||--|{ GROUP_CHAT_ATTACHMENT_CHUNK : "stored as"
     STUDY_GROUP ||--o{ GROUP_FEEDBACK : receives
     STUDENT ||--o{ GROUP_FEEDBACK : gives
 
@@ -244,6 +271,10 @@ erDiagram
         float avg_pairwise
         float worst_pairwise
     }
+    ADMIN_GROUP {
+        string group_id PK "also FK"
+        string created_at
+    }
     GROUP_MEMBERSHIP {
         string group_id PK "also FK"
         string student_id PK "also FK"
@@ -272,8 +303,24 @@ erDiagram
         int message_id PK
         string group_id FK
         string student_id FK
-        string text
+        string text "empty for an uncaptioned attachment"
         string created_at
+        string attachment_id FK "nullable"
+    }
+    GROUP_CHAT_ATTACHMENT {
+        string attachment_id PK "random token"
+        string group_id FK
+        string student_id FK "uploader"
+        string filename
+        string content_type
+        string kind "image, video or file"
+        int size_bytes
+        string created_at
+    }
+    GROUP_CHAT_ATTACHMENT_CHUNK {
+        string attachment_id PK "also FK"
+        int seq PK
+        blob data "512 KB max"
     }
     GROUP_FEEDBACK {
         int feedback_id PK

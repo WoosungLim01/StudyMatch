@@ -203,11 +203,11 @@ def _add_hint(model, x, zvars, used, groups, G):
     groups = sorted(groups, key=min)
     assign = {i: g for g, grp in enumerate(groups) for i in grp}
     for (i, g), var in x.items():
-        model.AddHint(var, assign.get(i) == g)
+        model.AddHint(var, int(assign.get(i) == g))
     for (i, j, g), var in zvars.items():
-        model.AddHint(var, assign.get(i) == g and assign.get(j) == g)
+        model.AddHint(var, int(assign.get(i) == g and assign.get(j) == g))
     for g in range(G):
-        model.AddHint(used[g], g < len(groups))
+        model.AddHint(used[g], int(g < len(groups)))
 
 
 def _group_sizes(m):

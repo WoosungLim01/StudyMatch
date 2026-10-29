@@ -214,6 +214,18 @@ CREATE TABLE study_group (
     worst_pairwise    REAL
 );
 
+-- Hand-made groups (data/make_group.py), e.g. a test group for the team.
+-- Matching ignores them: no seats are offered in them, membership in one
+-- doesn't count as being placed, and they have no compatibility score. They
+-- may mix courses; study_group.course_id is just the members' most common
+-- course, because the column is required. A separate table rather than a
+-- study_group column, so existing positional INSERTs into study_group keep
+-- working. data/migrations.py creates it on startup too.
+CREATE TABLE IF NOT EXISTS admin_group (
+    group_id     TEXT PRIMARY KEY REFERENCES study_group(group_id),
+    created_at   TEXT NOT NULL
+);
+
 CREATE TABLE group_membership (
     group_id     TEXT NOT NULL REFERENCES study_group(group_id),
     student_id   TEXT NOT NULL REFERENCES student(student_id),
@@ -245,16 +257,45 @@ CREATE TABLE course_chat_message (
 -- Private chat for one study group's members (ui/chat.html). Separate from
 -- course_chat_message, which is the course-wide Q&A board. message_id is
 -- monotonically increasing so clients poll with "?after=<last id seen>".
--- app.py also creates this table on startup (IF NOT EXISTS), so databases
--- built before it existed - including the live Turso one - pick it up on deploy.
+-- data/migrations.py also creates these chat tables on startup (IF NOT
+-- EXISTS), so databases built before they existed - including the live Turso
+-- one - pick them up on deploy. Keep the two in sync.
+-- text is '' for an attachment sent without a caption.
 CREATE TABLE IF NOT EXISTS group_chat_message (
-    message_id   INTEGER PRIMARY KEY AUTOINCREMENT,
-    group_id     TEXT NOT NULL REFERENCES study_group(group_id),
-    student_id   TEXT NOT NULL REFERENCES student(student_id),
-    text         TEXT NOT NULL,
-    created_at   TEXT NOT NULL
+    message_id    INTEGER PRIMARY KEY AUTOINCREMENT,
+    group_id      TEXT NOT NULL REFERENCES study_group(group_id),
+    student_id    TEXT NOT NULL REFERENCES student(student_id),
+    text          TEXT NOT NULL,
+    created_at    TEXT NOT NULL,
+    attachment_id TEXT REFERENCES group_chat_attachment(attachment_id)
 );
 CREATE INDEX IF NOT EXISTS idx_group_chat_message_group ON group_chat_message(group_id, message_id);
+
+-- One uploaded file per row; the bytes live in group_chat_attachment_chunk.
+-- kind decides how it is served: image/video inline (only whitelisted
+-- content types), file as a download with content_type application/octet-stream.
+CREATE TABLE IF NOT EXISTS group_chat_attachment (
+    attachment_id TEXT PRIMARY KEY,          -- random token, not guessable
+    group_id      TEXT NOT NULL REFERENCES study_group(group_id),
+    student_id    TEXT NOT NULL REFERENCES student(student_id),
+    filename      TEXT NOT NULL,
+    content_type  TEXT NOT NULL,
+    kind          TEXT NOT NULL CHECK (kind IN ('image', 'video', 'file')),
+    size_bytes    INTEGER NOT NULL,
+    created_at    TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_group_chat_attachment_group ON group_chat_attachment(group_id);
+CREATE INDEX IF NOT EXISTS idx_group_chat_attachment_student ON group_chat_attachment(student_id);
+
+-- File bytes in 512 KB pieces, so no single statement sent to Turso carries a
+-- large blob and byte-range requests (needed for video on iOS) read only the
+-- pieces they cover.
+CREATE TABLE IF NOT EXISTS group_chat_attachment_chunk (
+    attachment_id TEXT NOT NULL REFERENCES group_chat_attachment(attachment_id),
+    seq           INTEGER NOT NULL,
+    data          BLOB NOT NULL,
+    PRIMARY KEY (attachment_id, seq)
+);
 
 -- Meeting-time polls inside a group's chat room (ui/chat.html). A member
 -- proposes candidate start times, everyone ticks every time that works for
@@ -262,7 +303,7 @@ CREATE INDEX IF NOT EXISTS idx_group_chat_message_group ON group_chat_message(gr
 -- app-generated text (libsql's replica doesn't reliably report lastrowid,
 -- and the options need it right after the insert). starts_at is UTC ISO
 -- ("2026-10-30T23:00:00Z"); the page shows it in the viewer's local time.
--- Created on startup by app.py too, same as group_chat_message.
+-- Created on startup by data/migrations.py too, same as group_chat_message.
 CREATE TABLE IF NOT EXISTS meeting_poll (
     poll_id          TEXT PRIMARY KEY,
     group_id         TEXT NOT NULL REFERENCES study_group(group_id),
