@@ -33,13 +33,14 @@ Pages:
                     blocked on match quality), and their account is linked to
                     the new student_id so they never see the survey again.
   GET  /home    -> gated to a logged-in user who HAS completed the survey:
-                    their matched group, its members, and their course, plus
-                    links to any admin groups they're in (data/make_group.py).
+                    a greeting and a month calendar of their confirmed meetings
+                    (GET /api/meetings). Chat rooms, including any admin groups
+                    (data/make_group.py), are links in the sidebar.
   GET  /chat?group=<group_id>
                 -> same gating as /home, plus group membership (enforced
                     by the /api/groups/* endpoints). Group chat with text
                     and image/video/file attachments, polled every few
-                    seconds; reached by clicking your group card on /home.
+                    seconds; reached from the sidebar's chat room list.
   GET  /account -> same gating as /home. Edit your display name, log out,
                     or delete your own account (DELETE /api/account - removes
                     your student/survey data AND login access in one action,
@@ -1003,6 +1004,30 @@ def api_group_polls(group_id: str, request: Request):
          "voter_count": len({v for o in by_poll.get(poll_id, []) for v in o["voters"]}),
          "options": by_poll.get(poll_id, [])}
         for poll_id, title, created_by, name, created_at, final_option_id in polls
+    ]}
+
+
+@app.get("/api/meetings")
+def api_meetings(request: Request):
+    """Home calendar: every confirmed meeting (a poll with a final time) across
+    all of the logged-in student's groups, earliest first. Times are UTC."""
+    sid = require_user(request)["student_id"]
+    con = db()
+    try:
+        rows = con.execute(
+            """SELECT p.poll_id, p.title, o.starts_at, sg.group_id, sg.group_name
+               FROM group_membership gm
+               JOIN meeting_poll p ON p.group_id = gm.group_id
+               JOIN meeting_poll_option o ON o.option_id = p.final_option_id
+               JOIN study_group sg ON sg.group_id = gm.group_id
+               WHERE gm.student_id = ? ORDER BY o.starts_at, p.poll_id""",
+            (sid,),
+        ).fetchall()
+    finally:
+        con.close()
+    return {"meetings": [
+        {"poll_id": poll_id, "title": title, "starts_at": starts_at, "group_id": group_id, "group_name": group_name}
+        for poll_id, title, starts_at, group_id, group_name in rows
     ]}
 
 

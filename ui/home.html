@@ -132,58 +132,69 @@
     .rooms{display:flex;}
     .nav-logout{margin-top:0;}
   }
+  @media (max-width:359px){
+    /* Five icons plus the brand don't fit the smallest phones otherwise. */
+    .brand{font-size:16px;}
+    .nav-item{padding:8px;}
+  }
 
-  .page{max-width:880px;margin:0 auto;padding:48px 40px 64px;}
+  .page{max-width:1040px;margin:0 auto;padding:48px 40px 64px;}
   .hero{margin-bottom:28px;}
   .greeting{font-size:42px;}
   .greeting-sub{color:var(--text-soft);margin:6px 0 0;font-size:16px;}
   .skeleton{color:var(--muted-aa);margin:0;}
 
-  /* ── Group card: title + open button on one row, members as chips ── */
-  .room-top{display:flex;justify-content:space-between;align-items:center;gap:20px;}
-  .room-top > div{min-width:0;}
-  .group-name{font-size:28px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-  .meta{display:block;margin-top:4px;color:var(--muted-aa);font-size:14px;font-weight:600;}
-
-  .member-list{list-style:none;margin:22px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:8px;}
-  .member-list li{
-    display:inline-flex;align-items:center;gap:8px;padding:4px 12px 4px 4px;border-radius:999px;
-    background:var(--well);font-weight:600;font-size:14px;color:var(--ink-editorial);
+  .cal-head{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:24px;}
+  .cal-head h2{font-size:28px;}
+  .cal-controls{display:flex;align-items:center;gap:4px;flex:none;}
+  .btn-quiet{
+    display:grid;place-items:center;min-width:40px;height:40px;padding:0 10px;border:none;border-radius:var(--radius-control);
+    background:none;color:var(--text-soft);cursor:pointer;font:700 14px/1 var(--font-body);transition:background .15s, color .15s;
   }
-  .member-list .avatar{width:28px;height:28px;font-size:12px;}
-  .member-list li.empty{background:none;border:none;padding:0;font-weight:400;color:var(--muted-aa);}
+  .btn-quiet svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+  .btn-quiet:hover{background:var(--well-strong);color:var(--ink-editorial);}
+  .btn-quiet:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
 
-  .btn-primary{
-    flex:none;display:inline-flex;align-items:center;gap:8px;height:44px;padding:0 18px;
-    background:var(--accent);color:var(--on-accent);border-radius:var(--radius-control);text-decoration:none;
-    font:700 15px/1 var(--font-body);transition:background .15s;
+  /* ── Month grid: cells are told apart by tone, not lines ── */
+  .cal-card{padding:16px;}
+  .cal{width:100%;table-layout:fixed;border-collapse:separate;border-spacing:4px;}
+  .cal th{padding:4px 0 8px;font:700 12px/1 var(--font-body);letter-spacing:.04em;color:var(--muted-aa);text-align:left;text-indent:8px;}
+  .cal td{height:108px;padding:6px;vertical-align:top;border-radius:10px;background:var(--page-editorial);}
+  .cal td.other{background:none;}
+  .day-num{display:grid;place-items:center;width:26px;height:26px;margin-bottom:4px;border-radius:50%;font:700 13px/1 var(--font-body);color:var(--ink-editorial);}
+  .cal td.other .day-num{color:var(--muted-aa);font-weight:600;}
+  .cal td[aria-current="date"] .day-num{background:var(--accent);color:var(--on-accent);}
+  .chip{
+    display:block;margin-top:3px;padding:4px 7px;border-radius:6px;background:var(--tint);color:var(--accent);
+    text-decoration:none;font:600 12px/1.3 var(--font-body);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:filter .15s;
   }
-  .btn-primary svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
-  .btn-primary:hover{background:var(--accent-deep);}
-  .btn-primary:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+  .chip b{display:block;font-size:11px;font-weight:800;}
+  .chip:hover{filter:brightness(.95);}
+  .chip:focus-visible{outline:2px solid var(--accent);outline-offset:1px;}
+  .chip.past{background:var(--well);color:var(--text-soft);}
+  .chip-more{display:block;margin-top:3px;padding-left:7px;font-size:12px;font-weight:600;color:var(--muted-aa);}
+  .dot{display:none;width:6px;height:6px;margin:0 auto;border-radius:50%;background:var(--accent);}
+  .dot.past{background:var(--muted-aa);}
 
-  .pending{display:flex;gap:16px;align-items:flex-start;}
-  .pending h2{font-size:24px;margin-bottom:4px;}
-  .pending p{margin:0;color:var(--text-soft);font-size:15px;}
-  .icon-box{
-    width:44px;height:44px;flex:none;display:grid;place-items:center;
-    border-radius:10px;background:var(--tint);color:var(--accent);
+  /* ── The shown month's meetings ── */
+  .month-list{margin-top:32px;}
+  .month-list h2{font-size:24px;margin-bottom:14px;}
+  .meetings{list-style:none;margin:0;padding:0;display:grid;gap:8px;}
+  .meeting{
+    display:flex;align-items:center;gap:16px;padding:12px 16px;border-radius:12px;background:var(--well);
+    color:var(--ink-editorial);text-decoration:none;transition:background .15s;
   }
-  .icon-box svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
-
-  /* ── Admin groups ── */
-  #admin-groups-card{margin-top:20px;}
-  .group-links{list-style:none;margin:0;padding:0;display:grid;gap:8px;}
-  .group-link{
-    display:flex;align-items:center;gap:14px;padding:12px 14px;border-radius:12px;
-    background:var(--well);color:var(--ink-editorial);text-decoration:none;transition:background .15s;
-  }
-  .group-link:hover{background:var(--well-strong);}
-  .group-link:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
-  .group-link .icon-box{width:40px;height:40px;}
-  .group-link .icon-box svg{width:20px;height:20px;}
-  .group-link-name{display:block;font-weight:700;overflow-wrap:anywhere;}
-  .group-link-meta{display:block;font-size:13px;color:var(--muted-aa);}
+  .meeting:hover{background:var(--well-strong);}
+  .meeting:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+  .meeting.past{opacity:.65;}
+  .meeting-date{flex:none;width:44px;text-align:center;font:700 11px/1.2 var(--font-body);letter-spacing:.06em;text-transform:uppercase;color:var(--muted-aa);}
+  .meeting-date b{display:block;font:500 24px/1.1 var(--font-serif);letter-spacing:-.02em;color:var(--ink-editorial);}
+  .meeting-body{min-width:0;}
+  .meeting-title{display:block;font-weight:700;overflow-wrap:anywhere;}
+  .meeting-meta{display:block;font-size:14px;color:var(--text-soft);overflow-wrap:anywhere;}
+  .list-note{margin:0;color:var(--text-soft);font-size:15px;}
+  .link-btn{padding:0;border:none;background:none;color:var(--accent);cursor:pointer;font:inherit;font-weight:700;text-align:left;text-decoration:underline;text-underline-offset:2px;}
+  .link-btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
 
   @media (max-width:1023px){
     .page{padding:40px 28px 56px;}
@@ -191,10 +202,15 @@
   @media (max-width:767px){
     .page{padding:24px 16px 48px;}
     .greeting{font-size:34px;}
-    .card{padding:20px 18px;}
-    .room-top{flex-direction:column;align-items:stretch;}
-    .group-name{font-size:24px;white-space:normal;}
-    .btn-primary{justify-content:center;}
+    .cal-head h2{font-size:24px;}
+    .cal-card{padding:8px;}
+    .cal{border-spacing:2px;}
+    .cal th{text-align:center;text-indent:0;}
+    .cal td{height:56px;padding:4px 2px;}
+    .day-num{margin:0 auto 3px;}
+    /* Too narrow for titles: a dot marks the day, the list below has the details. */
+    .chip, .chip-more{display:none;}
+    .dot{display:block;}
   }
 </style>
 </head>
@@ -223,14 +239,25 @@
         <p class="skeleton">Loading…</p>
       </div>
 
-      <section class="card" id="group-card" style="display:none;">
-        <span class="card-label">Your chat room</span>
-        <div id="group-content"></div>
+      <header class="cal-head">
+        <h2 id="month-title" aria-live="polite"></h2>
+        <div class="cal-controls">
+          <button class="btn-quiet" id="today-btn" type="button">Today</button>
+          <button class="btn-quiet" id="prev-btn" type="button" aria-label="Previous month"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+          <button class="btn-quiet" id="next-btn" type="button" aria-label="Next month"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+        </div>
+      </header>
+
+      <section class="card cal-card">
+        <table class="cal">
+          <thead><tr id="cal-weekdays"></tr></thead>
+          <tbody id="cal-body"></tbody>
+        </table>
       </section>
 
-      <section class="card" id="admin-groups-card" style="display:none;">
-        <span class="card-label">Admin groups</span>
-        <ul class="group-links" id="admin-groups"></ul>
+      <section class="month-list">
+        <h2>Meetings</h2>
+        <div id="month-meetings"><p class="list-note">Loading…</p></div>
       </section>
     </div>
   </main>
@@ -239,8 +266,6 @@
 <script>
 const API = '';
 
-const AVATAR_COLORS = ['', 'c2', 'c3'];
-function initial(name){ return esc((name || '?').trim().charAt(0).toUpperCase()); }
 // Names, emails and group names are user-controlled (anyone can set their
 // display name on /account) - escape before they go into innerHTML, or a
 // name like <img onerror=...> runs script in every groupmate's browser.
@@ -259,61 +284,113 @@ async function load(){
   const data = await res.json();
   setChatNav(data.status === 'grouped' ? data.group_id : null, data.group_name);
 
+  // Unmatched students have no chat room yet, so say why instead of leaving it unexplained.
+  const waiting = data.status === 'grouped' ? '' :
+    `<p class="greeting-sub">You're on the waiting list. As more students join, you'll be matched automatically.</p>`;
   document.getElementById('greeting-card').innerHTML = `
     <h1 class="greeting">Hey, ${esc(data.name.split(' ')[0])}.</h1>
-    <p class="greeting-sub">${esc(data.email)}</p>
+    ${waiting}
   `;
 
-  const groupCard = document.getElementById('group-card');
-  const groupContent = document.getElementById('group-content');
-  groupCard.style.display = 'block';
-  if (data.status === 'grouped') {
-    const members = data.members || [];
-    const course = data.course_title ? `${esc(data.course_title)} · ` : '';
-    groupContent.innerHTML = `
-      <div class="room-top">
-        <div>
-          <h2 class="group-name">${esc(data.group_name)}</h2>
-          <span class="meta">${course}${members.length + 1} members · Compatibility ${esc(data.group_score)}</span>
-        </div>
-        <a class="btn-primary" href="/chat?group=${encodeURIComponent(data.group_id)}">
-          <svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 0 1-11.6 7.1L4 20l.9-4.4A8 8 0 1 1 20 12z"/></svg>
-          Open chat room
-        </a>
-      </div>
-      <ul class="member-list">
-        ${members.map((m, i) => `<li><div class="avatar ${AVATAR_COLORS[i % 3]}">${initial(m)}</div>${esc(m)}</li>`).join('') || '<li class="empty">No other members yet</li>'}
-      </ul>
-    `;
-  } else {
-    groupContent.innerHTML = `
-      <div class="pending">
-        <div class="icon-box"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg></div>
-        <div>
-          <h2>You're on the waiting list</h2>
-          <p>No group had room right now. As more students join, you'll be matched automatically and your chat room shows up here.</p>
-        </div>
-      </div>
-    `;
-  }
-
-  const adminGroups = data.admin_groups || [];
-  if (adminGroups.length) {
-    document.getElementById('admin-groups-card').style.display = 'block';
-    document.getElementById('admin-groups').innerHTML = adminGroups.map(g => `
-      <li>
-        <a class="group-link" href="/chat?group=${encodeURIComponent(g.group_id)}">
-          <span class="icon-box"><svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 0 1-11.6 7.1L4 20l.9-4.4A8 8 0 1 1 20 12z"/></svg></span>
-          <span>
-            <span class="group-link-name">${esc(g.group_name)}</span>
-            <span class="group-link-meta">${esc(g.member_count)} members · open chat</span>
-          </span>
-        </a>
-      </li>
-    `).join('');
-  }
+  // Admin groups have no other way in from Home now, so they join the room list.
+  for (const g of data.admin_groups || []) addRoomLink(g);
 }
 load();
+
+// ── Calendar ──
+const MAX_CHIPS = 2;   // a cell's chips before "+N more"; the list below has them all
+
+const dayKey = d => `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
+const timeLabel = d => d.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' });
+const chatUrl = m => '/chat?group=' + encodeURIComponent(m.group_id);
+
+let meetings = null;   // null until loaded; times are UTC from the server, shown in local time
+const now = new Date();
+let view = new Date(now.getFullYear(), now.getMonth(), 1);
+
+function goTo(d){ view = new Date(d.getFullYear(), d.getMonth(), 1); render(); }
+
+function renderGrid(){
+  const year = view.getFullYear(), month = view.getMonth();
+  document.getElementById('month-title').textContent =
+    view.toLocaleDateString(undefined, { month: 'long', year: 'numeric' });
+
+  const byDay = new Map();
+  for (const m of meetings || []) {
+    const key = dayKey(m.at);
+    if (!byDay.has(key)) byDay.set(key, []);
+    byDay.get(key).push(m);
+  }
+
+  const today = dayKey(new Date());
+  const lead = view.getDay();   // days shown from the previous month
+  const weeks = Math.ceil((lead + new Date(year, month + 1, 0).getDate()) / 7);
+  let html = '';
+  for (let w = 0; w < weeks; w++) {
+    html += '<tr>';
+    for (let i = 0; i < 7; i++) {
+      // Built from calendar fields, not by adding 24h, so DST changes can't skip a day.
+      const d = new Date(year, month, 1 - lead + w * 7 + i);
+      const list = byDay.get(dayKey(d)) || [];
+      const chips = list.slice(0, MAX_CHIPS).map(m => `
+        <a class="chip${m.at < new Date() ? ' past' : ''}" href="${chatUrl(m)}" title="${esc(m.title)} · ${esc(m.group_name)}"><b>${esc(timeLabel(m.at))}</b>${esc(m.title)}</a>`).join('');
+      const more = list.length > MAX_CHIPS ? `<span class="chip-more">+${list.length - MAX_CHIPS} more</span>` : '';
+      const dot = list.length ? `<span class="dot${list.every(m => m.at < new Date()) ? ' past' : ''}" aria-hidden="true"></span>` : '';
+      html += `<td${d.getMonth() !== month ? ' class="other"' : ''}${dayKey(d) === today ? ' aria-current="date"' : ''}>
+        <span class="day-num">${d.getDate()}</span>${chips}${more}${dot}</td>`;
+    }
+    html += '</tr>';
+  }
+  document.getElementById('cal-body').innerHTML = html;
+}
+
+function renderList(){
+  const box = document.getElementById('month-meetings');
+  if (meetings === null) return;
+  const inMonth = meetings.filter(m => m.at.getFullYear() === view.getFullYear() && m.at.getMonth() === view.getMonth());
+  if (inMonth.length) {
+    box.innerHTML = `<ul class="meetings">${inMonth.map(m => `
+      <li><a class="meeting${m.at < new Date() ? ' past' : ''}" href="${chatUrl(m)}">
+        <span class="meeting-date">${esc(m.at.toLocaleDateString(undefined, { weekday: 'short' }))}<b>${m.at.getDate()}</b></span>
+        <span class="meeting-body">
+          <span class="meeting-title">${esc(m.title)}</span>
+          <span class="meeting-meta">${esc(timeLabel(m.at))} · ${esc(m.group_name)}</span>
+        </span>
+      </a></li>`).join('')}</ul>`;
+    return;
+  }
+  if (!meetings.length) {
+    box.innerHTML = '<p class="list-note">No meetings yet. When a time is confirmed in a chat room poll, it shows up here.</p>';
+    return;
+  }
+  const next = meetings.find(m => m.at >= new Date());
+  if (!next) { box.innerHTML = '<p class="list-note">No meetings this month.</p>'; return; }
+  const label = next.at.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' });
+  box.innerHTML = `<p class="list-note">No meetings this month. Next up: <button class="link-btn" id="jump-next" type="button">${esc(label)} · ${esc(next.title)}</button></p>`;
+  document.getElementById('jump-next').addEventListener('click', () => goTo(next.at));
+}
+
+function render(){ renderGrid(); renderList(); }
+
+// Sunday-first; 2023-01-01 was a Sunday, used only to get localized day names.
+document.getElementById('cal-weekdays').innerHTML = Array.from({ length: 7 }, (_, i) =>
+  `<th scope="col">${esc(new Date(2023, 0, 1 + i).toLocaleDateString(undefined, { weekday: 'short' }))}</th>`).join('');
+document.getElementById('prev-btn').addEventListener('click', () => goTo(new Date(view.getFullYear(), view.getMonth() - 1, 1)));
+document.getElementById('next-btn').addEventListener('click', () => goTo(new Date(view.getFullYear(), view.getMonth() + 1, 1)));
+document.getElementById('today-btn').addEventListener('click', () => goTo(new Date()));
+render();
+
+async function loadMeetings(){
+  const res = await fetch('/api/meetings');
+  if (res.status === 401) { window.location.href = '/login'; return; }
+  if (!res.ok) throw new Error(res.status);
+  const data = await res.json();
+  meetings = data.meetings.map(m => ({ ...m, at: new Date(m.starts_at) }));
+  render();
+}
+loadMeetings().catch(() => {
+  document.getElementById('month-meetings').innerHTML = '<p class="list-note">Couldn\'t load your meetings. Try refreshing the page.</p>';
+});
 
 // ── Sidebar ──
 function setChatNav(groupId, groupName){
@@ -324,6 +401,19 @@ function setChatNav(groupId, groupName){
   link.title = groupName;
   document.getElementById('nav-chat-name').textContent = groupName;
   link.hidden = false;
+  empty.hidden = true;
+}
+function addRoomLink(g){
+  const link = document.getElementById('nav-chat').cloneNode(true);
+  link.removeAttribute('id');
+  link.hidden = false;
+  link.href = '/chat?group=' + encodeURIComponent(g.group_id);
+  link.title = g.group_name;
+  const label = link.querySelector('.nav-label');
+  label.removeAttribute('id');
+  label.textContent = g.group_name;
+  const empty = document.getElementById('nav-chat-empty');
+  empty.before(link);
   empty.hidden = true;
 }
 document.getElementById('logout-btn').addEventListener('click', async () => {

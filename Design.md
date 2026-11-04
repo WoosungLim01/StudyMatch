@@ -446,6 +446,16 @@ Not in the original brief — derived from the same tokens so forms match.
 Survey scale options (1–5) use pill-shaped toggles: `.btn-ghost` at rest,
 `.btn-primary` when selected.
 
+### App shell (home, chat, account)
+
+A sidebar (248px, `--sidebar-bg`) holds the brand, Home, Account, the chat rooms and Log out. Below 768px it becomes a top bar with icons only, and below 360px the brand and icons shrink so five or more icons still fit. The page sits on warm `--page-editorial`.
+
+**Tone over lines:** areas are told apart by `--sidebar-bg`, `--well`, `--well-strong` and `--shadow-soft`, not borders. Only text inputs keep a faint border, so they still read as places to type.
+
+### Calendar (derived)
+
+Month grid on a white card, Sunday first. Days of the month are `--page-editorial` cells; days from other months have no fill; today's number is an `--accent` circle. Meetings are `--tint` chips (`--well` once past), at most two per cell plus "+N more". Below 768px, a dot replaces the chips and the list under the grid carries the details.
+
 ### Chat (derived)
 
 - Own message: `--accent` background, white text, radius `20px 20px 6px 20px`.
