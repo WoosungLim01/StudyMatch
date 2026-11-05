@@ -41,6 +41,27 @@ def migrate(con):
         PRIMARY KEY (attachment_id, seq)
     )""")
 
+    con.execute("""CREATE TABLE IF NOT EXISTS meeting_poll (
+        poll_id          TEXT PRIMARY KEY,
+        group_id         TEXT NOT NULL REFERENCES study_group(group_id),
+        created_by       TEXT NOT NULL REFERENCES student(student_id),
+        title            TEXT NOT NULL,
+        created_at       TEXT NOT NULL,
+        final_option_id  INTEGER
+    )""")
+    con.execute("CREATE INDEX IF NOT EXISTS idx_meeting_poll_group ON meeting_poll(group_id)")
+    con.execute("""CREATE TABLE IF NOT EXISTS meeting_poll_option (
+        option_id     INTEGER PRIMARY KEY AUTOINCREMENT,
+        poll_id       TEXT NOT NULL REFERENCES meeting_poll(poll_id),
+        starts_at     TEXT NOT NULL
+    )""")
+    con.execute("CREATE INDEX IF NOT EXISTS idx_meeting_poll_option_poll ON meeting_poll_option(poll_id)")
+    con.execute("""CREATE TABLE IF NOT EXISTS meeting_poll_vote (
+        option_id     INTEGER NOT NULL REFERENCES meeting_poll_option(option_id),
+        student_id    TEXT NOT NULL REFERENCES student(student_id),
+        PRIMARY KEY (option_id, student_id)
+    )""")
+
     columns = [r[1] for r in con.execute("PRAGMA table_info(group_chat_message)").fetchall()]
     if "attachment_id" not in columns:
         con.execute(

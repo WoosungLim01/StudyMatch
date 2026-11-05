@@ -44,7 +44,7 @@ StudyMatch/
 ├── ui/                       six pages, served from disk
 │   ├── login.html              login, sign-up, and code entry
 │   ├── survey.html             entry survey (one time per account)
-│   ├── home.html               your group
+│   ├── home.html               greeting and meeting calendar
 │   ├── chat.html               your group's private chat
 │   ├── account.html            name, log out, delete account
 │   └── admin.html              admin view (see Known limitations)
@@ -105,7 +105,7 @@ Google sign-in returns 501 until all three Google variables are set.
    - Response-quality flags (`algorithm/quality.py`) appear on the admin page. They never affect sign-up or matching.
 4. **Compatibility** (`algorithm/compatibility.py`). `100 ×` the weighted mean of `1 − |a − b| / 4` across the six axes. Reliability and intensity weigh 1.5×. Matching is similarity-only on purpose: StudyMatch is for people who want classmates who study like them.
 5. **Groups** (`algorithm/grouping.py`, `algorithm/placement.py`). An OR-Tools CP-SAT model splits each course's unplaced students into groups of 4–5 to maximize within-group compatibility. It is deterministic and reports its optimality bound. Existing groups are never reshuffled. Leftover pools of 1–3, 6, 7, or 11 join the best-fitting group with room, or wait until enough people arrive. Sign-up is never blocked; a match below 65 signs in with a warning.
-6. **Home** (`ui/home.html`). Your group, its members, and your course. Students not yet placed see a waiting-list message. Clicking the group card opens the group chat.
+6. **Home** (`ui/home.html`). A greeting and a month calendar of the meetings confirmed across your groups, in your local time, with that month's meetings listed below it. `GET /api/meetings` supplies them; clicking one opens that group's chat. Students not yet placed see a waiting-list message. Your chat room is listed in the sidebar on every page; admin groups are listed only in Home's sidebar. The compatibility score isn't shown in the UI.
 7. **Group chat** (`ui/chat.html`, `/chat?group=<group_id>`). A private chat for the group's members, with text and attachments.
    - The page polls `GET /api/groups/{id}/messages?after=<last id>` every 3 seconds and pauses while the tab is hidden. There are no websockets, so Render's free-tier sleep and redeploys need no reconnect logic. Text is sent with `POST /api/groups/{id}/messages`.
    - **Attachments:** the paperclip button attaches one photo, video or file per message, with an optional caption. It uploads as multipart to `POST /api/groups/{id}/attachments`, with a progress percentage. The limit is 10 MB per file (`ATTACHMENT_MAX_BYTES` in `app.py`), checked in the browser and again on the server.
@@ -114,6 +114,7 @@ Google sign-in returns 501 until all three Google variables are set.
    - Every chat endpoint, downloads included, checks that you belong to the group: non-members get 403. Messages are 1–1000 characters. Enter sends, Shift+Enter adds a line, and Enter while a Korean (or other IME) composition is in progress does not send.
    - `data/migrations.py` creates the chat tables, and adds the attachment column to existing ones, on startup, so deploying is all the live database needs. Deleting a student deletes their messages and uploads, and a group's chat and files are deleted with the group.
    - Message text, names and filenames are rendered as text, never as HTML.
+   - **Meeting polls:** anyone in the room can propose up to 10 candidate times and everyone votes. The poll's creator confirms the final time, which then appears on the Home calendar. The calendar is read-only; meetings are changed through their poll.
    - **Admin groups** are extra, hand-made groups, such as one for the team to test chat. `python data/make_group.py 0037 0045 ...` creates one. Members keep their matched groups, can come from different courses, and see the admin group in a separate card on `/home`. Matching ignores admin groups: nobody is placed into one, and being in one doesn't count as being placed. They're listed in the `admin_group` table. The script prints a dry run first, writes only with `--apply`, and `--remove <group_id>` deletes an admin group with its chat. It needs the deployed app's `admin_group` table, so deploy before running it against Turso.
 8. **Account** (`ui/account.html`). Change your display name, log out, or delete your account. Deleting removes login access and your survey and group data, and sends a confirmation email.
 9. **Admin** (`ui/admin.html`). Lists students and login accounts. Deleting a student removes them from every table and unlinks their account. Deleting an account removes login access only. Both send a notification email when the person has an address. The admin page has no login check; see Known limitations.

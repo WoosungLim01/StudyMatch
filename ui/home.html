@@ -3,198 +3,269 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<script>
+  /* Theme: saved choice ("light"/"dark") or the OS setting. Runs before the
+     styles paint so a dark-mode visitor never sees a white flash. */
+  (function(){
+    var saved; try { saved = localStorage.getItem('theme'); } catch (e) {}
+    var media = matchMedia('(prefers-color-scheme: dark)');
+    function apply(){
+      document.documentElement.dataset.theme = saved === 'light' || saved === 'dark' ? saved : (media.matches ? 'dark' : 'light');
+    }
+    apply();
+    media.addEventListener('change', apply);
+    window.setTheme = function(choice){
+      saved = choice;
+      try { choice === 'system' ? localStorage.removeItem('theme') : localStorage.setItem('theme', choice); } catch (e) {}
+      apply();
+    };
+    window.getTheme = function(){ return saved === 'light' || saved === 'dark' ? saved : 'system'; };
+  })();
+</script>
 <title>StudyMatch · Home</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500&family=Nunito+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
-  /* StudyMatch tokens — see Design.md */
+  /* StudyMatch tokens — see Design.md (same editorial tone as the login page) */
   :root{
-    --bg:#EEF2F8; --surface:#FFFFFF;
-    --navy:#14213D; --navy-deep:#0A1B33; --navy-mid:#1B2A4A;
-    --blue-2:#2C4770; --blue-3:#5C7EA6; --band:#DCE6F5;
-    --ink:#1B2A41; --muted-strong:rgba(27,42,65,.72); --muted:rgba(27,42,65,.55);
-    --line-soft:rgba(27,42,65,.06); --line:rgba(27,42,65,.08); --line-strong:rgba(27,42,65,.12);
-    --tint:rgba(20,33,61,.10);
-    --font-display:"Fraunces",Georgia,"Times New Roman",serif;
-    --font-body:"Nunito",system-ui,-apple-system,"Segoe UI",sans-serif;
-    --shadow-card:0 8px 24px rgba(27,42,65,.08);
+    --bg:#F1F3F9; --surface:#FFFFFF;
+    --accent:#14213D; --accent-deep:#0A1B33; --accent-mid:#1B2A4A;
+    --blue-2:#2C4770; --blue-3:#5C7EA6; --band:#E3E9F3;
+    --ink:#1F2547; --muted-strong:rgba(31,37,71,.72); --muted:#8A90A8;
+    --line-soft:#EEF0F6; --line:#E4E7F2; --line-strong:#D9DDEB;
+    --tint:#E3E9F3;
+    --danger:#8A3B42; --danger-soft:#F6EBEC;
+    --good:#2F6F4E; --good-soft:#EAF5EE;
+    --font-display:"Nunito Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+    --font-body:"Nunito Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+    --font-serif:"Fraunces",Georgia,"Times New Roman",serif;
+    --page-editorial:#FAF9F5;   /* warm cream, Claude-like */
+    --sidebar-bg:#F3F1EA;       /* areas are told apart by tone, not borders */
+    --well:#F0EEE6;             /* tonal fill: bubbles, chips, quiet buttons */
+    --well-strong:#E7E4DA;      /* hover / active fill */
+    --ink-editorial:#1F1E1D;
+    --text-soft:#5E5D59;
+    --muted-aa:#6B6A64;
+    --radius-control:8px;
+    --radius-panel:20px;
+    --shadow-soft:0 1px 2px rgba(31,30,29,.04), 0 6px 24px rgba(31,30,29,.05);
+    --sidebar-w:248px;
+    --on-accent:#FFFFFF; --bg-glass:rgba(241,243,249,.85); --row-hover:rgba(241,243,249,.7);
     color-scheme:light;
   }
+  :root[data-theme="dark"]{
+    --surface:#262521; --bg:#14161D; --accent:#A9C1E8;
+    --accent-deep:#C7D7F1; --accent-mid:#8FA9D6; --blue-2:#86A2CF;
+    --blue-3:#6E8CBD; --band:#232836; --ink:#E6E8F0;
+    --muted-strong:rgba(230,232,240,.72); --muted:#8C91A3; --line-soft:#262833;
+    --line:#2E313C; --line-strong:#3B3F4C; --tint:#283041;
+    --danger:#E9A0A8; --danger-soft:#3A2327; --good:#86CFA6;
+    --good-soft:#1E3329; --page-editorial:#1A1917; --sidebar-bg:#201F1C;
+    --well:#2B2A26; --well-strong:#36342F; --ink-editorial:#EDEBE6;
+    --text-soft:#B8B5AD; --muted-aa:#9A978F; --shadow-soft:0 1px 2px rgba(0,0,0,.3), 0 6px 24px rgba(0,0,0,.28);
+    --on-accent:#101A2E; --bg-glass:rgba(20,22,29,.85); --row-hover:rgba(255,255,255,.04);
+    color-scheme:dark;
+  }
   *{box-sizing:border-box;}
+  [hidden]{display:none !important;}
   body{
-    margin:0;min-height:100vh;background:var(--bg);color:var(--ink);
+    margin:0;min-height:100vh;background:var(--page-editorial);color:var(--ink);
     font-family:var(--font-body);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;
-    padding-bottom:env(safe-area-inset-bottom);
   }
-  h1,h2,h3{font-family:var(--font-display);color:var(--navy);margin:0;line-height:1.15;letter-spacing:-.01em;}
+  h1,h2,h3{font-family:var(--font-serif);font-weight:500;color:var(--ink-editorial);margin:0;line-height:1.1;letter-spacing:-.02em;}
 
-  /* ── Top bar ── */
-  .topbar{
-    position:sticky;top:0;z-index:10;background:rgba(255,255,255,.9);backdrop-filter:blur(10px);
-    border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top);
+  /* ── App shell: sidebar + content ── */
+  .app{display:grid;grid-template-columns:var(--sidebar-w) 1fr;min-height:100vh;}
+  .sidebar{
+    position:sticky;top:0;height:100vh;display:flex;flex-direction:column;gap:28px;
+    padding:28px 16px 20px;background:var(--sidebar-bg);
   }
-  .topbar-inner{max-width:1040px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;}
-  .brand{display:flex;align-items:center;gap:10px;font:700 22px/1 var(--font-display);color:var(--navy);}
-  .brand-mark{width:36px;height:36px;border-radius:12px;background:var(--navy);display:grid;place-items:center;}
-  .brand-mark svg{width:20px;height:20px;fill:none;stroke:#fff;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
-
-  .btn-ghost{
-    background:transparent;color:var(--navy);border:2px solid var(--navy);border-radius:999px;
-    padding:8px 20px;font:700 14px/1 var(--font-body);cursor:pointer;transition:background .15s;
+  .brand{padding:4px 12px;font:800 22px/1 var(--font-display);color:var(--ink);letter-spacing:-.02em;text-decoration:none;}
+  .nav{display:grid;grid-template-columns:minmax(0,1fr);gap:4px;}
+  .nav-item{
+    display:flex;align-items:center;gap:12px;width:100%;padding:10px 12px;
+    border:none;border-radius:var(--radius-control);background:none;cursor:pointer;text-align:left;
+    color:var(--text-soft);font:700 15px/1.25 var(--font-body);text-decoration:none;
+    transition:background .15s, color .15s;
   }
-  .btn-ghost:hover{background:var(--tint);}
-  .btn-ghost:focus-visible{outline:3px solid var(--blue-3);outline-offset:3px;}
+  .nav-item svg{width:20px;height:20px;flex:none;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+  .nav-item:hover{background:var(--well-strong);color:var(--ink-editorial);}
+  .nav-item.active{background:var(--well-strong);color:var(--ink-editorial);}
+  .nav-item:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+  .nav-item[aria-disabled="true"]{opacity:.55;cursor:default;pointer-events:none;}
+  .nav-label{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .nav-heading{display:block;padding:0 12px 6px;font:700 11px/1 var(--font-body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted-aa);}
+  .nav-empty{display:block;padding:6px 12px;font-size:13px;color:var(--muted-aa);}
+  .nav-logout{margin-top:auto;}
+  .content{min-width:0;}
 
-  main{max-width:1040px;margin:0 auto;padding:56px 24px 96px;}
-
-  /* ── Greeting ── */
-  .hero{margin-bottom:36px;}
-  .greeting{font-size:48px;font-weight:700;}
-  .greeting-sub{color:var(--muted);margin:8px 0 0;font-size:16px;}
-  .skeleton{color:var(--muted);margin:0;}
-
-  /* ── Layout ── */
-  .grid{display:grid;grid-template-columns:1.6fr 1fr;gap:24px;align-items:start;}
-  .side{display:grid;gap:24px;}
-  .card{background:var(--surface);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow-card);padding:32px;}
-
+  /* ── Shared: cards, badges, the course + chat room header ── */
+  .card{background:var(--surface);border-radius:var(--radius-panel);box-shadow:var(--shadow-soft);padding:28px;}
+  .card-label{display:block;font:700 12px/1 var(--font-body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted-aa);margin-bottom:16px;}
   .badge{
-    display:inline-block;padding:6px 12px;border-radius:999px;
-    background:var(--tint);color:var(--navy);font:700 13px/1 var(--font-body);letter-spacing:.02em;
+    display:inline-block;flex:none;white-space:nowrap;padding:5px 10px;border-radius:999px;
+    background:var(--tint);color:var(--accent);font:700 12px/1 var(--font-body);letter-spacing:.03em;
   }
-  .card-label{display:block;font:700 13px/1 var(--font-body);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:16px;}
-
-  .icon-box{
-    width:56px;height:56px;flex:none;display:grid;place-items:center;
-    border-radius:16px;background:var(--tint);color:var(--navy);
-  }
-  .icon-box svg{width:28px;height:28px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
-
-  /* ── Group ── */
-  .group-top{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;flex-wrap:wrap;margin-bottom:28px;}
-  .group-name{font-size:32px;margin-bottom:12px;}
-  .stack{display:flex;padding-left:12px;}
-  .stack .avatar{margin-left:-12px;border:3px solid var(--surface);}
-
+  .room-id{display:flex;align-items:center;gap:10px;min-width:0;}
+  .room-course{color:var(--text-soft);font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
   .avatar{
-    width:48px;height:48px;border-radius:50%;display:grid;place-items:center;flex:none;
-    color:#fff;font:700 19px/1 var(--font-display);background:var(--navy);
+    width:40px;height:40px;border-radius:50%;display:grid;place-items:center;flex:none;
+    color:var(--on-accent);font:700 16px/1 var(--font-display);background:var(--accent);
   }
   .avatar.c2{background:var(--blue-2);}
   .avatar.c3{background:var(--blue-3);}
+  .stack{display:flex;padding-left:10px;flex:none;}
+  .stack .avatar{margin-left:-10px;border:2px solid var(--page-editorial);}
 
-  .member-list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:12px;}
-  .member-list li{
-    display:flex;align-items:center;gap:14px;padding:12px 14px;border-radius:18px;
-    background:var(--bg);font-weight:700;color:var(--ink);
+  @media (max-width:767px){
+    .app{grid-template-columns:1fr;grid-template-rows:auto 1fr;}
+    .sidebar{
+      position:sticky;top:0;z-index:10;height:auto;flex-direction:row;align-items:center;gap:4px;
+      padding:10px 12px;padding-top:max(10px, env(safe-area-inset-top));
+    }
+    .brand{margin-right:auto;padding:4px;font-size:19px;}
+    .nav{display:flex;gap:2px;}
+    .nav-item{width:auto;padding:10px;}
+    .nav-label{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;}
+    .nav-heading, .nav-empty{display:none;}
+    .rooms{display:flex;}
+    .nav-logout{margin-top:0;}
   }
-  .member-list li.empty{background:none;padding:0;font-weight:400;color:var(--muted);}
-
-  .card.clickable{cursor:pointer;transition:box-shadow .15s,transform .15s;}
-  .card.clickable:hover{box-shadow:0 12px 32px rgba(27,42,65,.14);transform:translateY(-2px);}
-  .card.clickable:focus-visible{outline:3px solid var(--blue-3);outline-offset:3px;}
-  .btn-primary{
-    display:inline-flex;align-items:center;gap:8px;margin-top:24px;
-    background:var(--navy);color:#fff;border:none;border-radius:999px;text-decoration:none;
-    padding:12px 22px;font:700 15px/1 var(--font-body);
+  @media (max-width:359px){
+    /* Five icons plus the brand don't fit the smallest phones otherwise. */
+    .brand{font-size:16px;}
+    .nav-item{padding:8px;}
   }
-  .btn-primary svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
-  .card.clickable:hover .btn-primary{background:var(--navy-mid);}
 
-  .pending{display:flex;gap:18px;align-items:flex-start;}
-  .pending h3{font-size:22px;margin-bottom:6px;}
-  .pending p{margin:0;color:var(--muted-strong);}
+  .page{max-width:1040px;margin:0 auto;padding:48px 40px 64px;}
+  .hero{margin-bottom:28px;}
+  .greeting{font-size:42px;}
+  .greeting-sub{color:var(--text-soft);margin:6px 0 0;font-size:16px;}
+  .skeleton{color:var(--muted-aa);margin:0;}
 
-  /* ── Course ── */
-  .course-line{display:flex;gap:16px;align-items:center;}
-  .course-code{margin-bottom:8px;}
-  .course-title{font:600 20px/1.3 var(--font-display);color:var(--navy);}
-
-  /* ── Admin groups ── */
-  .group-links{list-style:none;margin:0;padding:0;display:grid;gap:10px;}
-  .group-link{
-    display:flex;align-items:center;gap:14px;padding:12px 14px;border-radius:18px;
-    background:var(--bg);color:var(--ink);text-decoration:none;transition:background .15s;
+  .cal-head{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:24px;}
+  .cal-head h2{font-size:28px;}
+  .cal-controls{display:flex;align-items:center;gap:4px;flex:none;}
+  .btn-quiet{
+    display:grid;place-items:center;min-width:40px;height:40px;padding:0 10px;border:none;border-radius:var(--radius-control);
+    background:none;color:var(--text-soft);cursor:pointer;font:700 14px/1 var(--font-body);transition:background .15s, color .15s;
   }
-  .group-link:hover{background:var(--band);}
-  .group-link:focus-visible{outline:3px solid var(--blue-3);outline-offset:2px;}
-  .group-link .icon-box{width:40px;height:40px;border-radius:12px;}
-  .group-link .icon-box svg{width:20px;height:20px;}
-  .group-link-name{display:block;font-weight:700;overflow-wrap:anywhere;}
-  .group-link-meta{display:block;font-size:13px;color:var(--muted);}
+  .btn-quiet svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+  .btn-quiet:hover{background:var(--well-strong);color:var(--ink-editorial);}
+  .btn-quiet:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
 
-  /* ── Tip band ── */
-  .tip{background:var(--band);border-radius:24px;padding:28px;}
-  .tip h3{font-size:20px;margin-bottom:6px;}
-  .tip p{margin:0;color:var(--muted-strong);font-size:15px;}
-
-  @media (max-width:860px){
-    .grid{grid-template-columns:1fr;}
-    .greeting{font-size:36px;}
+  /* ── Month grid: cells are told apart by tone, not lines ── */
+  .cal-card{padding:16px;}
+  .cal{width:100%;table-layout:fixed;border-collapse:separate;border-spacing:4px;}
+  .cal th{padding:4px 0 8px;font:700 12px/1 var(--font-body);letter-spacing:.04em;color:var(--muted-aa);text-align:left;text-indent:8px;}
+  .cal td{height:108px;padding:6px;vertical-align:top;border-radius:10px;background:var(--page-editorial);}
+  .cal td.other{background:none;}
+  .day-num{display:grid;place-items:center;width:26px;height:26px;margin-bottom:4px;border-radius:50%;font:700 13px/1 var(--font-body);color:var(--ink-editorial);}
+  .cal td.other .day-num{color:var(--muted-aa);font-weight:600;}
+  .cal td[aria-current="date"] .day-num{background:var(--accent);color:var(--on-accent);}
+  .chip{
+    display:block;margin-top:3px;padding:4px 7px;border-radius:6px;background:var(--tint);color:var(--accent);
+    text-decoration:none;font:600 12px/1.3 var(--font-body);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:filter .15s;
   }
-  @media (max-width:560px){
-    main{padding:36px 16px 64px;}
-    .card{padding:24px;}
-    .member-list{grid-template-columns:1fr;}
-    .group-name{font-size:26px;}
-    .topbar-inner{padding:12px 16px;gap:10px;}
-    .brand{font-size:19px;gap:8px;}
-    .brand-mark{width:32px;height:32px;border-radius:10px;}
-    .btn-ghost{padding:8px 12px;white-space:nowrap;}
+  .chip b{display:block;font-size:11px;font-weight:800;}
+  .chip:hover{filter:brightness(.95);}
+  .chip:focus-visible{outline:2px solid var(--accent);outline-offset:1px;}
+  .chip.past{background:var(--well);color:var(--text-soft);}
+  .chip-more{display:block;margin-top:3px;padding-left:7px;font-size:12px;font-weight:600;color:var(--muted-aa);}
+  .dot{display:none;width:6px;height:6px;margin:0 auto;border-radius:50%;background:var(--accent);}
+  .dot.past{background:var(--muted-aa);}
+
+  /* ── The shown month's meetings ── */
+  .month-list{margin-top:32px;}
+  .month-list h2{font-size:24px;margin-bottom:14px;}
+  .meetings{list-style:none;margin:0;padding:0;display:grid;gap:8px;}
+  .meeting{
+    display:flex;align-items:center;gap:16px;padding:12px 16px;border-radius:12px;background:var(--well);
+    color:var(--ink-editorial);text-decoration:none;transition:background .15s;
+  }
+  .meeting:hover{background:var(--well-strong);}
+  .meeting:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+  .meeting.past{opacity:.65;}
+  .meeting-date{flex:none;width:44px;text-align:center;font:700 11px/1.2 var(--font-body);letter-spacing:.06em;text-transform:uppercase;color:var(--muted-aa);}
+  .meeting-date b{display:block;font:500 24px/1.1 var(--font-serif);letter-spacing:-.02em;color:var(--ink-editorial);}
+  .meeting-body{min-width:0;}
+  .meeting-title{display:block;font-weight:700;overflow-wrap:anywhere;}
+  .meeting-meta{display:block;font-size:14px;color:var(--text-soft);overflow-wrap:anywhere;}
+  .list-note{margin:0;color:var(--text-soft);font-size:15px;}
+  .link-btn{padding:0;border:none;background:none;color:var(--accent);cursor:pointer;font:inherit;font-weight:700;text-align:left;text-decoration:underline;text-underline-offset:2px;}
+  .link-btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+
+  @media (max-width:1023px){
+    .page{padding:40px 28px 56px;}
+  }
+  @media (max-width:767px){
+    .page{padding:24px 16px 48px;}
+    .greeting{font-size:34px;}
+    .cal-head h2{font-size:24px;}
+    .cal-card{padding:8px;}
+    .cal{border-spacing:2px;}
+    .cal th{text-align:center;text-indent:0;}
+    .cal td{height:56px;padding:4px 2px;}
+    .day-num{margin:0 auto 3px;}
+    /* Too narrow for titles: a dot marks the day, the list below has the details. */
+    .chip, .chip-more{display:none;}
+    .dot{display:block;}
   }
 </style>
 </head>
 <body>
 
-<header class="topbar">
-  <div class="topbar-inner">
-    <div class="brand">
-      <span class="brand-mark"><svg viewBox="0 0 24 24"><path d="M12 6.5C10.5 5 8.2 4.5 4 4.5v13c4.2 0 6.5.5 8 2 1.5-1.5 3.8-2 8-2v-13c-4.2 0-6.5.5-8 2z"/><path d="M12 6.5v13"/></svg></span>
-      StudyMatch
+<div class="app">
+  <aside class="sidebar">
+    <a class="brand" href="/home">StudyMatch</a>
+    <nav class="nav" aria-label="Main">
+      <a class="nav-item active" aria-current="page" href="/home"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-4.5v-6h-5v6H5a1 1 0 0 1-1-1z"/></svg><span class="nav-label">Home</span></a>
+      <a class="nav-item" href="/account"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="3.5"/><path d="M5 20c1.2-3.6 3.8-5.5 7-5.5s5.8 1.9 7 5.5"/></svg><span class="nav-label">Account</span></a>
+    </nav>
+    <div class="rooms">
+      <span class="nav-heading">Chat rooms</span>
+      <nav class="nav" aria-label="Chat rooms">
+        <a class="nav-item" id="nav-chat" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 0 1-11.6 7.1L4 20l.9-4.4A8 8 0 1 1 20 12z"/></svg><span class="nav-label" id="nav-chat-name"></span></a>
+        <span class="nav-empty" id="nav-chat-empty">Loading…</span>
+      </nav>
     </div>
-    <div style="display:flex;gap:10px;">
-      <a class="btn-ghost" href="/account" style="text-decoration:none;display:inline-flex;align-items:center;">Account</a>
-      <button class="btn-ghost" id="logout-btn">Log out</button>
-    </div>
-  </div>
-</header>
+    <button class="nav-item nav-logout" id="logout-btn" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 20H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h3"/><path d="M14 16l4-4-4-4"/><path d="M18 12H9"/></svg><span class="nav-label">Log out</span></button>
+  </aside>
 
-<main>
-  <div class="hero" id="greeting-card">
-    <p class="skeleton">Loading…</p>
-  </div>
+  <main class="content">
+    <div class="page">
+      <div class="hero" id="greeting-card">
+        <p class="skeleton">Loading…</p>
+      </div>
 
-  <div class="grid">
-    <section class="card" id="group-card" style="display:none;">
-      <span class="card-label">Your study group</span>
-      <div id="group-content"></div>
-    </section>
+      <header class="cal-head">
+        <h2 id="month-title" aria-live="polite"></h2>
+        <div class="cal-controls">
+          <button class="btn-quiet" id="today-btn" type="button">Today</button>
+          <button class="btn-quiet" id="prev-btn" type="button" aria-label="Previous month"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+          <button class="btn-quiet" id="next-btn" type="button" aria-label="Next month"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+        </div>
+      </header>
 
-    <div class="side">
-      <section class="card" id="admin-groups-card" style="display:none;">
-        <span class="card-label">Admin groups</span>
-        <ul class="group-links" id="admin-groups"></ul>
+      <section class="card cal-card">
+        <table class="cal">
+          <thead><tr id="cal-weekdays"></tr></thead>
+          <tbody id="cal-body"></tbody>
+        </table>
       </section>
 
-      <section class="card" id="course-card" style="display:none;">
-        <span class="card-label">Course</span>
-        <div class="course-line" id="course-content"></div>
-      </section>
-
-      <section class="tip">
-        <h3>Break the ice</h3>
-        <p>Say hi to your group and pick a spot, whether that's Pattee, the HUB, or a Zoom link. The first session is the hardest one to schedule.</p>
+      <section class="month-list">
+        <h2>Meetings</h2>
+        <div id="month-meetings"><p class="list-note">Loading…</p></div>
       </section>
     </div>
-  </div>
-</main>
+  </main>
+</div>
 
 <script>
 const API = '';
 
-const AVATAR_COLORS = ['', 'c2', 'c3'];
-function initial(name){ return esc((name || '?').trim().charAt(0).toUpperCase()); }
 // Names, emails and group names are user-controlled (anyone can set their
 // display name on /account) - escape before they go into innerHTML, or a
 // name like <img onerror=...> runs script in every groupmate's browser.
@@ -207,89 +278,146 @@ async function load(){
   if (res.status === 401) { window.location.href = '/login'; return; }
   if (!res.ok) {
     document.getElementById('greeting-card').innerHTML = '<p class="skeleton">Something went wrong loading your info.</p>';
+    setChatNav(null);
     return;
   }
   const data = await res.json();
+  setChatNav(data.status === 'grouped' ? data.group_id : null, data.group_name);
 
+  // Unmatched students have no chat room yet, so say why instead of leaving it unexplained.
+  const waiting = data.status === 'grouped' ? '' :
+    `<p class="greeting-sub">You're on the waiting list. As more students join, you'll be matched automatically.</p>`;
   document.getElementById('greeting-card').innerHTML = `
     <h1 class="greeting">Hey, ${esc(data.name.split(' ')[0])}.</h1>
-    <p class="greeting-sub">${esc(data.email)}</p>
+    ${waiting}
   `;
 
-  const groupCard = document.getElementById('group-card');
-  const groupContent = document.getElementById('group-content');
-  groupCard.style.display = 'block';
-  if (data.status === 'grouped') {
-    const members = data.members || [];
-    groupContent.innerHTML = `
-      <div class="group-top">
-        <div>
-          <h2 class="group-name">${esc(data.group_name)}</h2>
-          <span class="badge">Compatibility ${esc(data.group_score)}</span>
-        </div>
-        <div class="stack" aria-hidden="true">
-          ${members.slice(0, 5).map((m, i) => `<div class="avatar ${AVATAR_COLORS[i % 3]}">${initial(m)}</div>`).join('')}
-        </div>
-      </div>
-      <ul class="member-list">
-        ${members.map((m, i) => `<li><div class="avatar ${AVATAR_COLORS[i % 3]}">${initial(m)}</div>${esc(m)}</li>`).join('') || '<li class="empty">No other members yet</li>'}
-      </ul>
-      <a class="btn-primary" href="/chat?group=${encodeURIComponent(data.group_id)}">
-        <svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 0 1-11.6 7.1L4 20l.9-4.4A8 8 0 1 1 20 12z"/></svg>
-        Open group chat
-      </a>
-    `;
-    // The whole card opens the chat, not just the button.
-    const chatUrl = '/chat?group=' + encodeURIComponent(data.group_id);
-    groupCard.classList.add('clickable');
-    groupCard.tabIndex = 0;
-    groupCard.setAttribute('role', 'link');
-    groupCard.addEventListener('click', e => { if (!e.target.closest('a')) window.location.href = chatUrl; });
-    groupCard.addEventListener('keydown', e => { if (e.key === 'Enter') window.location.href = chatUrl; });
-  } else {
-    groupContent.innerHTML = `
-      <div class="pending">
-        <div class="icon-box"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg></div>
-        <div>
-          <h3>You're on the waiting list</h3>
-          <p>No group had room right now. As more students join, you'll be matched automatically, so there's nothing else you need to do.</p>
-        </div>
-      </div>
-    `;
-  }
-
-  if (data.course_code) {
-    const courseCard = document.getElementById('course-card');
-    courseCard.style.display = 'block';
-    document.getElementById('course-content').innerHTML = `
-      <div class="icon-box"><svg viewBox="0 0 24 24"><path d="M4 19.5V5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M8 7h7M8 11h5"/></svg></div>
-      <div>
-        <span class="badge course-code">${esc(data.course_code)}</span>
-        <div class="course-title">${esc(data.course_title)}</div>
-      </div>
-    `;
-  }
-
-  const adminGroups = data.admin_groups || [];
-  if (adminGroups.length) {
-    document.getElementById('admin-groups-card').style.display = 'block';
-    document.getElementById('admin-groups').innerHTML = adminGroups.map(g => `
-      <li>
-        <a class="group-link" href="/chat?group=${encodeURIComponent(g.group_id)}">
-          <span class="icon-box"><svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 0 1-11.6 7.1L4 20l.9-4.4A8 8 0 1 1 20 12z"/></svg></span>
-          <span>
-            <span class="group-link-name">${esc(g.group_name)}</span>
-            <span class="group-link-meta">${esc(g.member_count)} members · open chat</span>
-          </span>
-        </a>
-      </li>
-    `).join('');
-  }
+  // Admin groups have no other way in from Home now, so they join the room list.
+  for (const g of data.admin_groups || []) addRoomLink(g);
 }
 load();
 
+// ── Calendar ──
+const MAX_CHIPS = 2;   // a cell's chips before "+N more"; the list below has them all
+
+const dayKey = d => `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
+const timeLabel = d => d.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' });
+const chatUrl = m => '/chat?group=' + encodeURIComponent(m.group_id);
+
+let meetings = null;   // null until loaded; times are UTC from the server, shown in local time
+const now = new Date();
+let view = new Date(now.getFullYear(), now.getMonth(), 1);
+
+function goTo(d){ view = new Date(d.getFullYear(), d.getMonth(), 1); render(); }
+
+function renderGrid(){
+  const year = view.getFullYear(), month = view.getMonth();
+  document.getElementById('month-title').textContent =
+    view.toLocaleDateString(undefined, { month: 'long', year: 'numeric' });
+
+  const byDay = new Map();
+  for (const m of meetings || []) {
+    const key = dayKey(m.at);
+    if (!byDay.has(key)) byDay.set(key, []);
+    byDay.get(key).push(m);
+  }
+
+  const today = dayKey(new Date());
+  const lead = view.getDay();   // days shown from the previous month
+  const weeks = Math.ceil((lead + new Date(year, month + 1, 0).getDate()) / 7);
+  let html = '';
+  for (let w = 0; w < weeks; w++) {
+    html += '<tr>';
+    for (let i = 0; i < 7; i++) {
+      // Built from calendar fields, not by adding 24h, so DST changes can't skip a day.
+      const d = new Date(year, month, 1 - lead + w * 7 + i);
+      const list = byDay.get(dayKey(d)) || [];
+      const chips = list.slice(0, MAX_CHIPS).map(m => `
+        <a class="chip${m.at < new Date() ? ' past' : ''}" href="${chatUrl(m)}" title="${esc(m.title)} · ${esc(m.group_name)}"><b>${esc(timeLabel(m.at))}</b>${esc(m.title)}</a>`).join('');
+      const more = list.length > MAX_CHIPS ? `<span class="chip-more">+${list.length - MAX_CHIPS} more</span>` : '';
+      const dot = list.length ? `<span class="dot${list.every(m => m.at < new Date()) ? ' past' : ''}" aria-hidden="true"></span>` : '';
+      html += `<td${d.getMonth() !== month ? ' class="other"' : ''}${dayKey(d) === today ? ' aria-current="date"' : ''}>
+        <span class="day-num">${d.getDate()}</span>${chips}${more}${dot}</td>`;
+    }
+    html += '</tr>';
+  }
+  document.getElementById('cal-body').innerHTML = html;
+}
+
+function renderList(){
+  const box = document.getElementById('month-meetings');
+  if (meetings === null) return;
+  const inMonth = meetings.filter(m => m.at.getFullYear() === view.getFullYear() && m.at.getMonth() === view.getMonth());
+  if (inMonth.length) {
+    box.innerHTML = `<ul class="meetings">${inMonth.map(m => `
+      <li><a class="meeting${m.at < new Date() ? ' past' : ''}" href="${chatUrl(m)}">
+        <span class="meeting-date">${esc(m.at.toLocaleDateString(undefined, { weekday: 'short' }))}<b>${m.at.getDate()}</b></span>
+        <span class="meeting-body">
+          <span class="meeting-title">${esc(m.title)}</span>
+          <span class="meeting-meta">${esc(timeLabel(m.at))} · ${esc(m.group_name)}</span>
+        </span>
+      </a></li>`).join('')}</ul>`;
+    return;
+  }
+  if (!meetings.length) {
+    box.innerHTML = '<p class="list-note">No meetings yet. When a time is confirmed in a chat room poll, it shows up here.</p>';
+    return;
+  }
+  const next = meetings.find(m => m.at >= new Date());
+  if (!next) { box.innerHTML = '<p class="list-note">No meetings this month.</p>'; return; }
+  const label = next.at.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' });
+  box.innerHTML = `<p class="list-note">No meetings this month. Next up: <button class="link-btn" id="jump-next" type="button">${esc(label)} · ${esc(next.title)}</button></p>`;
+  document.getElementById('jump-next').addEventListener('click', () => goTo(next.at));
+}
+
+function render(){ renderGrid(); renderList(); }
+
+// Sunday-first; 2023-01-01 was a Sunday, used only to get localized day names.
+document.getElementById('cal-weekdays').innerHTML = Array.from({ length: 7 }, (_, i) =>
+  `<th scope="col">${esc(new Date(2023, 0, 1 + i).toLocaleDateString(undefined, { weekday: 'short' }))}</th>`).join('');
+document.getElementById('prev-btn').addEventListener('click', () => goTo(new Date(view.getFullYear(), view.getMonth() - 1, 1)));
+document.getElementById('next-btn').addEventListener('click', () => goTo(new Date(view.getFullYear(), view.getMonth() + 1, 1)));
+document.getElementById('today-btn').addEventListener('click', () => goTo(new Date()));
+render();
+
+async function loadMeetings(){
+  const res = await fetch('/api/meetings');
+  if (res.status === 401) { window.location.href = '/login'; return; }
+  if (!res.ok) throw new Error(res.status);
+  const data = await res.json();
+  meetings = data.meetings.map(m => ({ ...m, at: new Date(m.starts_at) }));
+  render();
+}
+loadMeetings().catch(() => {
+  document.getElementById('month-meetings').innerHTML = '<p class="list-note">Couldn\'t load your meetings. Try refreshing the page.</p>';
+});
+
+// ── Sidebar ──
+function setChatNav(groupId, groupName){
+  const link = document.getElementById('nav-chat');
+  const empty = document.getElementById('nav-chat-empty');
+  if (!groupId) { empty.textContent = 'None yet'; return; }
+  link.href = '/chat?group=' + encodeURIComponent(groupId);
+  link.title = groupName;
+  document.getElementById('nav-chat-name').textContent = groupName;
+  link.hidden = false;
+  empty.hidden = true;
+}
+function addRoomLink(g){
+  const link = document.getElementById('nav-chat').cloneNode(true);
+  link.removeAttribute('id');
+  link.hidden = false;
+  link.href = '/chat?group=' + encodeURIComponent(g.group_id);
+  link.title = g.group_name;
+  const label = link.querySelector('.nav-label');
+  label.removeAttribute('id');
+  label.textContent = g.group_name;
+  const empty = document.getElementById('nav-chat-empty');
+  empty.before(link);
+  empty.hidden = true;
+}
 document.getElementById('logout-btn').addEventListener('click', async () => {
-  await fetch(API + '/api/auth/logout', { method: 'POST' });
+  await fetch('/api/auth/logout', { method: 'POST' });
   window.location.href = '/login';
 });
 </script>

@@ -33,13 +33,14 @@ Pages:
                     blocked on match quality), and their account is linked to
                     the new student_id so they never see the survey again.
   GET  /home    -> gated to a logged-in user who HAS completed the survey:
-                    their matched group, its members, and their course, plus
-                    links to any admin groups they're in (data/make_group.py).
+                    a greeting and a month calendar of their confirmed meetings
+                    (GET /api/meetings). Chat rooms, including any admin groups
+                    (data/make_group.py), are links in the sidebar.
   GET  /chat?group=<group_id>
                 -> same gating as /home, plus group membership (enforced
                     by the /api/groups/* endpoints). Group chat with text
                     and image/video/file attachments, polled every few
-                    seconds; reached by clicking your group card on /home.
+                    seconds; reached from the sidebar's chat room list.
   GET  /account -> same gating as /home. Edit your display name, log out,
                     or delete your own account (DELETE /api/account - removes
                     your student/survey data AND login access in one action,
@@ -77,6 +78,7 @@ from typing import Dict, Optional
 
 from fastapi import FastAPI, HTTPException, Query, Request, Response
 from fastapi.responses import FileResponse, HTMLResponse, RedirectResponse
+from fastapi.staticfiles import StaticFiles
 from starlette.concurrency import run_in_threadpool
 from starlette.datastructures import UploadFile
 from pydantic import BaseModel, Field
@@ -117,15 +119,19 @@ def _migrate():
 @asynccontextmanager
 async def lifespan(_app):
     # Never let a failed migration keep the whole site down: everything except
-    # group chat works without the new table, and the next restart retries.
+    # group chat and meeting polls works without the new tables, and the next
+    # restart retries.
     try:
         _migrate()
     except Exception as e:
-        print(f"[migrate] failed, starting anyway (group chat unavailable until fixed): {e!r}", flush=True)
+        print(f"[migrate] failed, starting anyway (group chat/meeting polls unavailable until fixed): {e!r}", flush=True)
     yield
 
 
 app = FastAPI(title="StudyMatch", lifespan=lifespan)
+# Page images from assets/ (e.g. the login hero). check_dir=False so a missing
+# folder 404s per request instead of stopping the app from starting.
+app.mount("/assets", StaticFiles(directory=ROOT / "assets", check_dir=False), name="assets")
 
 
 def now_iso(offset=timedelta(0)):
@@ -907,6 +913,206 @@ def api_group_attachment(group_id: str, attachment_id: str, request: Request):
 
 
 # ─────────────────────────────────────────────────────────────
+#  Meeting-time polls (inside a group's chat room)
+# ─────────────────────────────────────────────────────────────
+
+POLL_TITLE_MAX = 100
+POLL_MAX_OPTIONS = 10
+POLL_LIST_LIMIT = 10
+
+
+class PollIn(BaseModel):
+    title: str = ""
+    options: list[str]   # candidate start times, ISO 8601 with a UTC offset
+
+
+class PollVoteIn(BaseModel):
+    option_ids: list[int]   # every option that works for me - replaces my previous votes
+
+
+class PollFinalizeIn(BaseModel):
+    option_id: int
+
+
+def _parse_start(value):
+    """ISO 8601 with an offset -> the same UTC "...Z" format now_iso() uses.
+    Python 3.10's fromisoformat doesn't accept a trailing Z, hence the swap."""
+    try:
+        at = datetime.fromisoformat(value.strip().replace("Z", "+00:00"))
+    except ValueError:
+        raise HTTPException(400, f"Not a valid date and time: {value!r}")
+    if at.tzinfo is None:
+        raise HTTPException(400, "Times need a UTC offset.")
+    return at.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+
+def _require_poll(con, group_id, poll_id):
+    """(created_by, final_option_id) for a poll in this group, else 404."""
+    row = con.execute("SELECT created_by, final_option_id FROM meeting_poll WHERE poll_id=? AND group_id=?",
+                      (poll_id, group_id)).fetchone()
+    if row is None:
+        raise HTTPException(404, "Poll not found")
+    return row
+
+
+def _delete_poll(cur, poll_id):
+    cur.execute("""DELETE FROM meeting_poll_vote WHERE option_id IN
+                   (SELECT option_id FROM meeting_poll_option WHERE poll_id=?)""", (poll_id,))
+    cur.execute("DELETE FROM meeting_poll_option WHERE poll_id=?", (poll_id,))
+    cur.execute("DELETE FROM meeting_poll WHERE poll_id=?", (poll_id,))
+
+
+@app.get("/api/groups/{group_id}/polls")
+def api_group_polls(group_id: str, request: Request):
+    """The group's latest polls, newest first, each with its options in time
+    order and who voted for each one."""
+    con = db()
+    try:
+        sid = _require_group_member(request, con, group_id)
+        polls = con.execute(
+            """SELECT p.poll_id, p.title, p.created_by, s.name, p.created_at, p.final_option_id
+               FROM meeting_poll p JOIN student s ON s.student_id = p.created_by
+               WHERE p.group_id = ? ORDER BY p.created_at DESC, p.poll_id LIMIT ?""",
+            (group_id, POLL_LIST_LIMIT),
+        ).fetchall()
+        ids = [p[0] for p in polls]
+        marks = ",".join("?" * len(ids))
+        options = con.execute(
+            f"SELECT option_id, poll_id, starts_at FROM meeting_poll_option WHERE poll_id IN ({marks}) ORDER BY starts_at, option_id",
+            ids,
+        ).fetchall() if ids else []
+        votes = con.execute(
+            f"""SELECT v.option_id, v.student_id FROM meeting_poll_vote v
+                JOIN meeting_poll_option o ON o.option_id = v.option_id
+                WHERE o.poll_id IN ({marks}) ORDER BY v.student_id""",
+            ids,
+        ).fetchall() if ids else []
+    finally:
+        con.close()
+
+    voters = {}
+    for option_id, student_id in votes:
+        voters.setdefault(option_id, []).append(student_id)
+    by_poll = {}
+    for option_id, poll_id, starts_at in options:
+        ids_for = voters.get(option_id, [])
+        by_poll.setdefault(poll_id, []).append(
+            {"option_id": option_id, "starts_at": starts_at, "voters": ids_for, "voted_by_me": sid in ids_for})
+    return {"polls": [
+        {"poll_id": poll_id, "title": title, "created_by": created_by, "created_by_name": name,
+         "is_mine": created_by == sid, "created_at": created_at, "final_option_id": final_option_id,
+         "voter_count": len({v for o in by_poll.get(poll_id, []) for v in o["voters"]}),
+         "options": by_poll.get(poll_id, [])}
+        for poll_id, title, created_by, name, created_at, final_option_id in polls
+    ]}
+
+
+@app.get("/api/meetings")
+def api_meetings(request: Request):
+    """Home calendar: every confirmed meeting (a poll with a final time) across
+    all of the logged-in student's groups, earliest first. Times are UTC."""
+    sid = require_user(request)["student_id"]
+    con = db()
+    try:
+        rows = con.execute(
+            """SELECT p.poll_id, p.title, o.starts_at, sg.group_id, sg.group_name
+               FROM group_membership gm
+               JOIN meeting_poll p ON p.group_id = gm.group_id
+               JOIN meeting_poll_option o ON o.option_id = p.final_option_id
+               JOIN study_group sg ON sg.group_id = gm.group_id
+               WHERE gm.student_id = ? ORDER BY o.starts_at, p.poll_id""",
+            (sid,),
+        ).fetchall()
+    finally:
+        con.close()
+    return {"meetings": [
+        {"poll_id": poll_id, "title": title, "starts_at": starts_at, "group_id": group_id, "group_name": group_name}
+        for poll_id, title, starts_at, group_id, group_name in rows
+    ]}
+
+
+@app.post("/api/groups/{group_id}/polls")
+def api_group_create_poll(group_id: str, body: PollIn, request: Request):
+    title = body.title.strip() or "Meeting time"
+    if len(title) > POLL_TITLE_MAX:
+        raise HTTPException(400, f"Poll titles are limited to {POLL_TITLE_MAX} characters.")
+    starts = sorted({_parse_start(o) for o in body.options})
+    if len(starts) < 2:
+        raise HTTPException(400, "Add at least two different times to vote on.")
+    if len(starts) > POLL_MAX_OPTIONS:
+        raise HTTPException(400, f"A poll can have at most {POLL_MAX_OPTIONS} times.")
+    if starts[0] < now_iso():
+        raise HTTPException(400, "Every time has to be in the future.")
+    con = db()
+    try:
+        sid = _require_group_member(request, con, group_id)
+        poll_id = "pol_" + secrets.token_hex(6)
+        con.execute("INSERT INTO meeting_poll VALUES (?,?,?,?,?,?)", (poll_id, group_id, sid, title, now_iso(), None))
+        for starts_at in starts:
+            con.execute("INSERT INTO meeting_poll_option (poll_id, starts_at) VALUES (?,?)", (poll_id, starts_at))
+        db_write(con)
+    finally:
+        con.close()
+    return {"poll_id": poll_id}
+
+
+@app.post("/api/groups/{group_id}/polls/{poll_id}/votes")
+def api_group_poll_vote(group_id: str, poll_id: str, body: PollVoteIn, request: Request):
+    con = db()
+    try:
+        sid = _require_group_member(request, con, group_id)
+        _, final_option_id = _require_poll(con, group_id, poll_id)
+        if final_option_id is not None:
+            raise HTTPException(409, "This poll is already decided.")
+        valid = {r[0] for r in con.execute("SELECT option_id FROM meeting_poll_option WHERE poll_id=?", (poll_id,))}
+        chosen = set(body.option_ids)
+        if not chosen <= valid:
+            raise HTTPException(400, "That time isn't part of this poll.")
+        con.execute("""DELETE FROM meeting_poll_vote WHERE student_id=? AND option_id IN
+                       (SELECT option_id FROM meeting_poll_option WHERE poll_id=?)""", (sid, poll_id))
+        for option_id in sorted(chosen):
+            con.execute("INSERT INTO meeting_poll_vote VALUES (?,?)", (option_id, sid))
+        db_write(con)
+    finally:
+        con.close()
+    return {"voted": sorted(chosen)}
+
+
+@app.post("/api/groups/{group_id}/polls/{poll_id}/finalize")
+def api_group_poll_finalize(group_id: str, poll_id: str, body: PollFinalizeIn, request: Request):
+    """Only the poll's creator picks the final time. Picking again changes it."""
+    con = db()
+    try:
+        sid = _require_group_member(request, con, group_id)
+        created_by, _ = _require_poll(con, group_id, poll_id)
+        if created_by != sid:
+            raise HTTPException(403, "Only the person who made this poll can confirm a time.")
+        if not con.execute("SELECT 1 FROM meeting_poll_option WHERE option_id=? AND poll_id=?",
+                           (body.option_id, poll_id)).fetchone():
+            raise HTTPException(400, "That time isn't part of this poll.")
+        con.execute("UPDATE meeting_poll SET final_option_id=? WHERE poll_id=?", (body.option_id, poll_id))
+        db_write(con)
+    finally:
+        con.close()
+    return {"final_option_id": body.option_id}
+
+
+@app.delete("/api/groups/{group_id}/polls/{poll_id}")
+def api_group_poll_delete(group_id: str, poll_id: str, request: Request):
+    con = db()
+    try:
+        sid = _require_group_member(request, con, group_id)
+        created_by, _ = _require_poll(con, group_id, poll_id)
+        if created_by != sid:
+            raise HTTPException(403, "Only the person who made this poll can delete it.")
+        _delete_poll(con.cursor(), poll_id)
+        db_write(con)
+    finally:
+        con.close()
+    return {"deleted": poll_id}
+
+
+# ─────────────────────────────────────────────────────────────
 #  Account
 # ─────────────────────────────────────────────────────────────
 
@@ -1041,6 +1247,9 @@ def _delete_student_cascade(cur, student_id):
     cur.execute("DELETE FROM group_membership WHERE student_id=?", (student_id,))
     cur.execute("DELETE FROM course_chat_message WHERE student_id=?", (student_id,))
     cur.execute("DELETE FROM group_chat_message WHERE student_id=?", (student_id,))
+    cur.execute("DELETE FROM meeting_poll_vote WHERE student_id=?", (student_id,))
+    for (poll_id,) in cur.execute("SELECT poll_id FROM meeting_poll WHERE created_by=?", (student_id,)).fetchall():
+        _delete_poll(cur, poll_id)
     cur.execute(
         "DELETE FROM group_chat_attachment_chunk WHERE attachment_id IN "
         "(SELECT attachment_id FROM group_chat_attachment WHERE student_id=?)",

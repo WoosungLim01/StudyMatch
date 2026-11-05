@@ -8,60 +8,93 @@ The visual language for every StudyMatch screen — login, survey, home/matching
 profile setup, chat, admin. The pages in `ui/` are plain HTML/CSS/JS, so this
 doc is written as copy-pasteable CSS tokens and HTML snippets.
 
-**Brand feel:** clean, trustworthy, campus-navy — *not* a generic SaaS blue.
-Warm accent colors were removed on purpose: the palette stays cool and
-navy-led everywhere. The warmth comes from the serif headings and the copy
-voice, never from orange/yellow/red accents.
-
+**Brand feel:** soft, friendly, calm — a lavender-gray page with white,
+borderless, softly shadowed cards and a single campus-navy accent (layout and type follow the
+NextUp project). No warm accent colors: the palette stays cool and
+navy-led everywhere; warmth comes from rounded shapes and the copy voice.
 ---
 
 ## 1. Color
 
 | Token | Value | Use |
 |---|---|---|
-| `--bg` | `#EEF2F8` | Page background (soft blue-white) |
+| `--bg` | `#F1F3F9` | Page background (soft lavender-gray) |
 | `--surface` | `#FFFFFF` | Cards, panels, inputs |
-| `--navy` | `#14213D` | Primary accent: buttons, heading badges, active icons, CTA band |
-| `--navy-deep` | `#0A1B33` | Hover / pressed state of primary buttons |
-| `--navy-mid` | `#1B2A4A` | Secondary icon strokes, band accents |
+| `--accent` | `#14213D` | Primary accent (navy): buttons, badges, active icons, CTA band |
+| `--accent-deep` | `#0A1B33` | Hover / pressed state of primary buttons |
+| `--accent-mid` | `#1B2A4A` | Secondary icon strokes, band accents |
 | `--blue-2` | `#2C4770` | Secondary avatar color |
 | `--blue-3` | `#5C7EA6` | Tertiary avatar color |
-| `--band` | `#DCE6F5` | Full-width "value prop" strip background |
-| `--ink` | `#1B2A41` | Body copy, footer background |
-| `--muted-strong` | `rgba(27,42,65,0.72)` | Secondary text (descriptions, subtitles) |
-| `--muted` | `rgba(27,42,65,0.55)` | Tertiary text (meta, captions, placeholders) |
-| `--line` | `rgba(27,42,65,0.08)` | Default hairline / card border |
-| `--line-soft` | `rgba(27,42,65,0.06)` | Subtle dividers |
-| `--line-strong` | `rgba(27,42,65,0.12)` | Input borders, emphasized dividers |
-| `--tint` | `rgba(20,33,61,0.10)` | Badge / icon-box background |
+| `--band` | `#E3E9F3` | Full-width "value prop" strip background (accent-soft) |
+| `--ink` | `#1F2547` | Headings, body copy, footer background |
+| `--muted-strong` | `rgba(31,37,71,0.72)` | Secondary text (descriptions, subtitles) |
+| `--muted` | `#8A90A8` | Tertiary text (meta, captions, placeholders) |
+| `--line` | `#E4E7F2` | Default hairline (cards are borderless — shadow only) |
+| `--line-soft` | `#EEF0F6` | Subtle dividers |
+| `--line-strong` | `#D9DDEB` | Input borders, emphasized dividers |
+| `--tint` | `#E3E9F3` | Badge / icon-box background (accent-soft) |
 | `--danger` | `#8A3B42` | Status only: error text, destructive (Delete) buttons |
 | `--danger-soft` | `#F6EBEC` | Status only: error banner background, Delete hover |
 
-Status banners (survey result, etc.): success = navy background + white
+Status banners (survey result, etc.): success = navy (`--accent`) background + white
 text; waiting / not-ideal = `--band` background; error = `--danger-soft`
 background + `--danger` text. Toasts are navy pills with white text.
 
 **Rules**
-- Navy is the only accent. Don't introduce warm colors (orange, amber, coral, red-pink) for decoration.
-- Avatars rotate through `--navy` → `--blue-2` → `--blue-3`.
-- Text on navy or `--ink` backgrounds is white (muted: `rgba(255,255,255,0.72)`).
+- Navy (`--accent`) is the only accent. Don't introduce warm colors (orange, amber, coral, red-pink) for decoration.
+- Avatars rotate through `--accent` → `--blue-2` → `--blue-3`.
+- Text and icons on an `--accent` fill use `--on-accent` (white in light mode), never a hardcoded `#fff` — in dark mode the accent turns light and `--on-accent` turns navy. Muted: `color-mix(in srgb, var(--on-accent) 80%, transparent)`.
 - Error/success states, if needed, should be muted and used only for status text — never as brand accents.
+
+### Dark mode
+
+Every page follows the OS setting unless the viewer picks Light or Dark under
+Account → Appearance (saved in `localStorage` as `theme`). A small script at the
+top of each page's `<head>` sets `<html data-theme="light|dark">` before the
+styles paint, so there's no white flash; it also exposes `setTheme()` /
+`getTheme()`. Each page's `:root` has a matching `:root[data-theme="dark"]`
+block that redefines the same tokens — components never branch on the theme.
+
+| Token | Dark value | Note |
+|---|---|---|
+| `--bg` / `--surface` | `#14161D` / `#1E2029` | Cool pages (survey, admin) |
+| `--page-editorial` / `--surface` | `#1A1917` / `#262521` | Warm pages (login, home, chat, account): cards sit one step lighter than the page |
+| `--sidebar-bg` / `--well` / `--well-strong` | `#201F1C` / `#2B2A26` / `#36342F` | Tonal fills, as in light |
+| `--accent` / `--accent-deep` | `#A9C1E8` / `#C7D7F1` | Light periwinkle; hover gets lighter, not darker |
+| `--on-accent` | `#101A2E` | 9.5:1 on `--accent` |
+| `--ink` / `--ink-editorial` | `#E6E8F0` / `#EDEBE6` | Body text |
+| `--text-soft` / `--muted-aa` / `--muted` | `#B8B5AD` / `#9A978F` / `#8C91A3` | All ≥ 5:1 on their surface |
+| `--tint` / `--band` | `#283041` / `#232836` | Badge and band fills |
+| `--danger` / `--danger-soft` | `#E9A0A8` / `#3A2327` | |
+| `--good` / `--good-soft` | `#86CFA6` / `#1E3329` | |
+
+Rules: new colors go in as tokens with both a light and a dark value; translucent
+tints are `color-mix()` of a token, not a literal `rgba()`; a data-URI SVG icon
+can't read tokens, so it needs its own `:root[data-theme="dark"]` override (see
+the admin toolbar). The admin chart's type colors have dark variants that keep
+≥ 3:1 on the dark surface.
 
 ## 2. Typography
 
-Load both from Google Fonts:
+Load from Google Fonts:
 
 ```html
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
 ```
 
 | Role | Font | Weight | Notes |
 |---|---|---|---|
-| Display / H1–H3 | **Fraunces** (serif) | 600–700 | Character and warmth against the cool palette |
-| Avatar initials | Fraunces | 700 | |
-| Body, UI, buttons, labels, inputs | **Nunito** (sans) | 400 / 600 / 700 | Everything that isn't a heading |
+| Display / H1–H3 | **Nunito Sans** | 800 | `letter-spacing: -.02em`, `--ink` color |
+| Avatar initials | Nunito Sans | 700 | |
+| Body, UI, buttons, labels, inputs | **Nunito Sans** | 400 / 600 / 700 | Everything that isn't a heading |
+
+**Exception: login page.** `ui/login.html` uses an editorial layout: an off-white
+page (`--page-editorial: #FAFAF8`), a **Fraunces** 500 serif headline
+(`--font-serif`, ~60px, ink `#1A1A1A`), 8px-radius controls and a hero image
+served from `/assets/` (the repo's `assets/` folder). Those extra tokens live in
+that page's `:root` only.
 
 Suggested scale (desktop → mobile):
 
@@ -78,12 +111,12 @@ Suggested scale (desktop → mobile):
 
 | Thing | Spec |
 |---|---|
-| Buttons | Pill: `border-radius: 999px` |
+| Buttons | Pill: `border-radius: 999px`; primary gets an navy glow `0 8px 20px rgba(20,33,61,0.22)` |
 | Cards | `border-radius: 20px` (small) – `28px` (large/hero) |
-| Card shadow | `0 8px 24px rgba(27,42,65,0.08)`; hover up to `0 12px 24px rgba(27,42,65,0.14)`; resting minimum `0 8px 16px rgba(27,42,65,0.05)` |
+| Card shadow | `0 12px 40px rgba(76,86,150,0.08)`; hover up to `0 12px 32px rgba(76,86,150,0.14)`. Cards have no visible border |
 | Icon container | 56×56px, `border-radius: 16px`, `--tint` background |
-| Icons | Navy stroke, `stroke-width: 1.8`, round caps & joins, no fills (except small connector accents) |
-| Badges / chips | Small pill, navy text on `--tint` |
+| Icons | Accent stroke, `stroke-width: 1.8`, round caps & joins, no fills (except small connector accents) |
+| Badges / chips | Small pill, accent text on `--tint` |
 | Section padding | 80–96px vertical, 80px horizontal on desktop; 56px / 20px on mobile |
 | Grid gaps | 24px (cards), 32px (feature grid) |
 
@@ -93,33 +126,33 @@ Paste this at the top of every page's `<style>` (or into a shared `ui/studymatch
 
 ```css
 :root {
-  --bg: #EEF2F8;
+  --bg: #F1F3F9;
   --surface: #FFFFFF;
-  --navy: #14213D;
-  --navy-deep: #0A1B33;
-  --navy-mid: #1B2A4A;
+  --accent: #14213D;
+  --accent-deep: #0A1B33;
+  --accent-mid: #1B2A4A;
   --blue-2: #2C4770;
   --blue-3: #5C7EA6;
-  --band: #DCE6F5;
-  --ink: #1B2A41;
-  --muted-strong: rgba(27,42,65,0.72);
-  --muted: rgba(27,42,65,0.55);
-  --line-soft: rgba(27,42,65,0.06);
-  --line: rgba(27,42,65,0.08);
-  --line-strong: rgba(27,42,65,0.12);
-  --tint: rgba(20,33,61,0.10);
+  --band: #E3E9F3;
+  --ink: #1F2547;
+  --muted-strong: rgba(31,37,71,0.72);
+  --muted: #8A90A8;
+  --line-soft: #EEF0F6;
+  --line: #E4E7F2;
+  --line-strong: #D9DDEB;
+  --tint: #E3E9F3;
   --danger: #8A3B42;
   --danger-soft: #F6EBEC;
 
-  --font-display: "Fraunces", Georgia, "Times New Roman", serif;
-  --font-body: "Nunito", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: "Nunito Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-body: "Nunito Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
 
   --radius-pill: 999px;
   --radius-card: 24px;
   --radius-card-lg: 28px;
   --radius-icon: 16px;
-  --shadow-card: 0 8px 24px rgba(27,42,65,0.08);
-  --shadow-card-hover: 0 12px 24px rgba(27,42,65,0.14);
+  --shadow-card: 0 12px 40px rgba(76,86,150,0.08);
+  --shadow-card-hover: 0 12px 32px rgba(76,86,150,0.14);
 }
 
 body {
@@ -133,11 +166,11 @@ body {
 
 h1, h2, h3 {
   font-family: var(--font-display);
-  font-weight: 700;
-  color: var(--navy);
+  font-weight: 800;
+  color: var(--ink);
   margin: 0 0 .5em;
+  letter-spacing: -.02em;
 }
-h3 { font-weight: 600; }
 
 .section { padding: 88px 80px; }
 @media (max-width: 720px) { .section { padding: 56px 20px; } }
@@ -156,16 +189,16 @@ h3 { font-weight: 600; }
   cursor: pointer;
   transition: background .15s, color .15s, transform .1s;
 }
-.btn-primary { background: var(--navy); color: #fff; border: 2px solid var(--navy); }
-.btn-primary:hover  { background: var(--navy-deep); border-color: var(--navy-deep); }
-.btn-primary:active { background: var(--navy-deep); transform: translateY(1px); }
+.btn-primary { background: var(--accent); color: #fff; border: 2px solid var(--accent); }
+.btn-primary:hover  { background: var(--accent-deep); border-color: var(--accent-deep); }
+.btn-primary:active { background: var(--accent-deep); transform: translateY(1px); }
 
-.btn-ghost { background: transparent; color: var(--navy); border: 2px solid var(--navy); }
+.btn-ghost { background: transparent; color: var(--accent); border: 2px solid var(--accent); }
 .btn-ghost:hover { background: var(--tint); }
 
 /* On the navy CTA band */
-.btn-on-navy { background: #fff; color: var(--navy); border: 2px solid #fff; }
-.btn-on-navy:hover { background: var(--band); border-color: var(--band); }
+.btn-on-accent { background: #fff; color: var(--accent); border: 2px solid #fff; }
+.btn-on-accent:hover { background: var(--band); border-color: var(--band); }
 
 .btn:focus-visible { outline: 3px solid var(--blue-3); outline-offset: 3px; }
 ```
@@ -181,7 +214,7 @@ h3 { font-weight: 600; }
 .badge {
   display: inline-block; padding: 6px 12px;
   border-radius: var(--radius-pill);
-  background: var(--tint); color: var(--navy);
+  background: var(--tint); color: var(--accent);
   font: 700 13px/1 var(--font-body); letter-spacing: .02em;
 }
 ```
@@ -214,7 +247,7 @@ Tag chips on profile cards use the same `.badge` style.
   display: grid; place-items: center;
   border-radius: var(--radius-icon);
   background: var(--tint);
-  color: var(--navy);
+  color: var(--accent);
 }
 .icon-box svg {
   width: 28px; height: 28px;
@@ -231,14 +264,14 @@ Tag chips on profile cards use the same `.badge` style.
 
 ### Avatar
 
-Solid circle, single white initial in Fraunces. Rotate background colors.
+Solid circle, single white initial in Nunito Sans. Rotate background colors.
 
 ```css
 .avatar {
   width: 56px; height: 56px; border-radius: 50%;
   display: grid; place-items: center; flex: none;
   color: #fff; font: 700 22px/1 var(--font-display);
-  background: var(--navy);
+  background: var(--accent);
 }
 .avatar.c2 { background: var(--blue-2); }
 .avatar.c3 { background: var(--blue-3); }
@@ -263,11 +296,11 @@ visual shorthand for a successful match.
   width: 40px; height: 40px; margin: 0 -12px; z-index: 1;
   border-radius: 50%; background: var(--surface);
   display: grid; place-items: center;
-  box-shadow: 0 4px 12px rgba(27,42,65,0.12);
+  box-shadow: 0 4px 12px rgba(76,86,150,0.12);
 }
 .match-link svg {
   width: 20px; height: 20px; fill: none;
-  stroke: var(--navy); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
+  stroke: var(--accent); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
 }
 ```
 
@@ -289,13 +322,13 @@ Numbered (or icon) circles connected by a dashed line.
 .steps { display: flex; justify-content: space-between; position: relative; }
 .steps::before {
   content: ""; position: absolute; top: 28px; left: 12%; right: 12%;
-  border-top: 2px dashed rgba(27,42,65,0.15);
+  border-top: 2px dashed rgba(76,86,150,0.15);
 }
 .step { position: relative; flex: 1; text-align: center; padding: 0 12px; }
 .step-dot {
   width: 56px; height: 56px; margin: 0 auto 16px; border-radius: 50%;
   display: grid; place-items: center;
-  background: var(--navy); color: #fff;
+  background: var(--accent); color: #fff;
   font: 700 20px/1 var(--font-display);
   box-shadow: 0 0 0 8px var(--bg); /* masks the dashed line behind the dot */
 }
@@ -372,8 +405,8 @@ Full-width light blue strip.
 
 ```css
 .band { background: var(--band); padding: 64px 80px; }
-.band h2 { color: var(--navy); }
-.band .icon-box { background: var(--surface); color: var(--navy-mid); }
+.band h2 { color: var(--accent); }
+.band .icon-box { background: var(--surface); color: var(--accent-mid); }
 ```
 
 ### CTA band
@@ -381,7 +414,7 @@ Full-width light blue strip.
 Full-width navy strip with white text and a white pill button.
 
 ```css
-.cta-band { background: var(--navy); color: #fff; padding: 88px 80px; text-align: center; }
+.cta-band { background: var(--accent); color: #fff; padding: 88px 80px; text-align: center; }
 .cta-band h2 { color: #fff; }
 .cta-band p  { color: rgba(255,255,255,0.72); max-width: 560px; margin: 0 auto 28px; }
 ```
@@ -390,7 +423,7 @@ Full-width navy strip with white text and a white pill button.
 <section class="cta-band">
   <h2>Stop studying for CMPSC 121 alone.</h2>
   <p>Take the quiz once and we'll find your people.</p>
-  <a class="btn btn-on-navy" href="/login">Get matched</a>
+  <a class="btn btn-on-accent" href="/login">Get matched</a>
 </section>
 ```
 
@@ -407,15 +440,25 @@ Not in the original brief — derived from the same tokens so forms match.
   font: 400 16px/1.4 var(--font-body); color: var(--ink);
 }
 .input::placeholder { color: var(--muted); }
-.input:focus { outline: none; border-color: var(--navy); box-shadow: 0 0 0 4px var(--tint); }
+.input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 4px var(--tint); }
 ```
 
 Survey scale options (1–5) use pill-shaped toggles: `.btn-ghost` at rest,
 `.btn-primary` when selected.
 
+### App shell (home, chat, account)
+
+A sidebar (248px, `--sidebar-bg`) holds the brand, Home, Account, the chat rooms and Log out. Below 768px it becomes a top bar with icons only, and below 360px the brand and icons shrink so five or more icons still fit. The page sits on warm `--page-editorial`.
+
+**Tone over lines:** areas are told apart by `--sidebar-bg`, `--well`, `--well-strong` and `--shadow-soft`, not borders. Only text inputs keep a faint border, so they still read as places to type.
+
+### Calendar (derived)
+
+Month grid on a white card, Sunday first. Days of the month are `--page-editorial` cells; days from other months have no fill; today's number is an `--accent` circle. Meetings are `--tint` chips (`--well` once past), at most two per cell plus "+N more". Below 768px, a dot replaces the chips and the list under the grid carries the details.
+
 ### Chat (derived)
 
-- Own message: `--navy` background, white text, radius `20px 20px 6px 20px`.
+- Own message: `--accent` background, white text, radius `20px 20px 6px 20px`.
 - Others' messages: `--surface` background, `--ink` text, `1px solid var(--line)`, radius `20px 20px 20px 6px`, avatar (32px) to the left.
 - Timestamps/meta: 12px `--muted`.
 - Composer: `.input` with pill radius + circular `.btn-primary` send button.
@@ -440,10 +483,11 @@ Survey scale options (1–5) use pill-shaped toggles: `.btn-ghost` at rest,
 ## 7. Checklist for any new screen
 
 - [ ] Page bg `--bg`, content on white cards with 20–28px radius + soft shadow
-- [ ] Headings in Fraunces, everything else in Nunito
+- [ ] Nunito Sans everywhere; headings 800 weight in `--ink`
 - [ ] Every button is a pill; one primary (navy) action per view
-- [ ] Icons are navy stroke-only in a 56px tinted box
+- [ ] Icons are accent stroke-only in a 56px tinted box
 - [ ] No warm accent colors anywhere
 - [ ] Generous spacing (80–96px section padding on desktop)
 - [ ] Copy sounds like a friendly upperclassman, not a SaaS landing page
 - [ ] Works at ~400px wide (grids collapse, section padding shrinks)
+- [ ] Has the theme script in `<head>` and a `:root[data-theme="dark"]` block; checked in both themes

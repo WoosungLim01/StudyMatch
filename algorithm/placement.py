@@ -160,6 +160,11 @@ def recompute_or_delete_group(cur, group_id, course_id):
     ).fetchall()]
     if not remaining:
         cur.execute("DELETE FROM group_chat_message WHERE group_id=?", (group_id,))
+        polls = "SELECT poll_id FROM meeting_poll WHERE group_id=?"
+        cur.execute(f"""DELETE FROM meeting_poll_vote WHERE option_id IN
+                        (SELECT option_id FROM meeting_poll_option WHERE poll_id IN ({polls}))""", (group_id,))
+        cur.execute(f"DELETE FROM meeting_poll_option WHERE poll_id IN ({polls})", (group_id,))
+        cur.execute("DELETE FROM meeting_poll WHERE group_id=?", (group_id,))
         cur.execute(
             "DELETE FROM group_chat_attachment_chunk WHERE attachment_id IN "
             "(SELECT attachment_id FROM group_chat_attachment WHERE group_id=?)",
