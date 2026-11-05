@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>StudyMatch Simulation Results</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    /* Report in the StudyMatch deck's colors: off-white paper, navy ink, one gold accent for labels. One column, tables set off by hairlines. */
+    --paper: #F6F6F4;
+    --card: #FFFFFF;
+    --ink: #0F2341;
+    --body: #3F4650;
+    --muted: #7A8089;
+    --gold: #9E7A22;
+    --rule: #DEE1E5;
+    --tint: #EEF1F5;
+    --display: "Fraunces", Georgia, "Times New Roman", serif;
+    --text: "Nunito", "Segoe UI", Arial, sans-serif;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #121A26; --card: #1A2433; --ink: #EAF0F8; --body: #C5CDD8; --muted: #8E98A6;
+      --gold: #D2AE55; --rule: #2C3848; --tint: #202B3B; color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #121A26; --card: #1A2433; --ink: #EAF0F8; --body: #C5CDD8; --muted: #8E98A6;
+    --gold: #D2AE55; --rule: #2C3848; --tint: #202B3B; color-scheme: dark;
+  }
+  * { box-sizing: border-box; }
+  html { font-size: 17px; }
+  body { margin: 0; background: var(--paper); color: var(--body); font-family: var(--text); line-height: 1.55; }
+  main { max-width: 46rem; margin: 0 auto; padding: 3rem 16px 5rem; }
+  .kicker { font-weight: 700; font-size: .8rem; letter-spacing: .08em; text-transform: uppercase; color: var(--gold); margin: 0 0 .6rem; }
+  h1 { font-family: var(--display); color: var(--ink); font-weight: 700; font-size: 2.4rem; line-height: 1.1; margin: 0 0 .5rem; text-wrap: balance; }
+  .dateline { color: var(--muted); margin: 0 0 2.5rem; font-size: .95rem; }
+  h2 { font-family: var(--display); color: var(--ink); font-weight: 600; font-size: 1.55rem; margin: 2.8rem 0 .8rem; text-wrap: balance; }
+  h3 { color: var(--ink); font-weight: 700; font-size: 1.05rem; margin: 1.8rem 0 .5rem; }
+  p { margin: 0 0 1rem; }
+  strong { color: var(--ink); font-weight: 700; }
+  ul, ol { padding-left: 1.3rem; margin: 0 0 1rem; display: grid; gap: .45rem; }
+  .summary { background: var(--card); border: 1px solid var(--rule); border-radius: 14px; padding: 1.2rem 1.4rem; margin: 0 0 1rem; }
+  .summary ul { margin: 0; }
+  .tablewrap { overflow-x: auto; margin: 1rem 0 1.2rem; }
+  table { border-collapse: collapse; width: 100%; font-size: .9rem; font-variant-numeric: tabular-nums; }
+  th, td { text-align: left; vertical-align: top; padding: .55rem .6rem; border-bottom: 1px solid var(--rule); }
+  th { color: var(--gold); font-weight: 700; font-size: .82rem; letter-spacing: .02em; }
+  td:first-child { color: var(--body); }
+  td:not(:first-child) { color: var(--ink); font-weight: 600; white-space: nowrap; }
+  td.wrap { white-space: normal; }
+  .note { font-size: .85rem; color: var(--muted); margin-top: -.6rem; }
+  code { font-family: Consolas, "Courier New", monospace; font-size: .88em; background: var(--tint); padding: .05em .35em; border-radius: 4px; color: var(--ink); }
+  a { color: var(--ink); }
+  a:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+  @media (max-width: 420px) { html { font-size: 16px; } h1 { font-size: 2rem; } }
+</style>
+</head>
+<body>
+<main>
+  <p class="kicker">StudyMatch · DS 440</p>
+  <h1>StudyMatch Simulation: Results</h1>
+  <p class="dateline">Penn State DS 440 capstone. Simulation work through 29 October 2026.</p>
+
+  <h2 id="summary">Summary</h2>
+  <div class="summary">
+    <ul>
+      <li>We tested the StudyMatch pipeline (survey matching plus weekly feedback and regrouping) on a synthetic cohort of 1,000 students over a 14-week semester, in three simulated worlds that decide how students feel in different ways: our own formulas, a language model judging each week, and a language model that first writes out what happened at every meeting.</li>
+      <li>In every world, regrouping on feedback reduced unhappiness and quitting compared with leaving groups alone. In the full-scale formula world the share of unhappy students at week 14 fell from 25% to 12%; in the two LLM worlds, on a 100-student sample, from 70% to 42% and from 95% to 53%.</li>
+      <li>Learning weights from feedback added a further gain only at full scale (1,000 students). With 100 students the learner never saw enough forms to pass its own evidence test, so survey-only and the full pipeline tied in all three worlds.</li>
+      <li>The language model, given the facts but not our formulas, agrees with them on what matters most: groupmates who don't show up and schedules that don't line up. It reacts far less to personality fit, and the meeting-writing version runs much harsher than the formulas because its base rates follow the wording of its instructions.</li>
+      <li>None of this is evidence about real students. The simulation shows that the pipeline does what it was designed to do under two independent sets of assumptions; only feedback from the deployed app can show whether students behave this way.</li>
+    </ul>
+  </div>
+
+  <h2 id="setup">What was simulated</h2>
+  <p><strong>Cohort.</strong> 1,000 synthetic students, 500 in CMPSC 465 and 500 in MATH 230, with survey answers calibrated on the real survey's item statistics, weekly schedules, and a hidden truth per student: their true position on the six study-style axes (planning, session mode, reliability, structure, intensity, collaboration), how sensitive they are to each, how much they mind no-shows and schedule clashes, how leniently they rate others, and how often they answer forms. The 36 real users of the app are excluded entirely.</p>
+  <p><strong>One week.</strong> Each group holds its planned meetings; who comes is drawn from each member's reliability, schedule fit, exam weeks and current mood. The world then decides how each student feels about the week, on a 1 to 5 scale. From that come leaving (below 2.4 at two week-ends in a row), the weekly form (answered by about 60% and falling, rated a little generously, with "would you keep this group?", up to two complaints and a groupmate to avoid when the rating is low), and every fourth week a check-in with peer ratings of reliability and helpfulness.</p>
+  <p><strong>Three strategies, played side by side on the same chance events.</strong> <em>Stay</em>: never regroup; quitters stay without a group. <em>Survey</em>: regroup using the survey answers and hand-set weights. <em>Learn</em> (the full pipeline): the same regrouping, but the matcher updates its profiles from peer ratings and complaints and refits its weights when the feedback supports it. The regrouping policy, chosen by a separate sweep, moves unhappy students every two weeks after one "I'd rather switch" answer, with at least two weeks in a group first and no moves after week 11; quitters are placed every week.</p>
+  <p><strong>Metrics.</strong> True satisfaction is the hidden 1 to 5 value, averaged over all students, counting a student without a group at 2.0. "Unhappy" means below 3.</p>
+
+  <h2 id="worlds">The three worlds</h2>
+  <p>The worlds differ in one function: who decides how a student felt about the week. Everything else, attendance draws, forms, learner and regrouping, is identical.</p>
+  <p><strong>V0, rule-based.</strong> Our formula: discomfort from style gaps to the groupmates who came, from groupmates who didn't, and from schedule clashes, each weighted by the student's hidden sensitivities, with the running satisfaction moving 30% of the way toward each meeting's result. Free, deterministic given the seed, and an encoding of our own assumptions.</p>
+  <p><strong>V1, LLM judge.</strong> Claude Haiku 5.5 receives, per group and week, each member as a letter with their true traits, the sessions they want, how much free time they share with the group, how they felt last week, and who came to each meeting. It never sees names, the compatibility score, our formula's number, or any hint of what students should care about. It returns for each student a satisfaction from 1.0 to 5.0, up to two complaint codes from the form's own list, a groupmate to avoid, and a one-sentence note in the student's voice. Each group is asked three times in independent calls and the scores are averaged, which halves the model's sampling noise. The average is held within 1.2 of the formula's value as a safety net; the net touched 0% of verdicts.</p>
+  <p><strong>V2, LLM with simulated meetings.</strong> Before judging, the model writes a three-to-five-sentence account of every meeting with at least two people present, given the same facts plus the previous meeting's account, under instructions that say which traits drive what (unreliable members arrive unprepared, strong explainers lead and talk over others, the quietest fall behind, a wide gap on structure means a clash, no planner means drift) and how often meetings go well or badly. With the account it labels each member's experience and whether the meeting made them more or less willing to come back; that label multiplies their attendance chance the following week. The judge then reads the accounts instead of a bare attendance list. Each strategy keeps its own meeting memory, and a meeting nobody attended does not erase it.</p>
+
+  <h2 id="validation">Validating the LLM worlds</h2>
+  <p>A language model's judgement has no formula to inspect, so it was tested from outside, the way a survey instrument is: hold everything fixed, change one thing, see what moves. The main probe holds the same 100 students in fixed groups for four weeks and compares conditions. A t value of 2 or more means the gap is unlikely to be chance.</p>
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>Check</th><th>V0 rule-based</th><th>V1 LLM judge</th><th>V2 LLM with meetings</th></tr></thead>
+    <tbody>
+      <tr><td>Reliable students prefer reliable groupmates</td><td>3.66 vs 2.45, t 11.0</td><td>3.35 vs 2.57, t 7.2, passes</td><td>3.02 vs 2.49, t 2.3, not valid*</td></tr>
+      <tr><td>Overlapping schedules beat none</td><td>3.59 vs 2.96, t 10.1</td><td>3.30 vs 3.07, t 5.9, passes</td><td>2.86 vs 2.86, t 0.0, fails</td></tr>
+      <tr><td>Matched groups beat random ones</td><td>3.59 vs 3.35, t 2.2</td><td>3.30 vs 3.27, t 0.6, fails</td><td>2.86 vs 2.77, t 0.9, fails</td></tr>
+      <tr><td>Plausible week 4 (5 to 35% unhappy)</td><td>14%</td><td>16%, passes</td><td>59%, fails</td></tr>
+      <tr><td>Correlation with the formula's value, mean offset</td><td></td><td>0.55, −0.12</td><td>0.65, −0.29</td></tr>
+      <tr><td>Safety net changed the value</td><td></td><td>0.0% of verdicts</td><td>1.5%</td></tr>
+      <tr><td>Wobble between repeated asks, one ask / average of three</td><td></td><td>0.12 / 0.07</td><td>0.13 / 0.07</td></tr>
+      <tr><td>Matched groups, week 1 to week 4</td><td>3.64 to 3.59</td><td>3.59 to 3.30</td><td>3.44 to 2.93</td></tr>
+      <tr><td>Top complaints</td><td class="wrap">no-shows 53%, schedules 23%</td><td class="wrap">no-shows 50%, schedules 26%</td><td class="wrap">no-shows 27%, more explaining 18%, more structure 16%</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="note">* The run's budget ran out during this probe, so the flaky groups' week-4 verdicts came from the formula; the comparison mixes two worlds and is not reported as a pass.</p>
+  <p>What this says: V1 reproduces the two effects every student would recognize, no-shows and schedules, and its complaint mix matches the formula's, but it barely distinguishes a well-matched group from a random one. V2 was built to make personality visible, and its complaints do shift from attendance to planning, structure and explaining; but it runs far harsher than the formula, loses the schedule effect, and still does not separate matched from random groups. Letter order does not affect the model's answers, and averaging three asks makes the scores stable enough to compare weeks.</p>
+
+  <h2 id="results">Results</h2>
+  <h3>Full scale: the formula world, 1,000 students, 10 seeds</h3>
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th></th><th>Stay</th><th>Survey</th><th>Learn (pipeline)</th></tr></thead>
+    <tbody>
+      <tr><td>Unhappy at week 14</td><td>25%</td><td>19%</td><td>12%</td></tr>
+      <tr><td>Semester-average satisfaction</td><td>3.46</td><td>3.57</td><td>3.61</td></tr>
+      <tr><td>Students who quit a group (per semester)</td><td>95</td><td>74</td><td>40</td></tr>
+      <tr><td>Students moved</td><td>0</td><td>638</td><td>514</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>Regrouping on the survey alone removes a quarter of the unhappiness; learning from feedback removes half, with fewer moves. The learner's weights ended with reliability largest and the schedule weight, which the live matcher sets to zero, second largest: feedback taught the matcher that schedules matter. Tuning changed the weights in week 2 and stopped by week 5, because later refits no longer predicted the next week's forms better than chance.</p>
+  <p><strong>How often to regroup.</strong> Moving unhappy students every two weeks matched moving them every week (3.62 vs 3.62) with a quarter fewer moves; every four weeks scored 3.58 and never regrouping 3.50. Acting on the first "I'd rather switch" answer beat waiting for a second by 0.07.</p>
+
+  <h3>Three worlds, the same 100 students, 2 seeds</h3>
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th></th><th>V0 rule-based</th><th>V1 LLM judge</th><th>V2 LLM with meetings</th></tr></thead>
+    <tbody>
+      <tr><td>Unhappy at week 14: stay / survey / pipeline</td><td>18% / 17% / 19%</td><td>70% / 44% / 42%</td><td>95% / 59% / 53%</td></tr>
+      <tr><td>Semester-average satisfaction</td><td>3.56 / 3.62 / 3.61</td><td>3.05 / 3.27 / 3.27</td><td>2.60 / 3.12 / 3.12</td></tr>
+      <tr><td>Quit a group, of 100</td><td>6 / 4 / 5.5</td><td>31.5 / 8 / 9</td><td>81 / 53 / 50.5</td></tr>
+      <tr><td>Students moved</td><td>0 / 66 / 64</td><td>0 / 126 / 123</td><td>0 / 237 / 250</td></tr>
+      <tr><td>API cost</td><td>none</td><td>$3.41</td><td>$2.97</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>Three readings. First, regrouping helps in every world, and most where the world is harshest: in V2, leaving groups alone ends with four students in five gone or unhappy, and the pipeline halves that. Second, the learning step adds nothing at this size in any world, including the formula world where it clearly helps at 1,000 students: with 100 students the learner never accumulates the 35 past forms and 20 current forms its evidence test requires, so it keeps the hand-set weights. That is a sample-size limit, not a property of the LLM worlds. Third, levels are not comparable across worlds, only orderings: the LLM worlds rate harsher than the formula and drift down over the weeks, and V2's level is set largely by the base rates written into its meeting instructions.</p>
+
+  <h2 id="research">What the simulation says about real students</h2>
+  <p>Both LLM worlds are what the research literature calls silicon samples: a model is given a persona, here six trait numbers and a few facts, and answers as that person would, and the collection of answers is treated like a survey sample. Argyle and colleagues (2023) showed that persona-prompted models can reproduce real survey patterns; Aher, Arriaga and Kalai (2023) proposed judging such simulations by whether they replicate effects already known in humans; Park and colleagues built interacting generative agents (2023) and, in 2024, agents from interviews that matched people's own survey answers about as well as the people matched themselves two weeks later; Törnberg and colleagues (2023) simulated a social network with model-driven users to compare ranking algorithms before deployment, the closest precedent for using simulated users to test a matching system. Later work also documented the limits: too little variance (Bisbee and colleagues, 2024), sensitivity to prompt wording, and a drift toward caricature (Cheng, Durmus and Jurafsky, 2023).</p>
+  <p>Our results sit inside those findings. The model responds strongly to concrete events and weakly to subtle dispositions; its mood follows our wording; its answers wobble and need averaging. The validation method we used is the one that literature recommends, with one honest difference: our known effects come from our own formula world, not from real students. The silicon-sample papers used GPT-3; we used Claude Haiku 5.5, a far stronger and cheaper model, about a tenth of a cent per call, but the limits we observed are limits of the method, not of model size, and we did not test larger models.</p>
+
+  <h2 id="limitations">Limitations</h2>
+  <ul>
+    <li>The cohort is synthetic. Its personalities are calibrated on real survey statistics, but how those traits turn into satisfaction is assumed, either by our formula or by a language model.</li>
+    <li>The LLM runs use 100 students and 2 seeds, enough to see orderings, not enough for the learning step or for small differences between strategies.</li>
+    <li>V2 is uncalibrated: its instructions make most meetings dull or worse, which drives its harshness. Its one passed validation check is invalid because the run's budget cut in, and the reason its schedule effect vanished is not yet understood.</li>
+    <li>The simulation has no grades or course performance by design; a week says nothing about learning outcomes.</li>
+    <li>Satisfaction levels differ by world; comparisons across worlds should use orderings and effects, not percentages.</li>
+  </ul>
+
+  <h2 id="next">Next steps</h2>
+  <ol>
+    <li>Calibrate the meeting instructions (base rates, schedule friction) and rerun the four-week probe, about $2, then the V2 semester again.</li>
+    <li>Run the LLM judge on a larger sample, 300 to 500 students, to see whether the learning gain appears there as it does in the formula world (roughly $10 to $20).</li>
+    <li>For the product: add peer ratings and the two complaint questions (what would make the group better, and whom to avoid) to the real feedback form; they are what the learner uses. Consider giving schedule fit a non-zero weight in the live matcher.</li>
+    <li>Collect the deployed app's real feedback; it is the only validation that bears on real students, and the simulation gives it something to be compared against.</li>
+  </ol>
+
+  <h2 id="appendix">Appendix: costs and reproduction</h2>
+  <p>A judge call averages about 2,000 input and 1,300 output tokens, about $0.0009; an account call about the same. A 100-student semester costs about $3 to $5 fresh, less with cached answers; the whole LLM effort so far cost about $13. Every call is cached by its exact input, so reruns are free and reproducible. Commands: <code>python -m simulation.run</code> (formula world, 10 seeds), <code>python -m simulation.run --world llm-1.2 --sample 50 --seeds 2</code> (V1), <code>--world meet-1.2</code> (V2), <code>python -m simulation.calibrate</code> and <code>--world meeting</code> (validation), <code>python -m simulation.live</code> (the interactive page with the world switch). Outputs: <code>simulation/output/</code> with a dashboard per run.</p>
+</main>
+</body>
+</html>
