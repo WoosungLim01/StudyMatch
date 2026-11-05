@@ -1,0 +1,2089 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>StudyMatch Semester Simulation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Nunito:wght@400;600;700;800&display=swap">
+<!--
+  Template for the simulation dashboard. simulation/dashboard.py replaces the data
+  placeholder below: run.py writes output/dashboard.html, and live.py serves the same
+  page for a semester you step through. Open those, not this file.
+-->
+<style>
+/* Layout: one centred column (max 1180px). The answer comes first (verdict, the three
+   strategies, two headline charts); tabs hold the depth; a student or group opens in a
+   drawer from the right. In live mode a control bar sits above the tabs.
+   Visual language: docs/Design.md (navy, Fraunces + Nunito). */
+:root {
+  color-scheme: light;
+  --bg: #EEF2F8;
+  --surface: #FFFFFF;
+  --surface-2: #F4F7FB;
+  --band: #DCE6F5;
+  --heading: #14213D;
+  --ink: #1B2A41;
+  --ink-2: #44506A;
+  --muted: #5B6577;
+  --line: rgba(27, 42, 65, 0.10);
+  --line-strong: rgba(27, 42, 65, 0.18);
+  --tint: rgba(20, 33, 61, 0.07);
+  --accent: #14213D;
+  --accent-hover: #0A1B33;
+  --on-accent: #FFFFFF;
+  --link: #1C5CAB;
+  --focus: #5C7EA6;
+  --grid: #E6EBF2;
+  --axis: #C3CCD9;
+  --s-stay: #8A919C;
+  --s-survey: #1BAF7A;
+  --s-learn: #2A78D6;
+  --ref: #1B2A41;
+  --viz: #3D5A80;
+  --viz-2: #A3B1C6;
+  --bad: #8A3B42;
+  --bad-soft: #F6EBEC;
+  --ok: #1C5CAB;
+  --ok-soft: #E3EDFB;
+  --ok-band: rgba(42, 120, 214, 0.26);
+  --heat: 28, 92, 171;
+  --on-heat: #FFFFFF;
+  --av-1: #14213D;
+  --av-2: #2C4770;
+  --av-3: #5C7EA6;
+  --shadow: 0 8px 24px rgba(27, 42, 65, 0.08);
+  --scrim: rgba(10, 18, 32, 0.38);
+  --font-display: "Fraunces", Georgia, "Times New Roman", serif;
+  --font-body: "Nunito", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Consolas, monospace;
+  --radius: 20px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #0B1220; --surface: #131C2E; --surface-2: #19243A; --band: #1B2A44;
+    --heading: #E6ECF5; --ink: #E6ECF5; --ink-2: #C3CDE0; --muted: #97A3B8;
+    --line: rgba(230, 236, 245, 0.10); --line-strong: rgba(230, 236, 245, 0.18); --tint: rgba(155, 184, 230, 0.12);
+    --accent: #9BB8E6; --accent-hover: #B7CDF0; --on-accent: #0B1220; --link: #9BB8E6; --focus: #9BB8E6;
+    --grid: #1F2A3F; --axis: #34405A;
+    --s-stay: #7D8796; --s-survey: #199E70; --s-learn: #3987E5; --ref: #E6ECF5;
+    --viz: #8FB0DD; --viz-2: #4F5E78;
+    --bad: #E0959B; --bad-soft: #3A2228; --ok: #9BB8E6; --ok-soft: #1B2D4D; --ok-band: rgba(57, 135, 229, 0.38);
+    --heat: 120, 165, 230; --on-heat: #0B1220;
+    --av-1: #2C4770; --av-2: #3D5F8F; --av-3: #5C7EA6;
+    --shadow: 0 8px 24px rgba(0, 0, 0, 0.35); --scrim: rgba(0, 0, 0, 0.55);
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #0B1220; --surface: #131C2E; --surface-2: #19243A; --band: #1B2A44;
+  --heading: #E6ECF5; --ink: #E6ECF5; --ink-2: #C3CDE0; --muted: #97A3B8;
+  --line: rgba(230, 236, 245, 0.10); --line-strong: rgba(230, 236, 245, 0.18); --tint: rgba(155, 184, 230, 0.12);
+  --accent: #9BB8E6; --accent-hover: #B7CDF0; --on-accent: #0B1220; --link: #9BB8E6; --focus: #9BB8E6;
+  --grid: #1F2A3F; --axis: #34405A;
+  --s-stay: #7D8796; --s-survey: #199E70; --s-learn: #3987E5; --ref: #E6ECF5;
+  --viz: #8FB0DD; --viz-2: #4F5E78;
+  --bad: #E0959B; --bad-soft: #3A2228; --ok: #9BB8E6; --ok-soft: #1B2D4D; --ok-band: rgba(57, 135, 229, 0.38);
+  --heat: 120, 165, 230; --on-heat: #0B1220;
+  --av-1: #2C4770; --av-2: #3D5F8F; --av-3: #5C7EA6;
+  --shadow: 0 8px 24px rgba(0, 0, 0, 0.35); --scrim: rgba(0, 0, 0, 0.55);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 400 15px/1.55 var(--font-body); }
+body.locked { overflow: hidden; }
+h1, h2, h3 { font-family: var(--font-display); color: var(--heading); margin: 0; text-wrap: balance; }
+h1 { font-size: clamp(28px, 4.2vw, 42px); line-height: 1.12; font-weight: 700; }
+h2 { font-size: clamp(21px, 2.4vw, 26px); line-height: 1.2; font-weight: 700; }
+h3 { font-size: 17.5px; line-height: 1.3; font-weight: 600; }
+p { margin: 0; }
+button, input, select { font: inherit; color: inherit; }
+:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+code { font-family: var(--font-mono); font-size: 0.9em; background: var(--tint); padding: 1px 6px; border-radius: 6px; }
+.muted { color: var(--muted); }
+.small { font-size: 13px; }
+.grow { flex: 1; }
+.num { font-variant-numeric: tabular-nums; }
+
+.page { max-width: 1180px; margin: 0 auto; padding-inline: 24px; padding-block: 28px 72px; }
+@media (max-width: 640px) { .page { padding-inline: 16px; padding-block: 18px 56px; } }
+
+/* Header */
+.top { display: grid; gap: 12px; padding-block: 6px 18px; }
+.eyebrow { font: 800 12px/1 var(--font-body); letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+.lede { color: var(--ink-2); max-width: 70ch; font-size: 16px; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { display: inline-flex; align-items: center; gap: 6px; padding: 5px 11px; border-radius: 999px; background: var(--tint); color: var(--ink-2); font: 700 12.5px/1.25 var(--font-body); }
+
+/* Live control bar */
+.livebar { display: grid; gap: 14px; margin-bottom: 18px; }
+.live-row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 18px; }
+.live-week { display: grid; gap: 8px; min-width: 0; }
+.live-week strong { font: 800 24px/1 var(--font-body); color: var(--heading); }
+.live-week strong span { font-weight: 700; font-size: 15px; color: var(--muted); }
+.dots { display: flex; gap: 4px; flex-wrap: wrap; }
+.dots span { width: 18px; height: 8px; border-radius: 999px; background: var(--grid); }
+.dots span.done { background: var(--accent); }
+.dots span.exam { box-shadow: inset 0 0 0 2px var(--bad); }
+.live-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.live-status { font-size: 13.5px; color: var(--ink-2); min-height: 20px; }
+.live-status.err { color: var(--bad); font-weight: 700; }
+.bar { height: 6px; border-radius: 999px; background: var(--grid); overflow: hidden; }
+.bar span { display: block; height: 100%; background: var(--accent); transition: width 0.3s; }
+.settings { display: grid; gap: 14px; border-top: 1px solid var(--line); padding-top: 14px; }
+.settings-grid { display: flex; flex-wrap: wrap; gap: 14px 18px; align-items: flex-end; }
+.world-row { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 12px 18px; border-top: 1px solid var(--line); padding-top: 14px; }
+.world-opts { display: flex; flex-wrap: wrap; gap: 12px 18px; }
+.confirm { display: grid; gap: 10px; background: var(--band); border-radius: 16px; padding: 14px 16px; }
+.confirm p { max-width: 80ch; }
+.seg button:disabled { opacity: 0.45; cursor: default; }
+
+/* Tabs */
+.tabs { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; display: flex; gap: 4px; overflow-x: auto; padding-block: 10px; margin-bottom: 22px; background: var(--bg); border-bottom: 1px solid var(--line); scrollbar-width: none; }
+.tabs::-webkit-scrollbar { display: none; }
+.tab { flex: none; border: 0; background: transparent; color: var(--ink-2); padding: 8px 15px; border-radius: 999px; font-weight: 700; font-size: 14.5px; cursor: pointer; }
+.tab:hover { background: var(--tint); }
+.tab[aria-selected="true"] { background: var(--accent); color: var(--on-accent); }
+.panel { display: grid; gap: 22px; grid-template-columns: minmax(0, 1fr); }
+.stack { display: grid; gap: 14px; grid-template-columns: minmax(0, 1fr); }
+.panel > *, .stack > *, .fig > *, .drawer-body > *, .dsec > * { min-width: 0; }
+
+/* Layout */
+.grid-2, .grid-3, .grid-4 { display: grid; gap: 18px; }
+.grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.grid-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+@media (max-width: 1000px) { .grid-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); } .grid-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 720px) { .grid-2, .grid-3, .grid-4 { grid-template-columns: minmax(0, 1fr); } }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); padding: 22px; min-width: 0; }
+.card.flat { box-shadow: none; }
+@media (max-width: 640px) { .card { padding: 16px; border-radius: 16px; } }
+.section-head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 10px 16px; }
+.section-head > div { display: grid; gap: 6px; min-width: 0; }
+.section-head p { color: var(--ink-2); max-width: 72ch; }
+.sub-head { display: flex; align-items: baseline; gap: 10px; margin-top: 6px; flex-wrap: wrap; }
+.sub-head h3 { font-size: 19px; }
+.empty-state { text-align: center; padding: 48px 20px; display: grid; gap: 10px; justify-items: center; }
+.empty-state p { color: var(--ink-2); max-width: 52ch; }
+
+/* Overview */
+.verdict { font: 600 clamp(21px, 2.7vw, 29px)/1.28 var(--font-display); color: var(--heading); max-width: 40ch; text-wrap: balance; }
+.strat { display: grid; gap: 12px; align-content: start; }
+.strat.best { border-color: var(--accent); }
+.strat-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
+.strat-name { display: inline-flex; align-items: center; gap: 10px; font-weight: 800; font-size: 16px; color: var(--heading); }
+.strat-desc { color: var(--ink-2); font-size: 13.5px; line-height: 1.55; }
+@media (min-width: 721px) { .strat-desc { min-height: calc(3 * 1.55em); } }
+.hero { font: 800 48px/1 var(--font-body); color: var(--heading); letter-spacing: -0.01em; }
+.hero-cap { color: var(--ink-2); font-size: 13.5px; margin-top: 6px; display: flex; flex-wrap: wrap; gap: 4px 8px; align-items: baseline; }
+.kv { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 7px 12px; font-size: 14px; border-top: 1px solid var(--line); padding-top: 12px; margin: 0; }
+.kv dt { color: var(--ink-2); }
+.kv dd { margin: 0; font-weight: 800; font-variant-numeric: tabular-nums; text-align: right; color: var(--heading); }
+.badge { display: inline-block; padding: 5px 11px; border-radius: 999px; background: var(--tint); color: var(--heading); font: 800 12px/1 var(--font-body); letter-spacing: 0.02em; }
+.badge.strong { background: var(--accent); color: var(--on-accent); }
+.delta { font-weight: 800; font-size: 13px; white-space: nowrap; }
+.delta.good { color: var(--ok); }
+.delta.bad { color: var(--bad); }
+.delta.flat { color: var(--muted); }
+.tile { display: grid; gap: 6px; align-content: start; }
+.tile-l { font-weight: 800; color: var(--ink-2); font-size: 14px; }
+.tile-v { font: 800 30px/1.1 var(--font-body); color: var(--heading); }
+.tile-c { color: var(--ink-2); font-size: 13.5px; }
+.note { background: var(--band); border-radius: 16px; padding: 16px 18px; color: var(--ink); display: flex; gap: 12px; align-items: flex-start; }
+.note > span { flex: none; display: flex; }
+.note svg { width: 22px; height: 22px; stroke: var(--heading); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; margin-top: 1px; }
+.happen { display: grid; gap: 10px; }
+.happen-row { display: grid; grid-template-columns: minmax(150px, 22%) minmax(0, 1fr); gap: 4px 14px; align-items: start; font-size: 14px; padding-top: 10px; border-top: 1px solid var(--line); }
+.happen-row:first-child { border-top: 0; padding-top: 0; }
+@media (max-width: 560px) { .happen-row { grid-template-columns: minmax(0, 1fr); } }
+.list { margin: 0; padding-left: 20px; display: grid; gap: 6px; color: var(--ink-2); }
+.list strong { color: var(--heading); }
+
+/* Figures */
+.fig { margin: 0; display: grid; gap: 12px; align-content: start; grid-template-columns: minmax(0, 1fr); }
+.fig-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+.fig-titles { display: grid; gap: 3px; min-width: 0; }
+.fig-sub { color: var(--muted); font-size: 13.5px; max-width: 75ch; }
+.fig-tools { display: flex; gap: 8px; flex: none; align-items: center; }
+.plot { position: relative; min-width: 0; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 13px; color: var(--ink-2); }
+.lg { display: inline-flex; align-items: center; gap: 7px; }
+.lg-k { display: inline-block; flex: none; }
+.lg-k.line { width: 18px; height: 0; border-top: 3px solid var(--c); border-radius: 3px; }
+.lg-k.dot { width: 11px; height: 11px; border-radius: 50%; background: var(--c); }
+.lg-k.tick { width: 3px; height: 14px; border-radius: 2px; background: var(--c); }
+.lg-k.rect { width: 12px; height: 12px; border-radius: 3px; background: var(--c); }
+.lg-k.ring { width: 13px; height: 13px; border-radius: 50%; border: 2.5px solid var(--c); }
+
+/* Charts */
+.chart { display: block; overflow: visible; font-family: var(--font-body); }
+.chart:focus-visible { outline: 2px solid var(--focus); outline-offset: 4px; border-radius: 8px; }
+.chart .grid { stroke: var(--grid); stroke-width: 1; shape-rendering: crispEdges; }
+.chart .axis { stroke: var(--axis); stroke-width: 1; shape-rendering: crispEdges; }
+.chart .tick { fill: var(--muted); font-size: 11.5px; font-variant-numeric: tabular-nums; }
+.chart .axlab { fill: var(--muted); font-size: 12px; font-weight: 700; }
+.chart .rowlab { fill: var(--ink); font-size: 13px; font-weight: 700; }
+.chart .ln { fill: none; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+.chart .band { opacity: 0.13; }
+.chart .dot { stroke: var(--surface); stroke-width: 2; }
+.chart .endlab { font-size: 12px; fill: var(--ink-2); }
+.chart .endlab .v { font-weight: 800; fill: var(--ink); }
+.chart .xhair { stroke: var(--line-strong); stroke-width: 1; }
+.chart .ref { stroke: var(--ref); stroke-width: 1; opacity: 0.55; }
+.chart .reflab { fill: var(--muted); font-size: 11px; }
+.chart .zone { fill: var(--bad-soft); }
+.chart .exam { fill: var(--tint); }
+.chart .conn { stroke: var(--axis); stroke-width: 2.5; stroke-linecap: round; }
+.chart .mk-tick { stroke-width: 3; stroke-linecap: round; }
+.chart .rowbg { fill: transparent; }
+.chart .rowbg.on { fill: var(--surface-2); }
+.chart .pt { opacity: 0.5; }
+.chart .pt-hl { stroke: var(--surface); stroke-width: 2; }
+.chart .bar { transition: opacity 0.12s; }
+.chart .hit { outline: none; }
+.chart .hit:focus-visible { stroke: var(--focus); stroke-width: 2; }
+
+/* Tooltip */
+.tip { position: fixed; z-index: 60; pointer-events: none; background: var(--surface); color: var(--ink); border: 1px solid var(--line-strong); border-radius: 12px; box-shadow: 0 10px 28px rgba(10, 18, 32, 0.18); padding: 10px 12px; font-size: 13px; min-width: 170px; max-width: 320px; display: grid; gap: 5px; }
+.tip-t { font-weight: 800; color: var(--heading); }
+.tip-r { display: grid; grid-template-columns: 16px minmax(0, 1fr) auto; gap: 8px; align-items: center; }
+.tip-k { width: 14px; height: 0; border-top: 2.5px solid var(--c); border-radius: 2px; }
+.tip-k.dot { width: 9px; height: 9px; border: 0; border-radius: 50%; background: var(--c); }
+.tip-k.tick { width: 3px; height: 12px; border: 0; border-radius: 2px; background: var(--c); }
+.tip-k.none { border: 0; }
+.tip-l { color: var(--ink-2); }
+.tip-v { text-align: right; font-variant-numeric: tabular-nums; display: grid; }
+.tip-v strong { color: var(--ink); }
+.tip-s { color: var(--muted); font-size: 11.5px; }
+.tip-f { color: var(--muted); font-size: 12px; border-top: 1px solid var(--line); padding-top: 5px; }
+
+/* Controls */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; border-radius: 999px; padding: 8px 16px; font-weight: 800; font-size: 14px; cursor: pointer; border: 2px solid var(--accent); background: var(--accent); color: var(--on-accent); white-space: nowrap; }
+.btn:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+.btn.ghost { background: transparent; color: var(--heading); border-color: var(--line-strong); }
+.btn.ghost:hover { background: var(--tint); }
+.btn.sm { padding: 5px 12px; font-size: 13px; border-width: 1.5px; }
+.btn:disabled { opacity: 0.45; cursor: default; }
+.btn:disabled:hover { background: var(--accent); }
+.btn.ghost:disabled:hover { background: transparent; }
+.linkbtn { background: none; border: 0; padding: 0; color: var(--link); font-weight: 800; cursor: pointer; text-align: left; text-decoration: underline; text-decoration-color: var(--line-strong); text-underline-offset: 3px; }
+.linkbtn:hover { text-decoration-color: currentColor; }
+.controls { display: flex; flex-wrap: wrap; gap: 14px 18px; align-items: flex-end; }
+.ctl { display: grid; gap: 6px; min-width: 0; }
+.field-l { font: 800 11px/1 var(--font-body); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.seg { display: inline-flex; flex-wrap: wrap; padding: 3px; gap: 2px; background: var(--tint); border-radius: 999px; }
+.seg button { border: 0; background: transparent; padding: 6px 13px; border-radius: 999px; font-weight: 800; font-size: 13.5px; color: var(--ink-2); cursor: pointer; display: inline-flex; align-items: center; gap: 7px; }
+.seg button:hover { color: var(--heading); }
+.seg button[aria-pressed="true"] { background: var(--surface); color: var(--heading); box-shadow: 0 1px 4px rgba(10, 18, 32, 0.18); }
+.input { font-size: 14px; padding: 7px 14px; border-radius: 999px; border: 1.5px solid var(--line-strong); background: var(--surface); color: var(--ink); min-width: 0; width: 220px; max-width: 100%; }
+.input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 4px var(--tint); }
+select.input { width: auto; cursor: pointer; }
+input.input[type="number"] { width: 96px; }
+.wp { display: inline-flex; gap: 6px; align-items: center; }
+.switch { display: inline-flex; align-items: center; gap: 9px; font-size: 13.5px; color: var(--ink-2); cursor: pointer; font-weight: 700; }
+.switch input { appearance: none; -webkit-appearance: none; width: 36px; height: 21px; border-radius: 999px; background: var(--line-strong); position: relative; cursor: pointer; margin: 0; flex: none; transition: background 0.15s; }
+.switch input::after { content: ""; position: absolute; top: 3px; left: 3px; width: 15px; height: 15px; border-radius: 50%; background: var(--surface); transition: transform 0.15s; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25); }
+.switch input:checked { background: var(--accent); }
+.switch input:checked::after { transform: translateX(15px); }
+
+/* Tables */
+.tbl-wrap { overflow-x: auto; min-width: 0; }
+.tbl { width: 100%; border-collapse: collapse; font-size: 14px; }
+.tbl th { text-align: left; font: 800 11px/1.3 var(--font-body); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); padding: 8px 10px; border-bottom: 1px solid var(--line-strong); white-space: nowrap; vertical-align: bottom; }
+.tbl th.used::after { content: ""; display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--s-learn); margin-left: 6px; vertical-align: middle; }
+.tbl td { padding: 9px 10px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+.tbl .num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.tbl .nowrap { white-space: nowrap; }
+.tbl tbody tr.click { cursor: pointer; }
+.tbl tbody tr.click:hover { background: var(--surface-2); }
+.tbl tbody tr:last-child td { border-bottom: 0; }
+.tbl .sec td { background: var(--surface-2); font-weight: 800; color: var(--heading); }
+.tbl td.top, .tbl.top td { vertical-align: top; }
+.pager { display: flex; align-items: center; gap: 8px; padding-top: 12px; flex-wrap: wrap; }
+.empty { padding: 28px 8px; text-align: center; color: var(--muted); }
+.quote { font-style: italic; color: var(--ink-2); font-size: 13px; }
+
+/* Pills, avatars, chips */
+.pill { display: inline-flex; align-items: center; gap: 5px; padding: 2px 9px; border-radius: 999px; font: 800 12.5px/1.5 var(--font-body); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.pill.bad { background: var(--bad-soft); color: var(--bad); }
+.pill.mid { background: var(--tint); color: var(--ink-2); }
+.pill.good { background: var(--ok-soft); color: var(--ok); }
+.pill.none { background: transparent; color: var(--muted); box-shadow: inset 0 0 0 1px var(--line-strong); }
+.pill.strong { background: var(--accent); color: var(--on-accent); }
+.pill-tag { font-size: 10.5px; letter-spacing: 0.05em; text-transform: uppercase; opacity: 0.85; }
+.tagchip { display: inline-block; padding: 2px 9px; border-radius: 999px; background: var(--tint); color: var(--ink-2); font-size: 12.5px; font-weight: 700; margin: 2px 4px 2px 0; }
+.story { border: 1px solid var(--line); border-radius: 16px; padding: 13px 15px; display: grid; gap: 7px; font-size: 14px; }
+.story-head { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.story-head strong { color: var(--heading); }
+.av { width: 30px; height: 30px; border-radius: 50%; display: inline-grid; place-items: center; flex: none; color: #FFFFFF; font: 700 13px/1 var(--font-display); background: var(--av-1); }
+.av.c2 { background: var(--av-2); }
+.av.c3 { background: var(--av-3); }
+.av.lg { width: 54px; height: 54px; font-size: 23px; }
+.av-stack { display: inline-flex; }
+.av-stack .av { width: 26px; height: 26px; font-size: 11.5px; box-shadow: 0 0 0 2px var(--surface); margin-right: -6px; }
+.who { display: inline-flex; align-items: center; gap: 10px; min-width: 0; }
+.who-name { display: grid; min-width: 0; }
+.sq-row { display: inline-flex; gap: 2px; }
+.sq { width: 12px; height: 20px; border-radius: 3px; display: inline-block; }
+.sq.bad { background: var(--bad); opacity: 0.75; }
+.sq.mid { background: var(--axis); }
+.sq.good { background: var(--ok); opacity: 0.7; }
+.sq.none { box-shadow: inset 0 0 0 1px var(--line-strong); }
+.sq.cur { outline: 2px solid var(--heading); outline-offset: 1px; }
+
+/* HTML bars */
+.bars { display: grid; gap: 9px; }
+.bar-row { display: grid; grid-template-columns: minmax(110px, 36%) minmax(0, 1fr) auto; gap: 12px; align-items: center; font-size: 13.5px; }
+.bar-l { color: var(--ink); font-weight: 700; min-width: 0; }
+.bar-t { position: relative; height: 12px; background: var(--grid); border-radius: 0 4px 4px 0; }
+.bar-f { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 0 4px 4px 0; min-width: 2px; }
+.bar-m { position: absolute; top: -4px; bottom: -4px; width: 2px; background: var(--ref); border-radius: 2px; transform: translateX(-1px); opacity: 0.8; }
+.bar-v { font-weight: 800; font-variant-numeric: tabular-nums; color: var(--heading); text-align: right; min-width: 44px; }
+
+/* Frequency table */
+.freq { border-collapse: separate; border-spacing: 4px; width: 100%; font-size: 13.5px; }
+.freq th { font: 800 11px/1.3 var(--font-body); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); padding: 4px 6px; text-align: center; }
+.freq th.rowh { text-align: left; text-transform: none; letter-spacing: 0; font-size: 14px; color: var(--heading); white-space: nowrap; }
+.freq td { border-radius: 10px; padding: 9px 8px; text-align: center; font-variant-numeric: tabular-nums; vertical-align: middle; }
+.freq td strong { display: block; font-size: 16px; }
+.freq td span { font-size: 11.5px; }
+.freq td.pick { box-shadow: inset 0 0 0 3px var(--heading); }
+
+/* Checks */
+.check { display: grid; grid-template-columns: 28px minmax(0, 1fr) minmax(0, 42%); gap: 6px 14px; align-items: center; padding: 14px 0; border-bottom: 1px solid var(--line); }
+.check:last-child { border-bottom: 0; }
+@media (max-width: 720px) { .check { grid-template-columns: 28px minmax(0, 1fr); } .check .viz { grid-column: 2; } }
+.st-ic { width: 26px; height: 26px; border-radius: 50%; display: inline-grid; place-items: center; flex: none; }
+.st-ic svg { width: 15px; height: 15px; fill: none; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+.st-ic.pass { background: var(--ok-soft); }
+.st-ic.pass svg { stroke: var(--ok); }
+.st-ic.fail { background: var(--bad-soft); }
+.st-ic.fail svg { stroke: var(--bad); }
+.st-ic.sm { width: 20px; height: 20px; }
+.st-ic.sm svg { width: 12px; height: 12px; }
+.check-l { font-weight: 800; color: var(--heading); }
+.check-d { color: var(--muted); font-size: 13px; }
+.range { position: relative; height: 10px; border-radius: 999px; background: var(--grid); margin-block: 8px 4px; }
+.range .okb { position: absolute; top: 0; bottom: 0; background: var(--ok-band); border-radius: 999px; }
+.range .val { position: absolute; top: 50%; width: 14px; height: 14px; border-radius: 50%; background: var(--heading); box-shadow: 0 0 0 2px var(--surface); transform: translate(-50%, -50%); }
+.range-l { display: flex; justify-content: space-between; font-size: 11.5px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.pair { display: grid; gap: 5px; font-size: 12.5px; }
+.pair-row { display: grid; grid-template-columns: minmax(0, 1fr) 40px; gap: 8px; align-items: center; }
+.pair-row .bar-t { height: 9px; }
+.pair-row span:last-child { text-align: right; font-weight: 800; font-variant-numeric: tabular-nums; color: var(--heading); }
+.vcell { display: inline-flex; align-items: center; gap: 8px; }
+.dl { display: grid; grid-template-columns: minmax(120px, 34%) minmax(0, 1fr); gap: 9px 16px; margin: 0; font-size: 14px; }
+.dl dt { font-weight: 800; color: var(--heading); }
+.dl dd { margin: 0; color: var(--ink-2); }
+@media (max-width: 560px) { .dl { grid-template-columns: minmax(0, 1fr); gap: 2px 0; } .dl dd { margin-bottom: 8px; } }
+.log { display: grid; gap: 0; }
+.log-row { display: grid; grid-template-columns: 64px 128px minmax(0, 1fr); gap: 10px; align-items: baseline; padding: 9px 0; border-bottom: 1px solid var(--line); font-size: 14px; }
+.log-row:last-child { border-bottom: 0; }
+@media (max-width: 560px) { .log-row { grid-template-columns: 56px minmax(0, 1fr); } .log-row > :last-child { grid-column: 1 / -1; } }
+
+/* Drawer */
+.scrim { position: fixed; inset: 0; background: var(--scrim); z-index: 40; }
+.drawer { position: fixed; top: 0; right: 0; bottom: 0; width: min(660px, 100%); z-index: 41; background: var(--surface); box-shadow: -16px 0 40px rgba(10, 18, 32, 0.25); overflow-y: auto; overscroll-behavior: contain; padding-inline: 24px; padding-bottom: calc(36px + env(safe-area-inset-bottom, 0px)); }
+@media (max-width: 640px) { .drawer { padding-inline: 16px; } }
+@media (prefers-reduced-motion: no-preference) { .drawer:not([hidden]) { animation: slidein 0.18s ease-out; } }
+@keyframes slidein { from { transform: translateX(32px); } to { transform: none; } }
+.drawer-bar { position: sticky; top: 0; z-index: 3; display: flex; align-items: center; gap: 10px; background: var(--surface); padding-block: calc(14px + env(safe-area-inset-top, 0px)) 12px; border-bottom: 1px solid var(--line); margin-bottom: 18px; }
+.drawer-kicker { flex: 1; font: 800 11px/1 var(--font-body); letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+.drawer-body { display: grid; gap: 24px; grid-template-columns: minmax(0, 1fr); }
+.dsec { display: grid; gap: 10px; grid-template-columns: minmax(0, 1fr); }
+.dsec > h3 { font-size: 17px; }
+.who-lg { display: flex; gap: 14px; align-items: center; }
+.who-lg h2 { font-size: 24px; }
+.stats { display: flex; flex-wrap: wrap; gap: 8px; }
+.warn { color: var(--bad); font-weight: 800; }
+.trait { display: grid; grid-template-columns: minmax(96px, 30%) minmax(0, 1fr); gap: 2px 14px; align-items: center; }
+.trait-l { font-weight: 800; color: var(--heading); font-size: 13.5px; line-height: 1.25; }
+.trait-l span { display: block; font-weight: 600; color: var(--muted); font-size: 11.5px; }
+.track { position: relative; height: 26px; margin-inline: 8px; }
+.track::before { content: ""; position: absolute; left: 0; right: 0; top: 50%; border-top: 2px solid var(--grid); }
+.mk { position: absolute; top: 50%; width: 13px; height: 13px; border-radius: 50%; transform: translate(-50%, -50%); box-shadow: 0 0 0 2px var(--surface); background: var(--c); }
+.mk.tick { width: 3px; height: 20px; border-radius: 2px; box-shadow: none; }
+.mk.ring { width: 19px; height: 19px; background: transparent; border: 2.5px solid var(--c); box-shadow: none; }
+.scale { display: grid; grid-template-columns: minmax(96px, 30%) minmax(0, 1fr); gap: 14px; font-size: 11px; color: var(--muted); }
+.scale div { display: flex; justify-content: space-between; margin-inline: 8px; font-variant-numeric: tabular-nums; }
+.avail { display: grid; grid-template-columns: 34px repeat(16, minmax(0, 1fr)); gap: 3px; font-size: 11px; color: var(--muted); align-items: center; }
+.avail .c { height: 15px; border-radius: 3px; background: var(--grid); }
+.avail .c.on { background: var(--viz); }
+.heat { border-collapse: separate; border-spacing: 3px; font-size: 13px; width: 100%; }
+.heat th { font: 800 10.5px/1.2 var(--font-body); letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); padding: 2px 4px; text-align: center; }
+.heat th.rowh { text-align: left; text-transform: none; letter-spacing: 0; font-size: 13px; color: var(--ink); font-weight: 700; white-space: nowrap; }
+.heat td { text-align: center; padding: 6px 4px; border-radius: 6px; font-weight: 800; font-variant-numeric: tabular-nums; }
+.heat tr.spread td { background: transparent; color: var(--ink-2); font-weight: 700; }
+.heat tr.spread td.wide { color: var(--bad); font-weight: 800; }
+
+.foot { margin-top: 40px; padding-top: 18px; border-top: 1px solid var(--line); color: var(--muted); font-size: 13px; display: grid; gap: 6px; }
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="top">
+    <p class="eyebrow">StudyMatch · Simulation</p>
+    <h1>Does learning from feedback make better study groups?</h1>
+    <p class="lede" id="lede"></p>
+    <div class="chips" id="meta-chips"></div>
+  </header>
+  <section class="card livebar" id="livebar" hidden aria-label="Simulation controls"></section>
+  <nav class="tabs" id="tabs" role="tablist" aria-label="Sections"></nav>
+  <main id="panels"></main>
+  <footer class="foot" id="foot"></footer>
+</div>
+<div class="scrim" id="scrim" hidden></div>
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="drawer-kicker" hidden>
+  <div class="drawer-bar">
+    <button class="btn ghost sm" id="drawer-back" type="button" hidden>Back</button>
+    <span class="drawer-kicker" id="drawer-kicker"></span>
+    <button class="btn ghost sm" id="drawer-close" type="button">Close</button>
+  </div>
+  <div class="drawer-body" id="drawer-body"></div>
+</aside>
+<div class="tip" id="tip" hidden></div>
+<script type="application/json" id="dashboard-data">__DASHBOARD_DATA__</script>
+<script>
+(() => {
+'use strict';
+
+/* ---------- data ---------- */
+const D = JSON.parse(document.getElementById('dashboard-data').textContent);
+const $ = (sel, root = document) => root.querySelector(sel);
+const W = D.meta.weeks, MAXW = D.meta.max_weeks, SEEDS = D.meta.seeds, LIVE = D.meta.live;
+const EXAM = new Set(D.meta.exam_weeks), CHECKIN = D.meta.checkin_every;
+const STRATS = D.strategies, SID = STRATS.map(s => s.id);
+const SBY = Object.fromEntries(STRATS.map(s => [s.id, s]));
+const MET = Object.fromEntries(D.metrics.map(m => [m.id, m]));
+const ST = D.students, N = ST.id.length, AX = D.axes, FL = D.feature_labels;
+const COURSES = D.courses, TAGS = D.tags;
+const LEARN = SBY.learn ? 'learn' : SID[SID.length - 1];
+const NS = 'http://www.w3.org/2000/svg';
+const PAGE = 25;
+const state = {bands: true};
+const color = id => `var(--s-${id})`;
+const range = n => Array.from({length: n}, (_, i) => i);
+const avg = xs => { const v = xs.filter(x => x != null); return v.length ? v.reduce((a, b) => a + b, 0) / v.length : null; };
+const sum = xs => xs.reduce((a, b) => a + (b || 0), 0);
+const cap = t => t ? t.charAt(0).toUpperCase() + t.slice(1) : t;
+const weekNote = w => [EXAM.has(w + 1) ? 'exam week' : null, (w + 1) % CHECKIN === 0 ? 'check-in' : null].filter(Boolean).join(', ');
+const weekTitle = w => weekNote(w) ? `Week ${w + 1} · ${weekNote(w)}` : `Week ${w + 1}`;
+const weekLabels = () => range(W).map(w => `W${w + 1}`);
+const policyLabel = (cad, str) => cad == null ? 'never move unhappy students (only place those who quit)'
+  : `move unhappy students ${cad === 1 ? 'every week' : `every ${cad} weeks`}, after ${str === 1 ? '1 unhappy answer' : `${str} unhappy answers in a row`}`;
+const movedSets = Object.fromEntries(SID.map(id => [id, (D.trace[id] || []).map(T => new Set(T.moved))]));
+const store = {
+  get(k, fallback) { try { const v = sessionStorage.getItem(`studymatch-sim-${k}`); return v ? JSON.parse(v) : fallback; } catch (e) { return fallback; } },
+  set(k, v) { try { sessionStorage.setItem(`studymatch-sim-${k}`, JSON.stringify(v)); } catch (e) { /* storage unavailable */ } },
+};
+
+/* ---------- formatting ---------- */
+const FMT = {
+  pct: v => v == null ? '–' : `${Math.round(v * 100)}%`,
+  share: v => v == null ? '–' : `${Math.round(v * 100)}%`,
+  sat: v => v == null ? '–' : v.toFixed(2),
+  r: v => v == null ? '–' : v.toFixed(3),
+  one: v => v == null ? '–' : v.toFixed(1),
+  count: v => {
+    if (v == null) return '–';
+    const x = Math.round(v * 10) / 10;
+    return Number.isInteger(x) ? x.toLocaleString('en-US') : x.toFixed(1);
+  },
+  money: v => v == null ? '–' : `$${v.toFixed(v < 1 ? 3 : 2)}`,
+};
+function tickFormatter(format, step) {
+  if (format === 'pct' || format === 'share') {
+    const d = Math.max(0, -Math.floor(Math.log10(step * 100) + 1e-9));
+    return v => `${(v * 100).toFixed(d)}%`;
+  }
+  if (format === 'count') return v => FMT.count(v);
+  const d = Math.max(0, -Math.floor(Math.log10(step) + 1e-9));
+  return v => v.toFixed(d);
+}
+function niceTicks(lo, hi, count) {
+  if (!(hi > lo)) hi = lo + 1;
+  const raw = (hi - lo) / count, mag = 10 ** Math.floor(Math.log10(raw)), e = raw / mag;
+  const step = (e >= 7.5 ? 10 : e >= 3.5 ? 5 : e >= 1.5 ? 2 : 1) * mag;
+  const out = [];
+  for (let k = Math.floor(lo / step + 1e-9); k <= Math.ceil(hi / step - 1e-9); k++) out.push(+(k * step).toFixed(12));
+  return out;
+}
+function delta(d, format, better, versus) {
+  const size = format === 'pct' ? Math.round(Math.abs(d) * 100) : Math.abs(d);
+  if (size < (format === 'pct' ? 1 : 0.005)) return h('span', {class: 'delta flat', text: `no change ${versus}`});
+  const good = (d < 0) === (better === 'down');
+  const text = format === 'pct' ? `${size} pts` : size.toFixed(2);
+  return h('span', {class: `delta ${good ? 'good' : 'bad'}`, text: `${d < 0 ? '▼' : '▲'} ${text} ${versus}`});
+}
+
+/* ---------- DOM helpers ---------- */
+function h(tag, attrs, ...kids) {
+  const e = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs || {})) {
+    if (v == null || v === false) continue;
+    if (k === 'class') e.className = v;
+    else if (k === 'text') e.textContent = v;
+    else if (k === 'style') e.style.cssText = v;
+    else if (k.startsWith('on')) e.addEventListener(k.slice(2), v);
+    else e.setAttribute(k, v === true ? '' : v);
+  }
+  for (const c of kids.flat(Infinity)) if (c != null && c !== false) e.append(c instanceof Node ? c : String(c));
+  return e;
+}
+function sv(tag, attrs, ...kids) {
+  const e = document.createElementNS(NS, tag);
+  for (const [k, v] of Object.entries(attrs || {})) {
+    if (v == null) continue;
+    if (k === 'text') e.textContent = v; else e.setAttribute(k, v);
+  }
+  for (const c of kids.flat(Infinity)) if (c) e.append(c);
+  return e;
+}
+const ICON = {
+  info: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></svg>',
+  pass: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>',
+  fail: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>',
+};
+function icon(name, cls, label) { const s = h('span', {class: cls, role: label ? 'img' : null, 'aria-label': label || null}); s.innerHTML = ICON[name]; return s; }
+const passIcon = (ok, sm) => icon(ok ? 'pass' : 'fail', `st-ic ${ok ? 'pass' : 'fail'}${sm ? ' sm' : ''}`, ok ? 'Pass' : 'Fail');
+const note = (...kids) => h('div', {class: 'note'}, icon('info'), h('p', {}, ...kids));
+
+/* ---------- tooltip ---------- */
+const tip = $('#tip');
+function showTip(x, y, title, rows, foot) {
+  tip.replaceChildren(
+    h('div', {class: 'tip-t', text: title}),
+    ...rows.map(r => h('div', {class: 'tip-r'},
+      h('span', {class: `tip-k ${r.color ? (r.kind || '') : 'none'}`, style: r.color ? `--c:${r.color}` : null}),
+      h('span', {class: 'tip-l', text: r.label}),
+      h('span', {class: 'tip-v'}, h('strong', {text: r.value}), r.sub ? h('span', {class: 'tip-s', text: r.sub}) : null))),
+    foot ? h('div', {class: 'tip-f', text: foot}) : null);
+  tip.hidden = false;
+  const b = tip.getBoundingClientRect(), pad = 14;
+  let left = x + pad, top = y + pad;
+  if (left + b.width > innerWidth - 8) left = x - b.width - pad;
+  if (top + b.height > innerHeight - 8) top = y - b.height - pad;
+  tip.style.left = `${Math.max(8, left)}px`;
+  tip.style.top = `${Math.max(8, top)}px`;
+}
+const hideTip = () => { tip.hidden = true; };
+addEventListener('scroll', hideTip, {passive: true});
+
+/* ---------- chart plumbing ---------- */
+const ro = new ResizeObserver(entries => {
+  const due = entries.map(e => e.target).filter(host => { const w = Math.round(host.clientWidth); return w > 0 && w !== host._w; });
+  if (due.length) requestAnimationFrame(() => due.forEach(host => host._draw()));
+});
+function mountChart(host, draw) {
+  host._draw = () => { const Wd = host.clientWidth; if (!Wd) return; host._w = Wd; draw(Wd); };
+  ro.observe(host);
+  host._draw();
+  return host;
+}
+const lineHosts = new Set();
+function redrawLines() {
+  for (const host of lineHosts) {
+    if (!host.isConnected) { lineHosts.delete(host); ro.unobserve(host); continue; }
+    host._w = 0; host._draw();
+  }
+}
+function svgRoot(Wd, H, label) {
+  return sv('svg', {class: 'chart', width: Wd, height: H, viewBox: `0 0 ${Wd} ${H}`, role: 'img', 'aria-label': label});
+}
+function legend(items) {
+  return h('div', {class: 'legend'}, items.map(it =>
+    h('span', {class: 'lg'}, h('span', {class: `lg-k ${it.kind || 'line'}`, style: `--c:${it.color}`}), it.label)));
+}
+const stratLegend = () => legend(STRATS.map(s => ({label: s.label, color: color(s.id)})));
+const lastIdx = vs => { for (let i = vs.length - 1; i >= 0; i--) if (vs[i] != null) return i; return -1; };
+
+/* Line chart. o: {series [{label, short, color, values, band}], xLabels, format, yDomain, ticks, min, height,
+   endLabels, zone [lo, hi], ref {value, label, name}, shadeExams, tipTitle(i), bands (false = never), left, aria} */
+function lineChart(o) {
+  const host = h('div', {class: 'plot'});
+  lineHosts.add(host);
+  return mountChart(host, Wd => {
+    const H = o.height || 230, ends = o.endLabels && Wd >= 440;
+    const m = {t: 12, r: ends ? 104 : 16, b: 30, l: o.left || 46};
+    const iw = Wd - m.l - m.r, ih = H - m.t - m.b;
+    const bands = o.bands !== false && state.bands && SEEDS > 1 && o.series.some(sr => sr.band);
+    let lo, hi, ticks;
+    if (o.yDomain) {
+      [lo, hi] = o.yDomain;
+      ticks = o.ticks || niceTicks(lo, hi, 4).filter(t => t >= lo - 1e-9 && t <= hi + 1e-9);
+    } else {
+      const vals = [];
+      for (const sr of o.series) {
+        sr.values.forEach(v => { if (v != null) vals.push(v); });
+        if (bands && sr.band) sr.band.forEach(([a, b]) => vals.push(a, b));
+      }
+      if (o.ref) vals.push(o.ref.value);
+      if (!vals.length) vals.push(0, 1);
+      lo = Math.min(...vals); hi = Math.max(...vals);
+      const pad = (hi - lo) * 0.12 || Math.abs(hi) * 0.08 || 0.05;
+      lo -= pad; hi += pad;
+      if (o.min != null) lo = Math.max(lo, o.min);
+      ticks = niceTicks(lo, hi, ih < 130 ? 3 : 4);
+      lo = ticks[0]; hi = ticks[ticks.length - 1];
+    }
+    const tf = tickFormatter(o.format, ticks.length > 1 ? ticks[1] - ticks[0] : 1);
+    const vf = FMT[o.format];
+    const n = o.xLabels.length, inset = 10;
+    const X = i => m.l + inset + (n === 1 ? (iw - 2 * inset) / 2 : i * (iw - 2 * inset) / (n - 1));
+    const Y = v => m.t + ih - (v - lo) / (hi - lo) * ih;
+    const svg = svgRoot(Wd, H, o.aria || 'Line chart');
+    svg.setAttribute('tabindex', '0');
+    if (o.shadeExams && n > 1) {
+      const step = (iw - 2 * inset) / (n - 1);
+      range(n).forEach(i => { if (EXAM.has(i + 1)) svg.append(sv('rect', {class: 'exam', x: X(i) - step / 2, width: step, y: m.t, height: ih})); });
+    }
+    if (o.zone) {
+      const top = Y(Math.min(hi, o.zone[1])), bottom = Y(Math.max(lo, o.zone[0]));
+      svg.append(sv('rect', {class: 'zone', x: m.l, width: iw, y: top, height: Math.max(0, bottom - top), rx: 4}));
+    }
+    ticks.forEach((t, k) => {
+      const y = Y(t);
+      svg.append(sv('line', {class: k === 0 ? 'axis' : 'grid', x1: m.l, x2: m.l + iw, y1: y, y2: y}),
+        sv('text', {class: 'tick', x: m.l - 8, y: y + 4, 'text-anchor': 'end', text: tf(t)}));
+    });
+    const every = Math.max(1, Math.ceil(n * 30 / Math.max(1, iw - 2 * inset)));
+    o.xLabels.forEach((lab, i) => {
+      if ((n - 1 - i) % every === 0) svg.append(sv('text', {class: 'tick', x: X(i), y: H - 9, 'text-anchor': 'middle', text: lab}));
+    });
+    if (o.ref) {
+      const y = Y(o.ref.value);
+      svg.append(sv('line', {class: 'ref', x1: m.l, x2: m.l + iw, y1: y, y2: y}));
+      if (o.ref.label) svg.append(sv('text', {class: 'reflab', x: m.l + iw, y: y - 5, 'text-anchor': 'end', text: o.ref.label}));
+    }
+    const pathOf = vs => {
+      let d = '', pen = false;
+      vs.forEach((v, i) => {
+        if (v == null) { pen = false; return; }
+        d += `${pen ? 'L' : 'M'}${X(i).toFixed(1)},${Y(v).toFixed(1)}`; pen = true;
+      });
+      return d;
+    };
+    if (bands) for (const sr of o.series) if (sr.band) {
+      const top = sr.band.map(([, b], i) => `${X(i).toFixed(1)},${Y(b).toFixed(1)}`);
+      const bot = sr.band.map(([a], i) => `${X(i).toFixed(1)},${Y(a).toFixed(1)}`).reverse();
+      svg.append(sv('polygon', {class: 'band', points: top.concat(bot).join(' '), style: `fill:${sr.color}`}));
+    }
+    for (const sr of o.series) svg.append(sv('path', {class: 'ln', d: pathOf(sr.values), style: `stroke:${sr.color}`}));
+    for (const sr of o.series) {
+      sr.values.forEach((v, i) => {
+        const single = (sr.values[i - 1] == null) && (sr.values[i + 1] == null);
+        if (v != null && (i === lastIdx(sr.values) || single)) svg.append(sv('circle', {class: 'dot', cx: X(i), cy: Y(v), r: 4.5, style: `fill:${sr.color}`}));
+      });
+    }
+    if (ends) {
+      const labs = o.series.map(sr => { const i = lastIdx(sr.values); return i < 0 ? null : {sr, y: Y(sr.values[i]), v: sr.values[i]}; })
+        .filter(Boolean).sort((a, b) => a.y - b.y);
+      if (labs.every((l, k) => k === 0 || l.y - labs[k - 1].y >= 15)) {
+        for (const l of labs) svg.append(sv('text', {class: 'endlab', x: m.l + iw + 10, y: l.y + 4},
+          sv('tspan', {class: 'v', text: vf(l.v)}), sv('tspan', {dx: 6, text: l.sr.short || l.sr.label})));
+      }
+    }
+    const xh = sv('line', {class: 'xhair', y1: m.t, y2: m.t + ih, visibility: 'hidden'});
+    const hl = sv('g');
+    const hit = sv('rect', {x: m.l, y: m.t, width: iw, height: ih, fill: 'transparent'});
+    svg.append(xh, hl, hit);
+    let cur = -1;
+    const show = (i, cx, cy) => {
+      cur = i;
+      xh.setAttribute('x1', X(i)); xh.setAttribute('x2', X(i)); xh.setAttribute('visibility', 'visible');
+      const live = o.series.filter(sr => sr.values[i] != null);
+      hl.replaceChildren(...live.map(sr => sv('circle', {class: 'dot', cx: X(i), cy: Y(sr.values[i]), r: 5, style: `fill:${sr.color}`})));
+      const rows = live.slice().sort((a, b) => b.values[i] - a.values[i]).map(sr => ({
+        color: sr.color, label: sr.label, value: vf(sr.values[i]),
+        sub: bands && sr.band ? `${vf(sr.band[i][0])}–${vf(sr.band[i][1])} across seeds` : null}));
+      if (o.ref && o.ref.name) rows.push({color: 'var(--ref)', kind: 'tick', label: o.ref.name, value: vf(o.ref.value)});
+      showTip(cx, cy, o.tipTitle ? o.tipTitle(i) : o.xLabels[i], rows.length ? rows : [{label: 'No value', value: '–'}], o.tipFoot);
+    };
+    const hide = () => { cur = -1; xh.setAttribute('visibility', 'hidden'); hl.replaceChildren(); hideTip(); };
+    const nearest = px => { let best = 0; for (let i = 1; i < n; i++) if (Math.abs(X(i) - px) < Math.abs(X(best) - px)) best = i; return best; };
+    const onPoint = e => { const b = svg.getBoundingClientRect(); show(nearest(e.clientX - b.left), e.clientX, e.clientY); };
+    hit.addEventListener('pointermove', onPoint);
+    hit.addEventListener('pointerdown', onPoint);
+    hit.addEventListener('pointerleave', hide);
+    svg.addEventListener('blur', hide);
+    svg.addEventListener('keydown', e => {
+      if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') { if (e.key === 'Escape') hide(); return; }
+      e.preventDefault();
+      const step = e.key === 'ArrowLeft' ? -1 : 1;
+      const i = cur < 0 ? (step < 0 ? n - 1 : 0) : Math.max(0, Math.min(n - 1, cur + step));
+      const b = svg.getBoundingClientRect();
+      show(i, b.left + X(i), b.top + m.t);
+    });
+    host.replaceChildren(svg);
+  });
+}
+
+function barPath(x, y, w, ht) {
+  if (ht <= 0.5) return '';
+  const r = Math.min(4, ht, w / 2);
+  return `M${x},${y + ht}V${y + r}Q${x},${y} ${x + r},${y}H${x + w - r}Q${x + w},${y} ${x + w},${y + r}V${y + ht}Z`;
+}
+
+/* Grouped columns. o: {categories, series [{label, color, values}], format, height, tipTitle(c), aria} */
+function columnChart(o) {
+  const host = h('div', {class: 'plot'});
+  return mountChart(host, Wd => {
+    const H = o.height || 220, m = {t: 12, r: 8, b: 30, l: 44};
+    const iw = Wd - m.l - m.r, ih = H - m.t - m.b;
+    const max = Math.max(0.0001, ...o.series.flatMap(s => s.values));
+    const ticks = niceTicks(0, max, 4), hi = ticks[ticks.length - 1];
+    const tf = tickFormatter(o.format, ticks[1] - ticks[0]);
+    const Y = v => m.t + ih - v / hi * ih;
+    const nc = o.categories.length, ns = o.series.length, band = iw / nc;
+    const bw = Math.max(6, Math.min(24, (band * 0.7 - 2 * (ns - 1)) / ns));
+    const svg = svgRoot(Wd, H, o.aria || 'Column chart');
+    ticks.forEach((t, k) => svg.append(
+      sv('line', {class: k === 0 ? 'axis' : 'grid', x1: m.l, x2: m.l + iw, y1: Y(t), y2: Y(t)}),
+      sv('text', {class: 'tick', x: m.l - 8, y: Y(t) + 4, 'text-anchor': 'end', text: tf(t)})));
+    o.categories.forEach((cat, c) => {
+      const cx = m.l + band * (c + 0.5), total = ns * bw + (ns - 1) * 2, x0 = cx - total / 2;
+      const bars = o.series.map((sr, k) => sv('path', {class: 'bar', d: barPath(x0 + k * (bw + 2), Y(sr.values[c]), bw, Y(0) - Y(sr.values[c])), style: `fill:${sr.color}`}));
+      svg.append(...bars, sv('text', {class: 'tick', x: cx, y: H - 9, 'text-anchor': 'middle', text: cat}));
+      const hit = sv('rect', {class: 'hit', x: cx - band / 2, y: m.t, width: band, height: ih, fill: 'transparent', tabindex: 0});
+      const show = (x, y) => {
+        svg.querySelectorAll('.bar').forEach(b => { b.style.opacity = bars.includes(b) ? 1 : 0.45; });
+        showTip(x, y, o.tipTitle ? o.tipTitle(c) : cat, o.series.map(sr => ({color: sr.color, kind: 'dot', label: sr.label, value: FMT[o.format](sr.values[c])})));
+      };
+      const hide = () => { svg.querySelectorAll('.bar').forEach(b => { b.style.opacity = 1; }); hideTip(); };
+      hit.addEventListener('pointermove', e => show(e.clientX, e.clientY));
+      hit.addEventListener('pointerleave', hide);
+      hit.addEventListener('focus', () => { const b = hit.getBoundingClientRect(); show(b.left + b.width / 2, b.top); });
+      hit.addEventListener('blur', hide);
+      svg.append(hit);
+    });
+    host.replaceChildren(svg);
+  });
+}
+
+/* Dot plot, one row per item. o: {rows [{label, hint, marks [{key, label, value, color, kind}]}], domain, format, connect, aria} */
+function dotPlot(o) {
+  const host = h('div', {class: 'plot'});
+  return mountChart(host, Wd => {
+    const narrow = Wd < 520, rowH = 40, m = {t: 4, r: 18, b: 30, l: narrow ? 112 : 168};
+    const H = m.t + m.b + o.rows.length * rowH, iw = Wd - m.l - m.r, [lo, hi] = o.domain;
+    const ticks = niceTicks(lo, hi, narrow ? 3 : 5).filter(t => t >= lo - 1e-9 && t <= hi + 1e-9);
+    const tf = tickFormatter(o.format, ticks.length > 1 ? ticks[1] - ticks[0] : 1);
+    const X = v => m.l + (v - lo) / (hi - lo) * iw;
+    const svg = svgRoot(Wd, H, o.aria || 'Dot plot');
+    const bgs = o.rows.map((_, k) => sv('rect', {class: 'rowbg', x: 4, y: m.t + k * rowH + 3, width: Wd - 8, height: rowH - 6, rx: 9}));
+    svg.append(...bgs);
+    for (const t of ticks) svg.append(
+      sv('line', {class: 'grid', x1: X(t), x2: X(t), y1: m.t, y2: H - m.b}),
+      sv('text', {class: 'tick', x: X(t), y: H - 10, 'text-anchor': 'middle', text: tf(t)}));
+    o.rows.forEach((row, k) => {
+      const y = m.t + k * rowH + rowH / 2;
+      svg.append(sv('text', {class: 'rowlab', x: m.l - 14, y: y + 4, 'text-anchor': 'end', text: row.label}));
+      if (o.connect) {
+        const a = row.marks.find(mk => mk.key === o.connect[0]), b = row.marks.find(mk => mk.key === o.connect[1]);
+        if (a && b) svg.append(sv('line', {class: 'conn', x1: X(a.value), x2: X(b.value), y1: y, y2: y}));
+      }
+      for (const mk of row.marks) {
+        svg.append(mk.kind === 'tick'
+          ? sv('line', {class: 'mk-tick', x1: X(mk.value), x2: X(mk.value), y1: y - 10, y2: y + 10, style: `stroke:${mk.color}`})
+          : sv('circle', {class: 'dot', cx: X(mk.value), cy: y, r: 6.5, style: `fill:${mk.color}`}));
+      }
+      const hit = sv('rect', {class: 'hit', x: 0, y: y - rowH / 2, width: Wd, height: rowH, fill: 'transparent', tabindex: 0});
+      const show = (x, yy) => {
+        bgs[k].classList.add('on');
+        showTip(x, yy, row.label, row.marks.map(mk => ({color: mk.color, kind: mk.kind === 'tick' ? 'tick' : 'dot', label: mk.label, value: FMT[o.format](mk.value)})), row.hint);
+      };
+      const hide = () => { bgs[k].classList.remove('on'); hideTip(); };
+      hit.addEventListener('pointermove', e => show(e.clientX, e.clientY));
+      hit.addEventListener('pointerleave', hide);
+      hit.addEventListener('focus', () => { const b = hit.getBoundingClientRect(); show(b.left + m.l, b.top); });
+      hit.addEventListener('blur', hide);
+      svg.append(hit);
+    });
+    host.replaceChildren(svg);
+  });
+}
+
+/* Scatter with nearest-point hover. o: {points [{x, y, i}], color, domain, xLabel, yLabel, tipRows(p), onPick(i), aria} */
+function scatter(o) {
+  const host = h('div', {class: 'plot'});
+  return mountChart(host, Wd => {
+    const H = Math.round(Math.min(360, Math.max(250, Wd * 0.78))), m = {t: 10, r: 14, b: 46, l: 50};
+    const iw = Wd - m.l - m.r, ih = H - m.t - m.b, [lo, hi] = o.domain;
+    const X = v => m.l + (v - lo) / (hi - lo) * iw, Y = v => m.t + ih - (v - lo) / (hi - lo) * ih;
+    const svg = svgRoot(Wd, H, o.aria);
+    for (let t = lo; t <= hi; t++) {
+      svg.append(sv('line', {class: t === lo ? 'axis' : 'grid', x1: m.l, x2: m.l + iw, y1: Y(t), y2: Y(t)}),
+        sv('line', {class: t === lo ? 'axis' : 'grid', x1: X(t), x2: X(t), y1: m.t, y2: m.t + ih}),
+        sv('text', {class: 'tick', x: m.l - 8, y: Y(t) + 4, 'text-anchor': 'end', text: String(t)}),
+        sv('text', {class: 'tick', x: X(t), y: m.t + ih + 16, 'text-anchor': 'middle', text: String(t)}));
+    }
+    const angle = -Math.atan2(ih, iw) * 180 / Math.PI, lx = X(lo + 0.12 * (hi - lo)), ly = Y(lo + 0.12 * (hi - lo)) - 6;
+    svg.append(sv('line', {class: 'ref', x1: X(lo), y1: Y(lo), x2: X(hi), y2: Y(hi)}),
+      sv('text', {class: 'reflab', x: lx, y: ly, transform: `rotate(${angle.toFixed(1)} ${lx.toFixed(1)} ${ly.toFixed(1)})`, text: 'matches the truth'}),
+      sv('text', {class: 'axlab', x: m.l + iw / 2, y: H - 6, 'text-anchor': 'middle', text: o.xLabel}),
+      sv('text', {class: 'axlab', x: 14, y: m.t + ih / 2, 'text-anchor': 'middle', transform: `rotate(-90 14 ${m.t + ih / 2})`, text: o.yLabel}));
+    const g = sv('g', {style: `fill:${o.color}`});
+    for (const p of o.points) g.append(sv('circle', {class: 'pt', cx: X(p.x).toFixed(1), cy: Y(p.y).toFixed(1), r: 2.7}));
+    const ring = sv('circle', {class: 'pt-hl', r: 6, visibility: 'hidden', style: `fill:${o.color}`});
+    svg.append(g, ring);
+    let near = null;
+    svg.addEventListener('pointermove', e => {
+      const b = svg.getBoundingClientRect(), px = e.clientX - b.left, py = e.clientY - b.top;
+      let best = null, bd = 16 * 16;
+      for (const p of o.points) { const dx = X(p.x) - px, dy = Y(p.y) - py, d = dx * dx + dy * dy; if (d < bd) { bd = d; best = p; } }
+      near = best;
+      if (!best) { ring.setAttribute('visibility', 'hidden'); svg.style.cursor = ''; hideTip(); return; }
+      ring.setAttribute('cx', X(best.x)); ring.setAttribute('cy', Y(best.y)); ring.setAttribute('visibility', 'visible');
+      svg.style.cursor = 'pointer';
+      showTip(e.clientX, e.clientY, ST.name[best.i], o.tipRows(best), 'Click to open this student');
+    });
+    svg.addEventListener('pointerleave', () => { near = null; ring.setAttribute('visibility', 'hidden'); hideTip(); });
+    svg.addEventListener('click', () => { if (near) { hideTip(); o.onPick(near.i); } });
+    host.replaceChildren(svg);
+  });
+}
+
+/* Horizontal bars in HTML: rows [{label, value, text, mark, markTitle}] */
+function barList(rows, {format = 'count', max, color: c = 'var(--viz)'} = {}) {
+  const mx = max ?? Math.max(1e-9, ...rows.map(r => r.value));
+  return h('div', {class: 'bars'}, rows.map(r => h('div', {class: 'bar-row'},
+    h('span', {class: 'bar-l', text: r.label}),
+    h('span', {class: 'bar-t'},
+      h('span', {class: 'bar-f', style: `width:${Math.min(100, r.value / mx * 100).toFixed(1)}%;background:${r.color || c}`}),
+      r.mark != null ? h('span', {class: 'bar-m', style: `left:${Math.min(100, r.mark / mx * 100).toFixed(1)}%`, title: r.markTitle}) : null),
+    h('span', {class: 'bar-v', text: r.text ?? FMT[format](r.value)}))));
+}
+
+/* Figure card with an optional table twin. */
+function figure({title, sub, legend: lg, body, table: tableFn, tools, cls}) {
+  const tableBox = h('div', {class: 'tbl-wrap'});
+  tableBox.hidden = true;
+  let btn = null;
+  if (tableFn) {
+    btn = h('button', {class: 'btn ghost sm', type: 'button', 'aria-pressed': 'false', text: 'Show table'});
+    btn.addEventListener('click', () => {
+      const on = btn.getAttribute('aria-pressed') !== 'true';
+      btn.setAttribute('aria-pressed', String(on));
+      btn.textContent = on ? 'Show chart' : 'Show table';
+      body.hidden = on;
+      if (lg) lg.hidden = on;
+      tableBox.hidden = !on;
+      if (on) tableBox.replaceChildren(tableFn());
+    });
+  }
+  return h('figure', {class: `fig card${cls ? ' ' + cls : ''}`},
+    h('div', {class: 'fig-head'},
+      h('div', {class: 'fig-titles'}, h('h3', {text: title}), sub ? h('p', {class: 'fig-sub', text: sub}) : null),
+      tools || btn ? h('div', {class: 'fig-tools'}, tools || null, btn) : null),
+    lg || null, body, tableBox);
+}
+
+function table(cols, rows) {
+  return h('table', {class: 'tbl'},
+    h('thead', {}, h('tr', {}, cols.map(c => h('th', {class: [c.num ? 'num' : '', c.used ? 'used' : ''].join(' ').trim() || null, scope: 'col', title: c.title || null, text: c.label})))),
+    h('tbody', {}, rows.map(r => {
+      const tr = h('tr', {class: r.cls || (r.onclick ? 'click' : null)}, r.cells.map((cell, k) =>
+        h('td', {class: cols[k] && (cols[k].num ? 'num' : cols[k].nowrap ? 'nowrap' : cols[k].top ? 'top' : null), colspan: r.span && k === 0 ? r.span : null}, cell)));
+      if (r.onclick) tr.addEventListener('click', e => { if (!e.target.closest('button')) r.onclick(); });
+      return tr;
+    })));
+}
+function pager(total, page, onPage) {
+  const pages = Math.max(1, Math.ceil(total / PAGE));
+  const from = total ? page * PAGE + 1 : 0, to = Math.min(total, (page + 1) * PAGE);
+  return h('div', {class: 'pager'},
+    h('span', {class: 'muted small', text: `${from.toLocaleString('en-US')}–${to.toLocaleString('en-US')} of ${total.toLocaleString('en-US')}`}),
+    h('span', {class: 'grow'}),
+    h('button', {class: 'btn ghost sm', type: 'button', disabled: page <= 0, onclick: () => onPage(page - 1), text: 'Previous'}),
+    h('button', {class: 'btn ghost sm', type: 'button', disabled: page >= pages - 1, onclick: () => onPage(page + 1), text: 'Next'}));
+}
+function seg(label, options, value, onChange) {
+  const group = h('div', {class: 'seg', role: 'group', 'aria-label': label});
+  for (const [v, text, key] of options) {
+    const b = h('button', {type: 'button', 'aria-pressed': String(v === value)},
+      key ? h('span', {class: 'lg-k line', style: `--c:${key}`}) : null, text);
+    b.addEventListener('click', () => {
+      for (const x of group.children) x.setAttribute('aria-pressed', String(x === b));
+      onChange(v);
+    });
+    group.append(b);
+  }
+  return h('div', {class: 'ctl'}, h('span', {class: 'field-l', text: label}), group);
+}
+const stratSeg = (value, onChange) => seg('Strategy', STRATS.map(s => [s.id, s.label, color(s.id)]), value, onChange);
+function weekPicker(value, onChange, withAll) {
+  const lowest = withAll ? -1 : 0;
+  const sel = h('select', {class: 'input', 'aria-label': 'Week'},
+    withAll ? h('option', {value: -1, text: 'All weeks', selected: value === -1}) : null,
+    range(W).map(w => h('option', {value: w, text: weekTitle(w), selected: value === w})));
+  const go = v => { sel.value = String(v); onChange(v); };
+  sel.addEventListener('change', () => onChange(+sel.value));
+  return h('div', {class: 'ctl'}, h('span', {class: 'field-l', text: 'Week'}), h('div', {class: 'wp'},
+    h('button', {class: 'btn ghost sm', type: 'button', 'aria-label': 'Previous week', text: '‹', onclick: () => { if (+sel.value > lowest) go(+sel.value - 1); }}),
+    sel,
+    h('button', {class: 'btn ghost sm', type: 'button', 'aria-label': 'Next week', text: '›', onclick: () => { if (+sel.value < W - 1) go(+sel.value + 1); }})));
+}
+function bandSwitch() {
+  if (SEEDS < 2) return null;
+  const input = h('input', {type: 'checkbox', class: 'band-toggle'});
+  input.checked = state.bands;
+  input.addEventListener('change', () => {
+    state.bands = input.checked;
+    document.querySelectorAll('.band-toggle').forEach(x => { x.checked = state.bands; });
+    redrawLines();
+  });
+  return h('label', {class: 'switch'}, input, `Show the range across ${SEEDS} seeds`);
+}
+
+/* ---------- small pieces ---------- */
+const satClass = u => u == null ? 'none' : u < 3 ? 'bad' : u < 4 ? 'mid' : 'good';
+function satPill(u) {
+  const c = satClass(u);
+  return h('span', {class: `pill ${c}`, title: u == null ? 'No group this week' : `Hidden satisfaction ${u.toFixed(2)} of 5${u < 3 ? ', unhappy' : ''}`},
+    u == null ? 'no group' : u.toFixed(2), c === 'bad' ? h('span', {class: 'pill-tag', text: 'low'}) : null);
+}
+function ratingPill(v) {
+  if (v == null) return h('span', {class: 'muted', text: '–'});
+  return h('span', {class: `pill ${v <= 2 ? 'bad' : v === 3 ? 'mid' : 'good'}`, text: `${v}/5`});
+}
+const avatar = (i, size) => h('span', {class: `av c${(i % 3) + 1}${size ? ' ' + size : ''}`, 'aria-hidden': 'true', text: ST.name[i].charAt(0)});
+const courseCode = i => COURSES[ST.course[i]].code;
+const studentLink = i => h('button', {class: 'linkbtn', type: 'button', text: ST.name[i], onclick: () => openDrawer({kind: 'student', i})});
+const tagLabel = code => TAGS[code].label;
+const sumLast = s => D.summary[s][W - 1];
+const semesterAvg = s => avg(D.summary[s].map(r => r.true_satisfaction));
+function seriesFor(metric) {
+  return SID.map(id => ({
+    id, label: SBY[id].label, short: SBY[id].short, color: color(id),
+    values: D.summary[id].map(row => row[metric]),
+    band: range(W).map(r => { const v = D.per_seed[id].map(run => run[r][metric]).filter(x => x != null); return v.length ? [Math.min(...v), Math.max(...v)] : [null, null]; }),
+  }));
+}
+function metricChart(metric, {endLabels, height} = {}) {
+  const f = MET[metric].format;
+  return lineChart({series: seriesFor(metric), xLabels: weekLabels(), format: f, endLabels, height, shadeExams: true,
+    min: f === 'pct' || f === 'count' ? 0 : null, tipTitle: weekTitle, aria: `${MET[metric].label} by week`});
+}
+function metricTable(metrics) {
+  const rows = [];
+  for (const id of metrics) {
+    const f = FMT[MET[id].format];
+    if (metrics.length > 1) rows.push({cls: 'sec', span: W + 1, cells: [MET[id].label]});
+    for (const s of SID) rows.push({cells: [SBY[s].label, ...range(W).map(r => f(D.summary[s][r][id]))]});
+  }
+  return table([{label: 'Strategy'}, ...range(W).map(r => ({label: `W${r + 1}`, num: true}))], rows);
+}
+const emptyState = (title, text) => h('div', {class: 'card empty-state'}, h('h2', {text: title}), h('p', {text}));
+const notYet = () => emptyState('Nothing has happened yet',
+  LIVE ? 'Every strategy starts from the same semester-start groups. Press "Play week 1" to see the first week.' : 'This run has no weeks.');
+
+/* ---------- header, tabs ---------- */
+const TABS = [
+  ['overview', 'Overview', renderOverview],
+  ['weeks', 'Week by week', renderWeeks],
+  ['learning', 'What it learned', renderLearning],
+  ['explore', 'Students & groups', renderExplore],
+  ['feedback', 'Feedback forms', renderFeedback],
+  ['regroup', 'When to regroup', renderRegroup],
+  ['checks', 'Checks & LLM tests', renderChecks],
+];
+function worldName(world, samples) {
+  if (!world || world === 'rule') return 'Rule-based world';
+  const m = /^(llm|meet)-(.+)$/.exec(world);
+  if (!m) return `World: ${world}`;
+  return `${m[1] === 'meet' ? 'LLM world with simulated meetings' : 'LLM world'}, ${m[2] === 'none' ? 'no clamp' : `clamp ±${m[2]}`}${samples > 1 ? `, ${samples} asks per group` : ''}`;
+}
+const EXP_WORDS = {led: 'led', contributed: 'contributed', quiet: 'was quiet', lost: 'got lost', frustrated: 'was frustrated'};
+const isLlmWorld = () => Boolean(D.meta.world && D.meta.world !== 'rule');
+const signed = (v, d = 2) => v == null ? '–' : `${v >= 0 ? '+' : ''}${v.toFixed(d)}`;
+function renderHeader() {
+  $('#lede').textContent = `A simulated semester of up to ${MAXW} weeks for ${N.toLocaleString('en-US')} students in ${COURSES.map(c => c.code).join(' and ')}. ` +
+    `Groups meet every week, students answer a short pulse form, and three ways of regrouping are compared on how students really felt, which the simulation knows and the app never would.`;
+  const gen = D.meta.generated ? new Date(D.meta.generated) : null;
+  $('#meta-chips').replaceChildren(...[
+    `${N.toLocaleString('en-US')} synthetic students`,
+    COURSES.map(c => `${c.code} (${c.n})`).join(' · '),
+    LIVE ? `Live run, seed ${LIVE.settings.seed}` : `${SEEDS} seeds × ${W} weeks`,
+    worldName(D.meta.world, D.meta.samples),
+    D.meta.llm ? `${D.meta.llm.calls.toLocaleString('en-US')} LLM calls, ${FMT.money(D.meta.llm.spent)}` : null,
+    D.meta.policy ? cap(policyLabel(D.meta.policy.cadence, D.meta.policy.strikes)) : null,
+    !LIVE && gen && !isNaN(gen) ? `Run ${gen.toLocaleString('en-US', {month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit'})}` : null,
+  ].filter(Boolean).map(t => h('span', {class: 'chip', text: t})));
+  $('#foot').replaceChildren(
+    LIVE ? h('p', {}, 'Live run from ', h('code', {text: 'python -m simulation.live'}), '. The multi-seed results are in ', h('code', {text: 'simulation/output/dashboard.html'}), '.')
+      : h('p', {}, 'Built from ', h('code', {text: 'simulation/output'}), ' by ', h('code', {text: 'python -m simulation.run'}),
+        '. To step through a semester week by week: ', h('code', {text: 'python -m simulation.live'}), '.'),
+    h('p', {text: 'Every student here is synthetic. None of the app\'s real accounts are in this cohort.'}));
+}
+function buildTabs() {
+  const nav = $('#tabs'), main = $('#panels');
+  for (const [id, label, render] of TABS) {
+    const btn = h('button', {class: 'tab', type: 'button', role: 'tab', id: `tab-${id}`, 'aria-controls': `panel-${id}`, 'aria-selected': 'false', tabindex: -1, text: label});
+    btn.addEventListener('click', () => selectTab(id));
+    btn.addEventListener('keydown', e => {
+      const k = TABS.findIndex(t => t[0] === id);
+      const next = e.key === 'ArrowRight' ? k + 1 : e.key === 'ArrowLeft' ? k - 1 : null;
+      if (next == null) return;
+      e.preventDefault();
+      const t = TABS[(next + TABS.length) % TABS.length][0];
+      selectTab(t); $(`#tab-${t}`).focus();
+    });
+    nav.append(btn);
+    const panel = h('section', {class: 'panel', id: `panel-${id}`, role: 'tabpanel', 'aria-labelledby': `tab-${id}`});
+    panel.hidden = true;
+    main.append(panel);
+    render(panel);
+  }
+}
+function selectTab(id) {
+  for (const [t] of TABS) {
+    const on = t === id;
+    const btn = $(`#tab-${t}`);
+    btn.setAttribute('aria-selected', String(on));
+    btn.tabIndex = on ? 0 : -1;
+    $(`#panel-${t}`).hidden = !on;
+  }
+  try { localStorage.setItem('studymatch-sim-tab', id); } catch (e) { /* storage unavailable */ }
+  try { if (location.hash.slice(1) !== id) history.replaceState(null, '', `#${id}`); } catch (e) { /* file:// may refuse */ }
+  hideTip();
+}
+const goTab = id => { selectTab(id); scrollTo({top: 0}); };
+
+/* ---------- live controls ---------- */
+async function post(url, body) {
+  const r = await fetch(url, {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(body || {})});
+  const j = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error(j.detail || r.statusText);
+  return j;
+}
+function renderLive() {
+  if (!LIVE) return;
+  const bar = $('#livebar');
+  bar.hidden = false;
+  const S = LIVE.settings, done = W >= LIVE.weeks;
+  const KINDS = ['rule', 'llm', 'meet'];
+  const kindOf = w => w === 'rule' ? 'rule' : w.split('-')[0];
+  const clampOf = w => w === 'rule' ? String(LIVE.default_clamp) : w.split('-')[1];
+  const worldOf = (kind, clamp) => kind === 'rule' ? 'rule' : `${kind}-${clamp}`;
+  const students = cohort => cohort === 'full' ? LIVE.full_size : LIVE.sample_size;
+  // Roughly: one call per ask per group per strategy per week, about a fifth of them repeats across strategies and
+  // comes from the cache; the meetings world adds about one account call per meeting, cheaper than an ask.
+  const estimate = (cohort, weeks, samples, kind) => (LIVE.cost_per_call || 0.001) * students(cohort) / 4.8 * 3 * weeks * 0.8 * (samples + (kind === 'meet' ? 0.8 : 0));
+  const status = h('p', {class: 'live-status', role: 'status'});
+  const progress = h('div', {class: 'bar', hidden: true}, h('span', {style: 'width:0%'}));
+  const stepBtn = h('button', {class: 'btn', type: 'button', text: done ? 'Semester over' : `Play week ${W + 1}`, disabled: done});
+  const allBtn = h('button', {class: 'btn ghost', type: 'button', text: 'Play to the end', disabled: done});
+  const resetBtn = h('button', {class: 'btn ghost', type: 'button', text: 'Reset', title: 'Back to week 0 with the same settings and seed'});
+  const settingsBtn = h('button', {class: 'btn ghost', type: 'button', text: 'Settings…', 'aria-expanded': 'false'});
+  const buttons = [stepBtn, allBtn, resetBtn, settingsBtn];
+  const field = (label, control) => h('div', {class: 'ctl'}, h('span', {class: 'field-l', text: label}), control);
+  const select = (id, options, value) => h('select', {class: 'input', id}, options.map(([v, t]) => h('option', {value: v, text: t, selected: String(v) === String(value)})));
+  const cohortOptions = () => [['sample', `About ${LIVE.sample_size} students (whole start groups)`], ['full', `All ${LIVE.full_size.toLocaleString('en-US')} students`]];
+
+  // The world switch: always visible. Changing anything here restarts the semester, after a confirmation.
+  // pend holds every setting that differs from the live run S; the Settings panel edits the same object.
+  const pend = {kind: kindOf(S.world), clamp: clampOf(S.world), samples: S.samples, cohort: S.cohort};
+  const form = {
+    cohort: select('live-cohort', cohortOptions(), S.cohort),
+    weeks: select('live-weeks', range(MAXW - 11).map(k => [12 + k, `${12 + k} weeks`]), S.weeks),
+    cadence: select('live-cadence', [[1, 'Every week'], [2, 'Every 2 weeks'], [4, 'Every 4 weeks'], [0, 'Never']], S.cadence || 0),
+    strikes: select('live-strikes', [[1, 'After 1 unhappy answer'], [2, 'After 2 in a row']], S.strikes),
+    gate: select('live-gate', [['true', 'Only when it helps (final call)'], ['false', 'Every week']], String(S.gate)),
+    seed: h('input', {class: 'input', id: 'live-seed', type: 'number', min: 0, step: 1, value: S.seed}),
+  };
+  const costNote = h('p', {class: 'small muted'});
+  const updateCost = () => {
+    costNote.textContent = pend.kind === 'rule' ? 'With the rule-based world these settings cost nothing to try.'
+      : `With the ${pend.kind === 'meet' ? 'meetings' : 'LLM'} world (${pend.samples} ask${pend.samples > 1 ? 's' : ''} per group), ${form.weeks.value} weeks for ${pend.cohort === 'full' ? 'all' : 'about'} ${students(pend.cohort).toLocaleString('en-US')} students costs roughly ${FMT.money(estimate(pend.cohort, +form.weeks.value, pend.samples, pend.kind))}.`;
+  };
+  const clampSel = select('live-clamp', [['1.2', '±1.2 (recommended)'], ['0.3', '±0.3 (stays close to the rules)'], ['none', 'None (the model alone)']], pend.clamp);
+  const samplesSel = select('live-samples', range(LIVE.max_samples).map(k => [k + 1, `${k + 1} ask${k ? 's' : ''} per group`]), pend.samples);
+  const cohortSel = select('live-cohort-switch', cohortOptions(), pend.cohort);
+  const llmOpts = h('div', {class: 'world-opts'}, field('Clamp', clampSel), field('Asks', samplesSel));
+  const confirm = h('div', {class: 'confirm', hidden: true});
+  const setCohort = c => { pend.cohort = c; cohortSel.value = c; form.cohort.value = c; };
+  const worldSeg = seg('World', [['rule', 'Rule-based (free)'], ['llm', 'LLM judges each week'], ['meet', 'LLM plays the meetings, then judges']], pend.kind,
+    v => { pend.kind = v; if (v === 'rule') setCohort(S.cohort); else if (pend.cohort === 'full') setCohort('sample'); syncWorld(); });
+  if (!LIVE.llm_ready) worldSeg.querySelectorAll('button').forEach((b, k) => { if (k) { b.disabled = true; b.title = 'Create simulation\\.venv (see simulation/README.md) and start the page again.'; } });
+  clampSel.addEventListener('change', () => { pend.clamp = clampSel.value; syncWorld(); });
+  samplesSel.addEventListener('change', () => { pend.samples = +samplesSel.value; syncWorld(); });
+  cohortSel.addEventListener('change', () => { setCohort(cohortSel.value); syncWorld(); });
+  form.cohort.addEventListener('change', () => { setCohort(form.cohort.value); syncWorld(); });
+  form.weeks.addEventListener('change', () => updateCost());
+  const applyWorld = h('button', {class: 'btn', type: 'button'});
+  const keepWorld = h('button', {class: 'btn ghost', type: 'button', text: 'Keep the current run'});
+  keepWorld.addEventListener('click', () => { Object.assign(pend, {kind: kindOf(S.world), clamp: clampOf(S.world), samples: S.samples});
+    worldSeg.querySelectorAll('button').forEach((b, k) => b.setAttribute('aria-pressed', String(KINDS[k] === pend.kind)));
+    clampSel.value = pend.clamp; samplesSel.value = String(pend.samples); setCohort(S.cohort); syncWorld(); });
+  function syncWorld() {
+    llmOpts.hidden = pend.kind === 'rule';
+    updateCost();
+    const worldChanged = pend.kind !== kindOf(S.world) || (pend.kind !== 'rule' && (pend.clamp !== clampOf(S.world) || +pend.samples !== +S.samples));
+    const changed = worldChanged || pend.cohort !== S.cohort;
+    confirm.hidden = !changed;
+    if (!changed) return;
+    const lost = W === 0 ? 'Nothing has been played yet, so nothing is lost.' : `The semester restarts at week 0 (this run's ${W} week${W > 1 ? 's' : ''} are discarded).`;
+    const asks = `${pend.samples} ask${pend.samples > 1 ? 's' : ''} per group, averaged, clamp ${pend.clamp === 'none' ? 'off' : `±${pend.clamp}`}`;
+    const lead = pend.kind === 'meet' ? `Claude will write an account of every meeting, then judge each student's week from those accounts (${asks}).`
+      : `Claude will judge every group's week (${asks}).`;
+    const text = pend.kind !== 'rule'
+      ? `${lead} ${lost} Roughly ${FMT.money(estimate(pend.cohort, S.weeks, pend.samples, pend.kind))} for all ${S.weeks} weeks with ${pend.cohort === 'full' ? 'all' : 'about'} ${students(pend.cohort).toLocaleString('en-US')} students (${LIVE.model}), less where answers are already cached; each week takes a minute or two. Spending stops at ${FMT.money(LIVE.budget)} a session.`
+      : `The rule-based world is free and takes about a second a week. ${lost}`;
+    const kindName = {rule: 'rule-based', llm: 'LLM', meet: 'meetings'}[pend.kind];
+    applyWorld.textContent = worldChanged ? `Restart with the ${kindName} world` : 'Restart with these students';
+    confirm.replaceChildren(...[h('p', {text: text}),
+      pend.kind !== 'rule' || pend.cohort !== S.cohort ? h('div', {class: 'world-opts'}, field('Students', cohortSel)) : null,
+      h('div', {class: 'live-actions'}, applyWorld, keepWorld)].filter(Boolean));
+  }
+  applyWorld.addEventListener('click', () => start('/api/reset', {...S, world: worldOf(pend.kind, pend.clamp), samples: +pend.samples, cohort: pend.cohort}));
+  syncWorld();
+
+  // Everything else lives in the settings panel; it restarts the semester too, with the world row's choices.
+  const applySettings = h('button', {class: 'btn', type: 'button', text: 'Restart with these settings'});
+  const settings = h('div', {class: 'settings', hidden: true},
+    h('div', {class: 'settings-grid'},
+      field('Students', form.cohort), field('Semester', form.weeks),
+      field('Move unhappy students', form.cadence), field('When', form.strikes), field('Change the weights', form.gate),
+      field('Seed', form.seed)),
+    costNote,
+    h('div', {class: 'live-actions'}, applySettings, h('button', {class: 'btn ghost', type: 'button', text: 'Cancel', onclick: () => { settings.hidden = true; settingsBtn.setAttribute('aria-expanded', 'false'); }})));
+  settingsBtn.addEventListener('click', () => { settings.hidden = !settings.hidden; settingsBtn.setAttribute('aria-expanded', String(!settings.hidden)); updateCost(); });
+
+  const busy = on => buttons.concat(applySettings, applyWorld, keepWorld).forEach(b => { b.disabled = on || ((b === stepBtn || b === allBtn) && done); });
+  const fail = err => { status.className = 'live-status err'; status.textContent = err.message || String(err); busy(false); };
+  const poll = () => fetch('/api/status').then(r => r.json()).then(s => {
+    if (s.error) { progress.hidden = true; fail(new Error(s.error)); return; }
+    if (s.busy) {
+      busy(true);
+      progress.hidden = false;
+      const frac = s.total ? s.done / s.total : 0;
+      progress.firstChild.style.width = `${Math.round(frac * 100)}%`;
+      status.className = 'live-status';
+      status.textContent = s.message + (s.spent ? ` · ${FMT.money(s.spent)} spent this session` : '');
+      setTimeout(poll, 600);
+    } else if (s.version !== LIVE.version) {
+      location.reload();
+    } else busy(false);
+  }).catch(() => setTimeout(poll, 1500));
+  const start = (url, body) => { busy(true); status.className = 'live-status'; status.textContent = 'Starting…'; post(url, body).then(() => setTimeout(poll, 300)).catch(fail); };
+  stepBtn.addEventListener('click', () => start('/api/step', {all: false}));
+  allBtn.addEventListener('click', () => start('/api/step', {all: true}));
+  resetBtn.addEventListener('click', () => start('/api/reset', S));
+  applySettings.addEventListener('click', () => start('/api/reset', {
+    ...S, world: worldOf(pend.kind, pend.clamp), samples: +pend.samples,
+    cohort: pend.cohort, weeks: +form.weeks.value, cadence: +form.cadence.value || null,
+    strikes: +form.strikes.value, gate: form.gate.value === 'true', seed: Math.max(0, Math.floor(+form.seed.value || 0)),
+  }));
+
+  const spentNote = LIVE.spent ? ` · ${FMT.money(LIVE.spent)} spent this session` : '';
+  if (LIVE.budget_hit) {
+    status.className = 'live-status err';
+    status.textContent = `The ${FMT.money(LIVE.budget)} budget is spent, so groups are now judged by the rule world. Restart the page with --budget to raise it.`;
+  } else {
+    status.textContent = done ? `The semester is over after ${LIVE.weeks} weeks. Reset to play it again.${spentNote}`
+      : W === 0 ? `Groups are formed. Nobody has met yet.${spentNote}`
+      : `${worldName(D.meta.world, S.samples)}${spentNote}`;
+  }
+  bar.replaceChildren(
+    h('div', {class: 'live-row'},
+      h('div', {class: 'live-week'}, h('strong', {}, `Week ${W}`, h('span', {text: ` of ${LIVE.weeks}`})),
+        h('div', {class: 'dots', 'aria-hidden': 'true'}, range(LIVE.weeks).map(k => h('span', {class: `${k < W ? 'done' : ''}${EXAM.has(k + 1) ? ' exam' : ''}`, title: weekTitle(k)})))),
+      h('span', {class: 'grow'}),
+      h('div', {class: 'live-actions'}, buttons)),
+    progress, status,
+    h('div', {class: 'world-row'}, worldSeg, llmOpts),
+    confirm, settings);
+  poll();   // a page opened while a week is playing follows it; an idle page just confirms its buttons
+}
+
+/* ---------- Overview ---------- */
+function renderOverview(root) {
+  if (!W) { root.append(notYet()); renderStart(root); return; }
+  const first = D.summary[SID[0]][0];
+  const order = SID.slice().sort((a, b) => sumLast(a).unhappy_share - sumLast(b).unhappy_share);
+  // Only call a winner with a real lead (a whole percentage point), not a tie broken by sort order.
+  const best = sumLast(order[1]).unhappy_share - sumLast(order[0]).unhappy_share >= 0.01 ? order[0] : null;
+  const others = SID.filter(id => id !== LEARN).sort((a, b) => sumLast(a).unhappy_share - sumLast(b).unhappy_share);
+  const when = LIVE && W < LIVE.weeks ? `so far (week ${W} of ${LIVE.weeks})` : `by week ${W}`;
+  const verdict = `${cap(SBY[LEARN].phrase)} left ${FMT.pct(sumLast(LEARN).unhappy_share)} of students unhappy ${when}, ` +
+    `against ${others.map(id => `${FMT.pct(sumLast(id).unhappy_share)} with ${SBY[id].phrase}`).join(' and ')}.`;
+  root.append(h('div', {class: 'section-head'}, h('div', {},
+    h('p', {class: 'verdict', text: verdict}),
+    h('p', {text: `All three start from the same groups; ${FMT.pct(first.unhappy_share)} of students were unhappy after week 1. ` +
+      `"Unhappy" means hidden satisfaction below 3 out of 5.` + (SEEDS > 1 ? ` Every number is the average of ${SEEDS} simulated semesters.` : '')}))));
+
+  root.append(h('div', {class: 'grid-3'}, SID.map(id => {
+    const rows = D.summary[id], f = rows[W - 1];
+    return h('article', {class: `card strat${id === best ? ' best' : ''}`},
+      h('div', {class: 'strat-top'},
+        h('span', {class: 'strat-name'}, h('span', {class: 'lg-k line', style: `--c:${color(id)}`}), SBY[id].label),
+        id === best ? h('span', {class: 'badge', text: 'Fewest unhappy'}) : null),
+      h('p', {class: 'strat-desc', text: SBY[id].desc}),
+      h('div', {},
+        h('div', {class: 'hero', text: FMT.pct(f.unhappy_share)}),
+        h('div', {class: 'hero-cap'}, h('span', {text: `unhappy in week ${W}`}), W > 1 ? delta(f.unhappy_share - first.unhappy_share, 'pct', 'down', 'since week 1') : null)),
+      h('dl', {class: 'kv'},
+        h('dt', {text: 'Average satisfaction, whole semester'}), h('dd', {text: FMT.sat(semesterAvg(id))}),
+        h('dt', {text: `True satisfaction, week ${W}`}), h('dd', {text: FMT.sat(f.true_satisfaction)}),
+        h('dt', {text: 'Quit a group'}), h('dd', {text: FMT.count(sum(rows.map(r => r.left)))}),
+        h('dt', {text: 'Moved to another group'}), h('dd', {text: FMT.count(sum(rows.slice(0, W).map(r => r.moved_after)))}),
+        h('dt', {text: `Without a group, week ${W}`}), h('dd', {text: FMT.count(f.without_group)})));
+  })));
+
+  if (LIVE) root.append(thisWeek());
+  const llm = llmCard();
+  if (llm) root.append(llm);
+
+  root.append(h('div', {class: 'section-head'},
+    h('div', {}, h('h2', {text: 'How the semester went'}),
+      h('p', {text: 'Hover or tap a chart for exact values. Shaded columns are exam weeks.'})),
+    bandSwitch()));
+  root.append(h('div', {class: 'grid-2'},
+    figure({title: 'Students who are truly unhappy', sub: 'Share of all students with hidden satisfaction below 3. Lower is better.',
+      legend: stratLegend(), body: metricChart('unhappy_share', {endLabels: true}), table: () => metricTable(['unhappy_share'])}),
+    figure({title: 'True satisfaction', sub: 'Average hidden satisfaction, 1 to 5. Students without a group count as 2.0. Higher is better.',
+      legend: stratLegend(), body: metricChart('true_satisfaction', {endLabels: true}), table: () => metricTable(['true_satisfaction'])})));
+
+  const W8 = D.weights, path = D.learner_path[LEARN].accuracy;
+  const top = D.features.slice().sort((a, b) => W8.learned[b] - W8.learned[a])[0];
+  const changed = D.learner_log.filter(e => e.action === 'adopted').map(e => e.week);
+  const stopped = D.learner_log.find(e => e.action === 'froze');
+  root.append(h('div', {class: 'section-head'},
+    h('div', {}, h('h2', {text: 'What the matcher figured out'}),
+      h('p', {text: 'It never sees the hidden truth. Everything below was learned from feedback forms alone.'})),
+    h('button', {class: 'btn ghost', type: 'button', text: 'See everything it learned', onclick: () => goTab('learning')})));
+  root.append(h('div', {class: 'grid-3'},
+    h('div', {class: 'card tile'},
+      h('span', {class: 'tile-l', text: `${FL[top]} counts most`}),
+      h('span', {class: 'tile-v', text: FMT.share(W8.learned[top])}),
+      h('span', {class: 'tile-c', text: `of the learned matching weight. The live app gives it ${FMT.share(W8.hand_set[top])}; the world's hidden weights, ${FMT.share(W8.hidden[top])}.`})),
+    h('div', {class: 'card tile'},
+      h('span', {class: 'tile-l', text: 'Schedules matter'}),
+      h('span', {class: 'tile-v', text: `${FMT.share(W8.hand_set.schedule)} → ${FMT.share(W8.learned.schedule)}`}),
+      h('span', {class: 'tile-c', text: `of the weight. The live app ignores schedules; in the world's hidden weights they're ${FMT.share(W8.hidden.schedule)}.`})),
+    h('div', {class: 'card tile'},
+      h('span', {class: 'tile-l', text: 'When it stopped tuning'}),
+      h('span', {class: 'tile-v', text: stopped ? `Week ${stopped.week}` : changed.length ? 'Still tuning' : 'Not yet'}),
+      h('span', {class: 'tile-c', text: changed.length ? `Changed its weights in week${changed.length > 1 ? 's' : ''} ${changed.join(', ')}` +
+        (stopped ? `, then stopped: later refits didn't predict feedback any better.` : '.') + (SEEDS > 1 ? ' (Seed 0.)' : '')
+        : stopped ? `Never changed the weights: no refit predicted the forms better than chance, so tuning stopped. With ${N.toLocaleString('en-US')} students there is little feedback to learn from.` + (SEEDS > 1 ? ' (Seed 0.)' : '')
+        : 'It waits for enough feedback before changing anything.'})),
+  ));
+
+  const F = D.frequency;
+  if (F) {
+    const pick = F.results.find(r => r.recommended);
+    root.append(note('How often to regroup was tested, not guessed: ',
+      h('strong', {text: cap(policyLabel(pick.cadence, pick.strikes))}), ` scored best with the fewest moves. `,
+      h('button', {class: 'linkbtn', type: 'button', text: 'See the comparison', onclick: () => goTab('regroup')}), '.'));
+  }
+  root.append(isLlmWorld()
+    ? note('In this run a language model judged how students felt about each week, within a clamp around the rule world (see ',
+        h('button', {class: 'linkbtn', type: 'button', text: 'Checks & LLM tests', onclick: () => goTab('checks')}),
+        ' for how far to trust it). Meetings, attendance and who answers the forms still follow the stated rules.')
+    : note('This world runs on stated rules (see ', h('button', {class: 'linkbtn', type: 'button', text: 'Checks & LLM tests', onclick: () => goTab('checks')}),
+        '). It shows the feedback loop can work. It doesn\'t prove real students behave this way.'));
+}
+function llmCard() {
+  // How the LLM's verdicts compared with the rule formula on the same weeks, for the headline strategy.
+  const weeks = D.trace[LEARN].map(T => Object.entries(T.llm).filter(([, v]) => v[1] != null).map(([i, v]) =>
+    ({rule: v[0], raw: v[1], final: T.u[i], asks: v[3] || [], clamped: v[4] == null ? Math.abs(T.u[i] - v[1]) > 0.005 : Boolean(v[4])})));
+  if (!weeks.some(v => v.length)) return null;
+  const all = weeks.flat();
+  const mx = avg(all.map(p => p.raw)), my = avg(all.map(p => p.rule));
+  let sxy = 0, sxx = 0, syy = 0;
+  for (const p of all) { sxy += (p.raw - mx) * (p.rule - my); sxx += (p.raw - mx) ** 2; syy += (p.rule - my) ** 2; }
+  const r = sxx && syy ? sxy / Math.sqrt(sxx * syy) : null;
+  const offset = avg(all.map(p => p.raw - p.rule));
+  const clamped = all.filter(p => p.clamped).length / all.length;
+  const spreads = all.filter(p => p.asks.length > 1).map(p => Math.max(...p.asks) - Math.min(...p.asks));
+  const k = D.meta.samples || (all.find(p => p.asks.length) || {asks: []}).asks.length || 1;
+  const series = [
+    {label: 'Judged by the LLM (after the clamp)', color: color(LEARN), values: weeks.map(v => avg(v.map(p => p.final)))},
+    {label: 'The rule formula on the same weeks', color: 'var(--viz-2)', values: weeks.map(v => avg(v.map(p => p.rule)))},
+  ];
+  return h('div', {class: 'card stack'},
+    h('div', {}, h('h3', {text: 'How the LLM judged the weeks, next to the rules'}),
+      h('p', {class: 'muted small', text: `"${SBY[LEARN].label}" groups, every student the model answered for. The rule formula is what the rule-based world would have said about the same groups, meetings and moods.`})),
+    h('div', {class: 'grid-4'},
+      h('div', {class: 'tile'}, h('span', {class: 'tile-l', text: 'Agreement with the rules'}), h('span', {class: 'tile-v', text: r == null ? '–' : `r = ${r.toFixed(2)}`}), h('span', {class: 'tile-c', text: 'Correlation of the model\'s raw answers with the rule formula, student by student.'})),
+      h('div', {class: 'tile'}, h('span', {class: 'tile-l', text: 'LLM minus rules'}), h('span', {class: 'tile-v', text: signed(offset)}), h('span', {class: 'tile-c', text: 'Average difference before the clamp. Positive: the model is kinder than the formula.'})),
+      h('div', {class: 'tile'}, h('span', {class: 'tile-l', text: 'Verdicts the clamp changed'}), h('span', {class: 'tile-v', text: FMT.pct(clamped)}), h('span', {class: 'tile-c', text: 'How often the model\'s answer was pulled back toward the rule formula.'})),
+      h('div', {class: 'tile'}, h('span', {class: 'tile-l', text: `Spread between the ${k} asks`}), h('span', {class: 'tile-v', text: spreads.length ? avg(spreads).toFixed(2) : '–'}), h('span', {class: 'tile-c', text: spreads.length ? 'Highest minus lowest answer for the same student, averaged. The verdict is the mean of the asks.' : 'One ask per group, so no spread to measure.'}))),
+    legend(series),
+    lineChart({series, xLabels: weekLabels(), format: 'sat', bands: false, shadeExams: true, height: 190, tipTitle: weekTitle, aria: 'LLM verdicts against the rule formula by week'}));
+}
+function renderStart(root) {
+  root.append(h('div', {class: 'grid-3'}, SID.map(id => h('article', {class: 'card strat'},
+    h('span', {class: 'strat-name'}, h('span', {class: 'lg-k line', style: `--c:${color(id)}`}), SBY[id].label),
+    h('p', {class: 'strat-desc', text: SBY[id].desc})))));
+}
+function thisWeek() {
+  const w = W - 1;
+  const rows = SID.map(id => {
+    const T = D.trace[id][w], c = T.counts || {}, items = [];
+    if (c.quit) items.push(`${c.quit} quit${id === 'stay' ? ' and stay without a group' : ''}`);
+    if (c.unhappy) items.push(`${c.unhappy} unhappy student${c.unhappy > 1 ? 's' : ''} moved`);
+    if (c.dissolved) items.push(`${c.dissolved} group${c.dissolved > 1 ? 's' : ''} dissolved`);
+    if (c.new_groups) items.push(`${c.new_groups} new group${c.new_groups > 1 ? 's' : ''} formed`);
+    if (c.still_waiting) items.push(`${c.still_waiting} still waiting for a group`);
+    const row = D.summary[id][w], ws = T.world || {};
+    const llmLine = ws.groups == null ? null
+      : `LLM: ${ws.calls} call${ws.calls === 1 ? '' : 's'}, ${ws.cached} from cache` + (ws.accounts ? ` (${ws.accounts} meeting account${ws.accounts > 1 ? 's' : ''})` : '') + (ws.failed ? `, ${ws.failed} failed` : '')
+        + (ws.skipped ? `, ${ws.skipped} skipped (budget spent)` : '') + (ws.fallback ? `; ${ws.fallback} group${ws.fallback > 1 ? 's' : ''} judged by the rules` : '')
+        + (ws.spent ? ` · ${FMT.money(ws.spent)}` : '');
+    return h('div', {class: 'happen-row'},
+      h('span', {class: 'strat-name'}, h('span', {class: 'lg-k line', style: `--c:${color(id)}`}), SBY[id].label),
+      h('div', {},
+        h('p', {}, `${FMT.pct(row.unhappy_share)} unhappy, average ${FMT.sat(row.true_satisfaction)}. ${items.length ? cap(items.join(', ')) + '.' : 'Nobody quit or moved.'}`),
+        T.decision ? h('p', {class: 'small muted', text: `Tuning: ${T.decision.text}`}) : null,
+        llmLine ? h('p', {class: 'small muted', text: llmLine}) : null));
+  });
+  return h('div', {class: 'card stack'}, h('h3', {text: `What happened in ${weekTitle(W - 1).toLowerCase()}`}), h('div', {class: 'happen'}, rows));
+}
+
+/* ---------- Week by week ---------- */
+function renderWeeks(root) {
+  if (!W) { root.append(notYet()); return; }
+  root.append(h('div', {class: 'section-head'},
+    h('div', {}, h('h2', {text: 'Every measure, week by week'}),
+      h('p', {text: (SEEDS > 1 ? `Lines are averages over ${SEEDS} seeds; the shaded band runs from the lowest seed to the highest. A seed changes only chance (who shows up, who answers the form), never the students. ` : '') +
+        `Grey columns are exam weeks. Check-ins with peer ratings happen every ${CHECKIN} weeks.`})),
+    bandSwitch()));
+  root.append(stratLegend());
+  const groups = [
+    ['For students', ['unhappy_share', 'true_satisfaction', 'left', 'without_group']],
+    ['What the forms show', ['reported_satisfaction', 'response_rate', 'attendance']],
+    ['Matching', ['moved_after', 'profile_accuracy', 'reliability_accuracy']],
+  ];
+  for (const [title, ids] of groups) {
+    root.append(h('div', {class: 'sub-head'}, h('h3', {text: title})));
+    root.append(h('div', {class: 'grid-3'}, ids.map(id => figure({title: MET[id].label, sub: MET[id].desc,
+      body: metricChart(id, {height: 180})}))));
+  }
+  root.append(figure({title: 'All the numbers', sub: SEEDS > 1 ? `Seed averages per week.` : 'This run, week by week.',
+    body: h('div', {class: 'tbl-wrap'}, metricTable(D.metrics.map(m => m.id)))}));
+}
+
+/* ---------- What it learned ---------- */
+const ACTIONS = {waiting: ['Waiting', 'none'], adopted: ['Changed', 'good'], kept: ['Kept', 'mid'], froze: ['Stopped tuning', 'strong'],
+  frozen: ['Holding', 'none'], unfrozen: ['Restarted', 'bad']};
+function decisionLog(log) {
+  if (!log.length) return h('p', {class: 'empty', text: 'No decisions yet.'});
+  return h('div', {class: 'log'}, log.map(e => {
+    const [label, cls] = ACTIONS[e.action] || [e.action, 'mid'];
+    return h('div', {class: 'log-row'}, h('strong', {text: `Week ${e.week}`}), h('span', {}, h('span', {class: `pill ${cls}`, text: label})), h('span', {class: 'small', text: e.text}));
+  }));
+}
+function renderLearning(root) {
+  if (!W) { root.append(notYet()); return; }
+  const W8 = D.weights, F = D.features;
+  root.append(h('div', {class: 'section-head'}, h('div', {},
+    h('h2', {text: 'What the matcher learned from feedback'}),
+    h('p', {text: `Only "${SBY[LEARN].label}" updates anything. It sees survey answers, schedules and the forms, never the hidden truth.`}))));
+
+  const keys = [
+    {key: 'hand_set', label: 'Live app (hand-set)', color: color('survey'), kind: 'dot'},
+    {key: 'learned', label: `Learned by week ${W}`, color: color(LEARN), kind: 'dot'},
+    {key: 'hidden', label: "World's hidden weights", color: 'var(--ref)', kind: 'tick'},
+  ];
+  const maxShare = Math.max(...F.flatMap(f => keys.map(k => W8[k.key][f])));
+  root.append(figure({
+    title: 'How much each factor counts',
+    sub: 'Each factor\'s share of the total weight in the matching score. The hidden weights cover style gaps and schedules; groupmates not showing up is a separate effect.',
+    legend: legend(keys),
+    body: dotPlot({rows: F.map(f => ({label: FL[f], hint: D.axis_hints[f], marks: keys.map(k => ({...k, value: W8[k.key][f]}))})),
+      domain: [0, Math.ceil(maxShare * 20) / 20], format: 'share', connect: ['hand_set', 'learned'], aria: 'Weight share per factor'}),
+    table: () => table([{label: 'Factor'}, ...keys.map(k => ({label: k.label, num: true}))],
+      F.map(f => ({cells: [FL[f], ...keys.map(k => FMT.share(W8[k.key][f]))]}))),
+  }));
+
+  root.append(figure({
+    title: 'When it changed its weights, and when it stopped',
+    sub: `Every week it refits the weights from all the forms so far, but only adopts the refit if it predicts that week's forms (which it hasn't seen) better by more than chance. ` +
+      `After 3 weeks in a row without a real gain it stops tuning, and restarts only if reported satisfaction drops sharply.` + (SEEDS > 1 ? ' Seed 0.' : ''),
+    body: decisionLog(D.learner_log)}));
+
+  const steps = ['Start', ...weekLabels()];
+  const pathMax = Math.max(...W8.learned_path.flatMap(p => F.map(f => p[f])), ...F.map(f => W8.hidden[f]));
+  const yTop = Math.ceil(pathMax * 20) / 20;
+  root.append(h('div', {class: 'section-head'}, h('div', {}, h('h3', {text: 'How the weights moved, week by week'}),
+    legend([{label: 'Learned share', color: color(LEARN)}, {label: "World's hidden share", color: 'var(--ref)', kind: 'tick'}]))));
+  root.append(h('div', {class: 'grid-4'}, F.map(f => figure({title: FL[f], sub: null,
+    body: lineChart({series: [{label: 'Learned share', color: color(LEARN), values: W8.learned_path.map(p => p[f])}],
+      xLabels: steps, format: 'share', yDomain: [0, yTop], height: 150, bands: false, left: 40,
+      ref: {value: W8.hidden[f], name: "World's hidden share"},
+      tipTitle: i => i === 0 ? 'Before any feedback' : `After week ${i}`, aria: `${FL[f]} weight by week`})}))));
+
+  const acc = D.learner_path[LEARN].accuracy;
+  const accVals = AX.flatMap(a => [acc[0][a], acc[W][a]]);
+  const lo = Math.floor(Math.min(...accVals) * 50) / 50 - 0.02, hi = Math.ceil(Math.max(...accVals) * 50) / 50 + 0.01;
+  const accKeys = [
+    {key: 'start', label: 'Survey answers only', color: color('survey'), kind: 'dot'},
+    {key: 'end', label: `After ${W} week${W > 1 ? 's' : ''} of feedback`, color: color(LEARN), kind: 'dot'},
+  ];
+  root.append(figure({
+    title: 'How well it knows each trait',
+    sub: `Correlation between the matcher's picture and the hidden truth, over all ${N.toLocaleString('en-US')} students. Peer ratings (at check-ins) feed reliability and collaboration; complaint tags nudge the other four.`,
+    legend: legend(accKeys),
+    body: dotPlot({rows: AX.map(a => ({label: FL[a], hint: D.axis_hints[a], marks: [{...accKeys[0], value: acc[0][a]}, {...accKeys[1], value: acc[W][a]}]})),
+      domain: [lo, hi], format: 'r', connect: ['start', 'end'], aria: 'Accuracy per trait'}),
+    table: () => table([{label: 'Trait'}, {label: 'Survey only', num: true}, {label: `After week ${W}`, num: true}, {label: 'Change', num: true}],
+      AX.map(a => ({cells: [FL[a], FMT.r(acc[0][a]), FMT.r(acc[W][a]), `${acc[W][a] - acc[0][a] >= 0 ? '+' : ''}${(acc[W][a] - acc[0][a]).toFixed(3)}`]}))),
+  }));
+
+  const k = AX.indexOf('reliability'), prof = D.trace[LEARN][W - 1].prof;
+  const pts = ys => range(N).map(i => ({x: ST.truth[i][k], y: ys(i), i}));
+  const pearson = ps => {
+    const mx = avg(ps.map(p => p.x)), my = avg(ps.map(p => p.y));
+    let sxy = 0, sxx = 0, syy = 0;
+    for (const p of ps) { sxy += (p.x - mx) * (p.y - my); sxx += (p.x - mx) ** 2; syy += (p.y - my) ** 2; }
+    return sxy / Math.sqrt(sxx * syy);
+  };
+  const surveyPts = pts(i => ST.survey[i][k]), learnPts = prof ? pts(i => prof[i][k]) : null;
+  const tipRows = label => p => [{label: 'True reliability', value: p.x.toFixed(2)}, {label, value: p.y.toFixed(2)}];
+  root.append(h('div', {class: 'grid-2'},
+    figure({title: 'Reliability: what the survey says', sub: `r = ${pearson(surveyPts).toFixed(3)}. Dots above the line rate themselves more reliable than they are. One dot per student.`,
+      body: scatter({points: surveyPts, color: color('survey'), domain: [1, 5], xLabel: 'True reliability', yLabel: 'Survey answer',
+        tipRows: tipRows('Survey answer'), onPick: i => openDrawer({kind: 'student', i}), aria: 'Survey reliability against the truth'})}),
+    learnPts ? figure({title: `Reliability: what the matcher believes after week ${W}`, sub: `r = ${pearson(learnPts).toFixed(3)}. The survey combined with peer ratings. Click any dot to open that student.`,
+      body: scatter({points: learnPts, color: color(LEARN), domain: [1, 5], xLabel: 'True reliability', yLabel: "Matcher's estimate",
+        tipRows: tipRows("Matcher's estimate"), onPick: i => openDrawer({kind: 'student', i}), aria: 'Learned reliability against the truth'})}) : null));
+
+  const pairs = new Set();
+  const perWeek = D.trace[LEARN].map(T => {
+    for (const [a, list] of Object.entries(T.avoid)) for (const b of list) pairs.add(+a < b ? `${a}-${b}` : `${b}-${a}`);
+    return pairs.size;
+  });
+  root.append(figure({title: 'Pairs it keeps apart', sub: 'Students who asked not to be grouped with someone again. The matcher never puts that pair together after that (running total).',
+    body: lineChart({series: [{label: 'Pairs kept apart', color: color(LEARN), values: perWeek}], xLabels: weekLabels(), format: 'count', min: 0,
+      height: 170, bands: false, tipTitle: weekTitle, aria: 'Pairs kept apart by week'})}));
+}
+
+/* ---------- Students & groups ---------- */
+const ex = Object.assign({view: 'groups', strat: LEARN, week: W - 1, course: -1, q: '', sort: 'low', page: 0}, store.get('explore', {}));
+if (ex.week > W - 1 || ex.week < 0) ex.week = W - 1;
+if (!SBY[ex.strat]) ex.strat = LEARN;
+function renderExplore(root) {
+  root.replaceChildren();
+  if (!W) { root.append(notYet()); return; }
+  root.append(h('div', {class: 'section-head'}, h('div', {},
+    h('h2', {text: 'Students and groups'}),
+    h('p', {text: `One simulated semester in full${SEEDS > 1 ? ' (seed 0)' : ''}. Pick a strategy and a week, then open any group or student to see what happened and why.`}))));
+  const list = h('div', {class: 'stack'});
+  const save = () => store.set('explore', ex);
+  const search = h('input', {class: 'input', type: 'search', id: 'explore-search', placeholder: 'Name, group or major', 'aria-label': 'Search students and groups', value: ex.q});
+  search.addEventListener('input', () => { ex.q = search.value; ex.page = 0; drawList(); });
+  const sortSel = h('select', {class: 'input', id: 'explore-sort', 'aria-label': 'Sort'});
+  const fillSort = () => {
+    const opts = ex.view === 'groups'
+      ? [['low', 'Least happy first'], ['high', 'Happiest first'], ['name', 'Group number']]
+      : [['low', 'Least happy first'], ['high', 'Happiest first'], ['moves', 'Most moves'], ['name', 'Name']];
+    if (!opts.some(o => o[0] === ex.sort)) ex.sort = 'low';
+    sortSel.replaceChildren(...opts.map(([v, t]) => h('option', {value: v, text: t, selected: v === ex.sort})));
+  };
+  fillSort();
+  sortSel.addEventListener('change', () => { ex.sort = sortSel.value; ex.page = 0; drawList(); });
+  const courseSel = h('select', {class: 'input', id: 'explore-course', 'aria-label': 'Course'},
+    h('option', {value: -1, text: 'Both courses'}), COURSES.map((c, k) => h('option', {value: k, text: c.code, selected: ex.course === k})));
+  courseSel.addEventListener('change', () => { ex.course = +courseSel.value; ex.page = 0; drawList(); });
+  root.append(h('div', {class: 'card flat controls'},
+    seg('Show', [['groups', 'Groups'], ['students', 'Students']], ex.view, v => { ex.view = v; ex.page = 0; fillSort(); drawList(); }),
+    stratSeg(ex.strat, v => { ex.strat = v; ex.page = 0; drawList(); }),
+    weekPicker(ex.week, v => { ex.week = v; ex.page = 0; drawList(); }),
+    h('div', {class: 'ctl'}, h('span', {class: 'field-l', text: 'Course'}), courseSel),
+    h('div', {class: 'ctl'}, h('span', {class: 'field-l', text: 'Sort'}), sortSel),
+    h('div', {class: 'ctl'}, h('span', {class: 'field-l', text: 'Search'}), search)));
+  root.append(list);
+
+  function drawList() {
+    save();
+    const T = D.trace[ex.strat][ex.week];
+    const q = ex.q.trim().toLowerCase();
+    const card = h('div', {class: 'card'});
+    if (ex.view === 'groups') {
+      let rows = T.groups.map((grp, g) => {
+        const m = grp.m, us = m.map(i => T.u[i]);
+        return {g, grp, m, course: ST.course[m[0]], mean: avg(us), unhappy: us.filter(u => u != null && u < 3).length,
+          quit: m.filter(i => T.left[i] === 1).length, answered: m.filter(i => T.resp[i] === 1).length};
+      });
+      if (ex.course >= 0) rows = rows.filter(r => r.course === ex.course);
+      if (q) rows = rows.filter(r => r.grp.label.toLowerCase().includes(q) || r.m.some(i => ST.name[i].toLowerCase().includes(q) || (ST.major[i] || '').toLowerCase().includes(q)));
+      const byName = (a, b) => a.course - b.course || a.grp.formed - b.grp.formed || a.grp.label.localeCompare(b.grp.label, 'en', {numeric: true});
+      rows.sort(ex.sort === 'high' ? (a, b) => b.mean - a.mean : ex.sort === 'name' ? byName : (a, b) => a.mean - b.mean);
+      const shown = rows.slice(ex.page * PAGE, (ex.page + 1) * PAGE);
+      const unhappyStudents = sum(rows.map(r => r.unhappy)), people = sum(rows.map(r => r.m.length));
+      card.append(h('p', {class: 'muted small', text: `${SBY[ex.strat].label}, ${weekTitle(ex.week).toLowerCase()}: ${rows.length} groups, ${people} students, ${unhappyStudents} of them unhappy (${FMT.pct(people ? unhappyStudents / people : 0)}).`}));
+      card.append(rows.length ? h('div', {class: 'tbl-wrap'}, table(
+        [{label: 'Group', nowrap: true}, {label: 'Members'}, {label: 'Felt', num: true, title: 'Average hidden satisfaction'}, {label: 'Unhappy', num: true}, {label: 'Quit', num: true}, {label: 'Forms', num: true}],
+        shown.map(r => ({onclick: () => openDrawer({kind: 'group', strat: ex.strat, w: ex.week, g: r.g}), cells: [
+          h('div', {class: 'who-name'},
+            h('button', {class: 'linkbtn', type: 'button', text: r.grp.label, onclick: () => openDrawer({kind: 'group', strat: ex.strat, w: ex.week, g: r.g})}),
+            h('span', {class: 'muted small', text: `${COURSES[r.course].code} · ${r.grp.formed ? `formed after week ${r.grp.formed}` : 'semester start'}`})),
+          h('span', {class: 'av-stack', title: r.m.map(i => ST.name[i]).join(', ')}, r.m.map(i => avatar(i))),
+          satPill(r.mean), r.unhappy ? String(r.unhappy) : '–', r.quit ? String(r.quit) : '–', `${r.answered}/${r.m.length}`]})))) : h('p', {class: 'empty', text: 'No groups match. Clear the search or pick another course.'}));
+      card.append(pager(rows.length, ex.page, p => { ex.page = p; drawList(); }));
+    } else {
+      const Ts = D.trace[ex.strat];
+      let ids = range(N);
+      if (ex.course >= 0) ids = ids.filter(i => ST.course[i] === ex.course);
+      if (q) ids = ids.filter(i => ST.name[i].toLowerCase().includes(q) || ST.id[i].includes(q) || (ST.major[i] || '').toLowerCase().includes(q));
+      let rows = ids.map(i => ({i, u: T.u[i], path: Ts.map(t => t.u[i]),
+        moves: range(W).filter(r => movedSets[ex.strat][r].has(i)).length}));
+      const key = u => u == null ? -1 : u;
+      rows.sort(ex.sort === 'high' ? (a, b) => key(b.u) - key(a.u) : ex.sort === 'moves' ? (a, b) => b.moves - a.moves || key(a.u) - key(b.u)
+        : ex.sort === 'name' ? (a, b) => ST.name[a.i].localeCompare(ST.name[b.i]) : (a, b) => key(a.u) - key(b.u));
+      const shown = rows.slice(ex.page * PAGE, (ex.page + 1) * PAGE);
+      const unhappy = rows.filter(r => r.u == null || r.u < 3).length;
+      card.append(h('p', {class: 'muted small', text: `${SBY[ex.strat].label}, ${weekTitle(ex.week).toLowerCase()}: ${rows.length} students, ${unhappy} unhappy or without a group.`}));
+      card.append(rows.length ? h('div', {class: 'tbl-wrap'}, table(
+        [{label: 'Student', nowrap: true}, {label: 'Course', nowrap: true}, {label: 'Felt', num: true}, {label: 'Every week'}, {label: 'Group this week', nowrap: true}, {label: 'Moves', num: true}],
+        shown.map(r => {
+          const g = T.g[r.i];
+          return {onclick: () => openDrawer({kind: 'student', i: r.i}), cells: [
+            h('span', {class: 'who'}, avatar(r.i), h('span', {class: 'who-name'}, studentLink(r.i), h('span', {class: 'muted small', text: `${ST.major[r.i]} · ${ST.year[r.i]}`}))),
+            courseCode(r.i), satPill(r.u),
+            h('span', {class: 'sq-row', role: 'img', 'aria-label': `Satisfaction by week: ${r.path.map((u, k) => `week ${k + 1} ${u == null ? 'no group' : u.toFixed(1)}`).join(', ')}`},
+              r.path.map((u, k) => h('span', {class: `sq ${satClass(u)}${k === ex.week ? ' cur' : ''}`, title: `Week ${k + 1}: ${u == null ? 'no group' : u.toFixed(2)}`}))),
+            g < 0 ? h('span', {class: 'muted', text: 'No group'}) : T.groups[g].label,
+            r.moves ? String(r.moves) : '–']};
+        }))) : h('p', {class: 'empty', text: 'No students match. Clear the search or pick another course.'}));
+      card.append(pager(rows.length, ex.page, p => { ex.page = p; drawList(); }));
+    }
+    list.replaceChildren(card);
+  }
+  drawList();
+}
+
+/* ---------- Drawer ---------- */
+const drawer = $('#drawer'), scrim = $('#scrim'), dbody = $('#drawer-body');
+let stack = [], lastFocus = null, drawerStrat = LEARN;
+function openDrawer(view) {
+  if (drawer.hidden) { lastFocus = document.activeElement; stack = []; drawerStrat = ex.strat; }
+  stack.push(view);
+  renderDrawer();
+  drawer.hidden = false; scrim.hidden = false;
+  document.body.classList.add('locked');
+  drawer.scrollTop = 0;
+  $('#drawer-close').focus();
+}
+function closeDrawer() {
+  drawer.hidden = true; scrim.hidden = true; stack = [];
+  document.body.classList.remove('locked');
+  hideTip();
+  dbody.replaceChildren();
+  if (lastFocus && lastFocus.isConnected) lastFocus.focus();
+}
+function renderDrawer() {
+  const v = stack[stack.length - 1];
+  $('#drawer-back').hidden = stack.length < 2;
+  $('#drawer-kicker').textContent = v.kind === 'student' ? 'Student' : 'Group';
+  hideTip();
+  dbody.replaceChildren(...(v.kind === 'student' ? studentView(v.i) : groupView(v.strat, v.w, v.g)));
+}
+$('#drawer-close').addEventListener('click', closeDrawer);
+$('#drawer-back').addEventListener('click', () => { stack.pop(); renderDrawer(); drawer.scrollTop = 0; });
+scrim.addEventListener('click', closeDrawer);
+addEventListener('keydown', e => { if (e.key === 'Escape' && !drawer.hidden) closeDrawer(); });
+drawer.addEventListener('scroll', hideTip, {passive: true});
+
+function studentView(i) {
+  const c = COURSES[ST.course[i]];
+  const out = [];
+  out.push(h('div', {class: 'who-lg'}, avatar(i, 'lg'), h('div', {},
+    h('h2', {text: ST.name[i]}),
+    h('p', {class: 'muted', text: `${c.code} · ${ST.major[i]} · ${ST.year[i]} · ${ST.gender[i]}`}),
+    h('p', {class: 'muted small', text: `${ST.id[i]} · prefers ${ST.per_week[i]} session${ST.per_week[i] > 1 ? 's' : ''} a week${ST.careless[i] ? ` · answered the survey carelessly (${ST.careless[i].replace('_', '-')})` : ''}`}))));
+
+  const series = SID.map(id => ({label: SBY[id].label, short: SBY[id].short, color: color(id), values: range(W).map(r => D.trace[id][r].u[i])}));
+  out.push(h('section', {class: 'dsec'}, h('h3', {text: 'Their semester under each strategy'}),
+    h('p', {class: 'muted small', text: 'Hidden satisfaction at the end of each week. The pink zone is unhappy (below 3). Gaps mean no group.'}),
+    stratLegend(),
+    lineChart({series, xLabels: weekLabels(), format: 'sat', yDomain: [1, 5], ticks: [1, 2, 3, 4, 5], zone: [1, 3], bands: false, height: 180, tipTitle: weekTitle, aria: 'Satisfaction by week'})));
+
+  const weeksBox = h('div', {class: 'tbl-wrap'});
+  const drawWeeks = () => weeksBox.replaceChildren(weekTable(i, drawerStrat));
+  drawWeeks();
+  out.push(h('section', {class: 'dsec'}, h('h3', {text: 'Week by week'}),
+    stratSeg(drawerStrat, v => { drawerStrat = v; drawWeeks(); }), weeksBox));
+
+  const learned = W ? D.trace[LEARN][W - 1].prof : null;
+  const traitKeys = [
+    {label: 'Survey answer', color: color('survey'), kind: 'dot'},
+    learned ? {label: `Matcher's view after week ${W}`, color: color(LEARN), kind: 'ring'} : null,
+    {label: 'Hidden truth', color: 'var(--ref)', kind: 'tick'},
+  ].filter(Boolean);
+  const pos = v => `${((v - 1) / 4 * 100).toFixed(1)}%`;
+  out.push(h('section', {class: 'dsec'}, h('h3', {text: 'Survey vs. the truth'}),
+    h('p', {class: 'muted small', text: 'The matcher only sees the survey (and, when learning, what feedback taught it). The truth drives how the simulated student behaves.'}),
+    legend(traitKeys),
+    AX.map((a, k) => h('div', {class: 'trait'},
+      h('div', {class: 'trait-l'}, FL[a], h('span', {text: D.axis_hints[a]})),
+      h('div', {class: 'track', title: `Survey ${ST.survey[i][k].toFixed(2)} · truth ${ST.truth[i][k].toFixed(2)}${learned ? ` · matcher ${learned[i][k].toFixed(2)}` : ''}`},
+        h('span', {class: 'mk tick', style: `left:${pos(ST.truth[i][k])};--c:var(--ref)`}),
+        h('span', {class: 'mk', style: `left:${pos(ST.survey[i][k])};--c:${color('survey')}`}),
+        learned ? h('span', {class: 'mk ring', style: `left:${pos(learned[i][k])};--c:${color(LEARN)}`}) : null))),
+    h('div', {class: 'scale'}, h('span'), h('div', {}, ['1', '2', '3', '4', '5'].map(t => h('span', {text: t}))))));
+
+  const A = D.averages;
+  out.push(h('section', {class: 'dsec'}, h('h3', {text: 'What bothers them in a group (hidden)'}),
+    h('p', {class: 'muted small', text: 'How much each kind of mismatch hurts this student in the rule-based world. The thin mark is the cohort average. The LLM world doesn\'t see these; it judges for itself.'}),
+    barList([
+      ...AX.map((a, k) => ({label: `${FL[a]} gaps`, value: ST.sens[i][k], mark: A.sens[k], markTitle: 'Cohort average', text: ST.sens[i][k].toFixed(2)})),
+      {label: 'Schedule clashes', value: ST.schedule_w[i], mark: A.schedule_w, markTitle: 'Cohort average', text: ST.schedule_w[i].toFixed(2)},
+      {label: 'Groupmates not showing up', value: ST.flake_w[i], mark: A.flake_w, markTitle: 'Cohort average', text: ST.flake_w[i].toFixed(2)},
+    ], {max: Math.max(3, ...ST.sens[i], ST.schedule_w[i], ST.flake_w[i])}),
+    h('p', {class: 'small', text: `Rates groupmates ${ST.leniency[i] >= A.leniency ? 'more' : 'less'} generously than average (${ST.leniency[i] >= 0 ? '+' : ''}${ST.leniency[i].toFixed(2)} on every rating). Answers forms about ${FMT.pct(ST.response_rate[i] * 0.8)} of the time at first.`})));
+
+  const free = new Set();
+  for (const [d, a, b] of ST.blocks[i]) for (let t = a; t < b; t++) free.add(`${d}-${t}`);
+  const hours = range(16).map(k => 7 + k);
+  const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+  out.push(h('section', {class: 'dsec'}, h('h3', {text: 'When they\'re free'}),
+    h('div', {class: 'avail', role: 'img', 'aria-label': `Free hours: ${ST.blocks[i].map(([d, a, b]) => `${days[d]} ${a}:00–${b}:00`).join(', ')}`},
+      h('span'), hours.map(t => h('span', {text: t % 4 === 0 ? (t === 12 ? '12p' : t > 12 ? `${t - 12}p` : `${t}a`) : ''})),
+      days.map((d, k) => [h('span', {text: d}), hours.map(t => h('span', {class: `c${free.has(`${k}-${t}`) ? ' on' : ''}`, title: `${d} ${t}:00`}))]))));
+  return out;
+}
+
+function weekTable(i, strat) {
+  const rows = range(W).map(w => {
+    const T = D.trace[strat][w], g = T.g[i];
+    if (g < 0) return {cells: [`W${w + 1}`, h('span', {class: 'muted', text: 'No group'}), satPill(null), '–', h('span', {class: 'muted small', text: 'Counts as 2.0'})]};
+    const grp = T.groups[g], notes = [];
+    if (T.left[i] === 1) notes.push(h('div', {class: 'warn small', text: 'Quit the group'}));
+    if (T.resp[i] === 1) {
+      notes.push(h('div', {class: 'small', text: `Came to ${T.att[i]} of ${T.mpw[i]}${T.prel[i] != null ? ` · rated ${FMT.one(T.prel[i])} reliable, ${FMT.one(T.phelp[i])} helpful by groupmates` : ''}`}));
+      if (T.tags[i]) notes.push(h('div', {}, T.tags[i].map(t => h('span', {class: 'tagchip', text: tagLabel(t)}))));
+      if (T.avoid[i]) notes.push(h('div', {class: 'small'}, 'Avoid: ', T.avoid[i].map((o, k) => [k ? ', ' : '', studentLink(o)])));
+    } else notes.push(h('div', {class: 'muted small', text: 'Didn\'t answer the form'}));
+    const llm = T.llm[i];
+    if (llm && llm[2]) notes.push(h('div', {class: 'quote', text: `“${llm[2]}”`, title: `LLM ${llm[1]} · rule world ${llm[0]}`}));
+    if (w < W - 1 && movedSets[strat][w].has(i)) notes.push(h('div', {class: 'small', text: 'Moved to another group after this week'}));
+    return {cells: [
+      h('span', {class: 'nowrap', text: `W${w + 1}`, title: weekTitle(w)}),
+      h('button', {class: 'linkbtn', type: 'button', text: grp.label, onclick: () => openDrawer({kind: 'group', strat, w, g})}),
+      satPill(T.u[i]),
+      T.resp[i] === 1 ? h('span', {class: 'nowrap'}, ratingPill(T.sat[i]), ' ', T.wma[i] ? 'keep' : h('strong', {text: 'switch'})) : '–',
+      notes]};
+  });
+  const t = table([{label: 'Week'}, {label: 'Group', nowrap: true}, {label: 'Felt', num: true}, {label: 'Form', nowrap: true}, {label: 'What happened'}], rows);
+  t.classList.add('top');
+  return t;
+}
+
+function groupView(strat, w, g) {
+  const T = D.trace[strat][w], grp = T.groups[g], m = grp.m, c = COURSES[ST.course[m[0]]];
+  const us = m.map(i => T.u[i]);
+  const unhappy = us.filter(u => u != null && u < 3).length, quit = m.filter(i => T.left[i] === 1).length, answered = m.filter(i => T.resp[i] === 1).length;
+  const mpw = m.map(i => T.mpw[i]).find(v => v != null);
+  const out = [];
+  out.push(h('div', {class: 'dsec'},
+    h('h2', {text: `${grp.label}, ${c.code}`}),
+    h('p', {class: 'muted', text: `${SBY[strat].label} · ${weekTitle(w)} · ${grp.formed ? `formed after week ${grp.formed}` : 'formed at the start of the semester'}`}),
+    h('div', {class: 'stats'},
+      h('span', {class: 'chip'}, 'Felt ', satPill(avg(us))),
+      h('span', {class: 'chip', text: `${unhappy} of ${m.length} unhappy`}),
+      h('span', {class: 'chip', text: `${quit} quit`}),
+      h('span', {class: 'chip', text: `${answered} of ${m.length} answered the form`}),
+      mpw != null ? h('span', {class: 'chip', text: `met ${mpw}× this week`}) : null)));
+
+  const hasLlm = m.some(i => T.llm[i]);
+  out.push(h('section', {class: 'dsec'}, h('h3', {text: 'Members'}), h('div', {class: 'tbl-wrap'}, table(
+    [{label: 'Student'}, {label: 'Felt', num: true}, {label: 'Rated', num: true}, {label: 'Keep?'}, {label: 'Came', num: true}],
+    m.slice().sort((a, b) => (T.u[a] ?? 0) - (T.u[b] ?? 0)).map(i => ({onclick: () => openDrawer({kind: 'student', i}), cells: [
+      h('span', {class: 'who'}, avatar(i), h('span', {class: 'who-name'}, studentLink(i),
+        T.left[i] === 1 ? h('span', {class: 'small warn', text: 'quit this week'}) : h('span', {class: 'muted small', text: ST.major[i]}),
+        T.llm[i] && T.llm[i][2] ? h('span', {class: 'quote', text: `“${T.llm[i][2]}”`}) : null)),
+      satPill(T.u[i]), T.resp[i] === 1 ? ratingPill(T.sat[i]) : h('span', {class: 'muted small', text: 'no form'}),
+      T.resp[i] === 1 ? (T.wma[i] ? 'Yes' : h('strong', {text: 'No'})) : '–',
+      T.resp[i] === 1 ? `${T.att[i]}/${T.mpw[i]}` : '–']}))))));
+  if (hasLlm) out.push(h('p', {class: 'muted small', text: 'Quotes are the LLM\'s one-line notes for each simulated student. "Felt" is after the clamp.'}));
+
+  const story = T.stories && T.stories[g];
+  if (story && story.length) {
+    out.push(h('section', {class: 'dsec'}, h('h3', {text: 'What happened at the meetings'}),
+      h('p', {class: 'muted small', text: 'Written by the LLM from who came, what the members are like and the previous meeting. The week\'s verdicts above were judged from these accounts.'}),
+      story.map((m, k) => h('div', {class: 'story'},
+        h('div', {class: 'story-head'}, h('strong', {text: `Meeting ${k + 1}`}), h('span', {class: 'muted small', text: cap(m.who)})),
+        m.account ? h('p', {text: m.account}) : h('p', {class: 'muted small', text: 'No account: the call failed or the budget was spent, so the judge saw only who came.'}),
+        Object.keys(m.exp || {}).length ? h('div', {}, Object.entries(m.exp).filter(([, e]) => e !== 'absent').map(([i, e]) => h('span', {class: 'tagchip', text: `${ST.name[i].split(' ')[0]} ${EXP_WORDS[e] || e}`}))) : null))));
+  }
+
+  const saw = strat === LEARN && grp.formed > 0 ? D.trace[LEARN][grp.formed - 1].prof : ST.survey;
+  const heatBox = h('div', {class: 'tbl-wrap'});
+  const drawHeat = which => {
+    const P = which === 'truth' ? ST.truth : saw;
+    const cell = v => { const a = 0.1 + (v - 1) / 4 * 0.8; return h('td', {style: `background:rgba(var(--heat),${a.toFixed(2)});color:${a > 0.55 ? 'var(--on-heat)' : 'var(--ink)'}`, text: v.toFixed(1)}); };
+    const spread = AX.map((_, k) => { const vs = m.map(i => P[i][k]); return Math.max(...vs) - Math.min(...vs); });
+    heatBox.replaceChildren(h('table', {class: 'heat'},
+      h('thead', {}, h('tr', {}, h('th'), AX.map(a => h('th', {scope: 'col', title: D.axis_hints[a], text: FL[a].split(' ')[0]})))),
+      h('tbody', {},
+        m.map(i => h('tr', {}, h('th', {class: 'rowh', scope: 'row', text: ST.name[i].split(' ')[0]}), AX.map((_, k) => cell(P[i][k])))),
+        h('tr', {class: 'spread'}, h('th', {class: 'rowh', scope: 'row', text: 'Spread'}), spread.map(s => h('td', {class: s >= 1.5 ? 'wide' : null, title: 'Highest minus lowest in the group', text: s.toFixed(1)}))))));
+  };
+  drawHeat('saw');
+  out.push(h('section', {class: 'dsec'}, h('h3', {text: 'Traits side by side'}),
+    h('p', {class: 'muted small', text: `Darker means higher, on a 1-5 scale. "What the matcher saw" is ${strat === LEARN && grp.formed > 0 ? `its learned view when it formed this group, after week ${grp.formed}` : 'the survey answers'}. A wide spread is where the group differs most.`}),
+    seg('View', [['saw', 'What the matcher saw'], ['truth', 'Hidden truth']], 'saw', drawHeat), heatBox));
+
+  const tagCount = new Map();
+  for (const i of m) for (const t of (T.tags[i] || [])) tagCount.set(t, (tagCount.get(t) || 0) + 1);
+  const avoids = m.flatMap(i => (T.avoid[i] || []).map(o => [i, o]));
+  if (tagCount.size || avoids.length) {
+    out.push(h('section', {class: 'dsec'}, h('h3', {text: 'Complaints on the forms'}),
+      tagCount.size ? h('div', {}, [...tagCount].sort((a, b) => b[1] - a[1]).map(([t, n]) => h('span', {class: 'tagchip', text: `${tagLabel(t)}${n > 1 ? ` ×${n}` : ''}`}))) : null,
+      avoids.map(([a, b]) => h('p', {class: 'small'}, studentLink(a), ' asked not to be grouped with ', studentLink(b), ' again.'))));
+  }
+  if (w < W - 1 && strat !== 'stay') {
+    const movers = m.filter(i => movedSets[strat][w].has(i));
+    out.push(h('section', {class: 'dsec'}, h('h3', {text: 'After this week'}),
+      h('p', {}, movers.length === 0 ? 'Everyone stayed together.'
+        : movers.length === m.length ? 'The group was dissolved and everyone was placed in new groups.'
+        : [movers.length === 1 ? 'One member moved: ' : `${movers.length} members moved: `, movers.map((i, k) => [k ? ', ' : '', studentLink(i)]), '.'])));
+  }
+  return out;
+}
+
+/* ---------- Feedback forms ---------- */
+const fb = Object.assign({strat: LEARN, week: -1, low: false, q: '', page: 0}, store.get('feedback', {}));
+if (fb.week > W - 1) fb.week = -1;
+if (!SBY[fb.strat]) fb.strat = LEARN;
+function renderFeedback(root) {
+  root.replaceChildren();
+  if (!W) { root.append(notYet()); return; }
+  root.append(h('div', {class: 'section-head'}, h('div', {},
+    h('h2', {text: 'Feedback forms'}),
+    h('p', {text: `Everything students wrote${SEEDS > 1 ? ' (seed 0)' : ''}: a short pulse every week, and a longer check-in with peer ratings every ${CHECKIN} weeks. This is all the app could ever see; the hidden truth sits beside it for comparison.`}))));
+  root.append(h('div', {class: 'card flat controls'},
+    stratSeg(fb.strat, v => { fb.strat = v; fb.page = 0; draw(); }),
+    weekPicker(fb.week, v => { fb.week = v; fb.page = 0; draw(); }, true)));
+  const body = h('div', {class: 'stack'});
+  root.append(body);
+
+  function draw() {
+    store.set('feedback', fb);
+    const weeks = fb.week < 0 ? range(W) : [fb.week];
+    const forms = [];
+    let grouped = 0;
+    for (const w of weeks) {
+      const T = D.trace[fb.strat][w];
+      for (let i = 0; i < N; i++) {
+        if (T.g[i] >= 0) grouped++;
+        if (T.resp[i] === 1) forms.push({i, w, T});
+      }
+    }
+    const sats = forms.map(f => f.T.sat[f.i]), felt = forms.map(f => f.T.u[f.i]);
+    const keep = forms.filter(f => f.T.wma[f.i] === 1).length;
+    const complaints = forms.filter(f => f.T.tags[f.i]).length;
+    const avoiders = forms.filter(f => f.T.avoid[f.i]).length;
+    const scope = fb.week < 0 ? `all ${W} weeks` : `week ${fb.week + 1}`;
+    const tiles = h('div', {class: 'grid-4'},
+      h('div', {class: 'card tile'}, h('span', {class: 'tile-l', text: 'Forms answered'}), h('span', {class: 'tile-v', text: forms.length.toLocaleString('en-US')}),
+        h('span', {class: 'tile-c', text: `${FMT.pct(grouped ? forms.length / grouped : 0)} of grouped students, ${scope}`})),
+      h('div', {class: 'card tile'}, h('span', {class: 'tile-l', text: 'Said vs. felt'}), h('span', {class: 'tile-v', text: `${FMT.sat(avg(sats))} / ${FMT.sat(avg(felt))}`}),
+        h('span', {class: 'tile-c', text: 'Average rating on the form, then the same students\' hidden satisfaction'})),
+      h('div', {class: 'card tile'}, h('span', {class: 'tile-l', text: 'Would keep their group'}), h('span', {class: 'tile-v', text: FMT.pct(forms.length ? keep / forms.length : 0)}),
+        h('span', {class: 'tile-c', text: `${(forms.length - keep).toLocaleString('en-US')} answers asked for a new group`})),
+      h('div', {class: 'card tile'}, h('span', {class: 'tile-l', text: 'Complained'}), h('span', {class: 'tile-v', text: complaints.toLocaleString('en-US')}),
+        h('span', {class: 'tile-c', text: `${avoiders} also named someone to avoid`})));
+
+    const said = [1, 2, 3, 4, 5].map(k => sats.filter(v => v === k).length / (sats.length || 1));
+    const real = [1, 2, 3, 4, 5].map(k => felt.filter(v => Math.min(5, Math.max(1, Math.round(v))) === k).length / (felt.length || 1));
+    const distSeries = [{label: 'On the form', color: 'var(--viz)', values: said}, {label: 'How they really felt (rounded)', color: 'var(--viz-2)', values: real}];
+    const distFig = figure({title: 'Ratings on the form vs. how students really felt',
+      sub: 'Share of answered forms at each rating. Students round up, so the form looks rosier than the truth.',
+      legend: legend(distSeries.map(s => ({label: s.label, color: s.color, kind: 'rect'}))),
+      body: columnChart({categories: ['1', '2', '3', '4', '5'], series: distSeries, format: 'pct', tipTitle: c => `Rating ${c + 1}`, aria: 'Distribution of ratings'}),
+      table: () => table([{label: 'Rating'}, ...distSeries.map(s => ({label: s.label, num: true}))], [1, 2, 3, 4, 5].map((k, c) => ({cells: [String(k), FMT.pct(said[c]), FMT.pct(real[c])]})))});
+
+    const tagN = new Map();
+    for (const f of forms) for (const t of (f.T.tags[f.i] || [])) tagN.set(t, (tagN.get(t) || 0) + 1);
+    const tagRows = [...tagN].sort((a, b) => b[1] - a[1]).map(([t, n]) => ({label: tagLabel(t), value: n, text: `${n} · ${FMT.pct(n / (complaints || 1))}`}));
+    const tagFig = figure({title: 'What students said would help',
+      sub: 'Asked when a student rated the group 3 or lower. A form can name up to two things. Percent of forms that complained.',
+      body: tagRows.length ? barList(tagRows, {format: 'count'}) : h('p', {class: 'empty', text: 'No complaints in this selection.'})});
+
+    const qFig = figure({title: 'What the form asks',
+      sub: 'A blue dot marks what the learner uses. The two new questions aren\'t in the app yet; this simulation suggests adding them.',
+      body: h('div', {class: 'tbl-wrap'}, table([{label: 'Question'}, {label: 'When', nowrap: true}, {label: 'Where the answer comes from'}, {label: 'What the learner does with it'}],
+        D.form_fields.map(f => ({cells: [
+          h('span', {}, h('strong', {text: f.question}), f.new ? h('span', {class: 'badge', style: 'margin-left:8px', text: 'New'}) : null),
+          f.when, h('span', {class: 'small', text: f.produced}),
+          h('span', {class: 'small'}, f.used ? h('span', {class: 'lg-k dot', style: `--c:${color(LEARN)};margin-right:6px`}) : null, f.use)]}))))});
+
+    const tableBox = h('div', {class: 'stack'});
+    const search = h('input', {class: 'input', type: 'search', id: 'forms-search', placeholder: 'Student or group', 'aria-label': 'Search forms', value: fb.q});
+    search.addEventListener('input', () => { fb.q = search.value; fb.page = 0; drawTable(); });
+    const lowBox = h('input', {type: 'checkbox', id: 'forms-low'});
+    lowBox.checked = fb.low;
+    lowBox.addEventListener('change', () => { fb.low = lowBox.checked; fb.page = 0; drawTable(); });
+    function drawTable() {
+      store.set('feedback', fb);
+      const q = fb.q.trim().toLowerCase();
+      let rows = forms;
+      if (fb.low) rows = rows.filter(f => f.T.sat[f.i] <= 2);
+      if (q) rows = rows.filter(f => ST.name[f.i].toLowerCase().includes(q) || f.T.groups[f.T.g[f.i]].label.toLowerCase().includes(q));
+      const shown = rows.slice(fb.page * PAGE, (fb.page + 1) * PAGE);
+      const chat = ['low', 'medium', 'high'];
+      tableBox.replaceChildren(rows.length ? h('div', {class: 'tbl-wrap'}, table([
+        {label: 'Student', nowrap: true}, {label: 'Week', num: true}, {label: 'Group', nowrap: true}, {label: 'Rated', num: true, used: true}, {label: 'Felt', num: true, title: 'Hidden satisfaction (the app never sees this)'},
+        {label: 'Keep?', used: true}, {label: 'Came', num: true}, {label: 'Fit', num: true, title: 'Check-in weeks'}, {label: 'Productive', num: true}, {label: 'Chat'},
+        {label: 'Rated reliable', num: true, used: true, title: 'Average rating received from groupmates (check-in weeks)'}, {label: 'Rated helpful', num: true, used: true}, {label: 'What would help', used: true}, {label: 'Avoid', used: true}],
+        shown.map(f => {
+          const T = f.T, i = f.i, grp = T.groups[T.g[i]];
+          return {onclick: () => openDrawer({kind: 'student', i}), cells: [
+            studentLink(i), String(f.w + 1),
+            h('button', {class: 'linkbtn', type: 'button', text: grp.label, onclick: () => openDrawer({kind: 'group', strat: fb.strat, w: f.w, g: T.g[i]})}),
+            ratingPill(T.sat[i]), satPill(T.u[i]), T.wma[i] ? 'Yes' : h('strong', {text: 'No'}), `${T.att[i]}/${T.mpw[i]}`,
+            T.fit[i] != null ? `${T.fit[i]}/5` : '–', T.prod[i] != null ? `${T.prod[i]}/5` : '–', chat[T.chat[i]] || '–', FMT.one(T.prel[i]), FMT.one(T.phelp[i]),
+            T.tags[i] ? T.tags[i].map(t => h('span', {class: 'tagchip', text: tagLabel(t)})) : '–',
+            T.avoid[i] ? T.avoid[i].map((o, k) => [k ? ', ' : '', studentLink(o)]) : '–']};
+        }))) : h('p', {class: 'empty', text: 'No forms match.'}),
+      pager(rows.length, fb.page, p => { fb.page = p; drawTable(); }));
+    }
+    drawTable();
+    const formsFig = figure({title: 'Every form', sub: 'Columns with a blue dot feed the learner. "Felt" is the hidden truth, shown for comparison only. Fit, productivity, chat and peer ratings are asked at check-ins only.',
+      body: h('div', {class: 'stack'}, h('div', {class: 'controls'},
+        h('div', {class: 'ctl'}, h('span', {class: 'field-l', text: 'Search'}), search),
+        h('label', {class: 'switch', for: 'forms-low'}, lowBox, 'Only ratings of 2 or lower')), tableBox)});
+
+    body.replaceChildren(tiles, h('div', {class: 'grid-2'}, distFig, tagFig), qFig, formsFig);
+  }
+  draw();
+}
+
+/* ---------- When to regroup ---------- */
+function renderRegroup(root) {
+  const F = D.frequency;
+  root.append(h('div', {class: 'section-head'}, h('div', {},
+    h('h2', {text: 'How often should matching change?'}),
+    h('p', {text: 'Changing groups can fix a bad fit, but every move costs the weeks a group needs to settle, and feedback is noisy: no group is perfect. ' +
+      'So two things were tested instead of guessed: how often to move unhappy students, and when to stop tuning the matching weights.'}))));
+  if (!F) {
+    root.append(h('div', {class: 'card'}, h('p', {}, 'Not tested yet. Run ', h('code', {text: 'python -m simulation.frequency'}), ', then rebuild the dashboard.')));
+    return;
+  }
+  const R = F.results, pick = R.find(r => r.recommended);
+  const best = R.reduce((a, b) => (b.semester_satisfaction > a.semester_satisfaction ? b : a));
+  const find = (cad, str, gate) => R.find(r => r.cadence === cad && r.strikes === str && r.gate === gate);
+  const pairs = R.filter(r => r.strikes === 1 && r.cadence != null).map(r => [r, find(r.cadence, 2, r.gate)]).filter(p => p[1]);
+  const patience = avg(pairs.map(([a, b]) => a.semester_satisfaction - b.semester_satisfaction));
+  const tuning = R.filter(r => r.gate).map(r => [r, find(r.cadence, r.strikes, false)]).filter(p => p[1]);
+  const tuneGap = Math.max(...tuning.map(([a, b]) => Math.abs(a.semester_satisfaction - b.semester_satisfaction)));
+  const weekly = find(1, pick.strikes, pick.gate);
+  const stops = R.filter(r => r.gate && r.tuning_stopped).map(r => r.tuning_stopped);
+  const ref = F.reference;
+
+  root.append(h('div', {class: 'card stack'},
+    h('div', {class: 'strat-top'}, h('h3', {text: `Recommended: ${policyLabel(pick.cadence, pick.strikes)}, and change the weights only when it helps`}), h('span', {class: 'badge strong', text: 'Final call'})),
+    h('ul', {class: 'list'},
+      h('li', {}, h('strong', {text: 'Act on the first unhappy answer. '}), `Waiting for a second one in a row costs ${patience.toFixed(2)} points of satisfaction on average, at every cadence: unhappy students sit in bad groups for an extra week or two.`),
+      weekly && weekly !== pick ? h('li', {}, h('strong', {text: `Every ${pick.cadence} weeks is enough. `}), `Moving every week scores ${(weekly.semester_satisfaction - pick.semester_satisfaction >= 0 ? '+' : '')}${(weekly.semester_satisfaction - pick.semester_satisfaction).toFixed(3)} with ${Math.round((weekly.moves_per_student / pick.moves_per_student - 1) * 100)}% more moves: within the ${F.tie} tie margin, so the calmer option wins.`) : null,
+      h('li', {}, h('strong', {text: 'Stop tuning when refits stop helping. '}), `Checked tuning scores the same as tuning every week (the biggest difference is ${tuneGap.toFixed(3)} points), so the extra changes were noise.` +
+        (stops.length ? ` Tuning stopped around week ${Math.round(avg(stops))} on average.` : '')),
+      h('li', {}, h('strong', {text: 'Regrouping is worth it. '}), `Never moving anyone scores ${FMT.sat(find(null, 1, true)?.semester_satisfaction)}, never regrouping at all ${FMT.sat(ref.stay?.semester_satisfaction)}, against ${FMT.sat(pick.semester_satisfaction)} for the recommendation.`)),
+    h('p', {class: 'small muted', text: `Score: average true satisfaction over all ${F.weeks} weeks and all students (no group counts as 2.0), ${F.seeds} seeds, learn strategy, rule-based world. Settings within ${F.tie} of the best count as tied; the tie goes to the fewest moves.`})));
+
+  const cadences = [[1, 'Every week'], [2, 'Every 2 weeks'], [4, 'Every 4 weeks'], [null, 'Never']];
+  const cols = [[1, true, '1 answer · checked'], [1, false, '1 answer · weekly'], [2, true, '2 in a row · checked'], [2, false, '2 in a row · weekly']];
+  const sats = R.map(r => r.semester_satisfaction), lo = Math.min(...sats), hi = Math.max(...sats);
+  const cell = r => {
+    if (!r) return h('td', {class: 'muted', text: '—', title: 'Not tested: nobody is moved for being unhappy'});
+    const a = 0.08 + (r.semester_satisfaction - lo) / ((hi - lo) || 1) * 0.72;
+    return h('td', {class: r.recommended ? 'pick' : null, style: `background:rgba(var(--heat),${a.toFixed(2)});color:${a > 0.55 ? 'var(--on-heat)' : 'var(--ink)'}`,
+      title: `${cap(policyLabel(r.cadence, r.strikes))}, ${r.gate ? 'checked' : 'weekly'} tuning: average satisfaction ${r.semester_satisfaction.toFixed(3)}, ${FMT.pct(r.final_unhappy)} unhappy in the last week, ${r.moves_per_student.toFixed(2)} moves per student`},
+      h('strong', {text: r.semester_satisfaction.toFixed(3)}), h('span', {text: `${r.moves_per_student.toFixed(2)} moves`}), r.recommended ? h('span', {text: ' · pick'}) : null);
+  };
+  root.append(figure({title: 'Every combination', sub: 'Average satisfaction over the semester (bigger is better) and moves per student (fewer is calmer). Darker is better. The outlined cell is the recommendation.',
+    body: h('div', {class: 'tbl-wrap'}, h('table', {class: 'freq'},
+      h('thead', {}, h('tr', {}, h('th', {text: 'Move unhappy students'}), cols.map(([, , t]) => h('th', {scope: 'col', text: t})))),
+      h('tbody', {}, cadences.map(([cad, label]) => h('tr', {}, h('th', {class: 'rowh', scope: 'row', text: label}),
+        cols.map(([str, gate]) => cell(find(cad, str, gate)))))))),
+    table: () => table([{label: 'Setting'}, {label: 'Tuning'}, {label: 'Avg satisfaction', num: true}, {label: 'Unhappy, last week', num: true}, {label: 'Moves per student', num: true}, {label: 'Quits', num: true}],
+      R.map(r => ({cells: [cap(policyLabel(r.cadence, r.strikes)), r.gate ? 'Checked' : 'Every week', r.semester_satisfaction.toFixed(3), FMT.pct(r.final_unhappy), r.moves_per_student.toFixed(2), FMT.count(r.quits)]})))}));
+
+  root.append(h('div', {class: 'grid-2'},
+    figure({title: 'Satisfaction against disruption', sub: 'Each bar is a setting with checked tuning, sorted by average satisfaction. The number is moves per student.',
+      body: barList(R.filter(r => r.gate).sort((a, b) => b.semester_satisfaction - a.semester_satisfaction).map(r => ({
+        label: cap(r.cadence == null ? 'never move unhappy students' : policyLabel(r.cadence, r.strikes).replace('move unhappy students ', '')), value: r.semester_satisfaction - 3, text: `${r.semester_satisfaction.toFixed(3)} · ${r.moves_per_student.toFixed(2)}`,
+        color: r.recommended ? 'var(--s-learn)' : 'var(--viz)'})), {max: hi - 3})}),
+    h('div', {class: 'card stack'}, h('h3', {text: 'The final call, as the matcher runs it'}),
+      h('ul', {class: 'list'},
+        h('li', {}, h('strong', {text: 'Every week: '}), 'collect the forms and update what\'s known about each student (peer ratings, complaint tags, pairs to avoid). That\'s evidence about people, not a change of method.'),
+        h('li', {}, h('strong', {text: 'Change the weights only with evidence: '}), 'a refit is adopted only if it predicts the newest forms, which it hasn\'t seen, better by more than chance.'),
+        h('li', {}, h('strong', {text: 'Stop when it settles: '}), 'after 3 weeks in a row without a real gain, the weights are frozen. That\'s the "good enough" point: no group is perfect, and further changes just chase noise.'),
+        h('li', {}, h('strong', {text: 'Reopen on an alarm: '}), 'if average reported satisfaction drops 0.3 below where it was when tuning stopped, tuning restarts.'),
+        h('li', {}, h('strong', {text: 'Move people sparingly: '}), `${policyLabel((D.meta.policy || pick).cadence, (D.meta.policy || pick).strikes)}; not before ${(D.meta.policy || {}).min_tenure || 2} weeks in a group, and not after week ${(D.meta.policy || {}).last_move_week || 11}.`)),
+      h('button', {class: 'btn ghost', type: 'button', text: 'See this run\'s tuning decisions', onclick: () => goTab('learning')}))));
+  root.append(note('These results come from the rule-based world, where one "I\'d switch" answer is a fairly reliable signal. If real students\' answers turn out noisier, waiting for a second answer could win. The LLM world and real feedback can check that.'));
+}
+
+/* ---------- Checks & LLM tests ---------- */
+function renderChecks(root) {
+  root.append(h('div', {class: 'section-head'}, h('div', {},
+    h('h2', {text: 'Checks, LLM tests and assumptions'}),
+    h('p', {text: 'What has to hold before the results mean anything, whether the LLM world can be trusted, and every rule the simulated world runs on.'}))));
+  const C = D.checks;
+  if (!C) {
+    root.append(h('div', {class: 'card'}, h('p', {}, 'No checks yet. Run ', h('code', {text: 'python -m simulation.checks'}), ', then rebuild the dashboard.')));
+  } else {
+    const passed = C.filter(c => c.ok).length;
+    const sections = [
+      ['behaviour', 'Does the world behave sensibly?', 'The first 4 weeks with groups held fixed, averaged over 10 seeds; each must hold in at least 80% of them.'],
+      ['realism', 'Do the first weeks look like real study groups?', 'Expected ranges are judgement calls for voluntary study groups, not measured data.'],
+      ['cohort', 'Is the cohort sound?', null],
+    ];
+    const gen = D.meta.checks_generated ? new Date(D.meta.checks_generated) : null;
+    root.append(h('div', {class: 'card'}, h('div', {class: 'who-lg'},
+      passIcon(passed === C.length),
+      h('div', {}, h('h3', {text: passed === C.length ? `All ${C.length} checks pass` : `${C.length - passed} of ${C.length} checks fail`}),
+        gen && !isNaN(gen) ? h('p', {class: 'muted small', text: `Last run ${gen.toLocaleString('en-US', {month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit'})} with python -m simulation.checks`}) : null))));
+    for (const [key, title, sub] of sections) {
+      const items = C.filter(c => c.section === key);
+      if (!items.length) continue;
+      root.append(h('div', {class: 'card'}, h('h3', {text: title}), sub ? h('p', {class: 'muted small', text: sub}) : null,
+        h('div', {}, items.map(c => h('div', {class: 'check'},
+          passIcon(c.ok),
+          h('div', {}, h('div', {class: 'check-l', text: cap(c.label)}), h('div', {class: 'check-d', text: c.detail})),
+          h('div', {class: 'viz'}, checkViz(c)))))));
+    }
+  }
+  renderCalibration(root);
+
+  root.append(h('div', {class: 'sub-head'}, h('h3', {text: 'The cohort'})));
+  root.append(h('div', {class: 'grid-2'}, COURSES.map(c => h('div', {class: 'card stack'},
+    h('div', {}, h('h3', {text: `${c.code}: ${c.title}`}), h('p', {class: 'muted small', text: `${c.n} students · ${c.semester}`})),
+    ...[['Year', c.mix.year], ['Gender', c.mix.gender], ['Major (top 5)', c.mix.major.slice(0, 5)]].map(([label, rows]) =>
+      h('div', {class: 'stack', style: 'gap:8px'}, h('span', {class: 'field-l', text: label}),
+        barList(rows.map(([k, n]) => ({label: k, value: n / c.n, text: FMT.pct(n / c.n)})), {max: 1})))))));
+
+  root.append(h('div', {class: 'sub-head'}, h('h3', {text: 'The rules of the world'})));
+  root.append(h('div', {class: 'grid-2'}, D.assumptions.map(sec => h('div', {class: 'card stack'},
+    h('div', {}, h('h3', {text: sec.title}), h('p', {class: 'muted small'}, h('code', {text: sec.source}))),
+    h('dl', {class: 'dl'}, sec.items.map(([k, v]) => [h('dt', {text: k}), h('dd', {text: v})]))))));
+  root.append(note('These are stated assumptions chosen to be plausible for a large US public university, not measured Penn State data. Change them in the files named above and rerun to see how much the results depend on them.'));
+}
+function renderCalibration(root) {
+  const K = D.calibration;
+  root.append(h('div', {class: 'sub-head'}, h('h3', {text: 'Can the LLM world be trusted?'})));
+  if (!K) {
+    root.append(h('div', {class: 'card'}, h('p', {}, 'Not tested yet. Run ', h('code', {text: 'simulation\\.venv\\Scripts\\python -m simulation.calibrate'}), ', then rebuild the dashboard.')));
+    return;
+  }
+  const M = K.model_vs_rule;
+  root.append(h('p', {class: 'muted', text: `${K.model} judged ${K.calls} groups in week ${K.week} (${K.failed} failed, ${FMT.money(K.spent)} spent). The same answers are scored four ways: the rule world alone, the model held within 0.3 or 1.2 of it, and the model unclamped.`}));
+  const tests = Object.keys(K.tests[0].passes);
+  const detail = {
+    'matched groups beat random ones': r => `${r.matched_mean.toFixed(2)} vs ${r.random_mean.toFixed(2)}`,
+    'reliable students prefer reliable groupmates': r => `${r.solid_mean.toFixed(2)} vs ${r.mixed_mean.toFixed(2)}`,
+    'overlapping schedules beat none': r => `${r.overlap_mean.toFixed(2)} vs ${r.no_overlap_mean.toFixed(2)}`,
+    'plausible first week (2-25% unhappy)': r => `${FMT.pct(r.unhappy_share)} unhappy`,
+  };
+  root.append(figure({title: 'Does each version still behave sensibly?', sub: 'Each test must be clearly beyond chance (2 standard errors). Numbers are average satisfaction after week 1.',
+    body: h('div', {class: 'tbl-wrap'}, table([{label: 'Test'}, ...K.tests.map(t => ({label: t.version === 'rule' ? 'Rule world' : cap(t.version), nowrap: true}))],
+      tests.map(name => ({cells: [cap(name), ...K.tests.map(t => h('span', {class: 'vcell'}, passIcon(t.passes[name], true), h('span', {class: 'small', text: detail[name] ? detail[name](t) : ''})))]}))))}));
+
+  const binds = M.binds_at;
+  root.append(h('div', {class: 'grid-2'},
+    h('div', {class: 'card stack'}, h('h3', {text: 'How far the model is from the rule world'}),
+      h('dl', {class: 'kv'},
+        h('dt', {text: 'Correlation with the rule world'}), h('dd', {text: M.correlation_with_rule.toFixed(2)}),
+        h('dt', {text: 'Average offset (model minus rule)'}), h('dd', {text: `${M.mean_offset >= 0 ? '+' : ''}${M.mean_offset.toFixed(2)}`}),
+        h('dt', {text: 'Average distance'}), h('dd', {text: M.mean_abs_gap.toFixed(2)})),
+      h('span', {class: 'field-l', text: 'Students a clamp would change'}),
+      barList(Object.entries(binds).map(([w, v]) => ({label: `Clamp ±${w}`, value: v, text: FMT.pct(v)})), {max: 1}),
+      h('p', {class: 'small muted', text: 'A clamp that changes most students turns the LLM world back into the rule world. One that changes few lets the model\'s own judgement through.'})),
+    h('div', {class: 'card stack'}, h('h3', {text: 'Is the model consistent?'}),
+      h('div', {}, Object.entries(M.passes).map(([name, ok]) => h('div', {class: 'check', style: 'grid-template-columns:28px minmax(0,1fr)'},
+        passIcon(ok), h('div', {class: 'check-l', text: cap(name)})))),
+      h('dl', {class: 'kv'},
+        h('dt', {text: 'Average change when asked again'}), h('dd', {text: M.repeat_wobble.toFixed(2)}),
+        h('dt', {text: 'Average change with letters reversed'}), h('dd', {text: M.relabel_wobble.toFixed(2)})),
+      h('p', {class: 'small muted', text: 'The model sees students as A–E with no names, gender or major, so reversing the letters tests whether position alone sways it.'}))));
+
+  const compl = (rows, label) => figure({title: label, body: rows.length ? barList(rows.slice(0, 6).map(c => ({label: c.label, value: c.share, text: FMT.pct(c.share)})), {max: 1}) : h('p', {class: 'empty', text: 'No complaints.'})});
+  root.append(h('div', {class: 'grid-2'}, compl(M.complaints_llm, 'What the model says bothers students (week 1)'), compl(M.complaints_rule, 'What the rule world says (week 1)')));
+  const idx = Object.fromEntries(ST.id.map((s, i) => [s, i]));
+  root.append(figure({title: 'In the model\'s words', sub: 'A spread of students from the week-1 test, from the model most below the rule world to most above.',
+    body: h('div', {class: 'tbl-wrap'}, table([{label: 'Student', nowrap: true}, {label: 'Rule', num: true}, {label: 'Model', num: true}, {label: 'Note'}],
+      M.notes.map(n => ({cells: [idx[n.sid] != null ? studentLink(idx[n.sid]) : n.sid, n.rule.toFixed(2), n.raw.toFixed(2), h('span', {class: 'quote', text: `“${n.note}”`})]}))))}));
+
+  const fixed = (v, d = 2) => v == null ? '–' : v.toFixed(d);
+  const multiweek = (L, name, how) => {
+    if (!L) return;
+    root.append(h('div', {class: 'sub-head'}, h('h3', {text: `After ${L.weeks} weeks: ${name}`}),
+      h('span', {class: 'muted small', text: `${how} Clamp ±${L.clamp}, ${L.samples} ask${L.samples > 1 ? 's' : ''} per group averaged, ${L.students} students in ${L.groups} groups held fixed.` + (L.spent != null ? ` ${L.calls} calls, ${FMT.money(L.spent)}.` : '')})));
+    if (L.reliable === false) root.append(note(`The budget ran out during this test (${L.asks_skipped} asks skipped, ${L.groups_judged_by_rules} group-weeks judged by the rules), so its numbers mix the two worlds. Rerun it with a higher --budget.`));
+    const tests2 = Object.keys(L.tests[0].passes);
+    const detail2 = {...detail, [`plausible week ${L.weeks} (5-35% unhappy)`]: r => `${FMT.pct(r.unhappy_share)} unhappy`};
+    root.append(figure({title: `Does it behave sensibly after ${L.weeks} weeks?`,
+      sub: `Feelings build up over weeks, which one week can't show. Group averages at the end of week ${L.weeks}; each test must be clearly beyond chance (2 standard errors).`,
+      body: h('div', {class: 'tbl-wrap'}, table([{label: 'Test'}, {label: 'Rule world', nowrap: true}, {label: name, nowrap: true}],
+        tests2.map(t => ({cells: [cap(t), ...L.tests.map(r => h('span', {class: 'vcell'}, passIcon(r.passes[t], true), h('span', {class: 'small', text: detail2[t] ? detail2[t](r) : ''})))]}))))}));
+    const byWeek = L.by_week, series = [
+      {label: name, color: color(LEARN), values: byWeek.map(b => b.llm)},
+      {label: 'Rule world', color: 'var(--viz-2)', values: byWeek.map(b => b.rule_world)},
+    ];
+    root.append(h('div', {class: 'grid-2'},
+      figure({title: 'The same matched groups, week by week', sub: 'Average satisfaction judged by each world. The two drift apart as feelings accumulate.',
+        legend: legend(series), body: lineChart({series, xLabels: byWeek.map((_, k) => `W${k + 1}`), format: 'sat', bands: false, height: 180, tipTitle: k => `Week ${k + 1}`, aria: `${name} against the rule world by week`})}),
+      h('div', {class: 'card stack'}, h('h3', {text: 'Noise, and how often the clamp binds'}),
+        h('div', {}, Object.entries(L.passes).map(([t, ok]) => h('div', {class: 'check', style: 'grid-template-columns:28px minmax(0,1fr)'}, passIcon(ok), h('div', {class: 'check-l', text: cap(t)})))),
+        h('dl', {class: 'kv'},
+          h('dt', {text: 'Correlation with the rule formula'}), h('dd', {text: fixed(L.correlation_with_rule)}),
+          h('dt', {text: 'LLM minus rules, on average'}), h('dd', {text: signed(L.mean_offset)}),
+          h('dt', {text: 'Verdicts the clamp changed'}), h('dd', {text: FMT.pct(L.clamp_bound_share)}),
+          h('dt', {text: `Spread between the ${L.samples} asks`}), h('dd', {text: fixed(L.ask_spread)}),
+          h('dt', {text: 'Wobble of a single ask'}), h('dd', {text: fixed(L.wobble_single)}),
+          h('dt', {text: `Wobble of the average of ${L.samples}`}), h('dd', {text: fixed(L.wobble_averaged)})),
+        h('p', {class: 'small muted', text: 'Wobble: how much a verdict would change if the same group were asked again. Averaging independent asks shrinks it by about the square root of their number.'}))));
+    root.append(h('div', {class: 'grid-2'}, compl(L.complaints_llm, `What the model says bothers students (${L.weeks} weeks)`), compl(L.complaints_rule, `What the rule world says (${L.weeks} weeks)`)));
+  };
+  multiweek(K.multiweek, 'LLM judge', 'The model judges each week from who came.');
+  multiweek(K.multiweek_meetings, 'LLM with simulated meetings', 'The model first writes what happened at each meeting, then judges the week from those accounts.');
+}
+function checkViz(c) {
+  if (c.section === 'behaviour' && c.value != null) {
+    const sides = c.sides || ['This setup', 'Comparison'];
+    const row = (label, v) => h('div', {class: 'pair-row'},
+      h('div', {}, h('div', {class: 'small muted', text: label}), h('div', {class: 'bar-t'}, h('span', {class: 'bar-f', style: `width:${((v - 1) / 4 * 100).toFixed(1)}%;background:var(--viz)`}))),
+      h('span', {text: v.toFixed(2)}));
+    return h('div', {class: 'pair'}, row(sides[0], c.value), row(sides[1], c.versus),
+      h('div', {class: 'small muted', text: `Satisfaction on a 1-5 scale; better in ${FMT.pct(c.share)} of seeds`}));
+  }
+  if (c.section === 'realism' && c.value != null) {
+    const pct = c.percent === 1;
+    const span = c.high - c.low;
+    let lo = c.low - span * 0.6, hi = c.high + span * 0.6;
+    lo = Math.min(lo, c.value); hi = Math.max(hi, c.value);
+    if (pct) { lo = Math.max(0, lo); hi = Math.min(1, hi); } else { lo = Math.max(1, lo); hi = Math.min(5, hi); }
+    const x = v => `${((v - lo) / (hi - lo) * 100).toFixed(1)}%`;
+    const f = v => pct ? `${Math.round(v * 100)}%` : v.toFixed(2);
+    return h('div', {},
+      h('div', {class: 'range', title: `Expected ${f(c.low)}–${f(c.high)}; got ${f(c.value)}`},
+        h('span', {class: 'okb', style: `left:${x(c.low)};width:calc(${x(c.high)} - ${x(c.low)})`}),
+        h('span', {class: 'val', style: `left:${x(c.value)}`})),
+      h('div', {class: 'range-l'}, h('span', {text: f(lo)}), h('span', {text: `expected ${f(c.low)}–${f(c.high)} · got ${f(c.value)}`}), h('span', {text: f(hi)})));
+  }
+  return null;
+}
+
+/* ---------- boot ---------- */
+renderHeader();
+renderLive();
+buildTabs();
+let start = location.hash.slice(1);
+if (!TABS.some(t => t[0] === start)) {
+  try { start = localStorage.getItem('studymatch-sim-tab'); } catch (e) { start = null; }
+  if (!TABS.some(t => t[0] === start)) start = 'overview';
+}
+selectTab(start);
+})();
+</script>
+</body>
+</html>

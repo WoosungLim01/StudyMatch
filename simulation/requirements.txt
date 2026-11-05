@@ -1,0 +1,3 @@
+# Extra packages the simulation needs on top of the project's requirements.txt.
+# The product never imports these.
+anthropic>=1.13          # llm_world.py: structured outputs (output_config)

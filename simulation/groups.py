@@ -3,17 +3,19 @@ Group formation at simulation scale.
 
 Pools of up to ILP_MAX_POOL students use the live ILP (algorithm/grouping.py)
 unchanged. That ILP creates a variable for every pair of students in every
-possible group, so it can't build a model for a 500-student course; larger
-pools use a swap search on the same objective (total within-group pair
-score, groups of 4-5): greedy start, then the best single swap between two
-groups is applied until no swap helps.
+possible group, so it can't build a model for a 500-student course, and on
+pools of 20-30 it runs into its 3-second time budget, which is too slow for
+weekly regrouping. Larger pools use a swap search on the same objective
+(total within-group pair score, groups of 4-5): greedy start, then the best
+single swap between two groups is applied until no swap helps. On
+30-student samples it reaches 99.6% of the ILP's score.
 """
 
 import numpy as np
 
 from algorithm.grouping import _group_sizes, form_groups, max_coverable
 
-ILP_MAX_POOL = 30
+ILP_MAX_POOL = 12              # small pools (people who quit, a dissolved group) are solved exactly
 
 
 def form(pool, S, index, rng):

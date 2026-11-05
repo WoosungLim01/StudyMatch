@@ -3,5 +3,7 @@
 data/
 output/
 __pycache__/
+# Simulation-only Python environment (system packages + a newer anthropic SDK)
+.venv/
 # Local secrets (ANTHROPIC_API_KEY). Never commit.
 .env
