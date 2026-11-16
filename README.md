@@ -236,8 +236,8 @@ Google sign-in returns 501 until all three Google variables are set.
 | Name | GitHub |
 |---|---|
 | Anoop Ibrampur | [@AnoopIbrampur](https://github.com/AnoopIbrampur) |
-| Woojoo Song | |
-| Li Zhu | |
+| Woojoo Song | [@CosmosBoy112](https://github.com/CosmosBoy112) |
+| Li Zhu | [@JJ69c](https://github.com/JJ69c) |
 | Taegwon Lee | [@TaegwonL](https://github.com/TaegwonL) |
 | Woosung Lim | [@WoosungLim01](https://github.com/WoosungLim01) |
 
