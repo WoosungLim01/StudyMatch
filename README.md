@@ -233,13 +233,12 @@ Google sign-in returns 501 until all three Google variables are set.
 
 ## Team
 
-<!-- TODO before merging: fill in names and roles -->
-| Name | Role | GitHub |
-|---|---|---|
-| _Name_ | _Role_ | [@handle](https://github.com/) |
-| _Name_ | _Role_ | [@handle](https://github.com/) |
-| _Name_ | _Role_ | [@handle](https://github.com/) |
-| _Name_ | _Role_ | [@handle](https://github.com/) |
-| _Name_ | _Role_ | [@handle](https://github.com/) |
+| Name | GitHub |
+|---|---|
+| Anoop Ibrampur | [@AnoopIbrampur](https://github.com/AnoopIbrampur) |
+| Woojoo Song | |
+| Li Zhu | |
+| Taegwon Lee | [@TaegwonL](https://github.com/TaegwonL) |
+| Woosung Lim | [@WoosungLim01](https://github.com/WoosungLim01) |
 
 <p align="center"><sub>DS440 Capstone · Penn State · Fall 2026</sub></p>
