@@ -12,7 +12,7 @@
 <p align="center">
   <a href="https://studymatch-8qih.onrender.com"><img src="https://img.shields.io/badge/Try_the_live_app-14213D?style=for-the-badge" alt="Try the live app" /></a>
   &nbsp;
-  <a href="https://github.com/WoosungLim01/StudyMatch/releases/tag/v0.1.0"><img src="https://img.shields.io/badge/Watch_the_demo_·_1:40-2C4770?style=for-the-badge" alt="Watch the demo" /></a>
+  <a href="#see-it-in-action"><img src="https://img.shields.io/badge/Watch_the_demo_·_1:40-2C4770?style=for-the-badge" alt="Watch the demo" /></a>
 </p>
 
 <p align="center">
@@ -30,11 +30,9 @@
   <a href="CHANGELOG.md">Changelog</a>
 </p>
 
-<p align="center">
-  <a href="https://github.com/WoosungLim01/StudyMatch/releases/tag/v0.1.0">
-    <img src="docs/assets/demo-poster.jpg" alt="Play the StudyMatch demo video (1 minute 40 seconds)" width="900" />
-  </a>
-</p>
+## See it in action
+
+https://github.com/user-attachments/assets/b2b14056-b5a8-4722-8aa7-b27b978830db
 
 ## Features
 
