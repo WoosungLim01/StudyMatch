@@ -1,0 +1,23 @@
+name: Pilot inquiry
+description: Interested in running StudyMatch in your department or course?
+title: "Pilot inquiry: "
+labels: ["pilot"]
+body:
+  - type: markdown
+    attributes:
+      value: "Thanks for your interest. This issue is public, so share only what you're comfortable posting; we'll follow up to move the conversation somewhere private."
+  - type: input
+    id: org
+    attributes:
+      label: Department or office
+    validations:
+      required: true
+  - type: textarea
+    id: courses
+    attributes:
+      label: Courses and approximate enrollment
+  - type: input
+    id: timing
+    attributes:
+      label: When would you like to start?
+      placeholder: e.g. Spring 2027

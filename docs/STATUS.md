@@ -27,7 +27,7 @@ Full detail: [`README.md`](../README.md#how-it-works) and the code in `algorithm
 - **Email + password**: sign-up creates an unverified account. A 6-digit code is emailed and entered on the login page together with the password. The account can't log in until it's verified (enforced server-side). Five wrong codes lock it until a new code is requested. Password rules are minimal on purpose (6-character minimum).
 - **Google sign-in**: OAuth2 authorization-code flow, implemented with stdlib `urllib`. Google accounts are auto-verified. They match an existing password account by email rather than creating a duplicate. Needs `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, and `GOOGLE_REDIRECT_URI` set on Render. Until they are, the button returns 501 with a clear message. The credentials and redirect URIs exist; confirmation that they're set on Render is pending.
 - **Account page** (`/account`): edit display name, log out, or delete your own account (removes login and any survey and group data in one action).
-- **Admin page** (`/admin`): delete a student (cascades everywhere) or a login account (login-only, keeps survey data). **No authentication yet**; see Known limitations.
+- **Admin page** (`/admin`): delete a student (cascades everywhere) or a login account (login-only, keeps survey data). Locked behind a shared password: the `ADMIN_PASSWORD` env var, or a temporary `1234` until that is set on Render.
 - **Deletion notifications**: all three deletion paths email the affected person a confirmation.
 - **Sessions**: 30-day expiry, enforced server-side and swept on each login.
 
@@ -56,15 +56,14 @@ Full detail: [`README.md`](../README.md#how-it-works) and the code in `algorithm
 1. **Confirm the Render environment variables** `RESEND_API_KEY` and `RESEND_FROM_EMAIL` are saved and the deploy has finished.
 2. **Test sign-up end-to-end** on the live site with an address you can read, including the 6-digit code step.
 3. **Confirm the Google environment variables** are set on Render.
-4. **Add authentication to the admin page** and to `/api/admin/*`. Both are currently public.
+4. **Set `ADMIN_PASSWORD` on Render** (a long random value) and share it with the team. Until it is set, the admin password is the temporary `1234` in `app.py`, which is public.
 5. **Diagnose auto-deploy** (see Live deployment).
 6. **Deploy, create the team's admin group, then test chat attachments live** in it: a photo, a short video (including on an iPhone), and a document. Members: `stu_0037` Li Zhu, `stu_0039` Woojoo Song, `stu_0044` Taegwon Lee, `stu_0045` Woosung Lim (CMPSC 465) and `stu_0041` Anoop Ibrampur (MATH 230). Turso must be reachable when the app starts, because startup creates and extends the tables.
-7. **Escape names on the admin page.** `ui/admin.html` still inserts names as raw HTML (see Known limitations). Do it together with item 4.
 
 ## Known limitations and deliberately deferred
 
 - Password rules: 6-character minimum, deliberately minimal.
-- Admin page: no authentication, and it renders student names as raw HTML, so a display name containing HTML runs as script there (see Pending).
+- Admin page: one shared password, so admin actions aren't tied to a person.
 - Group chat: no read receipts, notifications, or editing or deleting messages. No per-user send or upload rate limit. Each 3-second poll syncs with Turso, which is fine at the current scale but worth revisiting (a longer interval or a lighter read path) with many concurrent users.
 - Attachments: 10 MB per file, one file per message, no drag-and-drop or paste. Most phone videos are bigger than 10 MB; supporting them would mean moving files to object storage such as Cloudflare R2. Uploads count against Turso's storage.
 - Verification codes don't expire, and the wrong-code lockout is kept in memory. Codes are stored in a column with a UNIQUE constraint, so if two unverified accounts ever receive the same code (about 1 in a million per pair), the second sign-up fails with a server error.

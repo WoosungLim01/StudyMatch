@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<script>
+  /* Theme: same saved choice / OS setting as the rest of the app. */
+  (function(){
+    var saved; try { saved = localStorage.getItem('theme'); } catch (e) {}
+    var media = matchMedia('(prefers-color-scheme: dark)');
+    function apply(){
+      document.documentElement.dataset.theme = saved === 'light' || saved === 'dark' ? saved : (media.matches ? 'dark' : 'light');
+    }
+    apply();
+    media.addEventListener('change', apply);
+  })();
+</script>
+<title>StudyMatch · Admin login</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  /* StudyMatch tokens, same as ui/admin.html (see Design.md) */
+  :root{
+    --bg:#F1F3F9; --surface:#FFFFFF; --accent:#14213D; --blue-3:#5C7EA6;
+    --ink:#1F2547; --muted:#8A90A8; --line:#E4E7F2; --line-strong:#D9DDEB;
+    --danger:#8A3B42; --danger-soft:#F6EBEC; --on-accent:#FFFFFF;
+    --font-body:"Nunito Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+    --shadow-card:0 12px 40px rgba(76,86,150,.08);
+    color-scheme:light;
+  }
+  :root[data-theme="dark"]{
+    --bg:#14161D; --surface:#1E2029; --accent:#A9C1E8; --blue-3:#6E8CBD;
+    --ink:#E6E8F0; --muted:#8C91A3; --line:#2E313C; --line-strong:#3B3F4C;
+    --danger:#E9A0A8; --danger-soft:#3A2327; --on-accent:#101A2E;
+    --shadow-card:0 12px 40px rgba(0,0,0,.35);
+    color-scheme:dark;
+  }
+  *{box-sizing:border-box;}
+  html,body{height:100%;}
+  body{
+    margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:15px;line-height:1.55;
+    -webkit-font-smoothing:antialiased;display:grid;place-items:center;
+    padding:max(24px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) max(24px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
+  }
+  .card{
+    width:100%;max-width:400px;background:var(--surface);border:1px solid var(--line);border-radius:20px;
+    box-shadow:var(--shadow-card);padding:32px 28px;display:grid;gap:20px;
+  }
+  .brand{font:800 22px/1 var(--font-body);letter-spacing:-.02em;}
+  h1{font:800 26px/1.2 var(--font-body);letter-spacing:-.02em;margin:0;}
+  p{margin:0;color:var(--muted);}
+  form{display:grid;gap:12px;}
+  label{font-weight:700;font-size:14px;}
+  input{
+    font:inherit;color:var(--ink);background:var(--bg);border:1.5px solid var(--line-strong);border-radius:12px;padding:12px 14px;width:100%;
+  }
+  input:focus-visible{outline:3px solid var(--blue-3);outline-offset:1px;border-color:transparent;}
+  button{
+    font:800 15px/1 var(--font-body);background:var(--accent);color:var(--on-accent);border:0;border-radius:999px;padding:14px 20px;cursor:pointer;
+  }
+  button:focus-visible{outline:3px solid var(--blue-3);outline-offset:2px;}
+  button:disabled{opacity:.6;cursor:wait;}
+  .error{background:var(--danger-soft);color:var(--danger);border-radius:12px;padding:10px 14px;font-weight:700;font-size:14px;}
+  .back{font-size:14px;color:var(--muted);}
+  .back a{color:inherit;}
+</style>
+</head>
+<body>
+<main class="card">
+  <div class="brand">StudyMatch</div>
+  <div>
+    <h1>Admin</h1>
+    <p>Team only. Enter the shared admin password to see students, groups and accounts.</p>
+  </div>
+  <form id="form" novalidate>
+    <label for="password">Admin password</label>
+    <input id="password" name="password" type="password" autocomplete="current-password" required autofocus>
+    <div class="error" id="error" role="alert" hidden></div>
+    <button type="submit" id="submit">Open admin page</button>
+  </form>
+  <div class="back"><a href="/login">Back to student login</a></div>
+</main>
+<script>
+  const form = document.getElementById('form');
+  const errorEl = document.getElementById('error');
+  const submit = document.getElementById('submit');
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const password = document.getElementById('password').value;
+    errorEl.hidden = true;
+    if (!password) { errorEl.textContent = 'Enter the admin password.'; errorEl.hidden = false; return; }
+    submit.disabled = true;
+    submit.textContent = 'Checking…';
+    try {
+      const res = await fetch('/api/admin/login', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ password }),
+      });
+      if (res.ok) { location.reload(); return; }
+      const data = await res.json().catch(() => ({}));
+      errorEl.textContent = data.detail || 'Could not log in. Try again.';
+      errorEl.hidden = false;
+    } catch (err) {
+      errorEl.textContent = 'Could not reach the server. Check your connection and try again.';
+      errorEl.hidden = false;
+    }
+    submit.disabled = false;
+    submit.textContent = 'Open admin page';
+  });
+</script>
+</body>
+</html>
