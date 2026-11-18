@@ -1,58 +1,66 @@
-<h1 align="center">StudyMatch</h1>
-<p align="center"><b>Find classmates who study like you.</b><br/>Take a 5-minute survey, get placed into a study group of 4–5 by compatibility, then chat and pick meeting times together.</p>
+<p align="center">
+  <img src="docs/assets/banner.jpg" alt="StudyMatch: study groups that fit how you study" width="900" />
+</p>
+
+<h3 align="center">Find classmates in your course who study the way you do.</h3>
 
 <p align="center">
-  <a href="https://studymatch-8qih.onrender.com"><img src="https://img.shields.io/badge/Try_the_live_app-studymatch-14213D?style=for-the-badge" alt="Try the live app" /></a>
+  Answer 24 questions in about five minutes. StudyMatch places you in a group of four or five from the same course,<br/>
+  then gives the group a private chat and a shared calendar to plan sessions.
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/DS440-Capstone-14213D" alt="DS440 Capstone" />
-  <img src="https://img.shields.io/badge/Python-3.10-2C4770?logo=python&logoColor=white" alt="Python 3.10" />
-  <img src="https://img.shields.io/badge/FastAPI-0.115-2C4770?logo=fastapi&logoColor=white" alt="FastAPI" />
-  <img src="https://img.shields.io/badge/OR--Tools-CP--SAT-2C4770?logo=google&logoColor=white" alt="OR-Tools CP-SAT" />
-  <img src="https://img.shields.io/badge/scikit--learn-GMM-2C4770?logo=scikitlearn&logoColor=white" alt="scikit-learn" />
-  <img src="https://img.shields.io/badge/Turso-libSQL-2C4770?logo=turso&logoColor=white" alt="Turso" />
+  <a href="https://studymatch-8qih.onrender.com"><img src="https://img.shields.io/badge/Try_the_live_app-14213D?style=for-the-badge" alt="Try the live app" /></a>
+  &nbsp;
+  <a href="https://github.com/WoosungLim01/StudyMatch/releases/tag/v0.1.0"><img src="https://img.shields.io/badge/Watch_the_demo_·_1:40-2C4770?style=for-the-badge" alt="Watch the demo" /></a>
 </p>
 
 <p align="center">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="docs/assets/polls-dark.png" />
-    <img src="docs/assets/polls-light.png" alt="StudyMatch group chat with the meeting-time poll panel open" width="900" />
-  </picture>
+  <a href="https://github.com/WoosungLim01/StudyMatch/releases"><img src="https://img.shields.io/github/v/release/WoosungLim01/StudyMatch?color=2C4770&label=release" alt="Latest release" /></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-AGPL--3.0-2C4770" alt="License: AGPL-3.0" /></a>
+  <img src="https://img.shields.io/badge/python-3.10-2C4770?logo=python&logoColor=white" alt="Python 3.10" />
+  <img src="https://img.shields.io/badge/status-pilot_planned_·_spring_2027-5C7EA6" alt="Status: pilot planned for spring 2027" />
 </p>
 
 <p align="center">
-  <a href="https://studymatch-8qih.onrender.com">Live app</a> · <a href="#how-it-works">How it works</a> · <a href="docs/STATUS.md">Status</a> · <a href="docs/ER_DIAGRAM.md">ER diagram</a> · <a href="docs/SYNTHETIC_DATA.md">Synthetic data</a> · <a href="#known-limitations">Known limitations</a>
+  <a href="docs/ARCHITECTURE.md">How it works</a> ·
+  <a href="docs/RESEARCH.md">Research</a> ·
+  <a href="#for-universities">For universities</a> ·
+  <a href="#roadmap">Roadmap</a> ·
+  <a href="CHANGELOG.md">Changelog</a>
 </p>
 
-> [!NOTE]
-> Penn State study-group matching, built for DS440. The pipeline is real: a live database, login, survey, matching, and an admin view. The synthetic data is calibrated on real datasets (see [`docs/SYNTHETIC_DATA.md`](docs/SYNTHETIC_DATA.md)).
+<p align="center">
+  <a href="https://github.com/WoosungLim01/StudyMatch/releases/tag/v0.1.0">
+    <img src="docs/assets/demo-poster.jpg" alt="Play the StudyMatch demo video (1 minute 40 seconds)" width="900" />
+  </a>
+</p>
 
 ## Features
 
 <table>
 <tr>
 <td width="40%" valign="middle">
-<h3>One survey, once</h3>
-24 statements on a 5-point scale, nothing pre-selected. Six study axes: planning, session mode, reliability, structure, intensity and collaboration.
+<h3>Five-minute survey</h3>
+24 statements on a 5-point scale, nothing pre-selected. Your answers become six study-style scores: planning, session mode, reliability, structure, intensity and collaboration.
 </td>
 <td width="60%">
-<picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/survey-dark.png" /><img src="docs/assets/survey-light.png" alt="Entry survey" width="100%" /></picture>
+<picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/survey-dark.png" /><img src="docs/assets/survey-light.png" alt="StudyMatch survey" width="100%" /></picture>
 </td>
 </tr>
 <tr>
 <td width="40%" valign="middle">
-<h3>Matched by an ILP, not by luck</h3>
-An OR-Tools CP-SAT model splits each course into groups of 4–5 that maximize within-group compatibility. A Gaussian mixture places every student on a map of four study types.
+<h3>Groups formed by optimization</h3>
+Each course is split into groups of four or five that score highest together, solved exactly with Google OR-Tools. Late sign-ups join the best-fitting group with an open seat.
 </td>
 <td width="60%">
-<picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/typemap-dark.png" /><img src="docs/assets/typemap-light.png" alt="Study-type map from the admin dashboard" width="100%" /></picture>
+<picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/typemap-dark.png" /><img src="docs/assets/typemap-light.png" alt="Study-type map" width="100%" /></picture>
 </td>
 </tr>
 <tr>
 <td width="40%" valign="middle">
 <h3>Private group chat</h3>
-Text, photos, video and files, visible only to your group. Enter sends, Shift+Enter adds a line.
+Text, photos, video and files, visible only to your group.
 </td>
 <td width="60%">
 <picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/chat-dark.png" /><img src="docs/assets/chat-light.png" alt="Group chat" width="100%" /></picture>
@@ -60,17 +68,17 @@ Text, photos, video and files, visible only to your group. Enter sends, Shift+En
 </tr>
 <tr>
 <td width="40%" valign="middle">
-<h3>Meeting calendar</h3>
-Anyone can start a poll with candidate times. Once a time is confirmed, it shows on everyone's Home calendar in their local time.
+<h3>Pick a time together</h3>
+Anyone can start a poll. Once a time is confirmed, it shows on every member's calendar in their own time zone.
 </td>
 <td width="60%">
-<picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/home-dark.png" /><img src="docs/assets/home-light.png" alt="Home calendar with confirmed meetings" width="100%" /></picture>
+<picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/polls-dark.png" /><img src="docs/assets/polls-light.png" alt="Meeting-time poll" width="100%" /></picture>
 </td>
 </tr>
 <tr>
 <td width="40%" valign="middle">
-<h3>Sign in your way</h3>
-Email with a 6-digit code, or Google. Light and dark mode follow your system, or pick one in Account.
+<h3>Sign in with email or Google</h3>
+Email with a 6-digit code, or Google. Light and dark mode follow your system.
 </td>
 <td width="60%">
 <picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/login-dark.jpg" /><img src="docs/assets/login-light.jpg" alt="Login page" width="100%" /></picture>
@@ -78,160 +86,67 @@ Email with a 6-digit code, or Google. Light and dark mode follow your system, or
 </tr>
 </table>
 
-<sub>Screenshots use the repo's synthetic students and a local test account. No real student data.</sub>
+<sub>Screenshots use synthetic students and a local test account. No real student data.</sub>
 
-## Running it locally
+## Does matching help?
+
+We haven't run a real pilot yet, so these results come from a 14-week simulation of 1,000 synthetic students, calibrated on public survey data.
+
+| Strategy | Unhappy at week 14 | Students who quit a group |
+|---|---|---|
+| Keep the first groups | 25% | 95 |
+| Regroup on weekly feedback | 19% | 74 |
+| Regroup and learn the matching weights | **12%** | **40** |
+
+> [!IMPORTANT]
+> When a language model judged each simulated week instead of fixed rules, regrouping still helped, but matched groups did no better than random ones. The spring 2027 pilot is designed to settle this with real students. Details in [`docs/RESEARCH.md`](docs/RESEARCH.md).
+
+## For universities
+
+StudyMatch is free for students and for partner universities. We're looking for one department to run a one-semester pilot in one to three high-enrollment courses.
+
+- **Opt-in only.** Students choose to take part and can delete their account and data at any time.
+- **No grades.** Matching uses only the 24 survey answers. Course performance is never collected.
+- **Aggregates only.** A department sees placement and retention numbers, never individual answers.
+- **Open source.** Licensed under AGPL-3.0, so your IT and privacy teams can review every line.
+- **Low running cost.** About $13 a month for hosting and database at pilot scale.
+
+Interested? [Open a pilot inquiry](https://github.com/WoosungLim01/StudyMatch/issues/new?template=pilot_inquiry.yml).
+
+## Roadmap
+
+Proposed, and depends on finding a partner department.
+
+| When | Milestone |
+|---|---|
+| Dec 2026 – Jan 2027 | Security and privacy hardening, consent notices, Privacy Policy and Terms of Use |
+| Jan 2027 | Partner department, survey item rewrite, weekly feedback form |
+| Spring 2027 | One-semester pilot with about 100 students |
+| Summer 2027 | Pilot report and continuation decision |
+
+Current gaps are listed in [`docs/KNOWN_LIMITATIONS.md`](docs/KNOWN_LIMITATIONS.md).
+
+## Run it yourself
 
 ```bash
+git clone https://github.com/WoosungLim01/StudyMatch.git
+cd StudyMatch
 pip install -r requirements.txt
-python app.py
-# -> http://localhost:8010/login    log in / sign up
-# -> http://localhost:8010/admin    admin view (password 1234 unless ADMIN_PASSWORD is set)
+python app.py        # http://localhost:8010
 ```
 
-Local runs use `data/studymatch.db`, which ships in the repo with 36 synthetic students across CMPSC 465 and MATH 230. Without the Turso environment variables, the app never touches Turso.
-
-Without `RESEND_API_KEY`, no email is sent. The verification code is still stored, so for local sign-up read it from the `verify_token` column of `user_account` in `data/studymatch.db`. Local sign-ups write to that committed file, so don't commit the rows they add.
-
-## How it works
-
-1. **Sign-up and login** (`ui/login.html`). One email and password form.
-   - New email: an unverified account is created and a 6-digit code is emailed.
-   - Known email, wrong password: rejected. It is never treated as a new sign-up.
-   - Verified account, right password: logged in.
-   - Unverified account, right password: a new code is emailed.
-   - The code is entered on the same page with the password (`POST /api/auth/verify-code`). Five wrong codes lock the account until a new code is requested. Success starts the session directly, so there's no second login.
-   - Google sign-in (`/api/auth/google/login`) creates a verified account, or links to an existing account with the same email.
-2. **Survey** (`ui/survey.html`). Name, course, year, gender, major, and 24 statements on a 5-point Likert scale with nothing pre-selected. Availability and academic sections are optional and off by default.
-   - Raw answers are stored exactly as clicked. Reverse-worded items are flipped with `6 − raw` only at scoring time, then the four items per axis are averaged. The six axes are `planning`, `session_mode`, `reliability`, `structure`, `intensity`, and `collaboration`. The item bank and reverse flags are in `algorithm/scoring.py`.
-   - Submitting places you in a group right away. The survey is one time per account.
-3. **Study type** (`algorithm/clustering.py`), display only. Four types from a 2×2 of self-regulation (planning, structure, reliability) and social mode (session_mode, collaboration): Study Captain, Focused Architect, Collaborative Explorer, and Independent Sprinter. Intensity is shown as a separate badge. Below 200 students the theory model is used as-is. Above that, `python data/refit_archetypes.py` fits the mixture on a sample so the boundaries follow real answers.
-   - Response-quality flags (`algorithm/quality.py`) appear on the admin page. They never affect sign-up or matching.
-4. **Compatibility** (`algorithm/compatibility.py`). `100 ×` the weighted mean of `1 − |a − b| / 4` across the six axes. Reliability and intensity weigh 1.5×. Matching is similarity-only on purpose: StudyMatch is for people who want classmates who study like them.
-5. **Groups** (`algorithm/grouping.py`, `algorithm/placement.py`). An OR-Tools CP-SAT model splits each course's unplaced students into groups of 4–5 to maximize within-group compatibility. It is deterministic and reports its optimality bound. Existing groups are never reshuffled. Leftover pools of 1–3, 6, 7, or 11 join the best-fitting group with room, or wait until enough people arrive. Sign-up is never blocked; a match below 65 signs in with a warning.
-6. **Home** (`ui/home.html`). A greeting and a month calendar of the meetings confirmed across your groups, in your local time, with that month's meetings listed below it. `GET /api/meetings` supplies them; clicking one opens that group's chat. Students not yet placed see a waiting-list message. Your chat room is listed in the sidebar on every page; admin groups are listed only in Home's sidebar. The compatibility score isn't shown in the UI.
-7. **Group chat** (`ui/chat.html`, `/chat?group=<group_id>`). A private chat for the group's members, with text and attachments.
-   - The page polls `GET /api/groups/{id}/messages?after=<last id>` every 3 seconds and pauses while the tab is hidden. There are no websockets, so Render's free-tier sleep and redeploys need no reconnect logic. Text is sent with `POST /api/groups/{id}/messages`.
-   - **Attachments:** the paperclip button attaches one photo, video or file per message, with an optional caption. It uploads as multipart to `POST /api/groups/{id}/attachments`, with a progress percentage. The limit is 10 MB per file (`ATTACHMENT_MAX_BYTES` in `app.py`), checked in the browser and again on the server.
-   - PNG, JPEG, GIF and WebP show as images. MP4, WebM and QuickTime show as playable video. Everything else, including SVG and HTML, appears as a download card and is served as `application/octet-stream`, so an upload can never run as a page.
-   - Files are stored in Turso, not on disk, because Render's disk is wiped on every redeploy. Each file is split into 512 KB rows (`group_chat_attachment_chunk`) so no single statement carries a large blob. Downloads support byte ranges, which iPhone Safari needs to play video at all.
-   - Every chat endpoint, downloads included, checks that you belong to the group: non-members get 403. Messages are 1–1000 characters. Enter sends, Shift+Enter adds a line, and Enter while a Korean (or other IME) composition is in progress does not send.
-   - `data/migrations.py` creates the chat tables, and adds the attachment column to existing ones, on startup, so deploying is all the live database needs. Deleting a student deletes their messages and uploads, and a group's chat and files are deleted with the group.
-   - Message text, names and filenames are rendered as text, never as HTML.
-   - **Meeting polls:** anyone in the room can propose up to 10 candidate times and everyone votes. The poll's creator confirms the final time, which then appears on the Home calendar. The calendar is read-only; meetings are changed through their poll.
-   - **Admin groups** are extra, hand-made groups, such as one for the team to test chat. `python data/make_group.py 0037 0045 ...` creates one. Members keep their matched groups, can come from different courses, and see the admin group in a separate card on `/home`. Matching ignores admin groups: nobody is placed into one, and being in one doesn't count as being placed. They're listed in the `admin_group` table. The script prints a dry run first, writes only with `--apply`, and `--remove <group_id>` deletes an admin group with its chat. It needs the deployed app's `admin_group` table, so deploy before running it against Turso.
-8. **Account** (`ui/account.html`). Change your display name, log out, or delete your account. Deleting removes login access and your survey and group data, and sends a confirmation email.
-9. **Admin** (`ui/admin.html`). Lists students and login accounts. Deleting a student removes them from every table and unlinks their account. Deleting an account removes login access only. Both send a notification email when the person has an address. `/admin` shows a password form (`ui/admin_login.html`) until the shared admin password is entered; the server then sets an 8-hour HttpOnly cookie signed with that password, and checks it on every `/api/admin/*` request. Ten wrong passwords from one client within 15 minutes are refused. Student names, emails and group names are escaped on the admin page.
-10. **Email** (`data/email.py`). Verification codes and deletion notices go through Resend's HTTP API. The sender domain must be verified in Resend.
-
-## Stack
-
-- Python 3.10 (pinned in `.python-version`), FastAPI + uvicorn
-- SQLite for local development, Turso (hosted libSQL) in production
-- OR-Tools CP-SAT for group formation; scikit-learn for the display-only study types
-- Plain HTML/CSS/JS in `ui/`, no frontend framework
-- Resend's HTTP API for email; Google OAuth 2.0 for Google sign-in (both use stdlib `urllib`)
-
-## Project structure
+It ships with 36 synthetic students in two courses. Production setup (Turso, Resend email, Google sign-in, the admin password) is in [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md).
 
 <details>
-<summary>Show the full file tree</summary>
+<summary>Built with</summary>
 
-```
-StudyMatch/
-├── app.py                    FastAPI server: auth, survey, home, group chat, account, admin
-├── requirements.txt
-├── .python-version           3.10
-├── algorithm/                matching math (no web framework)
-│   ├── scoring.py              24-item bank, reverse-coding, score_axes()
-│   ├── compatibility.py        weighted 6-axis similarity between two students
-│   ├── grouping.py             ILP group formation (OR-Tools CP-SAT), groups of 4-5
-│   ├── placement.py            live signups: ILP for new groups, best fit for the rest
-│   ├── clustering.py           4 study types, GMM soft membership (display only)
-│   └── quality.py              response-quality flags (admin only)
-├── data/                     schema, synthetic data, database access, auth, email
-│   ├── schema.sql              full DDL
-│   ├── studymatch.db           local development database (production uses Turso)
-│   ├── db.py                   local SQLite vs Turso connection
-│   ├── migrations.py           additive schema changes, run at app startup
-│   ├── make_group.py           create/remove an admin group outside matching (e.g. a team test group)
-│   ├── auth.py                 password hashing (stdlib PBKDF2)
-│   ├── email.py                outbound email via Resend
-│   ├── archetype_store.py      loads the study-type model
-│   ├── generate_sample_data.py synthetic cohort generator
-│   ├── build_database.py       sample/*.json → studymatch.db
-│   ├── add_student.py          scripted bulk insert of real students
-│   ├── refit_archetypes.py     optional refit of the study-type mixture
-│   ├── build_viewer.py         rebuilds studymatch-data-browser.html
-│   └── README.md               data-layer detail
-├── ui/                       six pages, served from disk
-│   ├── login.html              login, sign-up, and code entry
-│   ├── survey.html             entry survey (one time per account)
-│   ├── home.html               greeting and meeting calendar
-│   ├── chat.html               your group's private chat
-│   ├── account.html            name, log out, delete account
-│   ├── admin.html              admin view (behind the shared admin password)
-│   └── admin_login.html        admin password form, shown at /admin until logged in
-├── docs/                     see Documentation below
-├── references/               survey redesign document
-└── questionary_data/         real datasets behind the synthetic data
-```
+Python 3.10 · FastAPI · Google OR-Tools CP-SAT · scikit-learn · SQLite locally, Turso in production · Resend for email · plain HTML, CSS and JavaScript
 
 </details>
 
-## Deployment
+## Contributing
 
-Production runs on Render (web service) with a Turso database.
-
-- **Build:** `pip install -r requirements.txt`. **Start:** `python app.py`. The app reads `PORT` from the environment and turns off auto-reload when it's set.
-- **Environment variables** (set in Render's Environment tab, never committed):
-
-| Variable | Purpose |
-|---|---|
-| `TURSO_DATABASE_URL` | Turso database URL (`libsql://...`). Set together with the token to use Turso |
-| `TURSO_AUTH_TOKEN` | Turso auth token (secret) |
-| `RESEND_API_KEY` | Resend API key (secret). Without it, email is logged, not sent |
-| `RESEND_FROM_EMAIL` | Sender address on a domain verified in Resend, e.g. `noreply@studymatch.us` |
-| `GOOGLE_CLIENT_ID` | Google OAuth client ID |
-| `GOOGLE_CLIENT_SECRET` | Google OAuth client secret (secret) |
-| `GOOGLE_REDIRECT_URI` | `https://studymatch-8qih.onrender.com/api/auth/google/callback`, matching the Google Cloud Console entry |
-| `ADMIN_PASSWORD` | Shared admin password (secret). **Until it is set, the admin password is the temporary `1234` from `app.py`, which anyone reading this repo can see. Set it as soon as someone has Render access.** Use a long random value, and change it when someone leaves the team: that logs every admin out |
-
-Google sign-in returns 501 until all three Google variables are set.
-
-- **Deploying:** auto-deploy on push to `main` has not been triggering. Use **Manual Deploy → Deploy latest commit** in Render, or the service's Deploy Hook URL (Settings tab). Treat the Deploy Hook as a secret. The root cause is not yet confirmed.
-- **Turso:** `data/db.py` keeps a local replica at `data/.turso_replica.db` (gitignored), syncs before each connection, and pushes after each write.
-- **Python:** `.python-version` pins 3.10 because Render's default (3.14) has no prebuilt wheels for the pinned numpy, scikit-learn, and ortools versions.
-
-## Documentation
-
-| File | What it covers |
-|---|---|
-| `docs/STATUS.md` | Current state: what's live and what's pending |
-| `docs/ER_DIAGRAM.md` | Database schema and design decisions |
-| `docs/SYNTHETIC_DATA.md` | Real datasets behind the synthetic data, and how it was derived |
-| `docs/DATA_GROUNDING.md` | What's backed by research and what isn't |
-| `docs/SIMULATION_PLAN.md` | Planned, not built: a semester-length outcome simulation |
-| `Design.md` | UI design system. Every page in `ui/` follows it |
-| `data/README.md` | Data layer: sample data, reproducibility, group-size remainder policy |
-| `references/` | Survey redesign document |
-
-**Conventions:** the product name is **StudyMatch** everywhere. Don't use "StudyNest," which came from an early brief. Don't use Penn State's logo, wordmark, seal, or Nittany Lion marks.
-
-## Known limitations
-
-- **The admin password is a temporary `1234` until `ADMIN_PASSWORD` is set on Render.** Anyone who reads this repo can open the admin page until then.
-- **Admin access is one shared password.** It's simple, but the app can't tell which teammate did what, and the wrong-password counter is kept in memory, so it resets when the server restarts.
-- Group chat has no read receipts, notifications, editing, or deleting your own messages. There's no per-user send or upload rate limit, and each poll syncs with Turso, which is fine at the current scale.
-- Attachments are capped at 10 MB, which fits photos and short clips but not most phone videos. Every upload also counts against the Turso plan's storage. Larger files would need object storage such as Cloudflare R2.
-- No forgot-password flow, and no way to change a password. The 6-character minimum is deliberate.
-- Survey answers can't be retaken or edited after submission.
-- Verification codes don't expire. A code stays valid until it's used or replaced. The wrong-code lockout is kept in memory and resets when the server restarts.
-- Matching is homogeneous by design, which can create echo-chamber effects over time. This is tracked as a future outcome metric rather than constrained away.
-- No balancing across groups, and no per-student axis weights or dealbreakers.
-- Response-quality flags catch straight-lining and contradictory answers, but not random clicking (about 3% of responses are flagged).
-- The feedback loop is not built. `group_feedback` is collected but doesn't change matching.
-- `session_mode` and `collaboration` are calibrated against Big Five proxies, not measures of those constructs. See [`docs/SYNTHETIC_DATA.md`](docs/SYNTHETIC_DATA.md).
+Bug reports and ideas are welcome: see [`CONTRIBUTING.md`](CONTRIBUTING.md). To report a security problem privately, see [`SECURITY.md`](SECURITY.md).
 
 ## Team
 
@@ -243,4 +158,8 @@ Google sign-in returns 501 until all three Google variables are set.
 | Taegwon Lee | [@TaegwonL](https://github.com/TaegwonL) |
 | Woosung Lim | [@WoosungLim01](https://github.com/WoosungLim01) |
 
-<p align="center"><sub>DS440 Capstone · Penn State · Fall 2026</sub></p>
+## License
+
+[AGPL-3.0](LICENSE). You're free to use, study and change StudyMatch. If you run a modified version as a public service, you must share your changes under the same license.
+
+<p align="center"><sub>Started as a Penn State DS 440 capstone, Fall 2026. Not affiliated with or endorsed by Penn State.</sub></p>
