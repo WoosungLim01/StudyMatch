@@ -65,9 +65,13 @@ Run (from the repo root):
     # -> open http://localhost:8010/login
 """
 
+import asyncio
+import hashlib
+import hmac
 import json
 import os
 import secrets
+import time
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -76,7 +80,7 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Dict, Optional
 
-from fastapi import FastAPI, HTTPException, Query, Request, Response
+from fastapi import Depends, FastAPI, HTTPException, Query, Request, Response
 from fastapi.responses import FileResponse, HTMLResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from starlette.concurrency import run_in_threadpool
@@ -107,6 +111,25 @@ GOOGLE_CLIENT_ID = os.environ.get("GOOGLE_CLIENT_ID")
 GOOGLE_CLIENT_SECRET = os.environ.get("GOOGLE_CLIENT_SECRET")
 GOOGLE_REDIRECT_URI = os.environ.get("GOOGLE_REDIRECT_URI")
 OAUTH_STATE_COOKIE = "google_oauth_state"
+
+# Admin access - one shared password.
+#
+# TODO(Render owner): TEMPORARY_ADMIN_PASSWORD below should be replaced as soon
+# as we have access to the Render account. Do NOT change it here in the code
+# (this repo is public, so anyone can read it). Instead, in Render go to
+# Environment -> add ADMIN_PASSWORD = <a long random password> -> save. When
+# ADMIN_PASSWORD is set, it replaces "1234" automatically; no code change or
+# commit is needed. Then delete the fallback below.
+#
+# A correct password sets an admin cookie that lasts ADMIN_TTL. The cookie is
+# signed with the password itself, so changing ADMIN_PASSWORD logs every admin
+# out at once (do that when someone leaves the team).
+TEMPORARY_ADMIN_PASSWORD = "1234"   # temporary until ADMIN_PASSWORD is set on Render (see above)
+ADMIN_COOKIE = "admin_token"
+ADMIN_TTL = timedelta(hours=8)
+ADMIN_MAX_FAILURES = 10          # wrong passwords allowed per client...
+ADMIN_FAILURE_WINDOW = 15 * 60   # ...within this many seconds
+_admin_failures: Dict[str, list] = {}
 
 
 def _migrate():
@@ -173,6 +196,35 @@ def require_user(request: Request):
     return user
 
 
+def _admin_password():
+    # The Render setting wins; "1234" is only used while ADMIN_PASSWORD is not set.
+    return os.environ.get("ADMIN_PASSWORD") or TEMPORARY_ADMIN_PASSWORD
+
+
+def _admin_signature(password, expires):
+    return hmac.new(password.encode(), f"studymatch-admin:{expires}".encode(), hashlib.sha256).hexdigest()
+
+
+def is_admin(request: Request):
+    """True only for a valid, unexpired admin cookie signed with the current ADMIN_PASSWORD."""
+    password = _admin_password()
+    token = request.cookies.get(ADMIN_COOKIE, "")
+    if not password or "." not in token:
+        return False
+    expires, signature = token.split(".", 1)
+    if not expires.isdigit() or int(expires) < time.time():
+        return False
+    return hmac.compare_digest(signature, _admin_signature(password, expires))
+
+
+def require_admin(request: Request):
+    """Guard for every /api/admin/* route: the server checks, whatever the page shows."""
+    if not _admin_password():
+        raise HTTPException(503, "Admin access is turned off. Set ADMIN_PASSWORD on the server to turn it on.")
+    if not is_admin(request):
+        raise HTTPException(401, "Admin password required")
+
+
 # ─────────────────────────────────────────────────────────────
 #  Pages
 # ─────────────────────────────────────────────────────────────
@@ -236,8 +288,44 @@ def chat_page(request: Request):
 
 
 @app.get("/admin", response_class=HTMLResponse, include_in_schema=False)
-def admin_page():
+def admin_page(request: Request):
+    # Without a valid admin cookie, the same URL shows the password form instead.
+    if not is_admin(request):
+        return FileResponse(UI_DIR / "admin_login.html")
     return FileResponse(UI_DIR / "admin.html")
+
+
+class AdminLoginIn(BaseModel):
+    password: str = Field(max_length=200)
+
+
+@app.post("/api/admin/login")
+async def api_admin_login(body: AdminLoginIn, request: Request, response: Response):
+    password = _admin_password()
+    if not password:
+        raise HTTPException(503, "Admin access is turned off. Set ADMIN_PASSWORD on the server to turn it on.")
+    client = request.client.host if request.client else "unknown"
+    now = time.time()
+    recent = [t for t in _admin_failures.get(client, []) if now - t < ADMIN_FAILURE_WINDOW]
+    if len(recent) >= ADMIN_MAX_FAILURES:
+        raise HTTPException(429, "Too many wrong passwords. Wait 15 minutes and try again.")
+    if not hmac.compare_digest(body.password.encode(), password.encode()):
+        recent.append(now)
+        _admin_failures[client] = recent
+        await asyncio.sleep(1)   # slows down guessing
+        raise HTTPException(401, "Wrong admin password")
+    _admin_failures.pop(client, None)
+    expires = str(int(now + ADMIN_TTL.total_seconds()))
+    response.set_cookie(ADMIN_COOKIE, f"{expires}.{_admin_signature(password, expires)}",
+                        httponly=True, samesite="strict", secure="PORT" in os.environ,
+                        max_age=int(ADMIN_TTL.total_seconds()))
+    return {"ok": True}
+
+
+@app.post("/api/admin/logout")
+def api_admin_logout(response: Response):
+    response.delete_cookie(ADMIN_COOKIE)
+    return {"ok": True}
 
 
 
@@ -1150,7 +1238,7 @@ def api_account_update(body: AccountIn, request: Request):
 #  Admin
 # ─────────────────────────────────────────────────────────────
 
-@app.get("/api/admin/students")
+@app.get("/api/admin/students", dependencies=[Depends(require_admin)])
 def api_admin_students():
     con = db()
     rows = con.execute("""
@@ -1180,7 +1268,7 @@ def api_admin_students():
     return out
 
 
-@app.get("/api/admin/type-map")
+@app.get("/api/admin/type-map", dependencies=[Depends(require_admin)])
 def api_admin_type_map():
     """
     Everything the study-type diagram needs: the stored type model (each
@@ -1293,7 +1381,7 @@ def api_account_delete(request: Request, response: Response):
     return {"deleted": user["user_id"]}
 
 
-@app.delete("/api/admin/students/{student_id}")
+@app.delete("/api/admin/students/{student_id}", dependencies=[Depends(require_admin)])
 def api_admin_delete_student(student_id: str):
     con = db()
     if not con.execute("SELECT 1 FROM student WHERE student_id=?", (student_id,)).fetchone():
@@ -1321,7 +1409,7 @@ def api_admin_delete_student(student_id: str):
     return {"deleted": student_id}
 
 
-@app.get("/api/admin/accounts")
+@app.get("/api/admin/accounts", dependencies=[Depends(require_admin)])
 def api_admin_accounts():
     con = db()
     rows = con.execute("""
@@ -1334,7 +1422,7 @@ def api_admin_accounts():
     return [dict(zip(cols, r)) for r in rows]
 
 
-@app.delete("/api/admin/accounts/{user_id}")
+@app.delete("/api/admin/accounts/{user_id}", dependencies=[Depends(require_admin)])
 def api_admin_delete_account(user_id: str):
     """Removes login access only - does NOT touch their student/survey data,
     which (if any) stays exactly as it was, just no longer reachable via login."""

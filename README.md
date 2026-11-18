@@ -47,7 +47,8 @@ StudyMatch/
 │   ├── home.html               greeting and meeting calendar
 │   ├── chat.html               your group's private chat
 │   ├── account.html            name, log out, delete account
-│   └── admin.html              admin view (see Known limitations)
+│   ├── admin.html              admin view (behind the shared admin password)
+│   └── admin_login.html        admin password form, shown at /admin until logged in
 ├── docs/                     see Documentation below
 ├── references/               survey redesign document
 └── questionary_data/         real datasets behind the synthetic data
@@ -59,7 +60,7 @@ StudyMatch/
 pip install -r requirements.txt
 python app.py
 # -> http://localhost:8010/login    log in / sign up
-# -> http://localhost:8010/admin    admin view
+# -> http://localhost:8010/admin    admin view (password 1234 unless ADMIN_PASSWORD is set)
 ```
 
 Local runs use `data/studymatch.db`, which ships in the repo with 36 synthetic students across CMPSC 465 and MATH 230. Without the Turso environment variables, the app never touches Turso.
@@ -82,6 +83,7 @@ Production runs on Render (web service) with a Turso database.
 | `GOOGLE_CLIENT_ID` | Google OAuth client ID |
 | `GOOGLE_CLIENT_SECRET` | Google OAuth client secret (secret) |
 | `GOOGLE_REDIRECT_URI` | `https://studymatch-8qih.onrender.com/api/auth/google/callback`, matching the Google Cloud Console entry |
+| `ADMIN_PASSWORD` | Shared admin password (secret). **Until it is set, the admin password is the temporary `1234` from `app.py`, which anyone reading this repo can see. Set it as soon as someone has Render access.** Use a long random value, and change it when someone leaves the team: that logs every admin out |
 
 Google sign-in returns 501 until all three Google variables are set.
 
@@ -117,7 +119,7 @@ Google sign-in returns 501 until all three Google variables are set.
    - **Meeting polls:** anyone in the room can propose up to 10 candidate times and everyone votes. The poll's creator confirms the final time, which then appears on the Home calendar. The calendar is read-only; meetings are changed through their poll.
    - **Admin groups** are extra, hand-made groups, such as one for the team to test chat. `python data/make_group.py 0037 0045 ...` creates one. Members keep their matched groups, can come from different courses, and see the admin group in a separate card on `/home`. Matching ignores admin groups: nobody is placed into one, and being in one doesn't count as being placed. They're listed in the `admin_group` table. The script prints a dry run first, writes only with `--apply`, and `--remove <group_id>` deletes an admin group with its chat. It needs the deployed app's `admin_group` table, so deploy before running it against Turso.
 8. **Account** (`ui/account.html`). Change your display name, log out, or delete your account. Deleting removes login access and your survey and group data, and sends a confirmation email.
-9. **Admin** (`ui/admin.html`). Lists students and login accounts. Deleting a student removes them from every table and unlinks their account. Deleting an account removes login access only. Both send a notification email when the person has an address. The admin page has no login check; see Known limitations.
+9. **Admin** (`ui/admin.html`). Lists students and login accounts. Deleting a student removes them from every table and unlinks their account. Deleting an account removes login access only. Both send a notification email when the person has an address. `/admin` shows a password form (`ui/admin_login.html`) until the shared `ADMIN_PASSWORD` is entered; the server then sets an 8-hour HttpOnly cookie signed with that password, and checks it on every `/api/admin/*` request. Ten wrong passwords from one client within 15 minutes are refused. Student names, emails and group names are escaped on the admin page.
 10. **Email** (`data/email.py`). Verification codes and deletion notices go through Resend's HTTP API. The sender domain must be verified in Resend.
 
 ## Documentation
@@ -137,8 +139,8 @@ Google sign-in returns 501 until all three Google variables are set.
 
 ## Known limitations
 
-- **The admin page has no authentication.** `/admin` and the `/api/admin/*` endpoints, including delete, can be reached by anyone who knows the URL. That's acceptable for local development, but the site is public, so an admin login needs to be added before relying on it.
-- **Admin page renders names as raw HTML.** `ui/home.html` and `ui/chat.html` escape user-controlled names, but `ui/admin.html` doesn't yet, so a display name containing HTML runs as script on the admin page. Fix it together with admin authentication.
+- **The admin password is a temporary `1234` until `ADMIN_PASSWORD` is set on Render.** Anyone who reads this repo can open the admin page until then.
+- **Admin access is one shared password.** It's simple, but the app can't tell which teammate did what, and the wrong-password counter is kept in memory, so it resets when the server restarts.
 - Group chat has no read receipts, notifications, editing, or deleting your own messages. There's no per-user send or upload rate limit, and each poll syncs with Turso, which is fine at the current scale.
 - Attachments are capped at 10 MB, which fits photos and short clips but not most phone videos. Every upload also counts against the Turso plan's storage. Larger files would need object storage such as Cloudflare R2.
 - No forgot-password flow, and no way to change a password. The 6-character minimum is deliberate.

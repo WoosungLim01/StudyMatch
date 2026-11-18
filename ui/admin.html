@@ -125,6 +125,13 @@
   tr:last-child td{border-bottom:none;}
   tbody tr:hover td{background:var(--row-hover);}
 
+  .btn-logout{
+    margin-left:auto;background:transparent;color:var(--ink);border:1.5px solid var(--line-strong);border-radius:999px;
+    padding:6px 14px;font:700 13px/1 var(--font-body);cursor:pointer;
+  }
+  .btn-logout:hover{background:var(--row-hover);}
+  .btn-logout:focus-visible{outline:3px solid var(--blue-3);outline-offset:2px;}
+
   .btn-del{
     background:transparent;color:var(--danger);border:1.5px solid color-mix(in srgb, var(--danger) 35%, transparent);border-radius:999px;
     padding:6px 14px;font:700 13px/1 var(--font-body);cursor:pointer;transition:background .15s, border-color .15s;
@@ -211,6 +218,7 @@
       StudyMatch
     </div>
     <span class="badge">Admin</span>
+    <button type="button" class="btn-logout" id="logout">Log out</button>
   </div>
 </header>
 
@@ -317,6 +325,26 @@
 const API = '';
 let ALL = [];
 
+// Names, emails and group names are typed by students, so they are always
+// escaped before going into HTML - a name like <img onerror=...> shows as text.
+function esc(v){
+  return String(v ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+// Every admin API call goes through this. The server checks the admin cookie on
+// each request; if it has expired (8 hours) or the password changed, reloading
+// /admin shows the password form again.
+async function adminFetch(url, options){
+  const res = await fetch(url, options);
+  if (res.status === 401) { location.reload(); throw new Error('Admin session expired'); }
+  return res;
+}
+
+document.getElementById('logout').addEventListener('click', async () => {
+  await fetch('/api/admin/logout', { method: 'POST' });
+  location.reload();
+});
+
 function toast(msg){
   const t = document.getElementById('toast');
   t.textContent = msg;
@@ -347,14 +375,14 @@ function render(){
 
   document.getElementById('empty').style.display = rows.length ? 'none' : 'block';
   document.getElementById('tbody').innerHTML = rows.map(r => `
-    <tr data-id="${r.student_id}">
-      <td class="mono muted">${r.student_id}</td>
-      <td><b>${r.name}</b></td>
-      <td><span class="badge ${r.source}">${r.source}</span></td>
-      <td><span class="badge">${r.course_code}</span></td>
+    <tr data-id="${esc(r.student_id)}">
+      <td class="mono muted">${esc(r.student_id)}</td>
+      <td><b>${esc(r.name)}</b></td>
+      <td><span class="badge ${esc(r.source)}">${esc(r.source)}</span></td>
+      <td><span class="badge">${esc(r.course_code)}</span></td>
       <td>${typeCell(r)}</td>
-      <td>${r.group_name || '<span class="muted">unassigned</span>'}</td>
-      <td><button class="btn-del" onclick="del('${r.student_id}', '${r.name.replace(/'/g, "\\'")}')">Delete</button></td>
+      <td>${r.group_name ? esc(r.group_name) : '<span class="muted">unassigned</span>'}</td>
+      <td><button class="btn-del" data-id="${esc(r.student_id)}">Delete</button></td>
     </tr>
   `).join('');
 }
@@ -362,20 +390,27 @@ function render(){
 const FLAG_LABELS = {straight_line: 'same answer everywhere', inconsistent: 'contradictory answers', atypical: 'fits no type well'};
 function typeCell(r){
   if (!r.archetype_name) return '<span class="muted">—</span>';
-  let html = r.archetype_name;
+  let html = esc(r.archetype_name);
   if (r.archetype_strength != null) html += ` <span class="muted">${Math.round(r.archetype_strength)}%</span>`;
-  if (r.motivation_badge) html += `<br><span class="muted">${r.motivation_badge}</span>`;
-  if (r.response_flag) html += `<span class="flag" title="Survey response-quality check">${FLAG_LABELS[r.response_flag] || r.response_flag}</span>`;
+  if (r.motivation_badge) html += `<br><span class="muted">${esc(r.motivation_badge)}</span>`;
+  if (r.response_flag) html += `<span class="flag" title="Survey response-quality check">${esc(FLAG_LABELS[r.response_flag] || r.response_flag)}</span>`;
   return html;
 }
 
+document.getElementById('tbody').addEventListener('click', (e) => {
+  const btn = e.target.closest('.btn-del');
+  if (!btn) return;
+  const row = ALL.find(r => r.student_id === btn.dataset.id);
+  if (row) del(row.student_id, row.name);
+});
+
 async function del(id, name){
   if (!confirm(`Delete ${name} (${id})? This removes them everywhere — personality data, group membership, chat, feedback. Cannot be undone.`)) return;
-  const btn = document.querySelector(`tr[data-id="${id}"] .btn-del`);
+  const btn = document.querySelector(`tr[data-id="${CSS.escape(id)}"] .btn-del`);
   btn.disabled = true;
   btn.textContent = '…';
   try {
-    const res = await fetch(`${API}/api/admin/students/${id}`, { method: 'DELETE' });
+    const res = await adminFetch(`${API}/api/admin/students/${encodeURIComponent(id)}`, { method: 'DELETE' });
     if (!res.ok) throw new Error((await res.json()).detail || res.statusText);
     ALL = ALL.filter(r => r.student_id !== id);
     renderStats(ALL);
@@ -390,10 +425,10 @@ async function del(id, name){
 }
 
 async function load(){
-  ALL = await fetch(API + '/api/admin/students').then(r => r.json());
+  ALL = await adminFetch(API + '/api/admin/students').then(r => r.json());
   const courses = [...new Set(ALL.map(r => r.course_code))].sort();
   document.getElementById('filter-course').innerHTML =
-    '<option value="">All courses</option>' + courses.map(c => `<option>${c}</option>`).join('');
+    '<option value="">All courses</option>' + courses.map(c => `<option>${esc(c)}</option>`).join('');
   renderStats(ALL);
   render();
 }
@@ -587,8 +622,8 @@ function renderLegend(students){
 function renderDashTable(students){
   document.getElementById('dash-tbody').innerHTML = students.map(s => {
     const ru = runnerUp(s);
-    return `<tr><td><b>${s.name}</b>${s.source === 'real' ? ' <span class="badge real">real</span>' : ''}</td>
-      <td>${s.course_code}</td><td class="num">${s.self_regulation.toFixed(2)}</td><td class="num">${s.social.toFixed(2)}</td>
+    return `<tr><td><b>${esc(s.name)}</b>${s.source === 'real' ? ' <span class="badge real">real</span>' : ''}</td>
+      <td>${esc(s.course_code)}</td><td class="num">${s.self_regulation.toFixed(2)}</td><td class="num">${s.social.toFixed(2)}</td>
       <td>${typeName(s.archetype_id)} <span class="muted num">${Math.round(s.strength)}%</span></td>
       <td class="muted">${ru.name} <span class="num">${Math.round(ru.pct)}%</span></td></tr>`;
   }).join('');
@@ -612,15 +647,15 @@ function onMapMove(ev){
     Math.abs(s.self_regulation - best.self_regulation) < 1e-6 && Math.abs(s.social - best.social) < 1e-6);
   const ru = runnerUp(best);
   tip.innerHTML = `
-    <b>${best.name}</b>${best.source === 'real' ? ' <span class="badge real">real</span>' : ''}
-    <div class="k">${best.course_code} · ${best.group_name || 'unassigned'}</div>
+    <b>${esc(best.name)}</b>${best.source === 'real' ? ' <span class="badge real">real</span>' : ''}
+    <div class="k">${esc(best.course_code)} · ${esc(best.group_name || 'unassigned')}</div>
     <div class="row" style="margin-top:8px"><span>${typeName(best.archetype_id)}</span><span class="v">${Math.round(best.strength)}%</span></div>
     <div class="row"><span class="k">${ru.name}</span><span class="v k">${Math.round(ru.pct)}%</span></div>
     <div class="row" style="margin-top:6px"><span class="k">Self-regulation</span><span class="v">${best.self_regulation.toFixed(2)}</span></div>
     <div class="row"><span class="k">Social mode</span><span class="v">${best.social.toFixed(2)}</span></div>
-    <div class="row"><span class="k">Motivation</span><span class="v">${best.motivation_badge}</span></div>
+    <div class="row"><span class="k">Motivation</span><span class="v">${esc(best.motivation_badge)}</span></div>
     ${best.response_flag ? `<div style="margin-top:6px"><span class="flag" style="margin:0">${FLAG_LABELS[best.response_flag] || best.response_flag}</span></div>` : ''}
-    ${same.length ? `<div class="k" style="margin-top:6px">+ ${same.length} more here: ${same.map(s => s.name).join(', ')}</div>` : ''}`;
+    ${same.length ? `<div class="k" style="margin-top:6px">+ ${same.length} more here: ${same.map(s => esc(s.name)).join(', ')}</div>` : ''}`;
   const wrap = document.getElementById('chart-wrap').getBoundingClientRect();
   tip.style.display = 'block';
   const left = Math.min(ev.clientX - wrap.left + 16, wrap.width - tip.offsetWidth - 4);
@@ -631,7 +666,7 @@ function onMapMove(ev){
 }
 
 async function loadTypeMap(){
-  const res = await fetch(API + '/api/admin/type-map');
+  const res = await adminFetch(API + '/api/admin/type-map');
   if (!res.ok){
     document.getElementById('model-info').textContent = 'No study-type model stored yet - run data/refit_archetypes.py.';
     return;
@@ -640,7 +675,7 @@ async function loadTypeMap(){
   const sel = document.getElementById('dash-course');
   const keep = sel.value;
   const courses = [...new Set(TYPEMAP.students.map(s => s.course_code))].sort();
-  sel.innerHTML = '<option value="">All courses</option>' + courses.map(c => `<option>${c}</option>`).join('');
+  sel.innerHTML = '<option value="">All courses</option>' + courses.map(c => `<option>${esc(c)}</option>`).join('');
   sel.value = courses.includes(keep) ? keep : '';
   drawTypeMap();
 }
@@ -655,22 +690,29 @@ let ACCOUNTS = [];
 function renderAccounts(){
   document.getElementById('accounts-empty').style.display = ACCOUNTS.length ? 'none' : 'block';
   document.getElementById('accounts-tbody').innerHTML = ACCOUNTS.map(a => `
-    <tr data-uid="${a.user_id}">
-      <td><b>${a.email}</b></td>
-      <td class="mono muted">${a.created_at}</td>
-      <td>${a.student_name ? a.student_name + ' <span class="muted mono">(' + a.student_id + ')</span>' : '<span class="muted">survey not completed</span>'}</td>
-      <td><button class="btn-del" onclick="delAccount('${a.user_id}', '${a.email.replace(/'/g, "\\'")}')">Delete</button></td>
+    <tr data-uid="${esc(a.user_id)}">
+      <td><b>${esc(a.email)}</b></td>
+      <td class="mono muted">${esc(a.created_at)}</td>
+      <td>${a.student_name ? esc(a.student_name) + ' <span class="muted mono">(' + esc(a.student_id) + ')</span>' : '<span class="muted">survey not completed</span>'}</td>
+      <td><button class="btn-del" data-uid="${esc(a.user_id)}">Delete</button></td>
     </tr>
   `).join('');
 }
 
+document.getElementById('accounts-tbody').addEventListener('click', (e) => {
+  const btn = e.target.closest('.btn-del');
+  if (!btn) return;
+  const acct = ACCOUNTS.find(a => a.user_id === btn.dataset.uid);
+  if (acct) delAccount(acct.user_id, acct.email);
+});
+
 async function delAccount(userId, email){
   if (!confirm(`Delete the account for ${email}? This only removes login access — any survey/group data they already have stays untouched.`)) return;
-  const btn = document.querySelector(`tr[data-uid="${userId}"] .btn-del`);
+  const btn = document.querySelector(`tr[data-uid="${CSS.escape(userId)}"] .btn-del`);
   btn.disabled = true;
   btn.textContent = '…';
   try {
-    const res = await fetch(`${API}/api/admin/accounts/${userId}`, { method: 'DELETE' });
+    const res = await adminFetch(`${API}/api/admin/accounts/${encodeURIComponent(userId)}`, { method: 'DELETE' });
     if (!res.ok) throw new Error((await res.json()).detail || res.statusText);
     ACCOUNTS = ACCOUNTS.filter(a => a.user_id !== userId);
     renderAccounts();
@@ -683,7 +725,7 @@ async function delAccount(userId, email){
 }
 
 async function loadAccounts(){
-  ACCOUNTS = await fetch(API + '/api/admin/accounts').then(r => r.json());
+  ACCOUNTS = await adminFetch(API + '/api/admin/accounts').then(r => r.json());
   renderAccounts();
 }
 loadAccounts();
